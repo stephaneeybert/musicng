@@ -1,0 +1,18 @@
+<div id="login-component">
+
+	<div class="col-md-6 col-md-offset-3">
+		<h2>Login</h2>
+		<div class="form-group">
+			<label for="username">Username</label> <input [(ngModel)]="username"
+				placeholder="username" class="form-control" required />
+		</div>
+		<div class="form-group">
+			<label for="password">Password</label> <input [(ngModel)]="password"
+				placeholder="password" class="form-control" required />
+		</div>
+		<div class="form-group">
+			<button (click)="login()">Log In</button>
+		</div>
+	</div>
+
+</div>

@@ -4,5 +4,8 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  KEYCLOAK_URL: 'http://localhost:8180/auth',
+  KEYCLOAK_REALM: 'demo',
+  KEYCLOAK_CLIENTID: 'demo-frontend'
 };
