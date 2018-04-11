@@ -31,14 +31,14 @@ export function jwtOptionsFactory(authService) {
     })
   ],
   providers: [
+    KeycloakService,
+    AuthService,
     AuthGuardService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: KeycloakInterceptor,
       multi: true,
     },
-    KeycloakService,
-    AuthService,
   ]
 })
 export class AuthModule {}

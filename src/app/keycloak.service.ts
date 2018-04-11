@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 import {environment} from '../environments/environment';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -11,6 +11,10 @@ export class KeycloakService {
   static auth: any = {};
 
   constructor(private httpClient: HttpClient) {}
+//  httpClient: HttpClient;
+//  constructor(private injector: Injector) {
+//    const httpClient = this.injector.get(HttpClient);
+//  }
 
   static init(): Promise<any> {
     const keycloakAuth: any = Keycloak({
