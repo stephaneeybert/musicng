@@ -5,27 +5,28 @@ import {
   HttpErrorResponse,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptingHandler
 } from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/fromPromise';
 
-import {KeycloakService} from './keycloak.service';
+import {KeycloakClientService} from './keycloak-client.service';
 
 const AUTH_HEADER_PREFIX = 'Bearer';
 
 @Injectable()
-export class KeycloakInterceptor implements HttpInterceptor {
+export class KeycloakInterceptor implements HttpInterceptingHandler {
 
-  constructor(private keycloakService: KeycloakService) {}
+  constructor(private keycloakClientService: KeycloakClientService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return Observable.fromPromise(this.addAuthHeader(request, next));
   }
 
   private async addAuthHeader(request: HttpRequest<any>, next: HttpHandler): Promise<HttpEvent<any>> {
-    console.log('Intercepting the http request to add the jwt token in the header');
-    const tokenPromise: Promise<any> = this.keycloakService.getToken();
+    console.log('=======>> Intercepting the http request to add the jwt token in the header');
+    const tokenPromise: Promise<any> = this.keycloakClientService.getToken();
     const tokenObservable: Observable<any> = Observable.fromPromise(tokenPromise);
     tokenObservable.map(authToken => {
       console.log('Token value: ' + authToken);
@@ -34,7 +35,7 @@ export class KeycloakInterceptor implements HttpInterceptor {
           'Authorization': AUTH_HEADER_PREFIX + authToken
         }
       });
-      console.log('The request has been cloned');
+      console.log('=======>> The request has been cloned');
     });
 //      return next.handle(request).do((event: HttpEvent<any>) => {
 //      if (event instanceof HttpResponse) {

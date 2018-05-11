@@ -1,18 +1,16 @@
 import {NgModule} from '@angular/core';
-import {AuthGuardService} from './auth-guard.service';
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {JwtModule, JWT_OPTIONS} from '@auth0/angular-jwt';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+
 import {KeycloakInterceptor} from './keycloak.interceptor';
-
-import {KeycloakService} from './keycloak.service';
+import {KeycloakClientService} from './keycloak-client.service';
 import {AuthService} from './auth.service';
+import {AuthGuardService} from './auth-guard.service';
 
-// See https://github.com/auth0/angular2-jwt
-
-export function jwtOptionsFactory(authService) {
+export function jwtOptionsFactory(authService: AuthService) {
   return {
-    whitelistedDomains: ['localhost:3001'],
-    blacklistedRoutes: ['localhost:3001/auth/'],
+    // whitelistedDomains: ['localhost:4200'],
+    // blacklistedRoutes: ['localhost:8180/auth/'],
     tokenGetter: () => {
       return authService.getJwtTokenFromLocalStorage();
     }
@@ -31,14 +29,14 @@ export function jwtOptionsFactory(authService) {
     })
   ],
   providers: [
-    KeycloakService,
+    KeycloakClientService,
     AuthService,
     AuthGuardService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: KeycloakInterceptor,
       multi: true,
-    },
+    }
   ]
 })
 export class AuthModule {}
