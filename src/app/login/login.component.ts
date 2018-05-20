@@ -16,7 +16,9 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router, private authService: AuthService, private keycloakClientService: KeycloakClientService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('Dummy log for a breakpoint');
+  }
 
   login(): void {
     console.log('=======>> In the component login method');
