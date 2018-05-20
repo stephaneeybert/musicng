@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { KeycloakService } from './keycloak.service';
+import { KeycloakClientService } from './keycloak-client.service';
 
 describe('KeycloakService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [KeycloakService]
+      providers: [KeycloakClientService]
     });
   });
 
-  it('should be created', inject([KeycloakService], (service: KeycloakService) => {
+  it('should be created', inject([KeycloakClientService], (service: KeycloakClientService) => {
     expect(service).toBeTruthy();
   }));
 });
