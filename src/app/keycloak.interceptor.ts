@@ -1,35 +1,42 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   HttpRequest,
   HttpResponse,
   HttpErrorResponse,
   HttpHandler,
   HttpEvent,
-  HttpInterceptingHandler
+  HttpInterceptor
 } from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/fromPromise';
 
-import {KeycloakClientService} from './keycloak-client.service';
+import { KeycloakClientService } from './keycloak-client.service';
 
 const AUTH_HEADER_PREFIX = 'Bearer';
 
 @Injectable()
-export class KeycloakInterceptor implements HttpInterceptingHandler {
+export class KeycloakInterceptor implements HttpInterceptor {
 
-  constructor(private keycloakClientService: KeycloakClientService) {}
+  constructor(private keycloakClientService: KeycloakClientService) { }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return Observable.fromPromise(this.addAuthHeader(request, next));
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    return this.addAuthHeader(request, next);
   }
 
-  private async addAuthHeader(request: HttpRequest<any>, next: HttpHandler): Promise<HttpEvent<any>> {
+  private addAuthHeader(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     console.log('=======>> Intercepting the http request to add the jwt token in the header');
     const tokenPromise: Promise<any> = this.keycloakClientService.getToken();
     const tokenObservable: Observable<any> = Observable.fromPromise(tokenPromise);
     tokenObservable.map(authToken => {
       console.log('Token value: ' + authToken);
+      // Clone the request before it is sent to the server
+      // as the original request is immutable and cannot be changed
       request = request.clone({
         setHeaders: {
           'Authorization': AUTH_HEADER_PREFIX + authToken
@@ -37,28 +44,24 @@ export class KeycloakInterceptor implements HttpInterceptingHandler {
       });
       console.log('=======>> The request has been cloned');
     });
-//      return next.handle(request).do((event: HttpEvent<any>) => {
-//      if (event instanceof HttpResponse) {
-//        console.log('The response has been handled by the interceptor');
-//      }
-//    }, (err: any) => {
-//      if (err instanceof HttpErrorResponse) {
-//        if (err.status === 401) {
-//          // redirect to the login route
-//          // or show a modal
-//        }
-//      }
-//    });
+
     console.log('Handle the request in the interceptor chain');
     return next.handle(request)
-//      .catch((error, caught) => {
-//        if (error.status === 401) {
-//          authService.removeTokens();
-//          this.router.navigate(['/public']);
-//          return Observable.throw(error);
-//        }
-//      })
-      .toPromise();
+      .catch(response => {
+        if (response instanceof HttpErrorResponse) {
+           if (response.status === 401) {
+             // redirect to the login route or show a modal
+           }
+          console.log('The error has been handled by the interceptor', response);
+        }
+
+        return Observable.throw(response);
+      })
+      .do((response: HttpEvent<any>) => {
+        if (response instanceof HttpResponse) {
+          console.log('The response has been handled by the interceptor', response);
+        }
+      });
   }
 
 }
