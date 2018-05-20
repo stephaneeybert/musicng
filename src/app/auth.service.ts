@@ -12,6 +12,7 @@ export class AuthService {
   jwtHelperService = new JwtHelperService();
 
   constructor() {}
+  // constructor(private jwtHelperService: JwtHelperService) {}
 
   public isAuthenticated(): boolean {
     const token = this.getJwtTokenFromLocalStorage();
