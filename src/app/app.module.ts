@@ -48,4 +48,9 @@ import {LoginComponent} from './login/login.component';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+
+  AppModule() {
+    console.log((new Error('throw')).stack);
+  }
+}
