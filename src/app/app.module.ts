@@ -4,7 +4,6 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
 
-import {GlobalErrorHandler} from './global-error-handler';
 import {AppRoutingModule} from './app-routing.module';
 import {AuthModule} from './auth.module';
 import {AppComponent} from './app.component';
@@ -17,6 +16,8 @@ import {InMemoryDataService} from './in-memory-data.service';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {HeroSearchComponent} from './hero-search/hero-search.component';
 import {LoginComponent} from './login/login.component';
+import { ErrorCustomModule } from './core/error/error-custom.module';
+import {GlobalErrorHandler} from './core/error/global-error-handler';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {LoginComponent} from './login/login.component';
       InMemoryDataService, {dataEncapsulation: false}
     ),
     AppRoutingModule,
-    AuthModule
+    AuthModule,
+    ErrorCustomModule
   ],
   providers: [
     HeroService,
