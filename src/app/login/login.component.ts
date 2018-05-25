@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     console.log('Dummy log for a breakpoint');
+    throw new Error('Something bad happened');
   }
 
   login(): void {

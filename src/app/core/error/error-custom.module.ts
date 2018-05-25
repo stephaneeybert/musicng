@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ErrorRoutingModule } from './error-routing.module';
 import { ErrorComponent } from './error-component/error.component';
 import { ErrorCustomHandler } from './error-custom-handler';
+import { ErrorService } from './error.service';
 import { ErrorServerInterceptor } from './error-server.interceptor';
 
 // See https://medium.com/@aleixsuau/error-handling-angular-859d529fa53a
@@ -20,8 +21,9 @@ import { ErrorServerInterceptor } from './error-server.interceptor';
         ErrorRoutingModule,
     ],
     providers: [
+        ErrorService,
         {
-            provide: ErrorHandler,
+            provide: ErrorCustomHandler,
             useClass: ErrorCustomHandler,
         },
         {

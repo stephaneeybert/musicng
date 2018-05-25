@@ -8,10 +8,13 @@ import * as StackTrace from 'stacktrace-js';
 export class GlobalErrorHandler implements ErrorHandler {
 
     constructor(private injector: Injector) { }
+
     handleError(error) {
         const location = this.injector.get(LocationStrategy);
+
         const message = error.message ? error.message : error.toString();
         const url = location instanceof PathLocationStrategy ? location.path() : '';
+        
         // Get the last few stacks only
         StackTrace.fromError(error).then(stackframes => {
             const stackString = stackframes
