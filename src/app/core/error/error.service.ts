@@ -1,6 +1,6 @@
 import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, Event, NavigationError } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
@@ -14,6 +14,7 @@ export class ErrorService {
     constructor(
         private injector: Injector,
         private router: Router,
+        private httpClient: HttpClient,
     ) {
         // Subscribe to the navigation errors
         this.router
@@ -29,15 +30,14 @@ export class ErrorService {
     }
 
     log(error) {
-        console.error(error);
         const errorToSend = this.addContextInfo(error);
-        return FakeHttpService.post(errorToSend);
+        return MockHttpService.post(errorToSend);
     }
 
     addContextInfo(error) {
         const name = error.name || null;
-        const appId = 'shthppnsApp';
-        const user = 'ShthppnsUser';
+        const appId = 'My API id';
+        const user = 'The logged in user if any';
         const time = new Date().getTime();
         const id = `${appId}-${user}-${time}`;
         const location = this.injector.get(LocationStrategy);
@@ -45,15 +45,30 @@ export class ErrorService {
         const status = error.status || null;
         const message = error.message || error.toString();
         const stack = error instanceof HttpErrorResponse ? null : StackTraceParser.parse(error);
+        const method = stack[0].functionName;
 
-        const errorWithContext = { name, appId, user, time, id, url, status, message, stack };
+        const errorWithContext = { message, method, name, appId, user, time, id, url, status, stack };
+        console.log(errorWithContext);
         return errorWithContext;
+    }
+
+    fireFakeClientError() {
+        throw new Error('Another runtime error)');
+        // As the 'it' object is not defined, this should produce a runtime error
+        // return it.happens;
+    }
+
+    fireFakeServerError() {
+        this.httpClient
+            .get('https://jsonplaceholder.typicode.com/1')
+            .subscribe();
     }
 }
 
-class FakeHttpService {
+class MockHttpService {
+
     static post(error): Observable<any> {
-        console.log('Error sent to the server: ', error);
+        console.log('The error has been sent to the server for future correction');
         return Observable.of(error);
     }
 }

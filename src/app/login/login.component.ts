@@ -17,12 +17,10 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService, private keycloakClientService: KeycloakClientService) {}
 
   ngOnInit() {
-    console.log('Dummy log for a breakpoint');
-    throw new Error('Something bad happened');
+    throw new Error('A dummy error in the login page');
   }
 
   login(): void {
-    console.log('=======>> In the component login method');
     this.keycloakClientService.login(this.username, this.password).subscribe(
       data => {
         this.authService.setJwtTokenToLocalStorage(data.token);

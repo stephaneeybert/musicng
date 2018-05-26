@@ -3,11 +3,11 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
-import { ErrorRoutingModule } from './error-routing.module';
-import { ErrorComponent } from './error-component/error.component';
 import { ErrorCustomHandler } from './error-custom-handler';
 import { ErrorService } from './error.service';
 import { ErrorServerInterceptor } from './error-server.interceptor';
+import { ErrorRoutingModule } from './error-routing.module';
+import { ErrorComponent } from './error-component/error.component';
 
 // See https://medium.com/@aleixsuau/error-handling-angular-859d529fa53a
 
@@ -23,14 +23,14 @@ import { ErrorServerInterceptor } from './error-server.interceptor';
     providers: [
         ErrorService,
         {
-            provide: ErrorCustomHandler,
-            useClass: ErrorCustomHandler,
+            provide: ErrorHandler,
+            useClass: ErrorCustomHandler
         },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorServerInterceptor,
-            multi: true,
+            multi: true
         }
     ]
 })
-export class ErrorCustomModule { }
+export class ErrorModule { }
