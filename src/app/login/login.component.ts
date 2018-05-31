@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService, private keycloakClientService: KeycloakClientService) {}
 
   ngOnInit() {
-    throw new Error('A dummy error in the login page');
+    // throw new Error('A dummy error in the login page');
   }
 
   login(): void {
