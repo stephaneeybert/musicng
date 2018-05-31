@@ -34,7 +34,7 @@ export class ErrorService {
         return MockHttpService.post(errorToSend);
     }
 
-    addContextInfo(error) {
+    private addContextInfo(error) {
         const name = error.name || null;
         const appId = 'My API id';
         const user = 'The logged in user if any';
@@ -66,7 +66,6 @@ export class ErrorService {
 }
 
 class MockHttpService {
-
     static post(error): Observable<any> {
         console.log('The error has been sent to the server for future correction');
         return Observable.of(error);
