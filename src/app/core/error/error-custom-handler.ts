@@ -11,7 +11,7 @@ export class ErrorCustomHandler implements ErrorHandler {
 
     constructor(private injector: Injector) { }
 
-    handleError(error: Error | HttpErrorResponse) {
+    handleError(error: Error | HttpErrorResponse): void {
         const notificationService = this.injector.get(NotificationService);
         const errorService = this.injector.get(ErrorService);
         const router = this.injector.get(Router);
