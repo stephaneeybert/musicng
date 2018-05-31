@@ -16,12 +16,14 @@ export class ErrorCustomHandler implements ErrorHandler {
         const errorService = this.injector.get(ErrorService);
         const router = this.injector.get(Router);
 
+        console.log('There is an error');
         if (error instanceof HttpErrorResponse) {
             // Handle server or connection errors
             if (!navigator.onLine) {
                 // TODO return notificationService.notify('No Internet Connection');
             } else {
                 // Handle Http errors (like error.status === 403, 404...)
+                console.log('HTTP ERROR !! 404');
                 errorService.log(error).subscribe();
                 // TODO return notificationService.notify(`${error.status} - ${error.message}`);
             }
