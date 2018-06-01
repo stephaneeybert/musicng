@@ -25,12 +25,20 @@ import { ErrorRequestInterceptor } from './error-request-interceptor';
         {
             provide: ErrorHandler,
             useClass: ErrorCustomHandler
-        },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: ErrorRequestInterceptor,
-            multi: true,
         }
     ]
 })
-export class ErrorModule { }
+export class ErrorModule {
+    static forRoot() {
+        return {
+            ngModule: ErrorModule,
+            providers: [
+                {
+                    provide: HTTP_INTERCEPTORS,
+                    useClass: ErrorRequestInterceptor,
+                    multi: true,
+                }
+            ]
+        };
+    }
+}

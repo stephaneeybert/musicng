@@ -39,7 +39,7 @@ import { ErrorModule } from './core/error';
     ),
     AppRoutingModule,
     AuthModule,
-    ErrorModule
+    ErrorModule.forRoot()
   ],
   providers: [
     HeroService,
