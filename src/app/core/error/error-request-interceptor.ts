@@ -24,9 +24,7 @@ export class ErrorRequestInterceptor implements HttpInterceptor {
 
     constructor(
         private errorCustomHandler: ErrorCustomHandler
-    ) {
-        console.log('In the constructor of error request interceptor');
-    }
+    ) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).retry(NB_RETRIES).do((event: HttpEvent<any>) => { }, (error: any) => {
