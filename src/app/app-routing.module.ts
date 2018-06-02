@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { PreloadAllModules } from '@angular/router';
 // See more on preloading https://alligator.io/angular/preloading/
+import { PreloadAllModules } from '@angular/router';
 
 import { AuthGuardService } from './auth-guard.service';
 import { HeroesComponent } from './heroes/heroes.component';
