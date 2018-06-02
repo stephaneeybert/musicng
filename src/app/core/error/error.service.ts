@@ -44,8 +44,8 @@ export class ErrorService {
         const url = location instanceof PathLocationStrategy ? location.path() : '';
         const status = error.status || null;
         const message = error.message || error.toString();
-        const stack = error instanceof HttpErrorResponse ? null : StackTraceParser.parse(error);
-        const method = stack[0].functionName;
+        const stack = error instanceof HttpErrorResponse ? null : error; // StackTraceParser.parse(error); TODO
+        const method = stack ? stack[0].functionName : null;
 
         const errorWithContext = { message, method, name, appId, user, time, id, url, status, stack };
         console.log(errorWithContext);
