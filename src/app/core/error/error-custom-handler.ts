@@ -21,6 +21,7 @@ export class ErrorCustomHandler implements ErrorHandler {
             // Handle server or connection errors
             if (!navigator.onLine) {
                 // TODO return notificationService.notify('No Internet Connection');
+                console.log('No internet connection');
             } else {
                 // Handle Http errors (like error.status === 403, 404...)
                 console.log('HTTP ERROR !! 404');
@@ -34,7 +35,9 @@ export class ErrorCustomHandler implements ErrorHandler {
             // or keep the user working on stuff that wouldn’t be saved
             // If something is broken in the app, stop the app and
             // redirect the user to an error screen with all the information
+            console.log(error);
             errorService.log(error).subscribe(errorWithContextInfo => {
+                console.log(errorWithContextInfo);
                 router.navigate(['/error'], { queryParams: errorWithContextInfo });
             });
         }
