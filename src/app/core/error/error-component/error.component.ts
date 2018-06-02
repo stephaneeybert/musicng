@@ -13,7 +13,7 @@ export class ErrorComponent implements OnInit {
 
     constructor(
         private activatedRoute: ActivatedRoute,
-    ) { }
+    ) { console.log('In the constructor of the error component'); }
 
     ngOnInit() {
         this.routeParams = this.activatedRoute.snapshot.queryParams;
