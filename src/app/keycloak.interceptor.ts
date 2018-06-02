@@ -49,9 +49,9 @@ export class KeycloakInterceptor implements HttpInterceptor {
     return next.handle(request)
       .catch(response => {
         if (response instanceof HttpErrorResponse) {
-           if (response.status === 401) {
-             // TODO redirect to the login route or show a modal
-           }
+          if (response.status === 401) {
+            // TODO redirect to the login route or show a modal
+          }
           console.log('The error has been handled by the interceptor', response);
         }
 
