@@ -29,7 +29,7 @@ export class ErrorService {
             });
     }
 
-    log(error) {
+    public log(error) {
         const errorToSend = this.addContextInfo(error);
         return MockHttpService.post(errorToSend);
     }
