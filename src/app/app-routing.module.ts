@@ -4,11 +4,11 @@ import { RouterModule, Routes } from '@angular/router';
 // See more on preloading https://alligator.io/angular/preloading/
 import { PreloadAllModules } from '@angular/router';
 
-import { AuthGuardService } from './auth-guard.service';
-import { HeroesComponent } from './heroes/heroes.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { HeroDetailComponent } from './hero-detail/hero-detail.component';
-import { LoginComponent } from './login/login.component';
+import { AuthGuardService } from './core/auth/auth-guard.service';
+import { LoginComponent } from './core/login/login.component';
+import { HeroesComponent } from './modules/heroes/heroes.component';
+import { DashboardComponent } from './modules/dashboard/dashboard.component';
+import { HeroDetailComponent } from './modules/hero-detail/hero-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },

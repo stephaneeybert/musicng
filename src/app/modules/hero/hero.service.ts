@@ -5,7 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, map, tap} from 'rxjs/operators';
 
 import {Hero} from './hero';
-import {MessageService} from './message.service';
+import {MessageService} from '../../core/messages/message.service';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -47,7 +47,7 @@ export class HeroService {
 
   addHero(hero: Hero): Observable<Hero> {
     return this.httpClient.post<Hero>(this.heroesUrl, hero, httpOptions).pipe(
-      tap((hero: Hero) => this.log(`added hero w/ id=${hero.id}`)),
+      tap((anHero: Hero) => this.log(`added hero w/ id=${anHero.id}`)),
       catchError(this.handleError<Hero>('addHero'))
     );
   }

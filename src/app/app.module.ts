@@ -5,17 +5,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AuthModule } from './auth.module';
+import { AuthModule } from './core/auth/auth.module';
 import { AppComponent } from './app.component';
-import { HeroesComponent } from './heroes/heroes.component';
-import { HeroDetailComponent } from './hero-detail/hero-detail.component';
-import { HeroService } from './hero.service';
-import { MessagesComponent } from './messages/messages.component';
-import { MessageService } from './message.service';
-import { InMemoryDataService } from './in-memory-data.service';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { HeroSearchComponent } from './hero-search/hero-search.component';
-import { LoginComponent } from './login/login.component';
+import { MessagesComponent } from './core/messages/messages.component';
+import { MessageService } from './core/messages/message.service';
+import { LoginComponent } from './core/login/login.component';
+import { InMemoryDataService } from './core/service/in-memory-data.service';
+import { HeroesComponent } from './modules/heroes/heroes.component';
+import { HeroDetailComponent } from './modules/hero-detail/hero-detail.component';
+import { HeroService } from './modules/hero/hero.service';
+import { DashboardComponent } from './modules/dashboard/dashboard.component';
+import { HeroSearchComponent } from './modules/hero-search/hero-search.component';
 
 import { NotificationService } from './core/service/notification.service';
 import { ErrorModule } from './core/error';
