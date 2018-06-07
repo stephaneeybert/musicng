@@ -16,7 +16,6 @@ export class ErrorCustomHandler implements ErrorHandler {
         const errorService = this.injector.get(ErrorService);
         const router = this.injector.get(Router);
 
-        console.log('There is an error');
         if (error instanceof HttpErrorResponse) {
             // Handle server or connection errors
             if (!navigator.onLine) {
@@ -24,7 +23,7 @@ export class ErrorCustomHandler implements ErrorHandler {
                 console.log('No internet connection');
             } else {
                 // Handle Http errors (like error.status === 403, 404...)
-                console.log('HTTP ERROR !! 404');
+                console.log('An HTTP error occured');
                 errorService.log(error).subscribe();
                 // TODO return notificationService.notify(`${error.status} - ${error.message}`);
             }
@@ -35,7 +34,7 @@ export class ErrorCustomHandler implements ErrorHandler {
             // or keep the user working on stuff that wouldn’t be saved
             // If something is broken in the app, stop the app and
             // redirect the user to an error screen with all the information
-            console.log(error);
+            console.log('A client error occured');
             errorService.log(error).subscribe(errorWithContextInfo => {
                 console.log(errorWithContextInfo);
                 router.navigate(['/error'], { queryParams: errorWithContextInfo });
