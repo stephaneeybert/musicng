@@ -13,6 +13,7 @@ export class KeycloakClientService {
   constructor(private httpClient: HttpClient) {}
 
   static init(): Promise<any> {
+    KeycloakClientService.auth.loggedIn = false;
 
     const keycloakAuth: any = Keycloak({
       url: environment.KEYCLOAK_URL,
@@ -20,21 +21,19 @@ export class KeycloakClientService {
       clientId: environment.KEYCLOAK_CLIENTID,
       'ssl-required': 'external',
       'public-client': true
-    });
-
-    KeycloakClientService.auth.loggedIn = false;
+    });  
 
     return new Promise((resolve, reject) => {
       keycloakAuth.init({onLoad: 'check-sso'})
-        // .success(() => {
-        //   console.log('=======>> The keycloak client has been initiated successfully');
-        //   KeycloakClientService.auth.loggedIn = true;
-        //   KeycloakClientService.auth.authz = keycloakAuth;
-        //   KeycloakClientService.auth.logoutUrl = environment.KEYCLOAK_URL
-        //     + '/realms/' + environment.KEYCLOAK_REALM + '/protocol/openid-connect/logout?redirect_uri='
-        //     + document.baseURI;
-        //   resolve();
-        // })
+        .success(() => {
+          console.log('=======>> The keycloak client has been initiated successfully');
+          KeycloakClientService.auth.loggedIn = true;
+          KeycloakClientService.auth.authz = keycloakAuth;
+          KeycloakClientService.auth.logoutUrl = environment.KEYCLOAK_URL
+            + '/realms/' + environment.KEYCLOAK_REALM + '/protocol/openid-connect/logout?redirect_uri='
+            + document.baseURI;
+          resolve();
+        })
         .error(() => {
           reject('Failed to initiate the keycloak client');
         });
