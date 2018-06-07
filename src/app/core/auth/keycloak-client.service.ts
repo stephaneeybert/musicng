@@ -14,25 +14,25 @@ export class KeycloakClientService {
 
   static init(): Promise<any> {
     KeycloakClientService.auth.loggedIn = false;
-
-    const keycloakAuth: any = Keycloak({
+    return new Promise((resolve, reject) => {
+      const keycloakConfig = {
       url: environment.KEYCLOAK_URL,
       realm: environment.KEYCLOAK_REALM,
       clientId: environment.KEYCLOAK_CLIENTID,
       'ssl-required': 'external',
       'public-client': true
-    });
+      };
+      const keycloakAuth: any = new Keycloak(keycloakConfig);
 
-    return new Promise((resolve, reject) => {
       keycloakAuth.init({onLoad: 'check-sso'})
         .success(() => {
-          console.log('=======>> The keycloak client has been initiated successfully');
           KeycloakClientService.auth.loggedIn = true;
           KeycloakClientService.auth.authz = keycloakAuth;
           KeycloakClientService.auth.logoutUrl = environment.KEYCLOAK_URL
-            + '/realms/' + environment.KEYCLOAK_REALM + '/protocol/openid-connect/logout?redirect_uri='
-            + document.baseURI;
-          resolve();
+          + '/realms/' + environment.KEYCLOAK_REALM + '/protocol/openid-connect/logout?redirect_uri='
+          + document.baseURI;
+          console.log('=======>> The keycloak client has been initiated successfully');
+          resolve('Succeeded in initiating the keycloak client');
         })
         .error(() => {
           reject('Failed to initiate the keycloak client');
