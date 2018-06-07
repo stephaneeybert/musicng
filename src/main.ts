@@ -10,14 +10,15 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));
-
 KeycloakClientService.init()
   .then(
     () => {
-      const platform = platformBrowserDynamic();
-      platform.bootstrapModule(AppModule);
+      platformBrowserDynamic().bootstrapModule(AppModule);
     }
   )
-  .catch(() => window.location.reload());
+  .catch(
+    (error) => {
+      console.log(error);
+      window.location.reload();
+    }
+  );
