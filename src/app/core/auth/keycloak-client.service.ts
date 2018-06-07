@@ -21,7 +21,7 @@ export class KeycloakClientService {
       clientId: environment.KEYCLOAK_CLIENTID,
       'ssl-required': 'external',
       'public-client': true
-    });  
+    });
 
     return new Promise((resolve, reject) => {
       keycloakAuth.init({onLoad: 'check-sso'})
