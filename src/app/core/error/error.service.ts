@@ -45,7 +45,7 @@ export class ErrorService {
         const status = error.status || null;
         const message = error.message || error.toString();
         const stack = error instanceof HttpErrorResponse ? null : error; // StackTraceParser.parse(error); TODO
-        const method = stack ? stack[0].functionName : null;
+        const method = stack[0] ? stack[0].functionName : null;
 
         const errorWithContext = { message, method, name, appId, user, time, id, url, status, stack };
         console.log(errorWithContext);
