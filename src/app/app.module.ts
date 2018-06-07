@@ -19,6 +19,7 @@ import { HeroSearchComponent } from './modules/hero-search/hero-search.component
 
 import { NotificationService } from './core/service/notification.service';
 import { ErrorModule } from './core/error';
+import { KeycloakClientService } from './core/auth/keycloak-client.service';
 
 @NgModule({
   declarations: [
@@ -48,4 +49,20 @@ import { ErrorModule } from './core/error';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor(keycloakClientService: KeycloakClientService) {
+    keycloakClientService.init()
+    .then(
+      () => {
+        console.log('The keycloak client has been initialized');
+      }
+    )
+    .catch(
+      (error) => {
+        console.log(error);
+        window.location.reload();
+      }
+    );
+  }
+}
