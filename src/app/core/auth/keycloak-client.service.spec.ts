@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { KeycloakClientService } from './keycloak-client.service';
 
-describe('KeycloakService', () => {
+describe('KeycloakClientService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [KeycloakClientService]
