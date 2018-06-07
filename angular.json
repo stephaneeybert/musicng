@@ -24,7 +24,7 @@
               "src/styles.css"
             ],
             "scripts": [
-              "node_modules/keycloak-js/dist/keycloak.js"
+              "node_modules/keycloak-js/dist/keycloak.min.js"
             ]
           },
           "configurations": {
