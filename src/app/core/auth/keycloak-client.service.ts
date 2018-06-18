@@ -35,6 +35,7 @@ export class KeycloakClientService {
           resolve('Succeeded in initiating the keycloak client');
         })
         .error(() => {
+          console.log('The keycloak client could not be initiated');
           reject('Failed to initiate the keycloak client');
         });
     });
