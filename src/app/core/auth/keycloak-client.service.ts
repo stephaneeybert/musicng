@@ -38,7 +38,7 @@ export class KeycloakClientService {
           reject('Failed to initiate the keycloak client');
         });
     });
-}
+  }
 
   public login(ussername: string, password: string): Observable<any> {
     console.log('Sending the login credentials to obtain a token');
