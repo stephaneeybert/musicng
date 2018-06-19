@@ -67,20 +67,21 @@ export class KeycloakClientService {
     return KeycloakClientService.auth.authz.tokenParsed.name;
   }
 
-  public getToken(): Promise<string> {
+  public getToken(): Observable<string> {
     console.log('Getting the retrieved token');
-    return new Promise<string>((resolve, reject) => {
+    return new Observable<string>((observer) => {
       if (KeycloakClientService.auth.authz && KeycloakClientService.auth.authz.token) {
         KeycloakClientService.auth.authz
           .updateToken(5) // Refresh the token if it will expire in n seconds or less
           .success(() => {
-            resolve(<string>KeycloakClientService.auth.authz.token);
+            observer.next(<string>KeycloakClientService.auth.authz.token);
+            observer.complete();
           })
           .error(() => {
-            reject('Failed to refresh the auth token');
+            observer.error('Failed to refresh the auth token');
           });
       } else {
-        reject('The auth token could not be retrieved because the user was not logged in');
+        observer.error('The auth token could not be retrieved because the user was not logged in');
       }
     });
   }
