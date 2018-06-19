@@ -60,6 +60,14 @@ export class KeycloakClientService {
     return KeycloakClientService.auth.authz.tokenParsed.realm_access.roles.indexOf(role) > -1;
   }
 
+  public getRealmRoles(): void {
+    return KeycloakClientService.auth.authz.realmAccess.roles;
+  }
+
+  public hasRealmRole(role: String): boolean {
+    return KeycloakClientService.auth.authz.hasRealmRole(role);
+  }
+
   public getUsername(): string {
     return KeycloakClientService.auth.authz.tokenParsed.preferred_username;
   }
@@ -84,6 +92,37 @@ export class KeycloakClientService {
       } else {
         observer.error('The auth token could not be retrieved because the user was not logged in');
       }
+    });
+  }
+
+  public clearToken(): void {
+    KeycloakClientService.auth.authz.clearToken();
+  }
+
+  public accountManagement(): void {
+    KeycloakClientService.auth.authz.accountManagement();
+  }
+
+  public getConfiguration(): object {
+    const notAvailable = 'N/A';
+    return {
+      'authServerUrl': KeycloakClientService.auth.authz.authServerUrl ? KeycloakClientService.auth.authz.authServerUrl : notAvailable,
+      'openIdFlow': KeycloakClientService.auth.authz.flow ? KeycloakClientService.auth.authz.flow : notAvailable,
+      'openIdResponseMode': KeycloakClientService.auth.authz.responseMode ? KeycloakClientService.auth.authz.responseMode : notAvailable,
+      'openIdResponseType': KeycloakClientService.auth.authz.responseType ? KeycloakClientService.auth.authz.responseType : notAvailable,
+      'realm': KeycloakClientService.auth.authz.realm ? KeycloakClientService.auth.authz.realm : notAvailable,
+      'clientId': KeycloakClientService.auth.authz.clientId ? KeycloakClientService.auth.authz.clientId : notAvailable,
+      'timeSkew': KeycloakClientService.auth.authz.timeSkew ? KeycloakClientService.auth.authz.timeSkew : notAvailable
+    };
+  }
+
+  public loadUserProfile(): any {
+    return new Promise((resolve, reject) => {
+      KeycloakClientService.auth.authz.loadUserProfile().success((profile) => {
+        resolve(<object>profile);
+      }).error(() => {
+        reject('Failed to retrieve user profile');
+      });
     });
   }
 
