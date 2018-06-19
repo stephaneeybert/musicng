@@ -16,9 +16,9 @@ export class KeycloakClientService {
     KeycloakClientService.auth.loggedIn = false;
     return new Observable((observer) => {
       const keycloakConfig = {
-        url: environment.KEYCLOAK_URL,
-        realm: environment.KEYCLOAK_REALM,
-        clientId: environment.KEYCLOAK_CLIENTID,
+        'url': environment.KEYCLOAK_URL,
+        'realm': environment.KEYCLOAK_REALM,
+        'clientId': environment.KEYCLOAK_CLIENTID,
         'ssl-required': 'external',
         'public-client': true
       };
