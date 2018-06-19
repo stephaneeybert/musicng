@@ -12,9 +12,9 @@ export class KeycloakClientService {
 
   constructor(private httpClient: HttpClient, private zone: NgZone) { }
 
-  public init(): Promise<any> {
+  public init(): Observable<any> {
     KeycloakClientService.auth.loggedIn = false;
-    return new Promise((resolve, reject) => {
+    return new Observable((observer) => {
       const keycloakConfig = {
         url: environment.KEYCLOAK_URL,
         realm: environment.KEYCLOAK_REALM,
@@ -32,11 +32,12 @@ export class KeycloakClientService {
             + '/realms/' + environment.KEYCLOAK_REALM + '/protocol/openid-connect/logout?redirect_uri='
             + document.baseURI;
           console.log('The keycloak auth has been initialized');
-          resolve('Succeeded in initiating the keycloak client');
+          observer.next('Succeeded in initiating the keycloak client');
+          observer.complete();
         })
         .error(() => {
           console.log('The keycloak client could not be initiated');
-          reject('Failed to initiate the keycloak client');
+          observer.error('Failed to initiate the keycloak client');
         });
     });
   }
