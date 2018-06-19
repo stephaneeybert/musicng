@@ -39,4 +39,20 @@ export function jwtOptionsFactory(authService: AuthService) {
     }
   ]
 })
-export class AuthModule {}
+export class AuthModule {
+
+  constructor(keycloakClientService: KeycloakClientService) {
+    keycloakClientService.init()
+    .then(
+      () => {
+        console.log('The keycloak client service has been initialized');
+      }
+    )
+    .catch(
+      (error) => {
+        console.log(error);
+        window.location.reload();
+      }
+    );
+  }
+}

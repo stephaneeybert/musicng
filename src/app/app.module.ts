@@ -49,20 +49,4 @@ import { KeycloakClientService } from './core/auth/keycloak-client.service';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-
-  constructor(keycloakClientService: KeycloakClientService) {
-    keycloakClientService.init()
-    .then(
-      () => {
-        console.log('The keycloak client service has been initialized');
-      }
-    )
-    .catch(
-      (error) => {
-        console.log(error);
-        window.location.reload();
-      }
-    );
-  }
-}
+export class AppModule { }
