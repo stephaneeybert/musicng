@@ -55,7 +55,7 @@ export class AppModule {
     keycloakClientService.init()
     .then(
       () => {
-        console.log('The keycloak client has been initialized');
+        console.log('The keycloak client service has been initialized');
       }
     )
     .catch(

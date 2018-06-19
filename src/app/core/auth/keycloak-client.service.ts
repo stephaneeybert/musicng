@@ -31,7 +31,7 @@ export class KeycloakClientService {
           KeycloakClientService.auth.logoutUrl = environment.KEYCLOAK_URL
             + '/realms/' + environment.KEYCLOAK_REALM + '/protocol/openid-connect/logout?redirect_uri='
             + document.baseURI;
-          console.log('The keycloak client has been initiated successfully');
+          console.log('The keycloak auth has been initialized');
           resolve('Succeeded in initiating the keycloak client');
         })
         .error(() => {
