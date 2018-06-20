@@ -24,7 +24,7 @@ export class KeycloakClientService {
       };
       const keycloakAuth: any = new Keycloak(keycloakConfig);
 
-      keycloakAuth.init({ onLoad: 'check-sso' })
+      keycloakAuth.init({ 'onLoad': 'check-sso' })
         .success(() => {
           KeycloakClientService.auth.loggedIn = true;
           KeycloakClientService.auth.authz = keycloakAuth;
