@@ -64,7 +64,7 @@ export class HeroService {
 
   searchHeroes(term: string): Observable<Hero[]> {
     if (!term.trim()) {
-      // if not search term, return empty hero array.
+      // If no search term, return empty hero array.
       return of([]);
     }
     return this.httpClient.get<Hero[]>(`api/heroes/?name=${term}`).pipe(
