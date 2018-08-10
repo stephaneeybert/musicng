@@ -3,6 +3,7 @@ import {JwtModule, JWT_OPTIONS} from '@auth0/angular-jwt';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import {KeycloakInterceptor} from './keycloak.interceptor';
+import {UserRestService} from './user-rest.service';
 import {KeycloakClientService} from './keycloak-client.service';
 import {AuthService} from './auth.service';
 import {AuthGuardService} from './auth-guard.service';
@@ -29,6 +30,7 @@ export function jwtOptionsFactory(authService: AuthService) {
     })
   ],
   providers: [
+    UserRestService,
     KeycloakClientService,
     AuthService,
     AuthGuardService,
