@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AppGuiModule } from './app-gui.module';
 import { AuthModule } from './core/auth/auth.module';
 import { AppComponent } from './app.component';
 import { MessagesComponent } from './core/messages/messages.component';
@@ -29,7 +30,7 @@ import { KeycloakClientService } from './core/auth/keycloak-client.service';
     MessagesComponent,
     DashboardComponent,
     HeroSearchComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,6 +40,7 @@ import { KeycloakClientService } from './core/auth/keycloak-client.service';
       InMemoryDataService, { dataEncapsulation: false }
     ),
     AppRoutingModule,
+    AppGuiModule,
     AuthModule,
     ErrorModule
   ],

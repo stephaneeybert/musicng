@@ -44,12 +44,12 @@ export function jwtOptionsFactory(authService: AuthService) {
 export class AuthModule {
 
   constructor(keycloakClientService: KeycloakClientService) {
-    const subscription = keycloakClientService.init()
-    .subscribe(
-      () => {
-        console.log('The keycloak client service has been initialized');
-      }
-    );
-    subscription.unsubscribe();
+    // const subscription = keycloakClientService.init()
+    // .subscribe(
+    //   () => {
+    //     console.log('The keycloak client service has been initialized');
+    //   }
+    // );
+    // subscription.unsubscribe();
   }
 }
