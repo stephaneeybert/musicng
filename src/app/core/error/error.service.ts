@@ -41,7 +41,7 @@ export class ErrorService {
         const time = new Date().getTime();
 
         const name = error.name || null;
-        const user = 'The logged in user if any'; // TODO get the logged in user
+        const user = ''; // TODO get the logged in user
         const id = `${appId}-${user}-${time}`;
         const status = error.status || null;
         const message = error.body.error || error.toString();
