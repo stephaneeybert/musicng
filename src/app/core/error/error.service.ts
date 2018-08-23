@@ -31,7 +31,7 @@ export class ErrorService {
 
     public log(error) {
         const errorToSend = this.addContextInfo(error);
-        return MockHttpService.post(errorToSend);
+        return MockHttpService.post(errorToSend); // TODO Implement a server side error inbox
     }
 
     private addContextInfo(error) {
