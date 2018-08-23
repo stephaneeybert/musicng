@@ -35,16 +35,17 @@ export class ErrorService {
     }
 
     private addContextInfo(error) {
-        const name = error.name || null;
-        const appId = 'My API id';
-        const user = 'The logged in user if any';
-        const time = new Date().getTime();
-        const id = `${appId}-${user}-${time}`;
+        const appId = 'My API id'; // TODO get an env variable
         const location = this.injector.get(LocationStrategy);
         const url = location instanceof PathLocationStrategy ? location.path() : '';
+        const time = new Date().getTime();
+
+        const name = error.name || null;
+        const user = 'The logged in user if any'; // TODO get the logged in user
+        const id = `${appId}-${user}-${time}`;
         const status = error.status || null;
-        const message = error.message || error.toString();
-        const stack = error instanceof HttpErrorResponse ? null : error; // StackTraceParser.parse(error); TODO
+        const message = error.body.error || error.toString();
+        const stack = error instanceof HttpErrorResponse ? null : error; // TODO StackTraceParser.parse(error);
         const method = stack[0] ? stack[0].functionName : null;
 
         const errorWithContext = { message, method, name, appId, user, time, id, url, status, stack };
