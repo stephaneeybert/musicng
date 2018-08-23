@@ -49,7 +49,6 @@ export class ErrorService {
         const method = stack[0] ? stack[0].functionName : null;
 
         const errorWithContext = { message, method, name, appId, user, time, id, url, status, stack };
-        console.log(errorWithContext);
         return errorWithContext;
     }
 
