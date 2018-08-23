@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ErrorCustomHandler } from './error-custom-handler';
 import { ErrorService } from './error.service';
 import { ErrorRoutingModule } from './error-routing.module';
-import { ErrorComponent } from './error-component/error.component';
+import { ErrorComponent } from './error.component';
 import { ErrorRequestInterceptor } from './error-request-interceptor';
 import { ModuleWithProviders } from '@angular/compiler/src/core';
 
