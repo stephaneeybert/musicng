@@ -6,6 +6,7 @@ import { PreloadAllModules } from '@angular/router';
 
 import { AuthGuardService } from './core/auth/auth-guard.service';
 import { LoginComponent } from './core/login/login.component';
+import { ErrorComponent } from './core/error/error.component';
 import { HeroesComponent } from './modules/heroes/heroes.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { HeroDetailComponent } from './modules/hero-detail/hero-detail.component';
@@ -23,6 +24,7 @@ const routes: Routes = [
       expectedRole: 'admin'
     }
   },
+  { path: 'error', component: ErrorComponent },
   { path: '**', redirectTo: '' }
 ];
 
