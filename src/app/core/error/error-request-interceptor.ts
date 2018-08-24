@@ -17,7 +17,7 @@ import { ErrorCustomHandler } from './error-custom-handler';
 // Because the best Error is the one that never happens, improve the error handling
 // using an HttpInterceptor to intercept all the server calls and retry them n times
 // before throwing an error
-const NB_RETRIES = 5;
+const NB_RETRIES = 3;
 
 @Injectable()
 export class ErrorRequestInterceptor implements HttpInterceptor {
