@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { MessagesComponent } from './core/messages/messages.component';
 import { MessageService } from './core/messages/message.service';
 import { LoginComponent } from './core/login/login.component';
-import { InMemoryDataService } from './core/service/in-memory-data.service';
 import { HeroesComponent } from './modules/heroes/heroes.component';
 import { HeroDetailComponent } from './modules/hero-detail/hero-detail.component';
 import { HeroService } from './modules/hero/hero.service';
