@@ -18,6 +18,7 @@ import { ErrorCustomHandler } from './error-custom-handler';
 // using an HttpInterceptor to intercept all the server calls and retry them n times
 // before throwing an error
 const NB_RETRIES = 3;
+const SERVER_ERROR = /^5.*$/;
 
 @Injectable()
 export class ErrorRequestInterceptor implements HttpInterceptor {
@@ -28,9 +29,14 @@ export class ErrorRequestInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).retry(NB_RETRIES).do((event: HttpEvent<any>) => { }, (error: any) => {
-            if (error instanceof HttpErrorResponse) {
+            const isServerError: boolean = this.isServerError(error);
+            if (error instanceof HttpErrorResponse && isServerError) {
                 this.errorCustomHandler.handleError(error);
             }
         });
+    }
+
+    private isServerError(error): boolean {
+        return SERVER_ERROR.test((error.status.toString()));
     }
 }
