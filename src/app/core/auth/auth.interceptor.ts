@@ -65,6 +65,10 @@ export class AuthInterceptor implements HttpInterceptor {
     });
     console.log('=======>> The request has been cloned');
 
+    // if (authToken) { TODO unused code
+    //   request = request.clone({ headers: request.headers.set('Authorization', AUTH_HEADER_PREFIX + authToken) });
+    // }
+
     return next.handle(clonedRequest)
     .catch(response => {
       if (response instanceof HttpErrorResponse) {
