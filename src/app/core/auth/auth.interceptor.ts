@@ -42,6 +42,10 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private addAuthHeader(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (!request.headers.has('Content-Type')) {
+      request = request.clone({ headers: request.headers.set('Content-Type', 'application/json') });
+    }
+
     console.log('=======>> Intercepting the http request to add the jwt token in the header');
     const authToken = 'dummy'; // TODO this.authService.getToken();
     const authHeader = 'Bearer ' + authToken;
