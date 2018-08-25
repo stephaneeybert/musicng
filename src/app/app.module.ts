@@ -17,6 +17,7 @@ import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { HeroSearchComponent } from './modules/hero-search/hero-search.component';
 
 import { NotificationService } from './core/service/notification.service';
+import { HttpService } from './core/service/http.service';
 import { ErrorModule } from './core/error';
 import { KeycloakClientService } from './core/auth/keycloak-client.service';
 
@@ -43,6 +44,7 @@ import { KeycloakClientService } from './core/auth/keycloak-client.service';
     HeroService,
     MessageService,
     NotificationService,
+    HttpService
   ],
   bootstrap: [AppComponent]
 })
