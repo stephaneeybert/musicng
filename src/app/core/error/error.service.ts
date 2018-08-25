@@ -44,9 +44,9 @@ export class ErrorService {
         const user = ''; // TODO get the logged in user
         const id = `${appId}-${user}-${time}`;
         const status = error.status || null;
-        const message = error.body ? error.body.error : error.toString();
+        const message = (error && error.body) ? error.body.error : error.toString();
         const stack = error instanceof HttpErrorResponse ? null : error; // TODO StackTraceParser.parse(error);
-        const method = stack[0] ? stack[0].functionName : null;
+        const method = (stack && stack[0]) ? stack[0].functionName : null;
 
         const errorWithContext = { message, method, name, appId, user, time, id, url, status, stack };
         return errorWithContext;
