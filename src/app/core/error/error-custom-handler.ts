@@ -24,7 +24,9 @@ export class ErrorCustomHandler implements ErrorHandler {
             } else {
                 // Handle Http errors (like error.status === 403, 404...)
                 console.log('An HTTP error occured');
-                errorService.log(error).subscribe();
+                errorService.log(error).subscribe(errorWithContextInfo => {
+                    console.log(errorWithContextInfo);
+                });
                 // TODO return notificationService.notify(`${error.status} - ${error.message}`);
             }
         } else {
