@@ -38,12 +38,12 @@ export function jwtOptionsFactory(authService: AuthService) {
     // {
     //   provide: HTTP_INTERCEPTORS,
     //   useClass: KeycloakInterceptor,
-    //   multi: true,
+    //   multi: true
     // },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true,
+      multi: true
     }
   ]
 })

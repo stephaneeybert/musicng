@@ -10,13 +10,18 @@ export class AuthGuardService implements CanActivate, CanLoad {
 
   // Check if the user can navigate to a route
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    const expectedRole = route.data.expectedRole;
+    const expectedRole = route.data.expectedRole ? route.data.expectedRole : null;
     const tokenPayload = this.authService.getDecodedToken();
-    if (!this.authService.isAuthenticated() || tokenPayload.role !== expectedRole) {
+    const role = tokenPayload.role ? tokenPayload.role : null;
+    if (!this.authService.isAuthenticated()) {
       this.router.navigate(['login']);
       return false;
+    } else if (role != null && role !== expectedRole) {
+      this.router.navigate(['login']);
+      return false;
+    } else {
+      return true;
     }
-    return true;
   }
 
   // Check if a module should be loaded

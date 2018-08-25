@@ -1,36 +1,22 @@
-import { Injectable, Injector, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-declare let Keycloak: any;
-
 @Injectable()
 export class UserRestService {
 
-  static auth: any = {};
-
-  constructor(private httpClient: HttpClient, private zone: NgZone) { }
+  constructor(private httpClient: HttpClient) { }
 
   public login(username: string, password: string): Observable<any> {
     console.log('Sending the login credentials to obtain a token');
     const credentials = { 'email' : username, 'password' : password };
-    const url: string = environment.USER_REST_URL + '/login';
-    return this.httpClient.post<any>(url, credentials);
-  }
-
-  // TODO uused demo code
-  public postWithHeaders<T>(url: string, body: string, headers?: HttpHeaders | null): Observable<T> {
-    const expandedHeaders = this.prepareHeader(headers);
-    return this.httpClient.post<T>(url, body, expandedHeaders);
-  }
-  private prepareHeader(headers: HttpHeaders | null): object {
-    headers = headers || new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('Accept', 'application/json');
-    return {
-        headers: headers
+    // Have the response headers included in the response object
+    const options = {
+      observe: 'response' as 'body'
     };
+    const url: string = environment.USER_REST_URL + '/login';
+    return this.httpClient.post<any>(url, credentials, options);
   }
 
 /*

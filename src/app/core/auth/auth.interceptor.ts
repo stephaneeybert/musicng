@@ -14,16 +14,15 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import { environment } from '../../../environments/environment';
-import { KeycloakClientService } from './keycloak-client.service';
+import { AuthService } from './auth.service';
 
-const AUTH_HEADER_PREFIX = 'Bearer';
 const URI_ROOT = environment.USER_REST_URL;
 const URI_CREDENTIALS = URI_ROOT + '/login';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private keycloakClientService: KeycloakClientService) { }
+  constructor(private authService: AuthService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.isSecuredUrl(request)) {
@@ -42,13 +41,9 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private addAuthHeader(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!request.headers.has('Content-Type')) {
-      request = request.clone({ headers: request.headers.set('Content-Type', 'application/json') });
-    }
-
     console.log('=======>> Intercepting the http request to add the jwt token in the header');
-    const authToken = 'dummy'; // TODO this.authService.getToken();
-    const authHeader = 'Bearer ' + authToken;
+    const authToken = this.authService.getJwtTokenFromLocalStorage();
+    const authHeader = this.authService.buildHeader(authToken);
     console.log('Token value: ' + authToken);
     // Clone the request before it is sent to the server
     // as the original request is immutable and cannot be changed
@@ -57,7 +52,7 @@ export class AuthInterceptor implements HttpInterceptor {
     // The cache and pragma headers prevent IE from caching GET 200 requests
     const clonedRequest = request.clone({
       setHeaders: {
-        'Authorization': AUTH_HEADER_PREFIX + authToken,
+        'Authorization': authHeader,
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache'
         // 'X-Requested-With': 'XMLHttpRequest'
