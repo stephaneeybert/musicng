@@ -17,7 +17,7 @@ export class HeroService {
   private heroesUrl = 'api/heroes';
 
   constructor(
-    private httpClient: HttpClient,
+    private httpClient: HttpClient, // TODO replace by httpService
     private messageService: MessageService
   ) {}
 
