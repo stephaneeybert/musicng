@@ -1,10 +1,16 @@
-<div class="error-container">
-
-    <div *ngIf="routeParams?.error">
-        <h1>ERROR {{ routeParams?.error }}</h1>
-        <a mat-raised-button [routerLink]="'/'">
-            <h5>Go to Home</h5>
-        </a>
+<div>
+    <div *ngIf="routeParams?.message">
+        <div>Message : {{ routeParams?.message }}</div>
+        <div>Stack : {{ routeParams?.stack }}</div>
+        <div>Name : {{ routeParams?.name }}</div>
+        <div>Url : {{ routeParams?.url }}</div>
+        <div>User : {{ routeParams?.user }}</div>
+        <div>Time : {{ routeParams?.time | date : 'yyyy-MM-dd HH:mm:ss'}}</div>
+        <div>Application : {{ routeParams?.appId }}</div>
+        <div>Id : {{ routeParams?.id }}</div>
     </div>
-
+    <div *ngIf="data">
+        <div>{{ data }}</div>
+    </div>
+    <div><a mat-raised-button [routerLink]="'/'">Home</a></div>
 </div>
