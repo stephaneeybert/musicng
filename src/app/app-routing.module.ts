@@ -7,15 +7,15 @@ import { PreloadAllModules } from '@angular/router';
 import { AuthGuardService } from './core/auth/auth-guard.service';
 import { LoginComponent } from './core/login/login.component';
 import { ErrorComponent } from './core/error/error.component';
-import { HeroesComponent } from './modules/heroes/heroes.component';
+import { UsersComponent } from './modules/user/users.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
-import { HeroDetailComponent } from './modules/hero-detail/hero-detail.component';
+import { UserDetailComponent } from './modules/user/user.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'detail/:id', component: HeroDetailComponent, canActivate: [AuthGuardService] },
-  { path: 'heroes', component: HeroesComponent, canActivate: [AuthGuardService] },
+  { path: 'detail/:id', component: UserDetailComponent, canActivate: [AuthGuardService] },
+  { path: 'users', component: UsersComponent, canActivate: [AuthGuardService] },
   {
     path: 'dashboard',
     component: DashboardComponent,

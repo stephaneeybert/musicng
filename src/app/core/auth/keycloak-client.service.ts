@@ -16,7 +16,7 @@ export class KeycloakClientService {
     KeycloakClientService.auth.loggedIn = false;
     return new Observable((observer) => {
       const keycloakConfig = {
-        'url': environment.KEYCLOAK_URL,
+        'url': environment.KEYCLOAK_URI,
         'realm': environment.KEYCLOAK_REALM,
         'clientId': environment.KEYCLOAK_CLIENTID,
         'ssl-required': 'external',
@@ -28,7 +28,7 @@ export class KeycloakClientService {
         .success(() => {
           KeycloakClientService.auth.loggedIn = true;
           KeycloakClientService.auth.authz = keycloakAuth;
-          KeycloakClientService.auth.logoutUrl = environment.KEYCLOAK_URL
+          KeycloakClientService.auth.logoutUrl = environment.KEYCLOAK_URI
             + '/realms/' + environment.KEYCLOAK_REALM + '/protocol/openid-connect/logout?redirect_uri='
             + document.baseURI;
           console.log('The keycloak auth has been initialized');
@@ -45,7 +45,7 @@ export class KeycloakClientService {
   public login(ussername: string, password: string): Observable<any> {
     console.log('Sending the login credentials to obtain a token');
     const credentials = { username: ussername, password: password };
-    const url: string = environment.KEYCLOAK_URL + '/realms/' + environment.KEYCLOAK_REALM
+    const url: string = environment.KEYCLOAK_URI + '/realms/' + environment.KEYCLOAK_REALM
       + '/protocol/openid-connect/token/generate-token';
     return this.httpClient.post(url, credentials);
   }

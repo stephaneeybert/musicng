@@ -5,8 +5,8 @@
 
 export const environment = {
   production: false,
-  USER_REST_URL: 'http://localhost:8080/api/users',
-  KEYCLOAK_URL: 'http://localhost:8180/auth',
+  BASE_REST_URI: 'http://localhost:8080/api',
+  KEYCLOAK_URI: 'http://localhost:8180/auth',
   KEYCLOAK_REALM: 'learnintouch',
   KEYCLOAK_CLIENTID: 'learnintouch-js'
 };

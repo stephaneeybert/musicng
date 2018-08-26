@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Hero } from '../hero/hero';
-import { HeroService } from '../hero/hero.service';
+import { UserService } from '../user/user.service';
+import { User } from '../user/user';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,18 +9,16 @@ import { HeroService } from '../hero/hero.service';
 })
 export class DashboardComponent implements OnInit {
 
-  heroes: Hero[] = [];
+  users: User[] = [];
 
-  constructor(private heroService: HeroService) { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
-    console.log('Init the dashboard component');
-    this.getHeroes();
+    this.getAll();
   }
 
-  getHeroes(): void {
-    console.log('Call a method in the dashboard component');
-    this.heroService.getHeroes()
-      .subscribe(heroes => this.heroes = heroes.slice(1, 5));
+  getAll(): void {
+    this.userService.getAll()
+      .subscribe(users => this.users = users.slice(1, 5));
   }
 }

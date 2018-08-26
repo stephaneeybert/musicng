@@ -67,7 +67,6 @@ export class ErrorService {
 
 class MockHttpService {
     static post(error): Observable<any> {
-        console.log('The error has been sent to the server for future correction');
         return Observable.of(error);
     }
 }

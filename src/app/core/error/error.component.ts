@@ -8,12 +8,11 @@ import { Observable } from 'rxjs/Observable';
     styleUrls: ['./error.component.scss']
 })
 export class ErrorComponent implements OnInit {
+
     routeParams;
     data;
 
-    constructor(
-        private activatedRoute: ActivatedRoute,
-    ) { console.log('In the constructor of the error component'); }
+    constructor(private activatedRoute: ActivatedRoute) { }
 
     ngOnInit() {
         this.routeParams = this.activatedRoute.snapshot.queryParams;

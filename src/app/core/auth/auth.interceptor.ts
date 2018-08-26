@@ -16,8 +16,7 @@ import 'rxjs/add/observable/throw';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
 
-const URI_ROOT = environment.USER_REST_URL;
-const URI_CREDENTIALS = URI_ROOT + '/login';
+const URI_LOGIN = environment.BASE_REST_URI + '/users/login';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -33,7 +32,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private isSecuredUrl(request: HttpRequest<any>) {
-    if (request.url.match(URI_CREDENTIALS)) {
+    if (request.url.match(URI_LOGIN)) {
       return false;
     } else {
       return true;
@@ -41,10 +40,8 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private addAuthHeader(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('=======>> Intercepting the http request to add the jwt token in the header');
     const authToken = this.authService.getJwtTokenFromLocalStorage();
     const authHeader = this.authService.buildHeader(authToken);
-    console.log('Token value: ' + authToken);
     // Clone the request before it is sent to the server
     // as the original request is immutable and cannot be changed
     // Clone the request before adding the new header so as to have
@@ -58,7 +55,6 @@ export class AuthInterceptor implements HttpInterceptor {
         // 'X-Requested-With': 'XMLHttpRequest'
       }
     });
-    console.log('=======>> The request has been cloned');
 
     // if (authToken) { TODO unused code
     //   request = request.clone({ headers: request.headers.set('Authorization', AUTH_HEADER_PREFIX + authToken) });

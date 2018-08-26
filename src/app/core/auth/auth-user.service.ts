@@ -4,24 +4,23 @@ import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
 import { HttpService } from '../service/http.service';
 
-
-const URL_LOGIN = 'login';
+const URI_LOGIN = environment.BASE_REST_URI + '/users/login'; // TODO declaré en doublon
 
 @Injectable()
-export class UserRestService {
+export class AuthUserService {
 
   constructor(private httpService: HttpService) { }
 
   public login(username: string, password: string): Observable<any> {
     console.log('Sending the login credentials to obtain a token');
     const credentials = { 'email': username, 'password': password };
-    const url: string = environment.USER_REST_URL + '/' + URL_LOGIN;
+    const url: string = URI_LOGIN;
     return this.httpService.post(url, credentials);
   }
 
-  /*
+  /* TODO
     public logout(): void {
-      const url: string = environment.USER_REST_URL + '/logout';
+      const url: string = environment.BASE_REST_URI + '/logout';
       this.httpClient.post(url, ussername);
       window.location.href = KeycloakClientService.auth.logoutUrl;
     }
@@ -29,7 +28,7 @@ export class UserRestService {
     public hasRole(role: string): boolean {
       return KeycloakClientService.auth.authz.tokenParsed.realm_access.roles.indexOf(role) > -1;
     }
- 
+
     public getRealmRoles(): void {
       return KeycloakClientService.auth.authz.realmAccess.roles;
     }

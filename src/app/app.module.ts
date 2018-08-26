@@ -10,11 +10,11 @@ import { AppComponent } from './app.component';
 import { MessagesComponent } from './core/messages/messages.component';
 import { MessageService } from './core/messages/message.service';
 import { LoginComponent } from './core/login/login.component';
-import { HeroesComponent } from './modules/heroes/heroes.component';
-import { HeroDetailComponent } from './modules/hero-detail/hero-detail.component';
-import { HeroService } from './modules/hero/hero.service';
+import { UsersComponent } from './modules/user/users.component';
+import { UserDetailComponent } from './modules/user/user.component';
+import { UserService } from './modules/user/user.service';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
-import { HeroSearchComponent } from './modules/hero-search/hero-search.component';
+import { UserSearchComponent } from './modules/user/search.component';
 
 import { NotificationService } from './core/service/notification.service';
 import { HttpService } from './core/service/http.service';
@@ -24,11 +24,11 @@ import { KeycloakClientService } from './core/auth/keycloak-client.service';
 @NgModule({
   declarations: [
     AppComponent,
-    HeroesComponent,
-    HeroDetailComponent,
+    UsersComponent,
+    UserDetailComponent,
     MessagesComponent,
     DashboardComponent,
-    HeroSearchComponent,
+    UserSearchComponent,
     LoginComponent,
   ],
   imports: [
@@ -41,7 +41,7 @@ import { KeycloakClientService } from './core/auth/keycloak-client.service';
     ErrorModule
   ],
   providers: [
-    HeroService,
+    UserService,
     MessageService,
     NotificationService,
     HttpService

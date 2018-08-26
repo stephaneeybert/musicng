@@ -7,16 +7,36 @@ export class HttpService {
 
     constructor(private httpClient: HttpClient) { }
 
-    public post<T>(url: string, body: object, headers?: HttpHeaders | null): Observable<T> {
-        const options = {
-            headers: this.prepareHeader(headers),
-            observe: 'response' as 'body', // Have the response headers included in the response object
-            responseType: 'json' as 'json'
-        };
-        return this.httpClient.post<T>(url, body, options);
+    public get<T>(url: string, headers?: HttpHeaders | null): Observable<T> {
+        return this.httpClient.get<T>(url, this.buildOptions(headers));
     }
 
-    private prepareHeader(headers: HttpHeaders | null): HttpHeaders {
+    public post<T>(url: string, body: object, headers?: HttpHeaders | null): Observable<T> {
+        return this.httpClient.post<T>(url, body, this.buildOptions(headers));
+    }
+
+    public put<T>(url: string, body: object, headers?: HttpHeaders | null): Observable<T> {
+        return this.httpClient.put<T>(url, body, this.buildOptions(headers));
+    }
+
+    public patch<T>(url: string, body: object, headers?: HttpHeaders | null): Observable<T> {
+        return this.httpClient.patch<T>(url, body, this.buildOptions(headers));
+    }
+
+    public delete<T>(url: string, headers?: HttpHeaders | null): Observable<T> {
+        return this.httpClient.delete<T>(url, this.buildOptions(headers));
+    }
+
+    private buildOptions(headers?: HttpHeaders | null) {
+        return {
+            headers: this.buildHeader(headers),
+            // Have the response headers included in the response object
+            observe: 'response' as 'body',
+            responseType: 'json' as 'json'
+        };
+    }
+
+    private buildHeader(headers: HttpHeaders | null): HttpHeaders {
         headers = headers || new HttpHeaders();
         headers = headers.set('Content-Type', 'application/json');
         headers = headers.set('Accept', 'application/json');
