@@ -25,3 +25,11 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## TODO
+
+After an app restart, check if the authorization really expired after the access token lifespan ended
+Implement a refresh token
+After an app restart, check if the authorization really expired and if a refresh token was retrieved after the access token lifespan ended
+After an app restart, check if the authorization really expired after the refresh token lifespan ended
+
