@@ -15,7 +15,7 @@ export class AuthUserService {
     console.log('Sending the login credentials to obtain a token');
     const credentials = { 'email': username, 'password': password };
     const url: string = URI_LOGIN;
-    return this.httpService.post(url, credentials);
+    return this.httpService.postWithHeadersInResponse(url, credentials);
   }
 
   /* TODO
