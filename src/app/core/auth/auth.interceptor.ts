@@ -52,7 +52,7 @@ export class AuthInterceptor implements HttpInterceptor {
         'Authorization': authHeader,
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache'
-        // 'X-Requested-With': 'XMLHttpRequest'
+        // 'X-Requested-With': 'XMLHttpRequest' TODO
       }
     });
 
@@ -64,7 +64,7 @@ export class AuthInterceptor implements HttpInterceptor {
     .catch(response => {
       if (response instanceof HttpErrorResponse) {
         if (response.status === 401) {
-          // TODO redirect to the login route or show a modal
+          // TODO redirect to the login route or show a modal TODO refresh token ?
         }
         console.log('The error has been handled by the interceptor', response);
       }
