@@ -19,8 +19,8 @@ export class DashboardComponent implements OnInit {
 
   getAll(): void {
     this.userService.getAll()
-      .subscribe(users => {
-        this.users = users.slice(1, 5);
+      .subscribe(response => {
+        // this.users = response._embedded.userResourceList.slice(1, 5); TODO
       });
   }
 }
