@@ -36,7 +36,7 @@ export function jwtOptionsFactory(authService: AuthService) {
     AuthService,
     AuthGuardService,
     // {
-    //   provide: HTTP_INTERCEPTORS,
+    //   provide: HTTP_INTERCEPTORS, TODO
     //   useClass: KeycloakInterceptor,
     //   multi: true
     // },
@@ -50,7 +50,7 @@ export function jwtOptionsFactory(authService: AuthService) {
 export class AuthModule {
 
   constructor(keycloakClientService: KeycloakClientService) {
-    // const subscription = keycloakClientService.init()
+    // const subscription = keycloakClientService.init() TODO
     // .subscribe(
     //   () => {
     //     console.log('The keycloak client service has been initialized');
