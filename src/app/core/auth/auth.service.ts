@@ -47,7 +47,7 @@ export class AuthService {
     }
   }
 
-  public buildHeader(token: string): string {
+  private buildHeader(token: string): string {
     return AUTH_HEADER_PREFIX + ' ' + this.getJwtTokenFromLocalStorage();
   }
 
