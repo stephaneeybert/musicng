@@ -51,6 +51,10 @@ export class AuthService {
     return AUTH_HEADER_PREFIX + ' ' + this.getJwtTokenFromLocalStorage();
   }
 
+  public buildTokenHeader(): string {
+    return this.buildHeader(this.getJwtTokenFromLocalStorage());
+  }
+
   public getHeaderName() {
     return AUTH_HEADER_NAME;
   }

@@ -40,8 +40,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private addAuthHeader(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const authToken = this.authService.getJwtTokenFromLocalStorage();
-    const authHeader = this.authService.buildHeader(authToken);
+    const authHeader = this.authService.buildTokenHeader();
     // Clone the request before it is sent to the server
     // as the original request is immutable and cannot be changed
     // Clone the request before adding the new header so as to have
