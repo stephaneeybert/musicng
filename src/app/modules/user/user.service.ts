@@ -17,34 +17,34 @@ export class UserService {
     private httpService: HttpService
   ) { }
 
-  update(user: User): Observable<any> {
-    return this.httpService.put(this.usersUrl, user);
-  }
-
-  getAll(): Observable<User[]> {
+  public getAll(): Observable<User[]> {
     return this.httpService.get<User[]>(this.usersUrl);
   }
 
-  get(id: number): Observable<User> {
+  public get(id: number): Observable<User> {
     const url = this.usersUrl + '/' + id;
     return this.httpService.get<User>(url);
   }
 
-  add(user: User): Observable<User> {
+  public add(user: User): Observable<User> {
     return this.httpService.post<User>(this.usersUrl, user);
   }
 
-  delete(user: User): Observable<User> {
+  public update(user: User): Observable<any> {
+    return this.httpService.put(this.usersUrl, user);
+  }
+
+  public delete(user: User): Observable<User> {
     const url = this.usersUrl + '/' + user.id;
     return this.httpService.delete<User>(url);
   }
 
-  deleteById(userId: number): Observable<User> {
+  public deleteById(userId: number): Observable<User> {
     const url = this.usersUrl + '/' + userId;
     return this.httpService.delete<User>(url);
   }
 
-  search(term: string): Observable<User[]> {
+  public search(term: string): Observable<User[]> {
     if (!term.trim()) {
       // If there is no search term then return an empty user array
       return of([]);
