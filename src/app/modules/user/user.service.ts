@@ -17,8 +17,11 @@ export class UserService {
     private httpService: HttpService
   ) { }
 
-  public getAll(): Observable<User[]> {
-    return this.httpService.get<User[]>(this.usersUrl);
+  public getAll(): Observable<any> {
+    return this.httpService.get(this.usersUrl)
+    .map((data: any) => {
+      return data._embedded.userResourceList;
+    });
   }
 
   public get(id: number): Observable<User> {
