@@ -25,15 +25,15 @@ export class UsersComponent implements OnInit {
   }
 
   onSelect(user: User): void {
-    this.messageService.add('Selected the user ' + user.name);
+    this.messageService.add('Selected the user ' + user.email);
   }
 
-  add(name: string): void {
-    name = name.trim();
+  add(email: string): void {
+    email = email.trim();
     if (!name) {
       return;
     }
-    this.userService.add({ name } as User)
+    this.userService.add({ email } as User)
       .subscribe(user => {
         this.users.push(user);
       });
