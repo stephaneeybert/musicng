@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
 
   getAll(): void {
     this.userService.getAll()
-      .subscribe(users => {
+      .subscribe((users: User[]) => {
         this.users = this.users = users;
       });
   }

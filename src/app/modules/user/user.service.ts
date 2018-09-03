@@ -17,10 +17,10 @@ export class UserService {
     private httpService: HttpService
   ) { }
 
-  public getAll(): Observable<any> {
+  public getAll(): Observable<User[]> {
     return this.httpService.get(this.usersUrl)
     .map((data: any) => {
-      return data._embedded.userResourceList;
+      return data._embedded.userResourceList as User[];
     });
   }
 
@@ -52,7 +52,10 @@ export class UserService {
       // If there is no search term then return an empty user array
       return of([]);
     }
-    return this.httpService.get<User[]>(this.usersUrl + '?name=' + term);
+    this.httpService.get<User[]>(this.usersUrl + '?name=' + term)
+    .map((data: any) => {
+      return data._embedded.userResourceList as User[];
+    });
   }
 
 }
