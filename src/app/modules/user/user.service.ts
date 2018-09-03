@@ -18,7 +18,11 @@ export class UserService {
   ) { }
 
   public getAll(): Observable<User[]> {
-    return this.httpService.get<User[]>(this.usersUrl);
+    return this.httpService.get(this.usersUrl)
+    .map((response: Response) => response.json()) // TODO
+    .map((data: any) => {
+      return data._embedded.users as User[];
+    });
   }
 
   public get(id: number): Observable<User> {
