@@ -48,7 +48,6 @@ export class AuthInterceptor implements HttpInterceptor {
       .pipe(
         tap((response: HttpEvent<any>) => {
           if (response instanceof HttpResponse) {
-            console.log('The response has been handled by the interceptor', response);
           }
         }),
         catchError(response => {
