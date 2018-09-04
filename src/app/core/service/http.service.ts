@@ -48,7 +48,7 @@ export class HttpService {
         };
     }
 
-    private buildHeader(headers: HttpHeaders | null): HttpHeaders {
+    public buildHeader(headers: HttpHeaders | null): HttpHeaders {
         headers = headers || new HttpHeaders();
         headers = headers.set('Content-Type', 'application/json');
         headers = headers.set('Accept', 'application/json');
