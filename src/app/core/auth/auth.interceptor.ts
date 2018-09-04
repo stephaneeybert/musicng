@@ -13,7 +13,7 @@ import { tap, catchError, take, filter, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { AuthService } from './auth.service';
+import { TokenService } from './token.service';
 import { AuthUserService } from '../auth/auth-user.service';
 
 const PATH_LOGIN = 'login';
@@ -30,7 +30,7 @@ export class AuthInterceptor implements HttpInterceptor {
   );
 
   constructor(
-    private authService: AuthService,
+    private authService: TokenService,
     private authUserService: AuthUserService
   ) { }
 

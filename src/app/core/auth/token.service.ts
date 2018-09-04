@@ -9,7 +9,7 @@ const AUTH_HEADER_NAME = 'Authorization';
 const AUTH_HEADER_PREFIX = 'Bearer';
 
 @Injectable()
-export class AuthService {
+export class TokenService {
 
   // See https://stackoverflow.com/questions/49240232/getting-a-cyclic-dependency-error
   jwtHelperService = new JwtHelperService();

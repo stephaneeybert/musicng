@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { HttpService } from '../service/http.service';
-import { AuthService } from '../auth/auth.service';
+import { TokenService } from '../auth/token.service';
 
 const PATH_LOGIN = 'login';
 const URI_LOGIN = environment.BASE_REST_URI + '/users/' + PATH_LOGIN; // TODO declaré en doublon
@@ -15,7 +15,7 @@ const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/users/' + PATH_REFRESH_T
 @Injectable()
 export class AuthUserService {
 
-  constructor(private httpService: HttpService, private authService: AuthService) { }
+  constructor(private httpService: HttpService, private authService: TokenService) { }
 
   public login(username: string, password: string): Observable<any> {
     console.log('Sending the login credentials to obtain a token');

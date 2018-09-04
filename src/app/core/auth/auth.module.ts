@@ -6,10 +6,10 @@ import {KeycloakInterceptor} from './keycloak.interceptor';
 import {AuthInterceptor} from './auth.interceptor';
 import {AuthUserService} from './auth-user.service';
 import {KeycloakClientService} from './keycloak-client.service';
-import {AuthService} from './auth.service';
+import {TokenService} from './token.service';
 import {AuthGuardService} from './auth-guard.service';
 
-export function jwtOptionsFactory(authService: AuthService) {
+export function jwtOptionsFactory(authService: TokenService) {
   return {
     // whitelistedDomains: ['localhost:4200'],
     // blacklistedRoutes: ['localhost:8180/auth/'],
@@ -26,14 +26,14 @@ export function jwtOptionsFactory(authService: AuthService) {
       jwtOptionsProvider: {
         provide: JWT_OPTIONS,
         useFactory: jwtOptionsFactory,
-        deps: [AuthService]
+        deps: [TokenService]
       }
     })
   ],
   providers: [
     AuthUserService,
     KeycloakClientService,
-    AuthService,
+    TokenService,
     AuthGuardService,
     // {
     //   provide: HTTP_INTERCEPTORS, TODO
