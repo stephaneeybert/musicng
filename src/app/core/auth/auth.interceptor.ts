@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   HttpRequest,
   HttpResponse,
@@ -30,6 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
   );
 
   constructor(
+    private router: Router,
     private tokenService: TokenService,
     private authService: AuthService
   ) { }
@@ -111,6 +113,11 @@ export class AuthInterceptor implements HttpInterceptor {
         'Pragma': 'no-cache'
       }
     });
+  }
+
+  private logout() {
+    this.authService.logout();
+    this.router.navigate(['login']);
   }
 
   // private handle401(request: HttpRequest<any>, next: HttpHandler, user: any) {
