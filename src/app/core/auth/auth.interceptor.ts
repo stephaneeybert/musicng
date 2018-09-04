@@ -110,7 +110,6 @@ export class AuthInterceptor implements HttpInterceptor {
         // The cache and pragma headers prevent IE from caching GET 200 requests
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache'
-        // 'X-Requested-With': 'XMLHttpRequest' TODO
       }
     });
   }
