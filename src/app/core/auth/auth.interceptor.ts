@@ -11,7 +11,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { tap, catchError, take, filter, switchMap } from 'rxjs/operators';
-import { throwError, Subject } from 'rxjs';
+import { empty, throwError, Subject } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { TokenService } from './token.service';
@@ -99,27 +99,28 @@ export class AuthInterceptor implements HttpInterceptor {
                   //     );
                   // }
 
-                  // return this.refreshToken()
-                  //   .pipe(
-                  //     switchMap(() => {
-                  //       request = this.addAuthenticationAccessToken(request);
-                  //       return next.handle(request);
-                  //     })
-                  //   )
-                  //   .pipe(
-                  //     catchError(
-                  //       (err) => {
-                  //         this.refreshTokenHasFailed = true;
-                  //         this.authService.logout();
-                  //         return Observable.throw(err);
-                  //       })
-                  //   );
+                  return this.refreshToken()
+                    .pipe(
+                      switchMap(() => {
+                        request = this.addAuthenticationAccessToken(request);
+                        return next.handle(request);
+                      })
+                    )
+                    .pipe(
+                      catchError(
+                        (refreshError) => {
+                          this.authService.logout();
+                          return empty();
+                          // return throwError(refreshError);
+                        })
+                    );
                 }
               }
             } else if (error.status === 498) {
               // The token expired
               this.logout();
             }
+            console.log('The response returned the error with the status ' + error.status + ' ' + error.statusText);
           }
           return throwError(error);
         }) as any
@@ -145,10 +146,11 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     } else {
       this.refreshTokenInProgress = true;
-
+      console.log('Sending a refresh token request...');
       return this.authService.refreshAccessToken()
         .pipe(
           tap(() => {
+            console.log('The refresh token has been received');
             this.refreshTokenInProgress = false;
             this.tokenRefreshedSource.next();
           })

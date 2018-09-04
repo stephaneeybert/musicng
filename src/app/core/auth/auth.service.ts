@@ -28,10 +28,15 @@ export class AuthService {
     return this.httpService.postWithHeadersInResponse(URI_LOGIN, credentials)
       .pipe(
         map((response: HttpResponse<any>) => {
-          const header = response.headers.get(this.tokenService.getAccessTokenHeaderName());
-          const token = this.tokenService.extractTokenFromHeaderValue(header);
-          console.log('The token from the response header: ' + token);
-          this.tokenService.setAccessTokenToLocalStorage(token);
+          const accessTokenHeader = response.headers.get(this.tokenService.getAccessTokenHeaderName());
+          const accessToken = this.tokenService.extractTokenFromHeaderValue(accessTokenHeader);
+          console.log('The access token from the response header: ' + accessToken);
+          this.tokenService.setAccessTokenToLocalStorage(accessToken);
+
+          const refreshTokenHeader = response.headers.get(this.tokenService.getRefreshTokenHeaderName());
+          const refreshToken = this.tokenService.extractTokenFromHeaderValue(refreshTokenHeader);
+          console.log('The refresh token from the response header: ' + refreshToken);
+          this.tokenService.setRefreshTokenToLocalStorage(refreshToken);
         })
       );
   }
@@ -44,6 +49,9 @@ export class AuthService {
     return this.httpService.postWithHeadersInResponse(URI_REFRESH_TOKEN, {}, httpHeaders)
       .pipe(
         map((response: HttpResponse<any>) => {
+          const header = response.headers.get(this.tokenService.getRefreshTokenHeaderName());
+          const token = this.tokenService.extractTokenFromHeaderValue(header);
+          console.log('Received the refresh token ' + token);
         })
       );
   }
