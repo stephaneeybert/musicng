@@ -24,6 +24,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private refreshTokenInProgress = false;
 
+  private cachedRequests: Array<HttpRequest<any>> = [];
+
   // Contains the current refresh token or is null if
   // the refresh is pending and no refresh token is currently available
   private refreshTokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(
@@ -112,6 +114,17 @@ export class AuthInterceptor implements HttpInterceptor {
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache'
       }
+    });
+  }
+
+  public collectFailedRequest(request): void {
+    this.cachedRequests.push(request);
+  }
+
+  public retryFailedRequests(): void {
+    this.cachedRequests.forEach(request => {
+      request = this.addAuthenticationAccessToken(request);
+      // TODO How to resend the request that was previously unauthorized ?
     });
   }
 
