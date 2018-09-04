@@ -4,7 +4,7 @@ import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http
 import { Router, Event, NavigationError } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { of } from 'rxjs';
 
 import * as StackTraceParser from 'error-stack-parser';
 
@@ -67,6 +67,6 @@ export class ErrorService {
 
 class MockHttpService {
     static post(error): Observable<any> {
-        return Observable.of(error);
+        return of(error);
     }
 }

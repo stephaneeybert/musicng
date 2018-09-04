@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { map } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { HttpService } from '../../core/service/http.service';
@@ -19,9 +20,11 @@ export class UserService {
 
   public getAll(): Observable<User[]> {
     return this.httpService.get(this.usersUrl)
-    .map((data: any) => {
-      return data._embedded.userResourceList as User[];
-    });
+      .pipe(
+        map((data: any) => {
+          return data._embedded.userResourceList as User[];
+        })
+      );
   }
 
   public get(id: number): Observable<User> {
@@ -53,9 +56,11 @@ export class UserService {
       return of([]);
     }
     this.httpService.get<User[]>(this.usersUrl + '?name=' + term)
-    .map((data: any) => {
-      return data._embedded.userResourceList as User[];
-    });
+      .pipe(
+        map((data: any) => {
+          return data._embedded.userResourceList as User[];
+        })
+      );
   }
 
 }

@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {Observable} from 'rxjs/Observable';
-import {Subject} from 'rxjs/Subject';
-import {of} from 'rxjs/observable/of';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { of } from 'rxjs';
 
 import {
   debounceTime, distinctUntilChanged, switchMap
 } from 'rxjs/operators';
 
-import {User} from '../user/user';
-import {UserService} from '../user/user.service';
+import { User } from '../user/user';
+import { UserService } from '../user/user.service';
 
 @Component({
   selector: 'app-user-search',
@@ -21,7 +21,7 @@ export class UserSearchComponent implements OnInit {
   users$: Observable<User[]>;
   private searchTerms = new Subject<string>();
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   // Push a search term into the observable stream.
   search(term: string): void {
