@@ -1,21 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { HttpResponse } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { HttpService } from '../service/http.service';
+import { AuthService } from '../auth/auth.service';
 
 const URI_LOGIN = environment.BASE_REST_URI + '/users/login'; // TODO declaré en doublon
 
 @Injectable()
 export class AuthUserService {
 
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService, private authService: AuthService) { }
 
   public login(username: string, password: string): Observable<any> {
     console.log('Sending the login credentials to obtain a token');
     const credentials = { 'email': username, 'password': password };
-    const url: string = URI_LOGIN;
-    return this.httpService.postWithHeadersInResponse(url, credentials);
+    return this.httpService.postWithHeadersInResponse(URI_LOGIN, credentials)
+      .pipe(
+        map((response: HttpResponse<any>) => {
+          const header = response.headers.get(this.authService.getHeaderName());
+          const token = this.authService.extractTokenFromHeader(header);
+          console.log('The token from the response header: ' + token);
+          this.authService.setJwtTokenToLocalStorage(token);
+        })
+      );
   }
 
   /* TODO
