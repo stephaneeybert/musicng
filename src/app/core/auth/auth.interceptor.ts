@@ -14,7 +14,7 @@ import { throwError } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { TokenService } from './token.service';
-import { AuthUserService } from '../auth/auth-user.service';
+import { AuthService } from '../auth/auth.service';
 
 const PATH_LOGIN = 'login';
 
@@ -31,7 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
     private authService: TokenService,
-    private authUserService: AuthUserService
+    private authUserService: AuthService
   ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

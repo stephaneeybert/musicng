@@ -13,7 +13,7 @@ const PATH_REFRESH_TOKEN = 'refresh-access-token';
 const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/users/' + PATH_REFRESH_TOKEN;
 
 @Injectable()
-export class AuthUserService {
+export class AuthService {
 
   constructor(private httpService: HttpService, private authService: TokenService) { }
 

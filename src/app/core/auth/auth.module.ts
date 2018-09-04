@@ -4,7 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { KeycloakInterceptor } from './keycloak.interceptor';
 import { AuthInterceptor } from './auth.interceptor';
-import { AuthUserService } from './auth-user.service';
+import { AuthService } from './auth.service';
 import { KeycloakClientService } from './keycloak-client.service';
 import { TokenService } from './token.service';
 import { AuthGuardService } from './auth-guard.service';
@@ -31,7 +31,7 @@ export function jwtOptionsFactory(authService: TokenService) {
     })
   ],
   providers: [
-    AuthUserService,
+    AuthService,
     KeycloakClientService,
     TokenService,
     AuthGuardService,
