@@ -19,7 +19,6 @@ import { AuthUserService } from '../auth/auth-user.service';
 const PATH_LOGIN = 'login';
 const URI_LOGIN = environment.BASE_REST_URI + '/users/' + PATH_LOGIN;
 const PATH_REFRESH_TOKEN = 'refresh-token';
-const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/users/' + PATH_REFRESH_TOKEN;
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
