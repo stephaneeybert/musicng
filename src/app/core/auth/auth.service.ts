@@ -12,8 +12,8 @@ const PATH_LOGIN = 'login';
 const URI_LOGIN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_LOGIN;
 const PATH_LOGOUT = 'logout';
 const URI_LOGOUT = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_LOGOUT;
-const PATH_REFRESH_TOKEN = 'token-refresh';
-const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_REFRESH_TOKEN;
+const PATH_TOKEN_REFRESH = 'token-refresh';
+const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_TOKEN_REFRESH;
 
 @Injectable()
 export class AuthService {
@@ -53,7 +53,7 @@ export class AuthService {
   }
 
   public isRefreshTokenRequest(request: HttpRequest<any>) {
-    return request.url.includes(PATH_REFRESH_TOKEN);
+    return request.url.includes(PATH_TOKEN_REFRESH);
   }
 
   public isSecuredUrl(request: HttpRequest<any>) {
