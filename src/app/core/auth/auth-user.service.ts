@@ -36,6 +36,23 @@ export class AuthUserService {
     return this.httpService.postWithHeadersInResponse(URI_REFRESH_TOKEN, refreshToken);
   }
 
+  public isLoginRequest(request: HttpRequest<any>) {
+    return request.url.includes(PATH_LOGIN);
+  }
+
+  public isRefreshTokenRequest(request: HttpRequest<any>) {
+    return request.url.includes(PATH_REFRESH_TOKEN);
+  }
+
+  public isSecuredUrl(request: HttpRequest<any>) {
+    if (request.url.match(URI_LOGIN) || request.url.match(URI_REFRESH_TOKEN)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+
   /* TODO
     public logout(): void {
       const url: string = environment.BASE_REST_URI + '/logout';

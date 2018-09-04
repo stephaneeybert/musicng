@@ -17,8 +17,6 @@ import { AuthService } from './auth.service';
 import { AuthUserService } from '../auth/auth-user.service';
 
 const PATH_LOGIN = 'login';
-const URI_LOGIN = environment.BASE_REST_URI + '/users/' + PATH_LOGIN;
-const PATH_REFRESH_TOKEN = 'refresh-token';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -37,18 +35,10 @@ export class AuthInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.isSecuredUrl(request)) {
+    if (this.authUserService.isSecuredUrl(request)) {
       return this.handleRequest(request, next);
     } else {
       return next.handle(request);
-    }
-  }
-
-  private isSecuredUrl(request: HttpRequest<any>) {
-    if (request.url.match(URI_LOGIN)) {
-      return false;
-    } else {
-      return true;
     }
   }
 
@@ -64,9 +54,9 @@ export class AuthInterceptor implements HttpInterceptor {
         catchError(response => {
           if (response instanceof HttpErrorResponse) {
             if (response.status === 401) {
-              if (request.url.includes(PATH_LOGIN)) {
+              if (this.authUserService.isLoginRequest(request)) {
                 return throwError(response);
-              } else if (request.url.includes(PATH_REFRESH_TOKEN)) {
+              } else if (this.authUserService.isRefreshTokenRequest(request)) {
                 // this.auth.logout(); // TODO
                 return throwError(response);
               } else {
