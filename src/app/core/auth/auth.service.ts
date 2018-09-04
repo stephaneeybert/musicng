@@ -10,6 +10,8 @@ import { TokenService } from '../auth/token.service';
 const PATH_AUTH = 'auth';
 const PATH_LOGIN = 'login';
 const URI_LOGIN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_LOGIN;
+const PATH_LOGOUT = 'logout';
+const URI_LOGOUT = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_LOGOUT;
 const PATH_REFRESH_TOKEN = 'token-refresh';
 const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_REFRESH_TOKEN;
 
@@ -57,14 +59,16 @@ export class AuthService {
     }
   }
 
+  public logout(): Observable<any> {
+    return this.httpService.postWithHeadersInResponse(URI_LOGOUT, {})
+      .pipe(
+        map((response: HttpResponse<any>) => {
+        })
+      );
+  }
+
 
   /* TODO
-    public logout(): void {
-      const url: string = environment.BASE_REST_URI + '/logout';
-      this.httpClient.post(url, ussername);
-      window.location.href = KeycloakClientService.auth.logoutUrl;
-    }
-
     public hasRole(role: string): boolean {
       return KeycloakClientService.auth.authz.tokenParsed.realm_access.roles.indexOf(role) > -1;
     }
