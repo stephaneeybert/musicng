@@ -9,6 +9,8 @@ import { AuthService } from '../auth/auth.service';
 
 const PATH_LOGIN = 'login';
 const URI_LOGIN = environment.BASE_REST_URI + '/users/' + PATH_LOGIN; // TODO declaré en doublon
+const PATH_REFRESH_TOKEN = 'refresh-access-token';
+const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/users/' + PATH_REFRESH_TOKEN;
 
 @Injectable()
 export class AuthUserService {
@@ -27,6 +29,11 @@ export class AuthUserService {
           this.authService.setJwtTokenToLocalStorage(token);
         })
       );
+  }
+
+  public refreshAccessToken(refreshToken): Observable<any> {
+    console.log('Sending the refresh token to obtain a new access token');
+    return this.httpService.postWithHeadersInResponse(URI_REFRESH_TOKEN, refreshToken);
   }
 
   /* TODO
