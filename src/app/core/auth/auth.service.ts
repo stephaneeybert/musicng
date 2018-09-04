@@ -33,7 +33,11 @@ export class AuthService {
 
   public refreshAccessToken(refreshToken): Observable<any> {
     console.log('Sending the refresh token to obtain a new access token');
-    return this.httpService.postWithHeadersInResponse(URI_REFRESH_TOKEN, refreshToken);
+    return this.httpService.postWithHeadersInResponse(URI_REFRESH_TOKEN, refreshToken)
+    .pipe(
+      map((response: HttpResponse<any>) => {
+      })
+  );
   }
 
   public isLoginRequest(request: HttpRequest<any>) {
