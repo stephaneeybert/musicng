@@ -29,14 +29,22 @@ export class AuthService {
       .pipe(
         map((response: HttpResponse<any>) => {
           const accessTokenHeader = response.headers.get(this.tokenService.getAccessTokenHeaderName());
-          const accessToken = this.tokenService.extractTokenFromHeaderValue(accessTokenHeader);
-          console.log('The access token from the response header: ' + accessToken);
-          this.tokenService.setAccessTokenToLocalStorage(accessToken);
+          if (null != accessTokenHeader) {
+            const accessToken = this.tokenService.extractTokenFromHeaderValue(accessTokenHeader);
+            if (null != accessToken) {
+              console.log('The access token from the response header: ' + accessToken);
+              this.tokenService.setAccessTokenToLocalStorage(accessToken);
+            }
+          }
 
           const refreshTokenHeader = response.headers.get(this.tokenService.getRefreshTokenHeaderName());
-          const refreshToken = this.tokenService.extractTokenFromHeaderValue(refreshTokenHeader);
-          console.log('The refresh token from the response header: ' + refreshToken);
-          this.tokenService.setRefreshTokenToLocalStorage(refreshToken);
+          if (null != refreshTokenHeader) {
+            const refreshToken = this.tokenService.extractTokenFromHeaderValue(refreshTokenHeader);
+            if (null != refreshToken) {
+              console.log('The refresh token from the response header: ' + refreshToken);
+              this.tokenService.setRefreshTokenToLocalStorage(refreshToken);
+            }
+          }
         })
       );
   }
