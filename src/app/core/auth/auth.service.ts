@@ -7,10 +7,11 @@ import { environment } from '../../../environments/environment';
 import { HttpService } from '../service/http.service';
 import { TokenService } from '../auth/token.service';
 
+const PATH_AUTH = 'auth';
 const PATH_LOGIN = 'login';
-const URI_LOGIN = environment.BASE_REST_URI + '/users/' + PATH_LOGIN; // TODO declaré en doublon
-const PATH_REFRESH_TOKEN = 'refresh-access-token';
-const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/users/' + PATH_REFRESH_TOKEN;
+const URI_LOGIN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_LOGIN; // TODO declaré en doublon
+const PATH_REFRESH_TOKEN = 'token-refresh';
+const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_REFRESH_TOKEN;
 
 @Injectable()
 export class AuthService {
@@ -23,10 +24,10 @@ export class AuthService {
     return this.httpService.postWithHeadersInResponse(URI_LOGIN, credentials)
       .pipe(
         map((response: HttpResponse<any>) => {
-          const header = response.headers.get(this.authService.getHeaderName());
-          const token = this.authService.extractTokenFromHeader(header);
+          const header = response.headers.get(this.authService.getAccessTokenHeaderName());
+          const token = this.authService.extractTokenFromHeaderValue(header);
           console.log('The token from the response header: ' + token);
-          this.authService.setJwtTokenToLocalStorage(token);
+          this.authService.setAccessTokenToLocalStorage(token);
         })
       );
   }

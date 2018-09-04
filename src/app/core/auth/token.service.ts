@@ -1,12 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-
 // See https://github.com/auth0/angular2-jwt
 
-const JWT_TOKEN_NAME = 'token';
-const AUTH_HEADER_NAME = 'Authorization';
-const AUTH_HEADER_PREFIX = 'Bearer';
+const ACCESS_TOKEN_NAME = 'accessToken';
+const REFRESH_TOKEN_NAME = 'refreshToken';
+const ACCESS_TOKEN_HEADER_NAME = 'Authorization';
+const AUTH_BEARER_HEADER = 'Bearer';
+const REFRESH_HEADER_NAME = 'TokenRefresh';
 
 @Injectable()
 export class TokenService {
@@ -17,50 +18,55 @@ export class TokenService {
   // constructor(private jwtHelperService: JwtHelperService) {}
 
   public isAuthenticated(): boolean {
-    const token = this.getJwtTokenFromLocalStorage();
+    const token = this.getAccessTokenFromLocalStorage();
     return (token && !this.jwtHelperService.isTokenExpired(token));
   }
 
-  public getTokenExpirationDate() {
-    const token = this.getJwtTokenFromLocalStorage();
+  public getAccessTokenExpirationDate() {
+    const token = this.getAccessTokenFromLocalStorage();
     return this.jwtHelperService.getTokenExpirationDate(token);
   }
 
-  public getDecodedToken() {
-    const token = this.getJwtTokenFromLocalStorage();
+  public getDecodedAccessToken() {
+    const token = this.getAccessTokenFromLocalStorage();
     return this.jwtHelperService.decodeToken(token);
   }
 
-  public getJwtTokenFromLocalStorage(): string {
-    return localStorage.getItem(JWT_TOKEN_NAME);
+  public getAccessTokenFromLocalStorage(): string {
+    return localStorage.getItem(ACCESS_TOKEN_NAME);
   }
 
-  public setJwtTokenToLocalStorage(token: string): void {
-    localStorage.setItem(JWT_TOKEN_NAME, token);
+  public setAccessTokenToLocalStorage(token: string): void {
+    localStorage.setItem(ACCESS_TOKEN_NAME, token);
   }
 
-  public extractTokenFromHeader(header: string): string {
-    if (header.startsWith(AUTH_HEADER_PREFIX)) {
+  public getRefreshTokenFromLocalStorage(): string {
+    return localStorage.getItem(REFRESH_TOKEN_NAME);
+  }
+
+  public setRefreshTokenToLocalStorage(token: string): void {
+    localStorage.setItem(REFRESH_TOKEN_NAME, token);
+  }
+
+  public extractTokenFromHeaderValue(header: string): string {
+    if (header.startsWith(AUTH_BEARER_HEADER)) {
       return header.substring(7, header.length);
     } else {
       return null;
     }
   }
 
-  private buildHeader(token: string): string {
-    return AUTH_HEADER_PREFIX + ' ' + this.getJwtTokenFromLocalStorage();
+  // Both access and refresh tokens have the same prefix
+  public buildTokenValue(): string {
+    return AUTH_BEARER_HEADER + ' ' + this.getAccessTokenFromLocalStorage();
   }
 
-  public buildTokenHeader(): string {
-    return this.buildHeader(this.getJwtTokenFromLocalStorage());
+  public getAccessTokenHeaderName() {
+    return ACCESS_TOKEN_HEADER_NAME;
   }
 
-  public getHeaderName() {
-    return AUTH_HEADER_NAME;
-  }
-
-  public getJwtTokenName(): string {
-    return JWT_TOKEN_NAME;
+  public getRefreshTokenHeaderName() {
+    return REFRESH_HEADER_NAME;
   }
 
 }

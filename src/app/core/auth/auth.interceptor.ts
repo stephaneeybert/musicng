@@ -43,7 +43,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private handleRequest(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    request = this.addAuthenticationToken(request);
+    request = this.addAuthenticationAccessToken(request);
     return next.handle(request)
       .pipe(
         tap((response: HttpEvent<any>) => {
@@ -98,15 +98,15 @@ export class AuthInterceptor implements HttpInterceptor {
       );
   }
 
-  private addAuthenticationToken(request): HttpRequest<any> {
-    if (!this.authService.getJwtTokenFromLocalStorage()) {
+  private addAuthenticationAccessToken(request): HttpRequest<any> {
+    if (!this.authService.getAccessTokenFromLocalStorage()) {
       return request;
     }
 
     // The origincatchErroral request is immutable and cannot be changed
     return request.clone({
       setHeaders: {
-        'Authorization': this.authService.buildTokenHeader(),
+        'Authorization': this.authService.buildTokenValue(),
         // The cache and pragma headers prevent IE from caching GET 200 requests
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache'

@@ -14,7 +14,7 @@ export function jwtOptionsFactory(authService: TokenService) {
     // whitelistedDomains: ['localhost:4200'],
     // blacklistedRoutes: ['localhost:8180/auth/'],
     tokenGetter: () => {
-      return authService.getJwtTokenFromLocalStorage();
+      return authService.getAccessTokenFromLocalStorage();
     }
   };
 }
