@@ -56,9 +56,12 @@ export class TokenService {
     }
   }
 
-  // Both access and refresh tokens have the same prefix
-  public buildTokenValue(): string {
+  public buildAccessTokenValue(): string {
     return AUTH_BEARER_HEADER + ' ' + this.getAccessTokenFromLocalStorage();
+  }
+
+  public buildRefreshTokenValue(): string {
+    return AUTH_BEARER_HEADER + ' ' + this.getRefreshTokenFromLocalStorage();
   }
 
   public getAccessTokenHeaderName() {
