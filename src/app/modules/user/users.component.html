@@ -6,8 +6,8 @@
 </div>
 <ul class="users">
 	<li *ngFor="let user of users" (click)="onSelect(user)"><a
-		routerLink="/detail/{{user.id}}"> <span class="badge">{{user.id}}</span>
-			{{user.name}}
+		routerLink="/user/{{user.id}}"> <span class="badge">{{user.id}}</span>
+			{{user.email}}
 	</a>
 		<button class="delete" title="delete user" (click)="delete(user)">x</button>
 	</li>
