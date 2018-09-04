@@ -18,7 +18,9 @@ const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PA
 @Injectable()
 export class AuthService {
 
-  constructor(private httpService: HttpService, private authService: TokenService) { }
+  constructor(
+    private httpService: HttpService,
+    private tokenService: TokenService) { }
 
   public login(username: string, password: string): Observable<any> {
     console.log('Sending the login credentials to obtain a token');
