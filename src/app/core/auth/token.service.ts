@@ -7,7 +7,7 @@ const ACCESS_TOKEN_NAME = 'accessToken';
 const REFRESH_TOKEN_NAME = 'refreshToken';
 const ACCESS_TOKEN_HEADER_NAME = 'Authorization';
 const AUTH_BEARER_HEADER = 'Bearer';
-const REFRESH_HEADER_NAME = 'TokenRefresh';
+const REFRESH_TOKEN_HEADER_NAME = 'TokenRefresh';
 
 @Injectable()
 export class TokenService {
@@ -69,7 +69,7 @@ export class TokenService {
   }
 
   public getRefreshTokenHeaderName() {
-    return REFRESH_HEADER_NAME;
+    return REFRESH_TOKEN_HEADER_NAME;
   }
 
 }
