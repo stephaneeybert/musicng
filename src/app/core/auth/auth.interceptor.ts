@@ -30,12 +30,12 @@ export class AuthInterceptor implements HttpInterceptor {
   );
 
   constructor(
-    private authService: TokenService,
-    private authUserService: AuthService
+    private tokenService: TokenService,
+    private authService: AuthService
   ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.authUserService.isSecuredUrl(request)) {
+    if (this.authService.isSecuredUrl(request)) {
       return this.handleRequest(request, next);
     } else {
       return next.handle(request);
@@ -53,9 +53,9 @@ export class AuthInterceptor implements HttpInterceptor {
         catchError(response => {
           if (response instanceof HttpErrorResponse) {
             if (response.status === 401) {
-              if (this.authUserService.isLoginRequest(request)) {
+              if (this.authService.isLoginRequest(request)) {
                 return throwError(response);
-              } else if (this.authUserService.isRefreshTokenRequest(request)) {
+              } else if (this.authService.isRefreshTokenRequest(request)) {
                 // this.auth.logout(); // TODO
                 return throwError(response);
               } else {
@@ -98,14 +98,14 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private addAuthenticationAccessToken(request): HttpRequest<any> {
-    if (!this.authService.getAccessTokenFromLocalStorage()) {
+    if (!this.tokenService.getAccessTokenFromLocalStorage()) {
       return request;
     }
 
     // The origincatchErroral request is immutable and cannot be changed
     return request.clone({
       setHeaders: {
-        'Authorization': this.authService.buildTokenValue(),
+        'Authorization': this.tokenService.buildTokenValue(),
         // The cache and pragma headers prevent IE from caching GET 200 requests
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache'
