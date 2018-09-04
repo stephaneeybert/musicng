@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
@@ -28,17 +28,20 @@ export class AuthService {
     return this.httpService.postWithHeadersInResponse(URI_LOGIN, credentials)
       .pipe(
         map((response: HttpResponse<any>) => {
-          const header = response.headers.get(this.authService.getAccessTokenHeaderName());
-          const token = this.authService.extractTokenFromHeaderValue(header);
+          const header = response.headers.get(this.tokenService.getAccessTokenHeaderName());
+          const token = this.tokenService.extractTokenFromHeaderValue(header);
           console.log('The token from the response header: ' + token);
-          this.authService.setAccessTokenToLocalStorage(token);
+          this.tokenService.setAccessTokenToLocalStorage(token);
         })
       );
   }
 
-  public refreshAccessToken(refreshToken): Observable<any> {
+  public refreshAccessToken(): Observable<any> {
     console.log('Sending the refresh token to obtain a new access token');
-    return this.httpService.postWithHeadersInResponse(URI_REFRESH_TOKEN, refreshToken)
+    const refreshHeaderName: string = this.tokenService.getRefreshTokenHeaderName();
+    const refreshToken: string = this.tokenService.buildRefreshTokenValue();
+    const httpHeaders: HttpHeaders = this.httpService.buildHeader(null);
+    return this.httpService.postWithHeadersInResponse(URI_REFRESH_TOKEN, {}, httpHeaders)
       .pipe(
         map((response: HttpResponse<any>) => {
         })
@@ -67,6 +70,22 @@ export class AuthService {
         map((response: HttpResponse<any>) => {
         })
       );
+  }
+
+  public rememberMe(): boolean {
+    return true; // TODO Implement the remember me
+  }
+
+  public cloneRequest(request: HttpRequest<any>): HttpRequest<any> {
+    const accessTokenHeaderName: string = this.tokenService.getAccessTokenHeaderName();
+    return request.clone({
+      setHeaders: {
+        [accessTokenHeaderName]: this.tokenService.buildAccessTokenValue(),
+        // The cache and pragma headers prevent IE from caching GET 200 requests
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      }
+    });
   }
 
 
