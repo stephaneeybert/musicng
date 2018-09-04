@@ -7,7 +7,8 @@ import { environment } from '../../../environments/environment';
 import { HttpService } from '../service/http.service';
 import { AuthService } from '../auth/auth.service';
 
-const URI_LOGIN = environment.BASE_REST_URI + '/users/login'; // TODO declaré en doublon
+const PATH_LOGIN = 'login';
+const URI_LOGIN = environment.BASE_REST_URI + '/users/' + PATH_LOGIN; // TODO declaré en doublon
 
 @Injectable()
 export class AuthUserService {
