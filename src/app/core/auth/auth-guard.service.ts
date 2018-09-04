@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Router, CanActivate, CanLoad, ActivatedRouteSnapshot} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { Router, CanActivate, CanLoad, ActivatedRouteSnapshot } from '@angular/router';
 
-import {TokenService} from './token.service';
+import { TokenService } from './token.service';
 
 @Injectable()
 export class AuthGuardService implements CanActivate, CanLoad {
 
-  constructor(private router: Router, private authService: TokenService) {}
+  constructor(private router: Router, private authService: TokenService) { }
 
   // Check if the user can navigate to a route
   canActivate(route: ActivatedRouteSnapshot): boolean {

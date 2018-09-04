@@ -1,13 +1,13 @@
-import {NgModule} from '@angular/core';
-import {JwtModule, JWT_OPTIONS} from '@auth0/angular-jwt';
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import {KeycloakInterceptor} from './keycloak.interceptor';
-import {AuthInterceptor} from './auth.interceptor';
-import {AuthUserService} from './auth-user.service';
-import {KeycloakClientService} from './keycloak-client.service';
-import {TokenService} from './token.service';
-import {AuthGuardService} from './auth-guard.service';
+import { KeycloakInterceptor } from './keycloak.interceptor';
+import { AuthInterceptor } from './auth.interceptor';
+import { AuthUserService } from './auth-user.service';
+import { KeycloakClientService } from './keycloak-client.service';
+import { TokenService } from './token.service';
+import { AuthGuardService } from './auth-guard.service';
 
 export function jwtOptionsFactory(authService: TokenService) {
   return {

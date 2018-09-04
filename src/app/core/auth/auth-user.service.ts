@@ -45,7 +45,7 @@ export class AuthUserService {
   }
 
   public isSecuredUrl(request: HttpRequest<any>) {
-    if (request.url.match(URI_LOGIN) || request.url.match(URI_REFRESH_TOKEN)) {
+    if (request.url.match(URI_LOGIN) || request.url.match(URI_REFRESH_TOKEN)) {
       return false;
     } else {
       return true;
