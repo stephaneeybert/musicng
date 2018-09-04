@@ -9,7 +9,7 @@ import { TokenService } from '../auth/token.service';
 
 const PATH_AUTH = 'auth';
 const PATH_LOGIN = 'login';
-const URI_LOGIN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_LOGIN; // TODO declaré en doublon
+const URI_LOGIN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_LOGIN;
 const PATH_REFRESH_TOKEN = 'token-refresh';
 const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_REFRESH_TOKEN;
 
