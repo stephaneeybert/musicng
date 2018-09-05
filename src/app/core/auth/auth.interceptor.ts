@@ -46,10 +46,6 @@ export class AuthInterceptor implements HttpInterceptor {
     }
   }
 
-  private isAuthError(error: any): boolean {
-    return error instanceof HttpErrorResponse && error.status === 401;
-  }
-
   private handleRequest(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     request = this.addAuthenticationAccessToken(request);
     return next.handle(request)
