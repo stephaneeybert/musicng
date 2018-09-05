@@ -149,7 +149,7 @@ export class AuthInterceptor implements HttpInterceptor {
       return this.authService.refreshAccessToken()
         .pipe(
           tap(() => {
-            console.log('The refresh token has been received');
+            console.log('The access token has been refreshed by the interceptor');
             this.refreshTokenInProgress = false;
             this.tokenRefreshedSource.next();
           })

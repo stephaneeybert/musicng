@@ -43,6 +43,7 @@ export class AuthService {
         .pipe(
           map(() => {
             console.log('The access token has been refreshed');
+            // TODO How to resend this unauthorized request ?
           })
         );
       }
