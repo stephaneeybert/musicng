@@ -9,12 +9,12 @@ import { KeycloakClientService } from './keycloak-client.service';
 import { TokenService } from './token.service';
 import { AuthGuardService } from './auth-guard.service';
 
-export function jwtOptionsFactory(authService: TokenService) {
+export function jwtOptionsFactory(tokenService: TokenService) {
   return {
     // whitelistedDomains: ['localhost:4200'],
     // blacklistedRoutes: ['localhost:8180/auth/'],
     tokenGetter: () => {
-      return authService.getAccessTokenFromLocalStorage();
+      return tokenService.getAccessTokenFromLocalStorage();
     }
   };
 }
