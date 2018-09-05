@@ -110,7 +110,7 @@ export class AuthInterceptor implements HttpInterceptor {
                         (refreshError) => {
                           this.authService.logout();
                           return empty();
-                          // return throwError(refreshError);
+                          // return throwError(refreshError); TODO
                         })
                     );
                 }
