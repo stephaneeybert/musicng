@@ -28,25 +28,37 @@ export class AuthService {
     return this.httpService.postWithHeadersInResponse(URI_LOGIN, credentials)
       .pipe(
         map((response: HttpResponse<any>) => {
-          const accessTokenHeader = response.headers.get(this.tokenService.getAccessTokenHeaderName());
-          if (null != accessTokenHeader) {
-            const accessToken = this.tokenService.extractTokenFromHeaderValue(accessTokenHeader);
-            if (null != accessToken) {
-              console.log('The access token from the response header: ' + accessToken);
-              this.tokenService.setAccessTokenToLocalStorage(accessToken);
-            }
-          }
-
-          const refreshTokenHeader = response.headers.get(this.tokenService.getRefreshTokenHeaderName());
-          if (null != refreshTokenHeader) {
-            const refreshToken = this.tokenService.extractTokenFromHeaderValue(refreshTokenHeader);
-            if (null != refreshToken) {
-              console.log('The refresh token from the response header: ' + refreshToken);
-              this.tokenService.setRefreshTokenToLocalStorage(refreshToken);
-            }
-          }
+          this.storeTokensInLocalStorage(response);
         })
       );
+  }
+
+  private storeTokensInLocalStorage(response: HttpResponse<any>): void {
+    this.storeAccessTokenInLocalStorage(response);
+    this.storeRefreshTokenInLocalStorage(response);
+  }
+
+  private storeAccessTokenInLocalStorage(response: HttpResponse<any>): void {
+    const accessTokenHeader = response.headers.get(this.tokenService.getAccessTokenHeaderName());
+    if (null != accessTokenHeader) {
+      const accessToken = this.tokenService.extractTokenFromHeaderValue(accessTokenHeader);
+      if (null != accessToken) {
+        console.log('Storing the access token from the response header: ' + accessToken);
+        this.tokenService.setAccessTokenToLocalStorage(accessToken);
+      }
+    }
+  }
+
+  private storeRefreshTokenInLocalStorage(response: HttpResponse<any>): void {
+      const name = this.tokenService.getRefreshTokenHeaderName();
+    const refreshTokenHeader = response.headers.get(this.tokenService.getRefreshTokenHeaderName());
+    if (null != refreshTokenHeader) {
+      const refreshToken = this.tokenService.extractTokenFromHeaderValue(refreshTokenHeader);
+      if (null != refreshToken) {
+        console.log('Storing the refresh token from the response header: ' + refreshToken);
+        this.tokenService.setRefreshTokenToLocalStorage(refreshToken);
+      }
+    }
   }
 
   public refreshAccessToken(): Observable<any> {
@@ -54,12 +66,12 @@ export class AuthService {
     const refreshHeaderName: string = this.tokenService.getRefreshTokenHeaderName();
     const refreshToken: string = this.tokenService.buildRefreshTokenValue();
     const httpHeaders: HttpHeaders = this.httpService.buildHeader(null);
+    httpHeaders.set(refreshHeaderName, refreshToken);
     return this.httpService.postWithHeadersInResponse(URI_REFRESH_TOKEN, {}, httpHeaders)
       .pipe(
         map((response: HttpResponse<any>) => {
-          const header = response.headers.get(this.tokenService.getRefreshTokenHeaderName());
-          const token = this.tokenService.extractTokenFromHeaderValue(header);
-          console.log('Received the refresh token ' + token);
+          console.log('Got a response from the refresh token request');
+          this.storeTokensInLocalStorage(response);
         })
       );
   }
@@ -92,7 +104,7 @@ export class AuthService {
     return true; // TODO Implement the remember me
   }
 
-  public cloneRequest(request: HttpRequest<any>): HttpRequest<any> {
+  public addAccessTokenToClonedRequest(request: HttpRequest<any>): HttpRequest<any> {
     const accessTokenHeaderName: string = this.tokenService.getAccessTokenHeaderName();
     return request.clone({
       setHeaders: {
