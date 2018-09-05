@@ -56,7 +56,9 @@ export class AuthInterceptor implements HttpInterceptor {
         }),
         catchError(error => {
           if (error instanceof HttpErrorResponse) {
+            console.log('The response returned an error');
             if (error.status === 401) {
+              console.log('The response returned a 401 error');
               if (this.authService.isLoginRequest(request)) {
                 return throwError(error);
               } else if (this.authService.isRefreshTokenRequest(request)) {
@@ -95,6 +97,7 @@ export class AuthInterceptor implements HttpInterceptor {
                   //     );
                   // }
 
+                  console.log('Remember me...');
                   return this.refreshToken()
                     .pipe(
                       switchMap(() => {
