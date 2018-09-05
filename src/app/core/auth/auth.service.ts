@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { HttpService } from '../service/http.service';
@@ -25,7 +25,9 @@ export class AuthService {
   public login(username: string, password: string): Observable<any> {
     console.log('Sending the login credentials to obtain a token');
     const credentials = { 'email': username, 'password': password };
-    return this.httpService.postWithHeadersInResponse(URI_LOGIN, credentials)
+    let httpHeaders: HttpHeaders = this.httpService.buildHeader(null);
+    httpHeaders = this.addClientIdHeader(httpHeaders);
+    return this.httpService.postWithHeadersInResponse(URI_LOGIN, credentials, httpHeaders)
       .pipe(
         map((response: HttpResponse<any>) => {
           this.storeTokensInLocalStorage(response);
@@ -40,12 +42,12 @@ export class AuthService {
     } else {
       if (this.tokenService.refreshTokenIsNotExpired()) {
         this.refreshAccessToken()
-        .pipe(
-          map(() => {
-            console.log('The access token has been refreshed');
-            // TODO How to resend this unauthorized request ?
-          })
-        );
+          .pipe(
+            map((response: HttpResponse<any>) => {
+              console.log('The access token has been refreshed');
+              // TODO How to resend this unauthorized request ?
+            })
+          );
       }
     }
     return isAuthenticated;
@@ -68,7 +70,7 @@ export class AuthService {
   }
 
   private storeRefreshTokenInLocalStorage(response: HttpResponse<any>): void {
-      const name = this.tokenService.getRefreshTokenHeaderName();
+    const name = this.tokenService.getRefreshTokenHeaderName();
     const refreshTokenHeader = response.headers.get(this.tokenService.getRefreshTokenHeaderName());
     if (null != refreshTokenHeader) {
       const refreshToken = this.tokenService.extractTokenFromHeaderValue(refreshTokenHeader);
@@ -79,15 +81,29 @@ export class AuthService {
     }
   }
 
-  public refreshAccessToken(): Observable<any> {
-    console.log('Sending the refresh token to obtain a new access token');
+  private addRefreshTokenHeader(httpHeaders: HttpHeaders): HttpHeaders {
     const refreshHeaderName: string = this.tokenService.getRefreshTokenHeaderName();
     const refreshToken: string = this.tokenService.buildRefreshTokenValue();
-    const httpHeaders: HttpHeaders = this.httpService.buildHeader(null);
-    httpHeaders.set(refreshHeaderName, refreshToken);
+    httpHeaders = httpHeaders.append(refreshHeaderName, refreshToken);
+    return httpHeaders;
+  }
+
+  private addClientIdHeader(httpHeaders: HttpHeaders): HttpHeaders {
+    const clientIdHeaderName: string = this.tokenService.getClientIdHeaderName();
+    const clientId: string = environment.CLIENT_ID;
+    httpHeaders = httpHeaders.append(clientIdHeaderName, clientId);
+    return httpHeaders;
+  }
+
+  public refreshAccessToken(): Observable<any> {
+    console.log('Sending the refresh token to obtain a new access token');
+    let httpHeaders: HttpHeaders = this.httpService.buildHeader(null);
+    httpHeaders = this.addRefreshTokenHeader(httpHeaders);
+    httpHeaders = this.addClientIdHeader(httpHeaders);
+
     return this.httpService.postWithHeadersInResponse(URI_REFRESH_TOKEN, {}, httpHeaders)
       .pipe(
-        map((response: HttpResponse<any>) => {
+        tap((response: HttpResponse<any>) => {
           console.log('Got a response from the refresh token request');
           this.storeTokensInLocalStorage(response);
         })
