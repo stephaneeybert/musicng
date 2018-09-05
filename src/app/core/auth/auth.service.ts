@@ -33,6 +33,23 @@ export class AuthService {
       );
   }
 
+  public isAuthenticated(): boolean {
+    let isAuthenticated = false;
+    if (this.tokenService.accessTokenIsNotExpired()) {
+      isAuthenticated = true;
+    } else {
+      if (this.tokenService.refreshTokenIsNotExpired()) {
+        this.refreshAccessToken()
+        .pipe(
+          map(() => {
+            console.log('The access token has been refreshed');
+          })
+        );
+      }
+    }
+    return isAuthenticated;
+  }
+
   private storeTokensInLocalStorage(response: HttpResponse<any>): void {
     this.storeAccessTokenInLocalStorage(response);
     this.storeRefreshTokenInLocalStorage(response);
