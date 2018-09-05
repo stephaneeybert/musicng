@@ -132,7 +132,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     // The original request is immutable and cannot be changed
-    return this.authService.cloneRequest(request);
+    return this.authService.addAccessTokenToClonedRequest(request);
   }
 
   private refreshToken() {
