@@ -47,7 +47,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private handleRequest(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    request = this.addAuthenticationAccessToken(request);
+    request = this.addAccessToken(request);
     return next.handle(request)
       .pipe(
         tap((response: HttpEvent<any>) => {
@@ -98,7 +98,7 @@ export class AuthInterceptor implements HttpInterceptor {
                   return this.refreshToken()
                     .pipe(
                       switchMap(() => {
-                        request = this.addAuthenticationAccessToken(request);
+                        request = this.addAccessToken(request);
                         return next.handle(request);
                       })
                     )
@@ -123,7 +123,7 @@ export class AuthInterceptor implements HttpInterceptor {
       );
   }
 
-  private addAuthenticationAccessToken(request): HttpRequest<any> {
+  private addAccessToken(request): HttpRequest<any> {
     if (!this.tokenService.getAccessTokenFromLocalStorage()) {
       return request;
     }
