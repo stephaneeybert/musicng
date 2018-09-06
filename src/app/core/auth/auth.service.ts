@@ -118,6 +118,7 @@ export class AuthService {
           // Refresing the refresh token would be like giving a never expiring refresh token
           this.storeAccessTokenInLocalStorage(response);
           console.log('Stored the refreshed access token in the local storage');
+          return true;
         })
       );
   }
