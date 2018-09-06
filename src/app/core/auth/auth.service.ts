@@ -43,7 +43,6 @@ export class AuthService {
         console.log('The refresh token expired.');
         return of(false);
       } else {
-        // TODO https://stackoverflow.com/questions/52182600/securing-a-route-to-use-a-refresh-token/52188069
         return this.refreshAccessToken()
         .pipe(
           map(response => {
