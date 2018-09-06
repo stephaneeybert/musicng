@@ -105,7 +105,7 @@ export class AuthService {
 
     return this.httpService.postWithHeadersInResponse(URI_REFRESH_TOKEN, {}, httpHeaders)
       .pipe(
-        tap((response: HttpResponse<any>) => {
+        map((response: HttpResponse<any>) => {
           console.log('Got a response from the refresh token request');
           this.storeTokensInLocalStorage(response);
         })
