@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { map, tap, catchError } from 'rxjs/operators';
-import { empty } from 'rxjs';
+import { of, empty } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { HttpService } from '../service/http.service';
@@ -36,29 +36,31 @@ export class AuthService {
       );
   }
 
-  public isAuthenticated(): boolean {
-    let isAuthenticated = true;
+  public isAuthenticated(): Observable<boolean> {
     if (this.tokenService.accessTokenExpired()) {
-      isAuthenticated = false;
+      console.log('The access token expired.');
       if (this.tokenService.refreshTokenExpired()) {
-        isAuthenticated = false;
+        console.log('The refresh token expired.');
+        return of(false);
       } else {
         // TODO https://stackoverflow.com/questions/52182600/securing-a-route-to-use-a-refresh-token/52188069
-        this.refreshAccessToken()
-          .pipe(
-            map((response: HttpResponse<any>) => {
+        return this.refreshAccessToken()
+        .pipe(
+          map(response => {
+            if (response) {
               console.log('The access token has been refreshed');
-              // TODO How to resend this unauthorized request ?
-            }),
-            catchError((error, caught) => {
-              console.log('The access token has not been refresh');
-              console.log(error);
-              return empty();
-            })
-          );
+              return true;
+            }
+          }),
+          catchError((error, caught) => {
+            console.log('The access token could not be refreshed');
+            console.log(error);
+            return of(false);
+          })
+        );
       }
     }
-    return isAuthenticated;
+    return of(true);
   }
 
   private storeTokensInLocalStorage(response: HttpResponse<any>): void {
@@ -112,8 +114,10 @@ export class AuthService {
     return this.httpService.postWithHeadersInResponse(URI_REFRESH_TOKEN, {}, httpHeaders)
       .pipe(
         map((response: HttpResponse<any>) => {
-          console.log('Got a response from the refresh token request');
-          this.storeTokensInLocalStorage(response);
+          // Only the access token is refreshed
+          // Refresing the refresh token would be like giving a never expiring refresh token
+          this.storeAccessTokenInLocalStorage(response);
+          console.log('Stored the refreshed access token in the local storage');
         })
       );
   }
