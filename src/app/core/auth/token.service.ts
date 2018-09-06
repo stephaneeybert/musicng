@@ -18,14 +18,14 @@ export class TokenService {
   constructor() { }
   // constructor(private jwtHelperService: JwtHelperService) {}
 
-  public accessTokenIsNotExpired(): boolean {
+  public accessTokenExpired(): boolean {
     const token = this.getAccessTokenFromLocalStorage();
-    return (token && !this.jwtHelperService.isTokenExpired(token));
+    return (!token || this.jwtHelperService.isTokenExpired(token));
   }
 
-  public refreshTokenIsNotExpired(): boolean {
+  public refreshTokenExpired(): boolean {
     const token = this.getRefreshTokenFromLocalStorage();
-    return (token && !this.jwtHelperService.isTokenExpired(token));
+    return (!token || this.jwtHelperService.isTokenExpired(token));
   }
 
   public getAccessTokenExpirationDate() {

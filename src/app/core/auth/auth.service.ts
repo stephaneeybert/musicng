@@ -36,11 +36,13 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
-    let isAuthenticated = false;
-    if (this.tokenService.accessTokenIsNotExpired()) {
-      isAuthenticated = true;
+    let isAuthenticated = true;
+    if (this.tokenService.accessTokenExpired()) {
+      isAuthenticated = false;
     } else {
-      if (this.tokenService.refreshTokenIsNotExpired()) {
+      if (this.tokenService.refreshTokenExpired()) {
+        isAuthenticated = false;
+        // TODO https://stackoverflow.com/questions/52182600/securing-a-route-to-use-a-refresh-token/52188069
         this.refreshAccessToken()
           .pipe(
             map((response: HttpResponse<any>) => {
