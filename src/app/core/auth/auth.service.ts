@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, catchError } from 'rxjs/operators';
+import { empty } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { HttpService } from '../service/http.service';
@@ -39,15 +40,20 @@ export class AuthService {
     let isAuthenticated = true;
     if (this.tokenService.accessTokenExpired()) {
       isAuthenticated = false;
-    } else {
       if (this.tokenService.refreshTokenExpired()) {
         isAuthenticated = false;
+      } else {
         // TODO https://stackoverflow.com/questions/52182600/securing-a-route-to-use-a-refresh-token/52188069
         this.refreshAccessToken()
           .pipe(
             map((response: HttpResponse<any>) => {
               console.log('The access token has been refreshed');
               // TODO How to resend this unauthorized request ?
+            }),
+            catchError((error, caught) => {
+              console.log('The access token has not been refresh');
+              console.log(error);
+              return empty();
             })
           );
       }
