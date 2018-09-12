@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
 import { HttpService } from '../../core/service/http.service';
@@ -28,8 +29,9 @@ export class UserService {
   }
 
   public get(id: number): Observable<User> {
-    const url = this.usersUrl + '/' + id;
-    return this.httpService.get<User>(url);
+    const httpParams = new HttpParams()
+    .set('id', id.toString());
+    return this.httpService.get<User>(this.usersUrl, httpParams);
   }
 
   public add(user: User): Observable<User> {
