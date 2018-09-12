@@ -28,6 +28,13 @@ export class UserService {
       );
   }
 
+  public getSome(page: number, limit: number): Observable<any> {
+    const httpParams = new HttpParams()
+    .set('page', page.toString())
+    .set('limit', limit.toString());
+    return this.httpService.get(this.usersUrl, httpParams);
+  }
+
   public get(id: number): Observable<User> {
     const httpParams = new HttpParams()
     .set('id', id.toString());
