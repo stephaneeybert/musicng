@@ -34,6 +34,10 @@ export class UsersComponent implements OnInit {
           this.totalElements = response.page.totalElements;
           this.totalPages = response.page.totalPages;
           this.users = response._embedded.userResourceList as User[];
+          console.log('Current page: ' + this.currentPageNumber);
+          console.log('Elements per page: ' + this.elementsPerPage);
+          console.log('Total elements: ' + this.totalElements);
+          console.log('Total pages: ' + this.totalPages);
         },
         error => {
           console.log(error);
