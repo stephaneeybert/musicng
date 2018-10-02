@@ -1,14 +1,18 @@
 <h2>My Users</h2>
 <div>
-	<label>User name: <input #userName />
+	<label>User name:
+		<input #userName />
 	</label>
 	<button (click)="add(userName.value); userName.value=''">add</button>
 </div>
-<ul class="users">
-	<li *ngFor="let user of users" (click)="onSelect(user)"><a
-		routerLink="/user/{{user.id}}"> <span class="badge">{{user.id}}</span>
+<ul>
+	<li *ngFor="let user of users | paginate: { id: 'userPagination', itemsPerPage: elementsPerPage, currentPage: currentPageNumber, totalItems: totalElements }; let i = index;"
+	 (click)="onSelect(user)">
+		<a routerLink="/user/{{user.id}}">
+			<span class="badge">{{user.id}}</span>
 			{{user.email}}
-	</a>
+		</a>
 		<button class="delete" title="delete user" (click)="delete(user)">x</button>
 	</li>
 </ul>
+<pagination-controls id="userPagination" class="paginate" (pageChange)="getUsers($event)"></pagination-controls>

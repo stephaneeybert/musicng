@@ -28,10 +28,10 @@ export class UserService {
       );
   }
 
-  public getSome(page: number, limit: number): Observable<any> {
+  public getSome(currentPage: number, limit: number): Observable<any> {
     const httpParams = new HttpParams()
-    .set('page', page.toString())
-    .set('limit', limit.toString());
+    .set('page', currentPage.toString())
+    .set('size', limit.toString());
     return this.httpService.get(this.usersUrl, httpParams);
   }
 

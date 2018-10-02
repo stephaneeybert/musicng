@@ -13,15 +13,31 @@ export class UsersComponent implements OnInit {
 
   users: User[];
 
+  currentPageNumber = 1;
+  elementsPerPage = 5;
+  totalElements: number;
+  totalPages: number;
+
   constructor(private userService: UserService, private messageService: MessageService) { }
 
   ngOnInit() {
-    this.getUsers();
+    this.getUsers(1);
   }
 
-  getUsers(): void {
-    this.userService.getAll()
-      .subscribe(users => this.users = users);
+  getUsers(currentPageNumber): void {
+    this.currentPageNumber = currentPageNumber;
+    this.userService.getSome(this.currentPageNumber, this.elementsPerPage)
+      .subscribe(
+        response => {
+          this.currentPageNumber = response.page.number + 1;
+          this.elementsPerPage = response.page.size;
+          this.totalElements = response.page.totalElements;
+          this.totalPages = response.page.totalPages;
+          this.users = response._embedded.userResourceList as User[];
+        },
+        error => {
+          console.log(error);
+        });
   }
 
   onSelect(user: User): void {
