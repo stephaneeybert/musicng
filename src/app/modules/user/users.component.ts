@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
+import { PaginationService } from '../../core/service/pagination.service';
 import { MessageService } from '../../core/messages/message.service';
 
 @Component({
@@ -18,7 +19,7 @@ export class UsersComponent implements OnInit {
   totalElements: number;
   totalPages: number;
 
-  constructor(private userService: UserService, private messageService: MessageService) { }
+  constructor(private userService: UserService, private paginationService: PaginationService, private messageService: MessageService) { }
 
   ngOnInit() {
     this.getUsers(1);
@@ -29,7 +30,7 @@ export class UsersComponent implements OnInit {
     this.userService.getSome(this.currentPageNumber, this.elementsPerPage)
       .subscribe(
         response => {
-          this.currentPageNumber = response.page.number + 1;
+          this.currentPageNumber = this.paginationService.correctPageNumberMispatch(response.page.number);
           this.elementsPerPage = response.page.size;
           this.totalElements = response.page.totalElements;
           this.totalPages = response.page.totalPages;

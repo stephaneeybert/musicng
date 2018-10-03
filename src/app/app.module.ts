@@ -10,6 +10,7 @@ import { AuthModule } from './core/auth/auth.module';
 
 import { MessageService } from './core/messages/message.service';
 import { HttpService } from './core/service/http.service';
+import { PaginationService } from './core/service/pagination.service';
 import { NotificationService } from './core/service/notification.service';
 import { UserService } from './modules/user/user.service';
 
@@ -45,7 +46,8 @@ import { UserSearchComponent } from './modules/user/search.component';
     UserService,
     MessageService,
     NotificationService,
-    HttpService
+    HttpService,
+    PaginationService
   ],
   bootstrap: [AppComponent]
 })
