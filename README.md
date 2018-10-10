@@ -28,8 +28,8 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## TODO
 
+Add sorting to the user all() get request so that it is consumed by the Spring Data pageable
 After an app restart, check if the authorization really expired after the access token lifespan ended
-Implement a refresh token
 After an app restart, check if the authorization really expired and if a refresh token was retrieved after the access token lifespan ended
 After an app restart, check if the authorization really expired after the refresh token lifespan ended
 
