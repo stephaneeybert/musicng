@@ -12,11 +12,11 @@ import { LoginDialogComponent } from './core/login/login-dialog.component';
   ],
   imports: [
     BrowserAnimationsModule,
-    MatDialogModule,
     FormsModule,
-    MatFormFieldModule,
+    ReactiveFormsModule,
     MatInputModule,
-    ReactiveFormsModule
+    MatDialogModule,
+    MatFormFieldModule,
   ],
   exports: [
   ],
