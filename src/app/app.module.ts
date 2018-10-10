@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ErrorModule } from './core/error';
@@ -36,6 +37,8 @@ import { UserSearchComponent } from './modules/user/search.component';
   imports: [
     BrowserModule,
     NgxPaginationModule,
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     AppGuiModule,
     AuthModule,
