@@ -18,7 +18,7 @@ import { AppComponent } from './app.component';
 import { MessagesComponent } from './core/messages/messages.component';
 import { LoginComponent } from './core/login/login.component';
 import { UsersComponent } from './modules/user/users.component';
-import { UserDetailComponent } from './modules/user/user.component';
+import { UserComponent } from './modules/user/user.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { UserSearchComponent } from './modules/user/search.component';
 
@@ -27,7 +27,7 @@ import { UserSearchComponent } from './modules/user/search.component';
   declarations: [
     AppComponent,
     UsersComponent,
-    UserDetailComponent,
+    UserComponent,
     MessagesComponent,
     DashboardComponent,
     UserSearchComponent,

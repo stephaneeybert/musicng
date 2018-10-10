@@ -6,11 +6,11 @@ import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 
 @Component({
-  selector: 'app-user-detail',
+  selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserDetailComponent implements OnInit {
+export class UserComponent implements OnInit {
 
   @Input() user: User;
 

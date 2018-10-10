@@ -9,12 +9,12 @@ import { LoginComponent } from './core/login/login.component';
 import { ErrorComponent } from './core/error/error.component';
 import { UsersComponent } from './modules/user/users.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
-import { UserDetailComponent } from './modules/user/user.component';
+import { UserComponent } from './modules/user/user.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'detail/:id', component: UserDetailComponent, canActivate: [AuthGuardService] },
+  { path: 'detail/:id', component: UserComponent, canActivate: [AuthGuardService] },
   { path: 'users', component: UsersComponent, canActivate: [AuthGuardService] },
   {
     path: 'dashboard',
