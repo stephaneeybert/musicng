@@ -27,5 +27,4 @@ export class LoginDialogComponent implements OnInit {
     this.loginDialog.close(`${this.myform.value.username}`);
   }
 
-
 }
