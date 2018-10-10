@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -36,7 +35,6 @@ import { UserSearchComponent } from './modules/user/search.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     NgxPaginationModule,
     AppRoutingModule,
     AppGuiModule,
