@@ -17,6 +17,8 @@ import { LoginDialogComponent } from './core/login/login-dialog.component';
   ],
   entryComponents: [
     LoginDialogComponent
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class AppGuiModule { }
