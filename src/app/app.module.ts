@@ -3,18 +3,12 @@ import { NgModule } from '@angular/core';
 import { LayoutModule } from '@angular/cdk/layout';
 import { NgxPaginationModule } from 'ngx-pagination';
 
+import { CoreModule } from './core.module';
 import { AppRoutingModule } from './app-routing.module';
 import { ErrorModule } from './core/error';
 import { AppGuiModule } from './app-gui.module';
 import { AuthModule } from './core/auth/auth.module';
 import { MaterialModule } from './material.module';
-
-import { MessageService } from './core/messages/message.service';
-import { UtilsService } from './core/service/utils.service';
-import { HttpService } from './core/service/http.service';
-import { PaginationService } from './core/service/pagination.service';
-import { NotificationService } from './core/service/notification.service';
-import { UserService } from './modules/user/user.service';
 
 import { AppComponent } from './app.component';
 import { MessagesComponent } from './core/messages/messages.component';
@@ -38,6 +32,7 @@ import { LoginDialogComponent } from './core/login/login-dialog.component';
     LoginDialogComponent
   ],
   imports: [
+    CoreModule,
     BrowserModule,
     LayoutModule,
     NgxPaginationModule,
@@ -46,14 +41,6 @@ import { LoginDialogComponent } from './core/login/login-dialog.component';
     AuthModule,
     AppGuiModule,
     MaterialModule,
-  ],
-  providers: [
-    UtilsService,
-    UserService,
-    MessageService,
-    NotificationService,
-    HttpService,
-    PaginationService
   ],
   entryComponents: [
     LoginDialogComponent
