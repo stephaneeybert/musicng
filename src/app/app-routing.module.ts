@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-// See more on preloading https://alligator.io/angular/preloading/
-import { PreloadAllModules } from '@angular/router';
-
+import { AppPreloadingStrategy } from './app-preloading-strategy';
 import { AuthGuardService } from './core/auth/auth-guard.service';
 import { LoginComponent } from './core/login/login.component';
 import { ErrorComponent } from './core/error/error.component';
@@ -12,10 +10,25 @@ import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { UserComponent } from './modules/user/user.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'detail/:id', component: UserComponent, canActivate: [AuthGuardService] },
-  { path: 'users', component: UsersComponent, canActivate: [AuthGuardService] },
+  {
+    path: '',
+    redirectTo: '/dashboard',
+    pathMatch: 'full'
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'detail/:id',
+    component: UserComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'users',
+    component: UsersComponent,
+    canActivate: [AuthGuardService]
+  },
   {
     path: 'dashboard',
     component: DashboardComponent,
@@ -24,13 +37,41 @@ const routes: Routes = [
       expectedRole: 'admin'
     }
   },
-  { path: 'home', loadChildren: './modules/home/home.module#HomeModule' },
-  { path: 'error', component: ErrorComponent },
-  { path: '**', redirectTo: '' }
+  {
+    path: 'home',
+    loadChildren: './modules/home/home.module#HomeModule',
+    data: {
+      preload: true,
+      delay: false
+    }
+  },
+  {
+    path: 'error',
+    component: ErrorComponent
+  },
+  {
+    path: '**',
+    redirectTo: ''
+  }
+  // {
+  //   path: 'conversations/:folder',
+  //   children: [ // TODO See how to use children
+  //     {
+  //       path: '',
+  //       component: ConversationsCmp
+  //     },
+  //     {
+  //       path: ':id',
+  //       component: ConversationCmp,
+  //       children: […]
+  //     }
+  //   ]
+  // },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
-  exports: [RouterModule]
+  providers: [ AppPreloadingStrategy ],
+  imports: [ RouterModule.forRoot(routes, { preloadingStrategy: AppPreloadingStrategy }) ],
+  exports: [ RouterModule ]
 })
 export class AppRoutingModule { }
