@@ -19,7 +19,7 @@
     "paths": {
       "@app/*": ["app/*"],
       "@app/core/*": ["app/core/*"],
-      "@app/modules/*": ["app/modules/*"],
+      "@app/views/*": ["app/views/*"],
       "@env/*": ["environments/*"]
     }
   }

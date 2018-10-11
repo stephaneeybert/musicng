@@ -14,7 +14,7 @@ import { MessageService } from './core/messages/message.service';
 import { HttpService } from './core/service/http.service';
 import { NotificationService } from './core/service/notification.service';
 import { PaginationService } from './core/service/pagination.service';
-import { UserService } from './modules/user/user.service';
+import { UserService } from './views/user/user.service';
 
 @NgModule({
   providers: [

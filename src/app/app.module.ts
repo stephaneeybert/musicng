@@ -13,10 +13,10 @@ import { MaterialModule } from './material.module';
 import { AppComponent } from './app.component';
 import { MessagesComponent } from './core/messages/messages.component';
 import { LoginComponent } from './core/login/login.component';
-import { UsersComponent } from './modules/user/users.component';
-import { UserComponent } from './modules/user/user.component';
-import { DashboardComponent } from './modules/dashboard/dashboard.component';
-import { UserSearchComponent } from './modules/user/search.component';
+import { UsersComponent } from './views/user/users.component';
+import { UserComponent } from './views/user/user.component';
+import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { UserSearchComponent } from './views/user/search.component';
 
 import { LoginDialogComponent } from './core/login/login-dialog.component';
 

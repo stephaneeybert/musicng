@@ -5,9 +5,9 @@ import { AppPreloadingStrategy } from './app-preloading-strategy';
 import { AuthGuardService } from './core/auth/auth-guard.service';
 import { LoginComponent } from './core/login/login.component';
 import { ErrorComponent } from './core/error/error.component';
-import { UsersComponent } from './modules/user/users.component';
-import { DashboardComponent } from './modules/dashboard/dashboard.component';
-import { UserComponent } from './modules/user/user.component';
+import { UsersComponent } from './views/user/users.component';
+import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { UserComponent } from './views/user/user.component';
 
 const routes: Routes = [
   {
@@ -39,7 +39,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: './modules/home/home.module#HomeModule',
+    loadChildren: './views/home/home.module#HomeModule',
     data: {
       preload: true,
       delay: false
