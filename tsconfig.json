@@ -14,6 +14,13 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "baseUrl": "src",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@app/core/*": ["app/core/*"],
+      "@app/modules/*": ["app/modules/*"],
+      "@env/*": ["environments/*"]
+    }
   }
 }
