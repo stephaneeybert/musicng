@@ -24,6 +24,7 @@ import { UserComponent } from './modules/user/user.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { UserSearchComponent } from './modules/user/search.component';
 
+import { LoginDialogComponent } from './core/login/login-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { UserSearchComponent } from './modules/user/search.component';
     DashboardComponent,
     UserSearchComponent,
     LoginComponent,
+    LoginDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +54,9 @@ import { UserSearchComponent } from './modules/user/search.component';
     NotificationService,
     HttpService,
     PaginationService
+  ],
+  entryComponents: [
+    LoginDialogComponent
   ],
   bootstrap: [AppComponent]
 })
