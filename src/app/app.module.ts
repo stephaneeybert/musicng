@@ -3,18 +3,12 @@ import { NgModule } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LayoutModule } from '@angular/cdk/layout';
-import {
-  MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule,
-  MatListModule, MatGridListModule, MatCardModule, MatMenuModule,
-  MatTableModule, MatPaginatorModule, MatSortModule,
-  MatDialogModule,
-  MatFormFieldModule, MatInputModule
-} from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ErrorModule } from './core/error';
 import { AppGuiModule } from './app-gui.module';
 import { AuthModule } from './core/auth/auth.module';
+import { MaterialModule } from './material.module';
 
 import { MessageService } from './core/messages/message.service';
 import { UtilsService } from './core/service/utils.service';
@@ -52,20 +46,7 @@ import { UserSearchComponent } from './modules/user/search.component';
     AppGuiModule,
     AuthModule,
     ErrorModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
+    MaterialModule,
   ],
   providers: [
     UtilsService,
