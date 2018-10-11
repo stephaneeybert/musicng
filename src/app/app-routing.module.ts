@@ -24,6 +24,7 @@ const routes: Routes = [
       expectedRole: 'admin'
     }
   },
+  { path: 'home', loadChildren: './modules/home/home.module#HomeModule' },
   { path: 'error', component: ErrorComponent },
   { path: '**', redirectTo: '' }
 ];
