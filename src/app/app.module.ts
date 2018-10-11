@@ -7,7 +7,7 @@ import {
   MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule,
   MatListModule, MatGridListModule, MatCardModule, MatMenuModule,
   MatTableModule, MatPaginatorModule, MatSortModule,
-  MatDialogModule, MatDialog,
+  MatDialogModule,
   MatFormFieldModule, MatInputModule
 } from '@angular/material';
 
@@ -63,8 +63,9 @@ import { UserSearchComponent } from './modules/user/search.component';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatInputModule,
+    MatDialogModule,
     MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [
     UtilsService,
