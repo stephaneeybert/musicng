@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('ng-hero App', () => {
+describe('ng-zero App', () => {
   let page: AppPage;
 
   beforeEach(() => {

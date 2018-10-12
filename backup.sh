@@ -1,6 +1,6 @@
 #!/bin/sh -x
 
-filename=ng-hero
+filename=ng-zero
 
 zipfile=$filename.zip
 
