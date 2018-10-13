@@ -19,6 +19,8 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { UserSearchComponent } from './views/user/search.component';
 
 import { LoginDialogComponent } from './core/login/login-dialog.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,7 @@ import { LoginDialogComponent } from './core/login/login-dialog.component';
     AuthModule,
     AppGuiModule,
     MaterialModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   entryComponents: [
     LoginDialogComponent
