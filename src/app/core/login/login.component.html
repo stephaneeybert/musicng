@@ -1,19 +1,25 @@
-<div id="login-component">
-
-	You can instead open a <button (click)="openLoginDialog()">login dialog</button>
-	<div class="col-md-6 col-md-offset-3">
-		<h2>Login</h2>
-		<div class="form-group">
-			<label for="username">Username</label> <input [(ngModel)]="username"
-				placeholder="username" class="form-control" required />
-		</div>
-		<div class="form-group">
-			<label for="password">Password</label> <input [(ngModel)]="password"
-				placeholder="password" class="form-control" required />
-		</div>
-		<div class="form-group">
-			<button (click)="login()">Log In</button>
-		</div>
-	</div>
-
+  <div class="signin-content">
+	<mat-card>
+		<mat-card-header>
+			<mat-card-title>Login</mat-card-title>
+		</mat-card-header>
+			<mat-card-content>
+			<form [formGroup]="form" (ngSubmit)="login()">
+				<p>Please login to continue</p>
+				<mat-form-field class="full-width-input">
+					<input matInput placeholder="User" formControlName="username" required>
+					<mat-error *ngIf="isFieldInvalid('username')">
+						Please inform your user name
+					</mat-error>
+				</mat-form-field>
+				<mat-form-field class="full-width-input">
+					<input matInput type="password" placeholder="Password" formControlName="password" required>
+					<mat-error *ngIf="isFieldInvalid('password')">
+						Please inform your password
+					</mat-error>
+				</mat-form-field>
+				<button mat-raised-button color="primary" type="submit">Login</button>
+			</form>
+		</mat-card-content>
+	</mat-card>
 </div>
