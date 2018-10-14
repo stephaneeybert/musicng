@@ -36,6 +36,15 @@ export class AuthService {
       );
   }
 
+  public logout(): Observable<any> {
+    return this.httpService.postWithHeadersInResponse(URI_LOGOUT, {})
+      .pipe(
+        map((response: HttpResponse<any>) => {
+          this.clearTokensFromLocalStorage(response);
+        })
+      );
+  }
+
   public isAuthenticated(): Observable<boolean> {
     if (this.tokenService.accessTokenExpired()) {
       console.log('The access token expired.');
@@ -90,6 +99,11 @@ export class AuthService {
     }
   }
 
+  private clearTokensFromLocalStorage(response: HttpResponse<any>): void {
+    this.tokenService.setAccessTokenToLocalStorage('');
+    this.tokenService.setRefreshTokenToLocalStorage('');
+  }
+
   private addRefreshTokenHeader(httpHeaders: HttpHeaders): HttpHeaders {
     const refreshHeaderName: string = this.tokenService.getRefreshTokenHeaderName();
     const refreshToken: string = this.tokenService.buildRefreshTokenValue();
@@ -136,14 +150,6 @@ export class AuthService {
     } else {
       return true;
     }
-  }
-
-  public logout(): Observable<any> {
-    return this.httpService.postWithHeadersInResponse(URI_LOGOUT, {})
-      .pipe(
-        map((response: HttpResponse<any>) => {
-        })
-      );
   }
 
   public rememberMe(): boolean {
