@@ -21,6 +21,7 @@ import { UserSearchComponent } from './views/user/search.component';
 
 import { environment } from '../environments/environment';
 import { LoginDialogComponent } from './core/login/login-dialog.component';
+import { HeaderComponent } from './views/header/header.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { LoginDialogComponent } from './core/login/login-dialog.component';
     UserSearchComponent,
     LoginComponent,
     LoginDialogComponent,
+    HeaderComponent,
   ],
   imports: [
     CoreModule,
