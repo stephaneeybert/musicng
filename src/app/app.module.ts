@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { LayoutModule } from '@angular/cdk/layout';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 import { CoreModule } from './core.module';
@@ -18,9 +19,8 @@ import { UserComponent } from './views/user/user.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { UserSearchComponent } from './views/user/search.component';
 
-import { LoginDialogComponent } from './core/login/login-dialog.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { LoginDialogComponent } from './core/login/login-dialog.component';
 
 @NgModule({
   declarations: [
@@ -31,19 +31,19 @@ import { environment } from '../environments/environment';
     DashboardComponent,
     UserSearchComponent,
     LoginComponent,
-    LoginDialogComponent
+    LoginDialogComponent,
   ],
   imports: [
     CoreModule,
     BrowserModule,
     LayoutModule,
-    NgxPaginationModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AppRoutingModule,
     ErrorModule,
     AuthModule,
-    AppGuiModule,
     MaterialModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    NgxPaginationModule,
+    AppGuiModule,
   ],
   entryComponents: [
     LoginDialogComponent
