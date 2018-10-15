@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppPreloadingStrategy } from './app-preloading-strategy';
 import { AuthGuardService } from './core/auth/auth-guard.service';
+import { LoginLayoutComponent } from './layouts/login.layout';
+import { HomeLayoutComponent } from './layouts/home.layout';
 import { LoginComponent } from './core/login/login.component';
 import { ErrorComponent } from './core/error/error.component';
 import { UsersComponent } from './views/user/users.component';
@@ -12,66 +14,60 @@ import { UserComponent } from './views/user/user.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/dashboard',
-    pathMatch: 'full'
+    component: LoginLayoutComponent,
+    children: [{
+      path: 'login',
+      component: LoginComponent
+    }]
   },
   {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'detail/:id',
-    component: UserComponent,
-    canActivate: [AuthGuardService]
-  },
-  {
-    path: 'users',
-    component: UsersComponent,
-    canActivate: [AuthGuardService]
-  },
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
+    path: '',
+    component: HomeLayoutComponent,
     canActivate: [AuthGuardService],
-    data: {
-      expectedRole: 'admin'
-    }
-  },
-  {
-    path: 'home',
-    loadChildren: './views/home/home.module#HomeModule',
-    data: {
-      preload: true,
-      delay: false
-    }
-  },
-  {
-    path: 'error',
-    component: ErrorComponent
+    children: [
+      {
+        path: '',
+        redirectTo: '/users',
+        pathMatch: 'full'
+      },
+      {
+        path: 'users',
+        component: UsersComponent,
+      },
+      {
+        path: 'detail/:id',
+        component: UserComponent,
+      },
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        data: {
+          expectedRole: 'admin'
+        }
+      },
+      {
+        path: 'home',
+        loadChildren: './views/home/home.module#HomeModule',
+        data: {
+          preload: true,
+          delay: false
+        }
+      },
+      {
+        path: 'error',
+        component: ErrorComponent
+      },
+    ]
   },
   {
     path: '**',
     redirectTo: ''
   }
-  // {
-  //   path: 'conversations/:folder',
-  //   children: [ // TODO See how to use children
-  //     {
-  //       path: '',
-  //       component: ConversationsCmp
-  //     },
-  //     {
-  //       path: ':id',
-  //       component: ConversationCmp,
-  //       children: […]
-  //     }
-  //   ]
-  // },
 ];
 
 @NgModule({
-  providers: [ AppPreloadingStrategy ],
-  imports: [ RouterModule.forRoot(routes, { preloadingStrategy: AppPreloadingStrategy }) ],
-  exports: [ RouterModule ]
+  providers: [AppPreloadingStrategy],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: AppPreloadingStrategy })],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }

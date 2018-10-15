@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { AuthService } from '../../core/auth/auth.service';
 import { LoginService } from '../../core/service/login.service';
@@ -9,18 +9,11 @@ import { LoginService } from '../../core/service/login.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
-
-  isLoggedIn$: Observable<boolean>;
+export class HeaderComponent {
 
   constructor(
-    private authService: AuthService,
     private loginService: LoginService
   ) { }
-
-  ngOnInit() {
-    this.isLoggedIn$ = this.authService.isAuthenticated();
-  }
 
   logout(): void {
     this.loginService.logout();
