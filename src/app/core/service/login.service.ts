@@ -14,7 +14,6 @@ export class LoginService {
     ) { }
 
     login(username: string, password: string) {
-        // TODO this.keycloakClientService.login(this.username, this.password).subscribe(
         this.authService.login(username, password).subscribe(
             response => {
                 this.router.navigate(['users']); // TODO Check that all router.navigate don't use hard coded strings
