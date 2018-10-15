@@ -14,6 +14,7 @@ import { MessageService } from './core/messages/message.service';
 import { HttpService } from './core/service/http.service';
 import { NotificationService } from './core/service/notification.service';
 import { PaginationService } from './core/service/pagination.service';
+import { LoginService } from './core/service/login.service';
 import { UserService } from './views/user/user.service';
 
 @NgModule({
@@ -24,6 +25,7 @@ import { UserService } from './views/user/user.service';
     NotificationService,
     PaginationService,
     UserService,
+    LoginService
   ],
 })
 export class CoreModule {
