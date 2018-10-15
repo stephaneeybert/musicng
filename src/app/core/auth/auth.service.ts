@@ -67,8 +67,9 @@ export class AuthService {
           })
         );
       }
+    } else {
+      return of(true);
     }
-    return of(true);
   }
 
   private storeTokensInLocalStorage(response: HttpResponse<any>): void {
