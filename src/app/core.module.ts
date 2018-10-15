@@ -33,7 +33,7 @@ export class CoreModule {
   // Make sure the core module is imported only once as it contains all global services which are to be singletons
   constructor(@Optional() @SkipSelf() coreModule: CoreModule) {
     if (coreModule) {
-      throw new Error('The core module has already been imported.');
+      throw new Error('The core module has ALREADY been imported.');
     }
   }
 
