@@ -19,6 +19,8 @@ const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PA
 @Injectable()
 export class AuthService {
 
+  private postLoginRedirectUrl: string;
+
   constructor(
     private httpService: HttpService,
     private tokenService: TokenService) { }
@@ -169,6 +171,13 @@ export class AuthService {
     });
   }
 
+  public setPostLoginRedirectUrl(postLoginRedirectUrl: string) {
+    this.postLoginRedirectUrl = postLoginRedirectUrl;
+  }
+
+  public getPostLoginRedirectUrl() {
+    return this.postLoginRedirectUrl;
+  }
 
   /* TODO
     public hasRole(role: string): boolean {

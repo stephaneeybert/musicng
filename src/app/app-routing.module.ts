@@ -15,21 +15,23 @@ const routes: Routes = [
   {
     path: '',
     component: LoginLayoutComponent,
-    children: [{
-      path: 'login',
-      component: LoginComponent
-    }]
+    children: [
+      {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full'
+      },
+      {
+        path: 'login',
+        component: LoginComponent
+      }
+    ]
   },
   {
     path: '',
     component: HomeLayoutComponent,
-    canActivate: [AuthGuardService],
+    canActivateChild: [AuthGuardService],
     children: [
-      {
-        path: '',
-        redirectTo: '/users',
-        pathMatch: 'full'
-      },
       {
         path: 'users',
         component: UsersComponent,
@@ -59,10 +61,6 @@ const routes: Routes = [
       },
     ]
   },
-  {
-    path: '**',
-    redirectTo: ''
-  }
 ];
 
 @NgModule({

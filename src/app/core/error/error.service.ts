@@ -23,7 +23,7 @@ export class ErrorService {
                 if (event instanceof NavigationError) {
                     this.log(event.error)
                         .subscribe((errorWithContext) => {
-                            this.router.navigate(['/error'], { queryParams: errorWithContext });
+                            this.router.navigate(['error'], { queryParams: errorWithContext });
                         });
                 }
             });

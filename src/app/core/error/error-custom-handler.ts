@@ -39,7 +39,7 @@ export class ErrorCustomHandler implements ErrorHandler {
             console.log('A client error occured');
             errorService.log(error).subscribe(errorWithContextInfo => {
                 console.log(errorWithContextInfo);
-                router.navigate(['/error'], { queryParams: errorWithContextInfo });
+                router.navigate(['error'], { queryParams: errorWithContextInfo });
             });
         }
     }

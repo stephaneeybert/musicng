@@ -16,7 +16,11 @@ export class LoginService {
     login(username: string, password: string) {
         this.authService.login(username, password).subscribe(
             response => {
-                this.router.navigate(['users']); // TODO Check that all router.navigate don't use hard coded strings
+                if (this.authService.getPostLoginRedirectUrl() != null) {
+                    this.router.navigateByUrl(this.authService.getPostLoginRedirectUrl());
+                } else {
+                    this.router.navigate(['users']);
+                }
             },
             error => {
                 console.log(error);
