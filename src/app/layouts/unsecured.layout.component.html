@@ -22,14 +22,13 @@
   </mat-sidenav>
   <mat-toolbar id="appToolbar" color="primary">
     <button mat-icon-button (click)="sidenav.toggle()" class="mat-icon-button sidenav-toggle-button" [hidden]="sidenav.opened">
-      <mat-icon aria-label="Menu" class="material-icons">menu</mat-icon>
+      <mat-icon aria-label="Another menu" class="material-icons">A menu</mat-icon>
     </button>
     <h1 class="component-title">
       <a class="title-link">{{title}}</a>
     </h1>
     <span class="toolbar-filler"></span>
     <!--<button id="button-login" mat-button [routerLink]="['/signupin']" *ngIf="!(user | async)">Log In</button>-->
-    <button id="button-logout" mat-button>Log Out</button>
   </mat-toolbar>
   <app-header></app-header>
   <router-outlet></router-outlet>

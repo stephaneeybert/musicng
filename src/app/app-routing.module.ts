@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppPreloadingStrategy } from './app-preloading-strategy';
 import { AuthGuardService } from './core/auth/auth-guard.service';
-import { LoginLayoutComponent } from './layouts/login.layout';
-import { HomeLayoutComponent } from './layouts/home.layout';
+import { SecuredLayoutComponent } from './layouts/secured.layout';
+import { UnsecuredLayoutComponent } from './layouts/unsecured.layout';
 import { LoginComponent } from './core/login/login.component';
 import { ErrorComponent } from './core/error/error.component';
 import { UsersComponent } from './views/user/users.component';
@@ -14,7 +14,7 @@ import { UserComponent } from './views/user/user.component';
 const routes: Routes = [
   {
     path: '',
-    component: LoginLayoutComponent,
+    component: UnsecuredLayoutComponent,
     children: [
       {
         path: '',
@@ -29,7 +29,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: HomeLayoutComponent,
+    component: SecuredLayoutComponent,
     canActivateChild: [AuthGuardService],
     children: [
       {

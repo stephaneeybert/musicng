@@ -13,8 +13,8 @@ import { MaterialModule } from './material.module';
 
 import { AppComponent } from './app.component';
 import { MessagesComponent } from './core/messages/messages.component';
-import { LoginLayoutComponent } from './layouts/login.layout';
-import { HomeLayoutComponent } from './layouts/home.layout';
+import { SecuredLayoutComponent } from './layouts/secured.layout';
+import { UnsecuredLayoutComponent } from './layouts/unsecured.layout';
 import { LoginComponent } from './core/login/login.component';
 import { UsersComponent } from './views/user/users.component';
 import { UserComponent } from './views/user/user.component';
@@ -33,8 +33,8 @@ import { HeaderComponent } from './views/header/header.component';
     MessagesComponent,
     DashboardComponent,
     UserSearchComponent,
-    LoginLayoutComponent,
-    HomeLayoutComponent,
+    SecuredLayoutComponent,
+    UnsecuredLayoutComponent,
     LoginComponent,
     LoginDialogComponent,
     HeaderComponent,

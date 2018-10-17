@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-home-layout',
-  templateUrl: './home.layout.component.html'
+  templateUrl: './secured.layout.component.html'
 })
-export class HomeLayoutComponent {
+export class SecuredLayoutComponent {
 
   title = 'Tour of Zeroes';
 
