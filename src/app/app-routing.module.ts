@@ -19,7 +19,15 @@ const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent
-      }
+      },
+      {
+        path: 'home',
+        loadChildren: './views/home/home.module#HomeModule',
+        data: {
+          preload: true,
+          delay: false
+        }
+      },
     ]
   },
   {
@@ -40,14 +48,6 @@ const routes: Routes = [
         component: DashboardComponent,
         data: {
           expectedRole: 'admin'
-        }
-      },
-      {
-        path: 'home',
-        loadChildren: './views/home/home.module#HomeModule',
-        data: {
-          preload: true,
-          delay: false
         }
       },
       {
