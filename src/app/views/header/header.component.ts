@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs';
 import { Component } from '@angular/core';
 
-import { AuthService } from '../../core/auth/auth.service';
 import { LoginService } from '../../core/service/login.service';
 
 @Component({
