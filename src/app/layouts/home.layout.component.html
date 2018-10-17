@@ -22,8 +22,8 @@
   </mat-sidenav>
   <mat-toolbar id="appToolbar" color="primary">
     <button mat-icon-button (click)="sidenav.toggle()" class="mat-icon-button sidenav-toggle-button" [hidden]="sidenav.opened">
-                <mat-icon aria-label="Menu" class="material-icons">menu</mat-icon>
-        </button>
+      <mat-icon aria-label="Menu" class="material-icons">menu</mat-icon>
+    </button>
     <h1 class="component-title">
       <a class="title-link">{{title}}</a>
     </h1>
@@ -34,5 +34,3 @@
   <app-header></app-header>
   <router-outlet></router-outlet>
 </mat-sidenav-container>
-
-

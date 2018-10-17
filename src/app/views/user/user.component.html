@@ -1,10 +1,11 @@
 <div *ngIf="user">
 
   <h2>{{ user.name | uppercase }}</h2>
-  <div><span>id: </span>{{user.id}}</div>
+  <div>
+    <span>id: </span>{{user.id}}</div>
   <div>
     <label>name:
-      <input [(ngModel)]="user.name" placeholder="name"/> 
+      <input [(ngModel)]="user.name" placeholder="name" />
       <!-- TODO Replace the  [(ngModel)] for a reactive form syntax -->
     </label>
   </div>
