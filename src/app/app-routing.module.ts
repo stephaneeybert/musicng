@@ -17,11 +17,6 @@ const routes: Routes = [
     component: UnsecuredLayoutComponent,
     children: [
       {
-        path: '',
-        redirectTo: 'login',
-        pathMatch: 'full'
-      },
-      {
         path: 'login',
         component: LoginComponent
       }
