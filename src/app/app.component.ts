@@ -8,8 +8,6 @@ import { SwUpdate } from '@angular/service-worker';
 })
 export class AppComponent implements OnInit {
 
-  title = 'Tour of Zeroes';
-
   constructor(private swUpdate: SwUpdate) {
   }
 

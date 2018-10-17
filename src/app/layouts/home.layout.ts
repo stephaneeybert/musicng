@@ -4,4 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-home-layout',
   templateUrl: './home.layout.component.html'
 })
-export class HomeLayoutComponent { }
+export class HomeLayoutComponent {
+
+  title = 'Tour of Zeroes';
+
+}
