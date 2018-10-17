@@ -1,26 +1,10 @@
-<mat-toolbar color="warn">
-  <mat-toolbar-row>
-    <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" color="primary">
-      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-    </button>
-    <span><img src="assets/icons/icon-72x72.png"></span>
-  </mat-toolbar-row>
-</mat-toolbar>
-
 <mat-toolbar color="primary">
     <span>
-      Angular NavBar + Login Example #01
+      NgZero
     </span>
     <span class="fill-remaining-space"></span>
-    <button mat-button>Menu Option 01</button>
-    <button mat-button>Menu Option 02</button>
-    <!--button mat-button routerLink="login" *ngIf="!isLoggedIn; else notLoggedIn">Login</button>
-    <ng-template #notLoggedIn>
-      <button mat-button (click)="onLogout()">Logout</button>
-    </ng-template -->
+    <button mat-button routerLink="/home">Home</button>
+    <button mat-button routerLink="/users">Users</button>
+    <button mat-button routerLink="/dashboard">Dashboard</button>
     <button mat-button (click)="logout()">Logout</button>
-    <nav>
-        <a routerLink="/dashboard">Dashboard</a>
-        <a routerLink="/users">Users</a>
-    </nav>
 </mat-toolbar>
