@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { LayoutModule } from '@angular/cdk/layout';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { NgxPaginationModule } from 'ngx-pagination';
 
 import { CoreModule } from './core.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -48,7 +47,6 @@ import { HeaderComponent } from './views/header/header.component';
     ErrorModule,
     AuthModule,
     MaterialModule,
-    NgxPaginationModule,
     AppGuiModule,
   ],
   entryComponents: [
