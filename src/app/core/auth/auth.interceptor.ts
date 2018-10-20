@@ -13,7 +13,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { tap, catchError, take, filter, switchMap } from 'rxjs/operators';
 import { empty, throwError, Subject } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
 import { TokenService } from './token.service';
 import { AuthService } from '../auth/auth.service';
 
