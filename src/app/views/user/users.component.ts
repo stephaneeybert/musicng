@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort } from '@angular/material';
+import { Component, OnInit, ViewChild, ElementRef, Input, EventEmitter, Output } from '@angular/core';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
@@ -17,7 +17,6 @@ import { MessageService } from '../../core/messages/message.service';
 export class UsersComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'email'];
-  users: User[] = [];
 
   currentPageNumber: number;
   elementsPerPage = 5;
@@ -27,23 +26,34 @@ export class UsersComponent implements OnInit {
   isLoadingResults = true;
   isRateLimitReached = false;
 
+  dataSource: MatTableDataSource<User>;
+
+  @Input() searchTerm: string;
+  @Output() searchTermEvent = new EventEmitter<{ value: string }>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private userService: UserService, private paginationService: PaginationService, private messageService: MessageService) { }
+  constructor(
+    private userService: UserService,
+    private paginationService: PaginationService,
+    private messageService: MessageService) {
+
+    this.dataSource = new MatTableDataSource();
+  }
 
   ngOnInit() {
     // Select the first page when the sort order changes
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-    merge(this.sort.sortChange, this.paginator.page)
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+    merge(this.searchTermEvent, this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          // TODO add sorting
-          // return this.getUsers(this.sort.active, this.sort.direction, this.paginator.pageIndex);
-          return this.getUsers(this.paginator.pageIndex);
+          return this.getUsers(this.searchTerm, this.sort.active, this.sort.direction, this.paginator.pageIndex);
         }),
         map(userApi => {
           this.isLoadingResults = false;
@@ -60,12 +70,12 @@ export class UsersComponent implements OnInit {
           return observableOf([]);
         })
       ).subscribe(users => {
-        this.users = users;
+        this.dataSource.data = users;
       });
   }
 
-  getUsers(currentPageNumber): Observable<UsersApi> {
-    return this.userService.getSome(currentPageNumber, this.elementsPerPage)
+  getUsers(searchTerm: string, sortFieldName: string, sortDirection: string, currentPageNumber: number): Observable<UsersApi> {
+    return this.userService.getSome(searchTerm, sortFieldName, sortDirection, currentPageNumber, this.elementsPerPage)
       .pipe(
         map(response => {
           return new UsersApi(
@@ -79,6 +89,17 @@ export class UsersComponent implements OnInit {
       );
   }
 
+  search(searchTerm: string) {
+    this.searchTerm = searchTerm;
+    this.searchTermEvent.emit({
+      value: this.searchTerm
+    });
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+  }
+
   onSelect(user: User): void {
     this.messageService.add('Selected the user ' + user.email);
   }
@@ -90,12 +111,10 @@ export class UsersComponent implements OnInit {
     }
     this.userService.add({ email } as User)
       .subscribe(user => {
-        this.users.push(user);
       });
   }
 
   delete(user: User): void {
-    this.users = this.users.filter(h => h !== user);
     this.userService.delete(user).subscribe();
   }
 

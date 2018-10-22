@@ -28,10 +28,16 @@ export class UserService {
       );
   }
 
-  public getSome(currentPage: number, limit: number): Observable<any> {
-    const httpParams = new HttpParams()
+  public getSome(searchTerm: string, sortFieldName: string, sortDirection: string, currentPage: number, limit: number): Observable<any> {
+    let httpParams = new HttpParams()
     .set('page', currentPage.toString())
     .set('size', limit.toString());
+    if (searchTerm) {
+      httpParams = httpParams.append('searchTerm', searchTerm);
+    }
+    if (sortFieldName && sortDirection) {
+      httpParams = httpParams.append('sort', sortFieldName + ',' + sortDirection);
+    }
     return this.httpService.get(this.usersUrl, httpParams);
   }
 
