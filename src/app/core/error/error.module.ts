@@ -33,6 +33,6 @@ import { ModuleWithProviders } from '@angular/compiler/src/core';
             useClass: ErrorRequestInterceptor,
             multi: true,
         }
-]
+    ]
 })
 export class ErrorModule { }
