@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  CLIENT_ID: 'NG-ZERO',
+  CLIENT_ID: 'ng-zero',
   ROLE_PREFIX: 'role_',
   BASE_REST_URI: 'http://localhost:8080/api',
   KEYCLOAK_URI: 'http://localhost:8180/auth',
