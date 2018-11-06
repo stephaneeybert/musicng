@@ -56,8 +56,8 @@ export class HttpService {
 
     public buildHeader(headers: HttpHeaders | null): HttpHeaders {
         headers = headers || new HttpHeaders();
-        headers = headers.set('Content-Type', 'application/json');
-        headers = headers.set('Accept', 'application/json');
+        headers = headers.append('Content-Type', 'application/json');
+        headers = headers.append('Accept', 'application/json');
         return headers;
     }
 
