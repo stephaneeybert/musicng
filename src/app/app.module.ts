@@ -18,7 +18,6 @@ import { LoginComponent } from './core/login/login.component';
 import { UsersComponent } from './views/user/users.component';
 import { UserComponent } from './views/user/user.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
-import { UserSearchComponent } from './views/user/search.component';
 
 import { environment } from '../environments/environment';
 import { LoginDialogComponent } from './core/login/login-dialog.component';
@@ -31,7 +30,6 @@ import { HeaderComponent } from './views/header/header.component';
     UserComponent,
     MessagesComponent,
     DashboardComponent,
-    UserSearchComponent,
     SecuredLayoutComponent,
     UnsecuredLayoutComponent,
     LoginComponent,
