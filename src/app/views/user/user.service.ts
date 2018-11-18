@@ -50,8 +50,12 @@ export class UserService {
     return this.httpService.post<User>(this.usersUrl, user);
   }
 
-  public update(user: User): Observable<any> {
+  public fullUpdate(user: User): Observable<any> {
     return this.httpService.put(this.usersUrl, user);
+  }
+
+  public partialUpdate(user: User): Observable<any> {
+    return this.httpService.patch(this.usersUrl, user);
   }
 
   public delete(user: User): Observable<User> {

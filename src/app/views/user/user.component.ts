@@ -35,8 +35,10 @@ export class UserComponent implements OnInit {
   }
 
   save(): void {
-    this.userService.update(this.user)
-      .subscribe(() => this.goBack());
+    this.userService.partialUpdate(this.user)
+      .subscribe(() => {
+        this.goBack();
+      });
   }
 
 }
