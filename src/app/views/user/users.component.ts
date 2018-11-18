@@ -16,7 +16,7 @@ import { MessageService } from '../../core/messages/message.service';
 })
 export class UsersComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'email'];
+  displayedColumns: string[] = ['id', 'email', 'firstname', 'lastname'];
 
   currentPageNumber: number;
   elementsPerPage = 5;

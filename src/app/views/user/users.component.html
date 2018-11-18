@@ -18,6 +18,16 @@
 				<td mat-cell *matCellDef="let user">{{user.id}}</td>
 			</ng-container>
 
+			<ng-container matColumnDef="firstname">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Firstname</th>
+				<td mat-cell *matCellDef="let user">{{user.firstname}}</td>
+			</ng-container>
+
+			<ng-container matColumnDef="lastname">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</th>
+				<td mat-cell *matCellDef="let user">{{user.lastname}}</td>
+			</ng-container>
+
 			<ng-container matColumnDef="email">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
 				<td mat-cell *matCellDef="let user"><a routerLink="/users/{{user.id}}">{{user.email}}</a></td>
