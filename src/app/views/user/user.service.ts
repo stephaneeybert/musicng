@@ -42,9 +42,8 @@ export class UserService {
   }
 
   public get(id: number): Observable<User> {
-    const httpParams = new HttpParams()
-    .set('id', id.toString());
-    return this.httpService.get<User>(this.usersUrl, httpParams);
+    const url = this.usersUrl + '/' + id.toString();
+    return this.httpService.get<User>(url);
   }
 
   public add(user: User): Observable<User> {
