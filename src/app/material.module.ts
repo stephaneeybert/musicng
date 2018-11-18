@@ -7,7 +7,8 @@ import {
   MatListModule, MatGridListModule, MatCardModule, MatMenuModule,
   MatTableModule, MatPaginatorModule, MatSortModule,
   MatCheckboxModule, MatDialogModule,
-  MatFormFieldModule, MatInputModule
+  MatFormFieldModule, MatInputModule,
+  MatSlideToggleModule
 } from '@angular/material';
 
 @NgModule({
@@ -28,6 +29,7 @@ import {
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSlideToggleModule
   ]
 })
 export class MaterialModule { }

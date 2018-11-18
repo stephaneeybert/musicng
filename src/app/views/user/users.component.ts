@@ -16,7 +16,7 @@ import { MessageService } from '../../core/messages/message.service';
 })
 export class UsersComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'email', 'firstname', 'lastname'];
+  displayedColumns: string[] = ['id', 'email', 'confirmed', 'firstname', 'lastname'];
 
   currentPageNumber: number;
   elementsPerPage = 5;
@@ -116,6 +116,10 @@ export class UsersComponent implements OnInit {
 
   delete(user: User): void {
     this.userService.delete(user).subscribe();
+  }
+
+  displayConfirmed(data) {
+    console.log('Toggled the mail confirmed status for the user with id: ' + data.id);
   }
 
 }

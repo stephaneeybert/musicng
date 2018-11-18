@@ -17,6 +17,7 @@ import { UnsecuredLayoutComponent } from './layouts/unsecured.layout';
 import { LoginComponent } from './core/login/login.component';
 import { UsersComponent } from './views/user/users.component';
 import { UserComponent } from './views/user/user.component';
+import { UserConfirmedComponent } from './views/user/user-confirmed.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 
 import { environment } from '../environments/environment';
@@ -28,6 +29,7 @@ import { HeaderComponent } from './views/header/header.component';
     AppComponent,
     UsersComponent,
     UserComponent,
+    UserConfirmedComponent,
     MessagesComponent,
     DashboardComponent,
     SecuredLayoutComponent,
