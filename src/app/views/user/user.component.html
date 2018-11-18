@@ -4,8 +4,14 @@
   <div>
     <span>id: </span>{{user.id}}</div>
   <div>
-    <label>name:
-      <input [(ngModel)]="user.name" placeholder="name" />
+    <label>Firstname:
+      <input [(ngModel)]="user.firstname" placeholder="firstname" />
+      <!-- TODO Replace the  [(ngModel)] for a reactive form syntax -->
+    </label>
+  </div>
+  <div>
+    <label>Lastname:
+      <input [(ngModel)]="user.lastname" placeholder="lastname" />
       <!-- TODO Replace the  [(ngModel)] for a reactive form syntax -->
     </label>
   </div>
