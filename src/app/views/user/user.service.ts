@@ -56,7 +56,7 @@ export class UserService {
   }
 
   public partialUpdate(user: User): Observable<User> {
-    const url = this.usersUrl + '/' + user.id.toString();
+    const url = this.usersUrl + '/' + user.id;
     return this.httpService.patch(url, user);
   }
 
