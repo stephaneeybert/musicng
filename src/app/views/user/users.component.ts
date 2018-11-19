@@ -58,11 +58,12 @@ export class UsersComponent implements OnInit {
         map((usersApi: UsersApi) => {
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
-          this.currentPageNumber = userApi.currentPageNumber;
-          this.elementsPerPage = userApi.elementsPerPage;
-          this.totalElements = userApi.totalElements;
-          this.totalPages = userApi.totalPages;
-          return userApi.users;
+          this.currentPageNumber = usersApi.currentPageNumber;
+          this.elementsPerPage = usersApi.elementsPerPage;
+          this.totalElements = usersApi.totalElements;
+          console.log('Total: ' + this.totalElements);
+          this.totalPages = usersApi.totalPages;
+          return usersApi.users;
         }),
         catchError(() => {
           this.isLoadingResults = false;
