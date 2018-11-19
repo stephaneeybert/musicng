@@ -9,6 +9,7 @@ import { PaginationService } from './core/service/pagination.service';
 import { LoginService } from './core/service/login.service';
 import { UserService } from './views/user/user.service';
 
+// TODO Should the core module only contains services ?
 @NgModule({
   providers: [
     UtilsService,
