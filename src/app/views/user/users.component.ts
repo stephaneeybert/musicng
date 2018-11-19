@@ -55,7 +55,7 @@ export class UsersComponent implements OnInit {
           this.isLoadingResults = true;
           return this.getUsers(this.searchTerm, this.sort.active, this.sort.direction, this.paginator.pageIndex);
         }),
-        map(userApi => {
+        map((usersApi: UsersApi) => {
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
           this.currentPageNumber = userApi.currentPageNumber;
