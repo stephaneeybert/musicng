@@ -1,7 +1,8 @@
-<h2>Users</h2>
 <mat-form-field>
-	<input matInput (keyup)="search($event.target.value)" placeholder="User name" autocomplete="off">
+	<input matInput (keyup)="search($event.target.value)" placeholder="Search..." autocomplete="off">
 </mat-form-field>
+
+<app-user-edit (userEditedEvent)="refreshList($event)"></app-user-edit>
 
 <div class="example-container mat-elevation-z8">
 	<div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
@@ -30,12 +31,24 @@
 
 			<ng-container matColumnDef="email">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-				<td mat-cell *matCellDef="let user"><a routerLink="/users/{{user.id}}">{{user.email}}</a></td>
+				<td mat-cell *matCellDef="let user">
+					<a routerLink="/users/{{user.id}}">{{user.email}}</a>
+				</td>
 			</ng-container>
 
 			<ng-container matColumnDef="confirmed">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Confirmed</th>
-				<td mat-cell *matCellDef="let user"><app-user-confirmed [userId]="user.id" (confirmedChange)="displayConfirmed($event)"></app-user-confirmed></td>
+				<td mat-cell *matCellDef="let user">
+					<app-user-confirmed [userId]="user.id" (confirmedChange)="displayConfirmed($event)"></app-user-confirmed>
+				</td>
+			</ng-container>
+
+
+			<ng-container matColumnDef="actions">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+				<td mat-cell *matCellDef="let user">
+					<button (click)="openUserDialog(user.id)">Edit the user</button>
+				</td>
 			</ng-container>
 
 			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

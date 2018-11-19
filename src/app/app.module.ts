@@ -22,7 +22,9 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
 
 import { environment } from '../environments/environment';
 import { LoginDialogComponent } from './core/login/login-dialog.component';
+import { UserDialogComponent } from './views/user/user-dialog.component';
 import { HeaderComponent } from './views/header/header.component';
+import { UserEditComponent } from '@app/views/user/user-edit.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { HeaderComponent } from './views/header/header.component';
     UsersComponent,
     UserComponent,
     UserConfirmedComponent,
+    UserEditComponent,
     MessagesComponent,
     DashboardComponent,
     SecuredLayoutComponent,
@@ -37,6 +40,7 @@ import { HeaderComponent } from './views/header/header.component';
     LoginComponent,
     LoginDialogComponent,
     HeaderComponent,
+    UserDialogComponent
   ],
   imports: [
     CoreModule,
@@ -50,7 +54,8 @@ import { HeaderComponent } from './views/header/header.component';
     AppGuiModule,
   ],
   entryComponents: [
-    LoginDialogComponent
+    LoginDialogComponent,
+    UserDialogComponent
   ],
   bootstrap: [AppComponent]
 })
