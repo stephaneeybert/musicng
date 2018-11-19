@@ -28,10 +28,10 @@ export class UserService {
       );
   }
 
-  public getSome(searchTerm: string, sortFieldName: string, sortDirection: string, currentPage: number, limit: number): Observable<any> {
+  public getSome(searchTerm: string, sortFieldName: string, sortDirection: string, currentPage: number, pageSize: number): Observable<any> {
     let httpParams = new HttpParams()
     .set('page', currentPage.toString())
-    .set('size', limit.toString());
+    .set('size', pageSize.toString());
     if (searchTerm) {
       httpParams = httpParams.append('searchTerm', searchTerm);
     }
