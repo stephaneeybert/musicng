@@ -14,4 +14,6 @@ export class MessagesComponent implements OnInit {
   ngOnInit() {
   }
 
+  // TODO Use this component somewhere, in a page, to list of the messages
+
 }
