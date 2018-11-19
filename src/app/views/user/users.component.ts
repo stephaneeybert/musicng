@@ -118,8 +118,8 @@ export class UsersComponent implements OnInit {
     this.userService.delete(user).subscribe();
   }
 
-  displayConfirmed(data) {
-    console.log('Toggled the mail confirmed status for the user with id: ' + data.id);
+  displayConfirmed(userId: number) {
+    console.log('Toggled the mail confirmed status for the user with id: ' + userId);
   }
 
 }
