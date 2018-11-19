@@ -100,6 +100,7 @@ export class UsersComponent implements OnInit {
     }
   }
 
+  // TODO This is never called yet
   onSelect(user: User): void {
     this.messageService.add('Selected the user ' + user.email);
   }
@@ -114,6 +115,7 @@ export class UsersComponent implements OnInit {
       });
   }
 
+  // TODO Add a delete button at the end of the row
   delete(user: User): void {
     this.userService.delete(user).subscribe();
   }
