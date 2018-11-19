@@ -10,7 +10,7 @@ import { UserService } from '../user/user.service';
 export class UserConfirmedComponent implements OnChanges {
 
   @Input() userId: number;
-  @Output() userConfirmedValueChange = new EventEmitter();
+  @Output() confirmedChange: EventEmitter<number> = new EventEmitter<number>();
   confirmed: boolean;
 
   constructor(
@@ -24,7 +24,7 @@ export class UserConfirmedComponent implements OnChanges {
       this.userService.partialUpdate(user)
       .subscribe(updatedUser => {
         this.update(updatedUser.confirmedEmail);
-        this.userConfirmedValueChange.emit({ id: updatedUser.id });
+        this.confirmedChange.emit(updatedUser.id);
       });
     });
   }

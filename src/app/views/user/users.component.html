@@ -35,7 +35,7 @@
 
 			<ng-container matColumnDef="confirmed">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Confirmed</th>
-				<td mat-cell *matCellDef="let user"><app-user-confirmed [userId]="user.id" (userConfirmedValueChange)="displayConfirmed($event)"></app-user-confirmed></td>
+				<td mat-cell *matCellDef="let user"><app-user-confirmed [userId]="user.id" (confirmedChange)="displayConfirmed($event)"></app-user-confirmed></td>
 			</ng-container>
 
 			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
