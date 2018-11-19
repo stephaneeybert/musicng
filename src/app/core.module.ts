@@ -1,14 +1,6 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import {
-  MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule,
-  MatListModule, MatGridListModule, MatCardModule, MatMenuModule,
-  MatTableModule, MatPaginatorModule, MatSortModule,
-  MatDialogModule,
-  MatFormFieldModule, MatInputModule
-} from '@angular/material';
-
 import { UtilsService } from './core/service/utils.service';
 import { MessageService } from './core/messages/message.service';
 import { HttpService } from './core/service/http.service';
