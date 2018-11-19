@@ -105,16 +105,6 @@ export class UsersComponent implements OnInit {
     this.messageService.add('Selected the user ' + user.email);
   }
 
-  add(email: string): void {
-    email = email.trim();
-    if (!name) {
-      return;
-    }
-    this.userService.add({ email } as User)
-      .subscribe(user => {
-      });
-  }
-
   // TODO Add a delete button at the end of the row
   delete(user: User): void {
     this.userService.delete(user).subscribe();
