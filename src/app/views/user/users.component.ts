@@ -36,8 +36,8 @@ export class UsersComponent implements OnInit {
   constructor(
     private userService: UserService,
     private paginationService: PaginationService,
-    private messageService: MessageService) {
-
+    private messageService: MessageService
+  ) {
     this.dataSource = new MatTableDataSource();
   }
 
@@ -112,6 +112,10 @@ export class UsersComponent implements OnInit {
 
   displayConfirmed(userId: number) {
     console.log('Toggled the mail confirmed status for the user with id: ' + userId);
+  }
+
+  refreshList(user: User) {
+    console.log('Edited the user: ' + user.id);
   }
 
 }

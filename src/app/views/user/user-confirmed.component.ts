@@ -17,7 +17,7 @@ export class UserConfirmedComponent implements OnChanges {
     private userService: UserService
   ) { }
 
-  toggleConfirmed() {
+  toggleConfirmed(data) {
     this.userService.get(this.userId)
     .subscribe(user => {
       user.confirmedEmail = !user.confirmedEmail;
