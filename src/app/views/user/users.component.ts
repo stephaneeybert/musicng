@@ -80,7 +80,7 @@ export class UsersComponent implements OnInit {
         map(response => {
           return new UsersApi(
             response._embedded.userResourceList as User[],
-            this.paginationService.correctPageNumberMispatch(response.page.number),
+            response.page.number,
             response.page.size,
             response.page.totalElements,
             response.page.totalPages
