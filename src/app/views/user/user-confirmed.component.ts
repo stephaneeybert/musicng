@@ -19,7 +19,7 @@ export class UserConfirmedComponent implements OnChanges {
 
   toggleConfirmed(data) {
     this.userService.get(this.userId)
-    .subscribe(user => {
+    .subscribe(user => { // TODO Use a pipe instead of having nested subscribes
       user.confirmedEmail = !user.confirmedEmail;
       this.userService.partialUpdate(user)
       .subscribe(updatedUser => {
