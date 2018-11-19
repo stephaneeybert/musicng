@@ -18,8 +18,9 @@ export class UsersComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'email', 'confirmed', 'firstname', 'lastname', 'actions'];
 
-  currentPageNumber: number;
   elementsPerPage = 5;
+
+  currentPageNumber: number;
   totalElements: number;
   totalPages: number;
 
