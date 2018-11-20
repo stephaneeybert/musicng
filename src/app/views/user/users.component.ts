@@ -18,7 +18,7 @@ export class UsersComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'email', 'confirmed', 'firstname', 'lastname', 'actions'];
 
-  elementsPerPage = 5;
+  elementsPerPage = 5; // TODO Have these page sizes options in the environment
   pageSizeOptions: number[] = [5, 10, 25, 100];
 
   currentPageNumber: number;
