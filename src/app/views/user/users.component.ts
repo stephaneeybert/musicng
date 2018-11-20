@@ -45,10 +45,9 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     // Select the first page when the sort order changes
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.sort.sortChange.subscribe(() => {
+      this.paginator.pageIndex = 0;
+    });
 
     merge(this.searchTermEvent, this.sort.sortChange, this.paginator.page)
       .pipe(
