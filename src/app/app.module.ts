@@ -10,6 +10,7 @@ import { AppGuiModule } from './app-gui.module';
 import { AuthModule } from './core/auth/auth.module';
 import { MaterialModule } from './material.module';
 
+import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { MessagesComponent } from './core/messages/messages.component';
 import { SecuredLayoutComponent } from './layouts/secured.layout';
@@ -19,8 +20,6 @@ import { UsersComponent } from './views/user/users.component';
 import { UserComponent } from './views/user/user.component';
 import { UserConfirmedComponent } from './views/user/user-confirmed.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
-
-import { environment } from '../environments/environment';
 import { LoginDialogComponent } from './core/login/login-dialog.component';
 import { UserDialogComponent } from './views/user/user-dialog.component';
 import { HeaderComponent } from './views/header/header.component';
