@@ -71,7 +71,7 @@ export class UsersComponent implements OnInit {
           this.isRateLimitReached = true;
           return observableOf([]);
         })
-      ).subscribe(users => {
+      ).subscribe((users: User[]) => {
         this.dataSource.data = users;
       });
   }
