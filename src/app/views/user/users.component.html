@@ -46,7 +46,7 @@
 			<ng-container matColumnDef="actions">
 				<th mat-header-cell *matHeaderCellDef>Actions</th>
 				<td mat-cell *matCellDef="let user">
-					<button (click)="openUserDialog(user.id)">Edit the user</button>
+					<app-user-edit [existingUser]="user" (userEditedEvent)="refreshList($event)"></app-user-edit>
 				</td>
 			</ng-container>
 

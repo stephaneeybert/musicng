@@ -16,14 +16,15 @@ export class UserDialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userDialogRef: MatDialogRef<UserDialogComponent>,
     private userService: UserService,
-    @Inject(MAT_DIALOG_DATA) private user
+    @Inject(MAT_DIALOG_DATA) private data
   ) { }
 
   ngOnInit() {
+    console.log(this.data.user);
     this.form = this.formBuilder.group({
-      email: this.user ? this.user.email : '',
-      firstname: this.user ? this.user.firstname : '',
-      lastname: this.user ? this.user.lastname : ''
+      email: this.data.user ? this.data.user.email : '',
+      firstname: this.data.user ? this.data.user.firstname : '',
+      lastname: this.data.user ? this.data.user.lastname : ''
     });
   }
 

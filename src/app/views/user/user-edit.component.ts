@@ -12,6 +12,7 @@ import { UserDialogComponent } from './user-dialog.component';
 })
 export class UserEditComponent implements OnChanges {
 
+  @Input() existingUser: User;
   @Output() userEditedEvent: EventEmitter<User> = new EventEmitter<User>();
 
   userDialogRef: MatDialogRef<UserDialogComponent>;
@@ -24,11 +25,11 @@ export class UserEditComponent implements OnChanges {
   ngOnChanges() {
   }
 
-  openUserDialog(existingUser: User) {
+  openUserDialog() {
     this.userDialogRef = this.matDialog.open(UserDialogComponent, {
       hasBackdrop: false,
       data: {
-        user: existingUser
+        user: this.existingUser
       }
     });
 
@@ -37,8 +38,9 @@ export class UserEditComponent implements OnChanges {
       .subscribe(user => {
         // TODO validate the edited user
         if (user) {
-          if (user.id) {
-            this.userService.fullUpdate(existingUser)
+          if (this.existingUser) {
+            user.id = this.existingUser.id;
+            this.userService.fullUpdate(user)
               .subscribe(updatedUser => {
                 this.userEditedEvent.emit(updatedUser);
                 // TODO Add a hint that the user has been added
