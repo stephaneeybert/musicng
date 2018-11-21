@@ -108,7 +108,10 @@ export class UsersComponent implements OnInit {
 
   // TODO Add a delete button at the end of the row
   delete(user: User): void {
-    this.userService.delete(user).subscribe();
+    this.userService.delete(user).subscribe(() => {
+      console.log('The user ' + user.firstname + ' ' + user.lastname + ' has been deleted.');
+      // TODO Display a caption that the user has been deleted
+    });
   }
 
   displayConfirmed(userId: number) {
