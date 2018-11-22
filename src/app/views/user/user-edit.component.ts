@@ -5,6 +5,7 @@ import { filter } from 'rxjs/operators';
 import { User } from './user';
 import { UserService } from './user.service';
 import { UserDialogComponent } from './user-dialog.component';
+import { UtilsService } from '@app/core/service/utils.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -20,6 +21,7 @@ export class UserEditComponent implements OnChanges {
 
   constructor(
     private matDialog: MatDialog,
+    private utilsService: UtilsService,
     private userService: UserService
   ) { }
 
@@ -44,13 +46,13 @@ export class UserEditComponent implements OnChanges {
             this.userService.fullUpdate(user)
               .subscribe(updatedUser => {
                 this.userEditedEvent.emit(updatedUser);
-                // TODO Add a hint that the user has been added
+                this.utilsService.showSnackBar('The user ' + updatedUser.firstname + ' ' + updatedUser.lastname + ' has been updated.');
               });
           } else {
             this.userService.add(user)
               .subscribe(addedUser => {
                 this.userEditedEvent.emit(addedUser);
-                // TODO Add a hint that the user has been updated
+                this.utilsService.showSnackBar('The user ' + addedUser.firstname + ' ' + addedUser.lastname + ' has been added.');
               });
           }
         }
