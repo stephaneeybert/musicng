@@ -31,9 +31,9 @@ export class UsersComponent implements OnInit {
 
   dataSource: MatTableDataSource<User>;
 
-  searchTerm: string;
   updateEvent = new EventEmitter<{ value: User }>();
   searchTermEvent = new EventEmitter<{ value: string }>();
+  searchTerm: string;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
