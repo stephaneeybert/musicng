@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, EventEmitter, Output } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { MatSnackBar } from '@angular/material';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
@@ -8,6 +7,7 @@ import { User } from './user';
 import { UsersApi } from './users.api';
 import { UserService } from '../user/user.service';
 import { PaginationService } from '../../core/service/pagination.service';
+import { UtilsService } from '../../core/service/utils.service';
 import { MessageService } from '../../core/messages/message.service';
 
 @Component({
@@ -37,9 +37,9 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private matSnackBar: MatSnackBar,
     private userService: UserService,
     private paginationService: PaginationService,
+    private utilsService: UtilsService,
     private messageService: MessageService
   ) {
     this.dataSource = new MatTableDataSource();
@@ -108,22 +108,16 @@ export class UsersComponent implements OnInit {
 
   delete(user: User): void {
     this.userService.delete(user).subscribe(() => {
-      this.showSnackBar('The user ' + user.firstname + ' ' + user.lastname + ' has been deleted.');
+      this.utilsService.showSnackBar('The user ' + user.firstname + ' ' + user.lastname + ' has been deleted.');
     });
   }
 
   displayConfirmed(user: User) {
-    this.showSnackBar('Toggled the mail confirmed status for ' + user.firstname + ' ' + user.lastname);
+    this.utilsService.showSnackBar('Toggled the mail confirmed status for ' + user.firstname + ' ' + user.lastname);
   }
 
   refreshList(user: User) {
     console.log('Edited the user: ' + user.id);
-  }
-
-  public showSnackBar(message: string, action?: string) {
-    this.matSnackBar.open(message, action, {
-      duration: 2000,
-    });
   }
 
 }

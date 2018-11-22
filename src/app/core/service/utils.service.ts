@@ -1,7 +1,18 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class UtilsService {
+
+    constructor(
+        private matSnackBar: MatSnackBar
+    ) { }
+
+    public showSnackBar(message: string, action?: string) {
+        this.matSnackBar.open(message, action, {
+          duration: 2000,
+        });
+      }
 
     public sortByAsc(collection: any, fieldName: string): any {
         return collection.sort((param1, param2) => {
