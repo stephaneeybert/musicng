@@ -64,6 +64,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 return throwError(error);
               } else {
                 if (this.authService.rememberMe()) {
+                  // TODO Implement a remember me feature
                   // if (this.refreshTokenInProgress) {
                   //   return this.refreshTokenSubject
                   //     .pipe(
@@ -94,7 +95,6 @@ export class AuthInterceptor implements HttpInterceptor {
                   //       })
                   //     );
                   // }
-
                   console.log('Remember me...');
                   return this.refreshToken()
                     .pipe(
