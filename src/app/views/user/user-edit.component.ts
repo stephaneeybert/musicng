@@ -12,6 +12,7 @@ import { UserDialogComponent } from './user-dialog.component';
 })
 export class UserEditComponent implements OnChanges {
 
+  @Input() label = 'Edit';
   @Input() existingUser: User;
   @Output() userEditedEvent: EventEmitter<User> = new EventEmitter<User>();
 
