@@ -1,4 +1,6 @@
 import { Component, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { of as observableOf } from 'rxjs';
+import { catchError, switchMap, map } from 'rxjs/operators';
 
 import { User } from './user';
 import { UserService } from '../user/user.service';
@@ -19,21 +21,27 @@ export class UserConfirmedComponent implements OnChanges {
 
   toggleConfirmed(data) {
     this.userService.get(this.userId)
-    .subscribe(user => { // TODO Use a pipe instead of having nested subscribes
-      user.confirmedEmail = !user.confirmedEmail;
-      this.userService.partialUpdate(user)
-      .subscribe(updatedUser => {
-        this.update(updatedUser.confirmedEmail);
-        this.confirmedChange.emit(updatedUser.id);
+      .pipe(
+        switchMap((user: User) => {
+          user.confirmedEmail = !user.confirmedEmail;
+          return this.userService.partialUpdate(user);
+        }),
+        map((updatedUser: User) => {
+          this.update(updatedUser.confirmedEmail);
+          return this.confirmedChange.emit(updatedUser.id);
+        }),
+        catchError(() => {
+          return observableOf([]);
+        })
+      ).subscribe((users: User[]) => {
       });
-    });
   }
 
   ngOnChanges() {
     this.userService.get(this.userId)
-    .subscribe(user => {
-      this.update(user.confirmedEmail);
-    });
+      .subscribe(user => {
+        this.update(user.confirmedEmail);
+      });
   }
 
   update(confirmedEmail: boolean) {
