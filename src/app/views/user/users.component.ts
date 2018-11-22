@@ -18,8 +18,8 @@ export class UsersComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'email', 'confirmed', 'firstname', 'lastname', 'actions'];
 
-  elementsPerPage = 5; // TODO Have these page sizes options in the environment
-  pageSizeOptions: number[] = [5, 10, 25, 100];
+  elementsPerPage: number;
+  pageSizeOptions: number[];
 
   currentPageNumber: number;
   totalElements: number;
@@ -44,6 +44,9 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.elementsPerPage = this.paginationService.elementsPerPage;
+    this.pageSizeOptions = this.pageSizeOptions;
+
     // Select the first page when the sort order changes
     this.sort.sortChange.subscribe(() => {
       this.paginator.pageIndex = 0;
