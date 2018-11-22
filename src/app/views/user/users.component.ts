@@ -127,7 +127,6 @@ export class UsersComponent implements OnInit {
     this.updateEvent.emit({
       value: user
     });
-    console.log('Page number: ' + this.paginator.pageIndex);
   }
 
 }
