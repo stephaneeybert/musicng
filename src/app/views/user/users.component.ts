@@ -106,7 +106,6 @@ export class UsersComponent implements OnInit {
     this.messageService.add('Selected the user ' + user.email);
   }
 
-  // TODO Add a delete button at the end of the row
   delete(user: User): void {
     this.userService.delete(user).subscribe(() => {
       console.log('The user ' + user.firstname + ' ' + user.lastname + ' has been deleted.');
