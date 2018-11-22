@@ -32,6 +32,7 @@ export class UsersComponent implements OnInit {
   dataSource: MatTableDataSource<User>;
 
   searchTerm: string;
+  updateEvent = new EventEmitter<{ value: User }>();
   searchTermEvent = new EventEmitter<{ value: string }>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -51,10 +52,10 @@ export class UsersComponent implements OnInit {
 
     // Select the first page when the sort order changes
     this.sort.sortChange.subscribe(() => {
-      this.paginator.pageIndex = 0;
+      this.goToFirstPage();
     });
 
-    merge(this.searchTermEvent, this.sort.sortChange, this.paginator.page)
+    merge(this.updateEvent, this.searchTermEvent, this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => {
@@ -108,7 +109,8 @@ export class UsersComponent implements OnInit {
 
   delete(user: User): void {
     this.userService.delete(user).subscribe(() => {
-      // TODO Refresh the list after the deletion
+      this.goToFirstPage();
+      this.refreshListForUser(user);
       this.utilsService.showSnackBar('The user ' + user.firstname + ' ' + user.lastname + ' has been deleted.');
     });
   }
@@ -117,8 +119,15 @@ export class UsersComponent implements OnInit {
     this.utilsService.showSnackBar('Toggled the mail confirmed status for ' + user.firstname + ' ' + user.lastname);
   }
 
-  refreshList(user: User) {
-    console.log('Edited the user: ' + user.id);
+  goToFirstPage() {
+    this.paginator.pageIndex = 0;
+  }
+
+  refreshListForUser(user: User) {
+    this.updateEvent.emit({
+      value: user
+    });
+    console.log('Page number: ' + this.paginator.pageIndex);
   }
 
 }
