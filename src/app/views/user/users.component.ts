@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, EventEmitter, Output } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
@@ -36,6 +37,7 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
+    private matSnackBar: MatSnackBar,
     private userService: UserService,
     private paginationService: PaginationService,
     private messageService: MessageService
@@ -106,17 +108,22 @@ export class UsersComponent implements OnInit {
 
   delete(user: User): void {
     this.userService.delete(user).subscribe(() => {
-      console.log('The user ' + user.firstname + ' ' + user.lastname + ' has been deleted.');
-      // TODO Display a caption that the user has been deleted
+      this.showSnackBar('The user ' + user.firstname + ' ' + user.lastname + ' has been deleted.');
     });
   }
 
-  displayConfirmed(userId: number) {
-    console.log('Toggled the mail confirmed status for the user with id: ' + userId);
+  displayConfirmed(user: User) {
+    this.showSnackBar('Toggled the mail confirmed status for ' + user.firstname + ' ' + user.lastname);
   }
 
   refreshList(user: User) {
     console.log('Edited the user: ' + user.id);
+  }
+
+  public showSnackBar(message: string, action?: string) {
+    this.matSnackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
 }

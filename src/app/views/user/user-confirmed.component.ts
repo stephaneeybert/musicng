@@ -12,7 +12,7 @@ import { UserService } from '../user/user.service';
 export class UserConfirmedComponent implements OnChanges {
 
   @Input() userId: number;
-  @Output() confirmedChange: EventEmitter<number> = new EventEmitter<number>();
+  @Output() confirmedChange: EventEmitter<User> = new EventEmitter<User>();
   confirmed: boolean;
 
   constructor(
@@ -28,7 +28,7 @@ export class UserConfirmedComponent implements OnChanges {
         }),
         map((updatedUser: User) => {
           this.update(updatedUser.confirmedEmail);
-          return this.confirmedChange.emit(updatedUser.id);
+          return this.confirmedChange.emit(updatedUser);
         }),
         catchError(() => {
           return observableOf([]);
