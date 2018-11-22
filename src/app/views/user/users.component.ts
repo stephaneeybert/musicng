@@ -101,11 +101,6 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  // TODO This is never called yet
-  onSelect(user: User): void {
-    this.messageService.add('Selected the user ' + user.email);
-  }
-
   delete(user: User): void {
     this.userService.delete(user).subscribe(() => {
       console.log('The user ' + user.firstname + ' ' + user.lastname + ' has been deleted.');
