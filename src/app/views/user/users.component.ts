@@ -108,6 +108,7 @@ export class UsersComponent implements OnInit {
 
   delete(user: User): void {
     this.userService.delete(user).subscribe(() => {
+      // TODO Refresh the list after the deletion
       this.utilsService.showSnackBar('The user ' + user.firstname + ' ' + user.lastname + ' has been deleted.');
     });
   }
