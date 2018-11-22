@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
-import { HttpService } from '../../core/service/http.service';
+import { HttpService } from '@app/core/service/http.service';
 import { User } from './user';
 
 const DOMAIN_URI = 'users';

@@ -5,10 +5,10 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
 import { User } from './user';
 import { UsersApi } from './users.api';
-import { UserService } from '../user/user.service';
-import { PaginationService } from '../../core/service/pagination.service';
-import { UtilsService } from '../../core/service/utils.service';
-import { MessageService } from '../../core/messages/message.service'; // TODO prefer the syntax from '@app/core
+import { UserService } from '@app/views/user/user.service';
+import { PaginationService } from '@app/core/service/pagination.service';
+import { UtilsService } from '@app/core/service/utils.service';
+import { MessageService } from '@app/core/messages/message.service';
 
 @Component({
   selector: 'app-users',

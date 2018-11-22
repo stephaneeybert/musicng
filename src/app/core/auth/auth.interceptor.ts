@@ -14,7 +14,7 @@ import { tap, catchError, take, filter, switchMap } from 'rxjs/operators';
 import { empty, throwError, Subject } from 'rxjs';
 
 import { TokenService } from './token.service';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '@app/core/auth/auth.service';
 
 const PATH_LOGIN = 'login';
 

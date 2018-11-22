@@ -5,8 +5,8 @@ import { map, tap, catchError } from 'rxjs/operators';
 import { of, empty } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { HttpService } from '../service/http.service';
-import { TokenService } from '../auth/token.service';
+import { HttpService } from '@app/core/service/http.service';
+import { TokenService } from '@app/core/auth/token.service';
 
 const PATH_AUTH = 'auth';
 const PATH_LOGIN = 'login';

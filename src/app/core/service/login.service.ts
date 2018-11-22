@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs';
 
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '@app/core/auth/auth.service';
 
 @Injectable()
 export class LoginService {

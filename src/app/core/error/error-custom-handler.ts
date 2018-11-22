@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ErrorHandler } from '@angular/core';
 
 import { ErrorService } from './error.service';
-import { NotificationService } from '../service/notification.service';
+import { NotificationService } from '@app/core/service/notification.service';
 
 @Injectable()
 export class ErrorCustomHandler implements ErrorHandler {

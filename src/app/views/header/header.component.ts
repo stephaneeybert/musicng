@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Component } from '@angular/core';
 
-import { LoginService } from '../../core/service/login.service';
+import { LoginService } from '@app/core/service/login.service';
 
 @Component({
   selector: 'app-header',

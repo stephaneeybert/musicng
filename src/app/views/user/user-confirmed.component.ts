@@ -3,7 +3,7 @@ import { of as observableOf } from 'rxjs';
 import { catchError, switchMap, map } from 'rxjs/operators';
 
 import { User } from './user';
-import { UserService } from '../user/user.service';
+import { UserService } from '@app/views/user/user.service';
 
 @Component({
   selector: 'app-user-confirmed',

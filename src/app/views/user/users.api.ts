@@ -1,5 +1,5 @@
-import { User } from '../user/user';
-import { PaginationApi } from '../../core/service/pagination.api';
+import { User } from '@app/views/user/user';
+import { PaginationApi } from '@app/core/service/pagination.api';
 
 export class UsersApi extends PaginationApi {
 
