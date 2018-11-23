@@ -28,7 +28,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## TODO
 
-Prevent the opening of multiple dialogs if clicking multiple times on the Add a user button
+Prevent the opening of multiple dialogs if clicking multiple times on the Add a user butto see debounceTime
 Show a message if the user cannot be added because his email already exists
 Check that the email is free right after it has been typed
 When searching prevent too many searches if typing super fast
