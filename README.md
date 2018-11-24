@@ -28,10 +28,10 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## TODO
 
-Prevent the opening of multiple dialogs if clicking multiple times on the Add a user butto see debounceTime
+Prevent the opening of multiple dialogs if clicking multiple times on the Add a user button
 Show a message if the user cannot be added because his email already exists
 Check that the email is free right after it has been typed
-When searching prevent too many searches if typing super fast
+When searching prevent too many searches if typing super fast (see debounceTime)
 Docker Spring Boot2 Mariadb
 Make the user routes for the admin role and later give the admin role to stephane
 Add sorting to the user all() get request so that it is consumed by the Spring Data pageable
