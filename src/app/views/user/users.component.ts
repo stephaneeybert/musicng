@@ -9,6 +9,7 @@ import { UserService } from '@app/views/user/user.service';
 import { PaginationService } from '@app/core/service/pagination.service';
 import { UtilsService } from '@app/core/service/utils.service';
 import { MessageService } from '@app/core/messages/message.service';
+import { ToastService } from '@app/core/toast/toast.service';
 
 @Component({
   selector: 'app-users',
@@ -41,7 +42,8 @@ export class UsersComponent implements OnInit {
     private userService: UserService,
     private paginationService: PaginationService,
     private utilsService: UtilsService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private toastService: ToastService
   ) {
     this.dataSource = new MatTableDataSource();
   }
@@ -116,7 +118,9 @@ export class UsersComponent implements OnInit {
   }
 
   displayConfirmed(user: User) {
-    this.utilsService.showSnackBar('Toggled the mail confirmed status for ' + user.firstname + ' ' + user.lastname);
+    const message = 'Toggled the mail confirmed status for ' + user.firstname + ' ' + user.lastname;
+    this.showToast(message);
+    this.utilsService.showSnackBar(message);
   }
 
   goToFirstPage() {
@@ -126,6 +130,13 @@ export class UsersComponent implements OnInit {
   refreshListForUser(user: User) {
     this.updateEvent.emit({
       value: user
+    });
+  }
+
+  showToast(message: string) {
+    this.toastService.show({
+      text: message,
+      type: 'success'
     });
   }
 

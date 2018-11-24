@@ -1,5 +1,6 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ToastModule } from '@app/core/toast';
 
 import { UtilsService } from './core/service/utils.service';
 import { MessageService } from './core/messages/message.service';
@@ -10,6 +11,9 @@ import { LoginService } from './core/service/login.service';
 import { UserService } from './views/user/user.service';
 
 @NgModule({
+  imports: [
+    ToastModule.forRoot()
+  ],
   providers: [
     UtilsService,
     MessageService,
