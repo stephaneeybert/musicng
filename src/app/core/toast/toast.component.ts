@@ -20,7 +20,7 @@ export class ToastComponent implements OnInit, OnDestroy {
   constructor(
     readonly data: ToastData,
     readonly ref: ToastRef,
-    @Inject(TOAST_CONFIG_TOKEN) private toastConfig: ToastConfig
+    @Inject(TOAST_CONFIG_TOKEN) public toastConfig: ToastConfig
   ) {
     this.iconType = data.type === 'success' ? 'done' : data.type;
   }
