@@ -52,7 +52,7 @@ const routes: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         data: {
-          expectedRole: 'admin'
+          expectedRole: 'user' // 'admin' TODO put this back some time
         }
       },
       {
