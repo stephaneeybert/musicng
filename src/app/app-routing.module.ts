@@ -8,8 +8,8 @@ import { UnsecuredLayoutComponent } from './layouts/unsecured.layout';
 import { LoginComponent } from './core/login/login.component';
 import { ErrorComponent } from './core/error/error.component';
 import { UsersComponent } from './views/user/users.component';
-import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { UserComponent } from './views/user/user.component';
+import { DashboardComponent } from '@app/views/dashboard/dashboard.component';
 
 const routes: Routes = [
   {

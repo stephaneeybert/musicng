@@ -1,26 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { UserService } from '@app/views/user/user.service';
 import { User } from '@app/views/user/user';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  templateUrl: './dashboard.component.html'
 })
-export class DashboardComponent implements OnInit {
-
-  users: User[] = [];
+export class DashboardComponent {
 
   constructor(private userService: UserService) { }
 
-  ngOnInit() {
-    this.getAll();
-  }
+  users$: Observable<User[]> = this.userService.getAll().pipe(
+    map(users => {
+      return users.slice(1, 5);
+    })
+  );
 
-  getAll(): void {
-    this.userService.getAll()
-      .subscribe((users: User[]) => {
-        this.users = this.users = users;
-      });
-  }
 }
