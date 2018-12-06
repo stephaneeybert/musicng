@@ -36,7 +36,6 @@ export class ErrorCustomHandler implements ErrorHandler {
             // or keep the user working on stuff that wouldn’t be saved
             // If something is broken in the app, stop the app and
             // redirect the user to an error screen with all the information
-            console.log('A client error occured');
             errorService.log(error).subscribe(errorWithContextInfo => {
                 console.log(errorWithContextInfo);
                 router.navigate(['error'], { queryParams: errorWithContextInfo });
