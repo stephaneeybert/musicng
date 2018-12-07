@@ -25,6 +25,7 @@ import { LoginDialogComponent } from './core/login/login-dialog.component';
 import { UserDialogComponent } from './views/user/user-dialog.component';
 import { HeaderComponent } from './views/header/header.component';
 import { UserEditComponent } from '@app/views/user/user-edit.component';
+import { DebounceDirective } from './debounce.directive';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { UserEditComponent } from '@app/views/user/user-edit.component';
     LoginComponent,
     LoginDialogComponent,
     HeaderComponent,
-    UserDialogComponent
+    UserDialogComponent,
+    DebounceDirective,
   ],
   imports: [
     CoreModule,
