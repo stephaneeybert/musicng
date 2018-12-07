@@ -141,4 +141,8 @@ export class UsersComponent implements OnInit {
     });
   }
 
+  logDebounceClick() {
+    console.log('Logging a debounce click');
+  }
+
 }

@@ -26,6 +26,7 @@ import { UserDialogComponent } from './views/user/user-dialog.component';
 import { HeaderComponent } from './views/header/header.component';
 import { UserEditComponent } from '@app/views/user/user-edit.component';
 import { DebounceDirective } from './debounce.directive';
+import { DebounceClickDirective } from './debounce-click.directive';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { DebounceDirective } from './debounce.directive';
     HeaderComponent,
     UserDialogComponent,
     DebounceDirective,
+    DebounceClickDirective
   ],
   imports: [
     CoreModule,

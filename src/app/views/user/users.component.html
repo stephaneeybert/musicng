@@ -2,6 +2,8 @@
 	<input matInput [(ngModel)]="searchTerm" (appOnDebounce)="search($event)" placeholder="Search..." autocomplete="off">
 </mat-form-field>
 
+<button (appOnDebounceClick)="logDebounceClick()" [debounceTime]="700">Debounced Click</button>
+
 <app-user-edit (userEditedEvent)="refreshListForUser($event)" label="Add a user"></app-user-edit>
 
 <div class="example-container mat-elevation-z8">
