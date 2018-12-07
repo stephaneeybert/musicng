@@ -98,7 +98,8 @@ export class UsersComponent implements OnInit {
       );
   }
 
-  search(searchTerm: string) {
+  search(searchTerm: string): void {
+    console.log('Searching for ' + searchTerm);
     this.searchTerm = searchTerm;
     this.searchTermEvent.emit({
       value: this.searchTerm

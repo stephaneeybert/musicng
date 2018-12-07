@@ -1,5 +1,5 @@
 <mat-form-field>
-	<input matInput (keyup)="search($event.target.value)" placeholder="Search..." autocomplete="off">
+	<input matInput [(ngModel)]="searchTerm" (appOnDebounce)="search($event)" placeholder="Search..." autocomplete="off">
 </mat-form-field>
 
 <app-user-edit (userEditedEvent)="refreshListForUser($event)" label="Add a user"></app-user-edit>
