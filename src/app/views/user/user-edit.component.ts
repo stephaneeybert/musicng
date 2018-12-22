@@ -13,7 +13,7 @@ import { UtilsService } from '@app/core/service/utils.service';
 })
 export class UserEditComponent implements OnChanges {
 
-  @Input() label = 'Edit';
+  private _label = 'Edit';
   @Input() existingUser: User;
   @Output() userEditedEvent: EventEmitter<User> = new EventEmitter<User>();
 
@@ -26,6 +26,15 @@ export class UserEditComponent implements OnChanges {
   ) { }
 
   ngOnChanges() {
+  }
+
+  @Input()
+  set label(label: string) {
+    this._label = (label && label.trim()) || '<no label set>';
+  }
+
+  get label(): string {
+    return this._label;
   }
 
   openUserDialog() {
