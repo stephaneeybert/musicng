@@ -11,11 +11,9 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class DebounceDirective implements OnInit, OnDestroy {
 
-  @Output()
-  public appOnDebounce: EventEmitter<string>;
+  @Output() public appOnDebounce: EventEmitter<string>;
 
-  @Input()
-  public debounceTime = 300;
+  @Input() public debounceTime = 300;
 
   private isFirstChange = true;
   private subscription: Subscription;

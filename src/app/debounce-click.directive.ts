@@ -10,11 +10,9 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class DebounceClickDirective implements OnInit, OnDestroy {
 
-  @Input()
-  debounceTime = 500;
+  @Input() debounceTime = 500;
 
-  @Output()
-  appOnDebounceClick = new EventEmitter();
+  @Output() appOnDebounceClick = new EventEmitter();
 
   private clicks = new Subject();
   private subscription: Subscription;
