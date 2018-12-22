@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnChanges, SimpleChange } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { filter } from 'rxjs/operators';
 
@@ -25,7 +25,21 @@ export class UserEditComponent implements OnChanges {
     private userService: UserService
   ) { }
 
-  ngOnChanges() {
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    const log: string[] = [];
+    for (const propName of Object.keys(changes)) {
+      const change = changes[propName];
+      const currentValue  = JSON.stringify(change.currentValue);
+      const previousValue = JSON.stringify(change.previousValue);
+      const changedTo = JSON.stringify(change.currentValue);
+      if (change.isFirstChange()) {
+        log.push(`Initial value of ${propName} set to ${changedTo}`);
+      } else {
+        const changedFrom = JSON.stringify(change.previousValue);
+        log.push(`${propName} changed from ${changedFrom} to ${changedTo}`);
+      }
+    }
+    console.log(log.join(', '));
   }
 
   @Input()
