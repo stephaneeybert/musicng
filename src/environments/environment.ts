@@ -7,8 +7,8 @@ export const environment = {
   production: false,
   CLIENT_ID: 'ng-zero',
   ROLE_PREFIX: 'role_',
-  BASE_REST_URI: 'http://localhost:8080/api',
-  KEYCLOAK_URI: 'http://localhost:8180/auth',
+  BASE_REST_URI: 'https://localhost:8443/api',
+  KEYCLOAK_URI: 'https://localhost:8180/auth',
   KEYCLOAK_REALM: 'learnintouch',
   KEYCLOAK_CLIENTID: 'learnintouch-js'
 };
