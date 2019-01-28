@@ -12,7 +12,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build --prod --base-href /stephaneeybert/ng-zero/` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+The build artifacts will be stored in the `dist/` directory. Use the `ng build` command for a development build. Use the `ng build --prod` command for a production build. Use the `ng build --prod --base-href /stephaneeybert/ng-zero/` command for a build to be deployed on GitPages.  
 
 ## Running unit tests
 
