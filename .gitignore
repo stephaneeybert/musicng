@@ -45,3 +45,4 @@ Thumbs.db
 
 .vscode
 ng-zero-dist.zip
+src/app/core/login/login.component.ts
