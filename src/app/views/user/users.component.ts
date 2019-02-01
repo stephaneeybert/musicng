@@ -18,7 +18,7 @@ import { ToastService } from '@app/core/toast/toast.service';
 })
 export class UsersComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'email', 'confirmed', 'firstname', 'lastname', 'actions'];
+  displayedColumns: string[] = ['confirmed', 'firstname', 'lastname', 'actions'];
 
   elementsPerPage: number;
   pageSizeOptions: number[];
