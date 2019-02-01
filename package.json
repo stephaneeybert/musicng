@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --host dev.thalasoft.com --ssl --ssl-key ~/dev/docker/projects/common/volumes/letsencrypt/certbot/conf/live/thalasoft.com/current-privkey.pem --ssl-cert ~/dev/docker/projects/common/volumes/letsencrypt/certbot/conf/live/thalasoft.com/current-cert.pem",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
