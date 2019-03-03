@@ -64,37 +64,6 @@ export class AuthInterceptor implements HttpInterceptor {
                 return throwError(error);
               } else {
                 if (this.authService.rememberMe()) {
-                  // TODO Implement a remember me feature
-                  // if (this.refreshTokenInProgress) {
-                  //   return this.refreshTokenSubject
-                  //     .pipe(
-                  //       filter(result => result !== null),
-                  //       take(1),
-                  //       switchMap((token: any) => {
-                  //         return next.handle(this.addAuthenticationAccessToken(request));
-                  //       })
-                  //     );
-                  // } else {
-                  //   this.refreshTokenInProgress = true;
-                  //   // Reset the refresh token subject to null so that subsequent
-                  //   // requests will wait until the new refresh token has been retrieved
-                  //   this.refreshTokenSubject.next(null);
-                  //   return this.authService.refreshAccessToken()
-                  //     .pipe(
-                  //       switchMap((token: any) => {
-                  //         this.refreshTokenInProgress = false;
-                  //         this.refreshTokenSubject.next(token);
-                  //         return next.handle(this.addAuthenticationAccessToken(request));
-                  //       })
-                  //     )
-                  //     .pipe(
-                  //       catchError((err: any) => {
-                  //         this.refreshTokenInProgress = false;
-                  //         // this.logout();
-                  //         return throwError(error);
-                  //       })
-                  //     );
-                  // }
                   console.log('Remember me...');
                   return this.refreshToken()
                     .pipe(
