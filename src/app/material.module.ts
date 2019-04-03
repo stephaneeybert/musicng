@@ -5,13 +5,15 @@ import {
   MatProgressSpinnerModule,
   MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule,
   MatListModule, MatGridListModule, MatCardModule, MatMenuModule,
-  MatTableModule, MatPaginatorModule, MatSortModule,
+  MatTableModule,
+  MatPaginatorModule, MatPaginatorIntl,
+  MatSortModule,
   MatCheckboxModule, MatDialogModule,
   MatFormFieldModule, MatInputModule,
   MatSlideToggleModule,
   MatSnackBarModule
 } from '@angular/material';
-
+import { LocalizedPaginator } from './core/service/localized-paginator';
 @NgModule({
   exports: [
     MatProgressSpinnerModule,
@@ -32,6 +34,12 @@ import {
     MatInputModule,
     MatSlideToggleModule,
     MatSnackBarModule
+  ],
+  providers: [
+    {
+      provide: MatPaginatorIntl,
+      useClass: LocalizedPaginator
+    }
   ]
 })
 export class MaterialModule { }
