@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthService } from './auth.service';
@@ -19,7 +19,6 @@ export function jwtOptionsFactory(tokenService: TokenService) {
 
 @NgModule({
   imports: [
-    HttpClientModule,
     JwtModule.forRoot({
       jwtOptionsProvider: {
         provide: JWT_OPTIONS,

@@ -1,6 +1,9 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ToastModule } from '@app/core/toast';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { UtilsService } from './core/service/utils.service';
 import { MessageService } from './core/messages/message.service';
@@ -10,8 +13,20 @@ import { PaginationService } from './core/service/pagination.service';
 import { LoginService } from './core/service/login.service';
 import { UserService } from './views/user/user.service';
 
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
+
 @NgModule({
   imports: [
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     ToastModule.forRoot()
   ],
   providers: [

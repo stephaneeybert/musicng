@@ -1,0 +1,10 @@
+{
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "Eléments par page:",
+    "NEXT_PAGE": "Page suivante",
+    "PREVIOUS_PAGE": "Page précédente",
+    "FIRST_PAGE": "Première page",
+    "LAST_PAGE": "Dernière page",
+    "OUT_OF": "sur"
+  }
+}
