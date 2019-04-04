@@ -38,9 +38,3 @@ Add sorting to the user all() get request so that it is consumed by the Spring D
 After an app restart, check if the authorization really expired after the access token lifespan ended
 After an app restart, check if the authorization really expired and if a refresh token was retrieved after the access token lifespan ended
 After an app restart, check if the authorization really expired after the refresh token lifespan ended
-
-The paginator i18n 
-https://material.angular.io/components/paginator/overview#internationalization
-https://material.angular.io/components/paginator/api#MatPaginatorIntl
-https://stackoverflow.com/questions/46869616/how-to-use-matpaginatorintl
-
