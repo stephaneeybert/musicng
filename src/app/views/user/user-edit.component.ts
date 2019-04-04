@@ -13,7 +13,7 @@ import { UtilsService } from '@app/core/service/utils.service';
 })
 export class UserEditComponent implements OnChanges {
 
-  private _label = 'Edit';
+  private _label = 'Edit'; // TODO Is using a _label part of the public API ?
   @Input() existingUser: User;
   @Output() userEditedEvent: EventEmitter<User> = new EventEmitter<User>();
 
