@@ -12,7 +12,6 @@ import { MaterialModule } from './material.module';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-import { MessagesComponent } from './core/messages/messages.component';
 import { SecuredLayoutComponent } from './layouts/secured.layout';
 import { UnsecuredLayoutComponent } from './layouts/unsecured.layout';
 import { LoginComponent } from './core/login/login.component';
@@ -35,7 +34,6 @@ import { DebounceClickDirective } from './debounce-click.directive';
     UserComponent,
     UserConfirmedComponent,
     UserEditComponent,
-    MessagesComponent,
     DashboardComponent,
     DashboardViewComponent,
     SecuredLayoutComponent,

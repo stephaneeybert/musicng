@@ -6,7 +6,6 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { UtilsService } from './core/service/utils.service';
-import { MessageService } from './core/messages/message.service';
 import { HttpService } from './core/service/http.service';
 import { NotificationService } from './core/service/notification.service';
 import { PaginationService } from './core/service/pagination.service';
@@ -31,7 +30,6 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [
     UtilsService,
-    MessageService,
     HttpService,
     NotificationService,
     PaginationService,
