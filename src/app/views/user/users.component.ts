@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, Input, EventEmitter, Output }
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import { User } from './user';
 import { UsersApi } from './users.api';
@@ -38,6 +39,7 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
+    private router: Router,
     private userService: UserService,
     private paginationService: PaginationService,
     private utilsService: UtilsService,
@@ -120,6 +122,10 @@ export class UsersComponent implements OnInit {
     const message = 'Toggled the mail confirmed status for ' + user.firstname + ' ' + user.lastname;
     this.showToast(message);
     this.utilsService.showSnackBar(message);
+  }
+
+  view(user: User) {
+    this.router.navigateByUrl('/users/' + user.id);
   }
 
   goToFirstPage() {
