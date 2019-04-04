@@ -8,7 +8,6 @@ import { UsersApi } from './users.api';
 import { UserService } from '@app/views/user/user.service';
 import { PaginationService } from '@app/core/service/pagination.service';
 import { UtilsService } from '@app/core/service/utils.service';
-import { MessageService } from '@app/core/messages/message.service';
 import { ToastService } from '@app/core/toast/toast.service';
 
 @Component({
@@ -42,7 +41,6 @@ export class UsersComponent implements OnInit {
     private userService: UserService,
     private paginationService: PaginationService,
     private utilsService: UtilsService,
-    private messageService: MessageService,
     private toastService: ToastService
   ) {
     this.dataSource = new MatTableDataSource();
