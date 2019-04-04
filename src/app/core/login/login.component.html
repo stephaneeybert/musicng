@@ -17,8 +17,11 @@
 					<mat-error *ngIf="isFieldInvalid('password')">
 						Please inform your password
 					</mat-error>
-				</mat-form-field>
-				<button mat-raised-button color="primary" type="submit">Login</button>
+        </mat-form-field>
+        <mat-dialog-actions>
+          <button mat-raised-button (click)="clear()">Clear</button>
+          <button mat-raised-button color="primary" type="submit">Login</button>
+        </mat-dialog-actions>
 			</form>
 		</mat-card-content>
 	</mat-card>
