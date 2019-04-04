@@ -28,6 +28,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## TODO
 
+In the login form, make the Login button the default one to be actioned when pressing the Return key
 Prevent the opening of multiple dialogs if clicking multiple times on the Add a user button
 Show a message if the user cannot be added because his email already exists
 Check that the email is free right after it has been typed
