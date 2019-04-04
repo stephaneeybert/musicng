@@ -1,6 +1,5 @@
 <mat-form-field>
   <input matInput [(ngModel)]="searchTerm" (appOnDebounce)="search($event)" placeholder="Search..." autocomplete="off">
-  <!-- TODO Replace the  [(ngModel)] for a reactive form syntax -->
 </mat-form-field>
 
 <button (appOnDebounceClick)="logDebounceClick()" [debounceTime]="700">Debounced Click</button>
