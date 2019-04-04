@@ -13,7 +13,7 @@ import { catchError, retryWhen, switchMap, delay, take, concat } from 'rxjs/oper
 
 import { ErrorCustomHandler } from './error-custom-handler';
 
-// Because the best Error is the one that never happens, improve the error handling
+// Because the best error is the one that never happens, improve the error handling
 // using an HttpInterceptor to intercept all the server calls and retry them n times
 // before throwing an error
 const NB_RETRIES = 3;
