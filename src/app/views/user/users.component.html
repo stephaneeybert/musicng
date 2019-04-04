@@ -37,7 +37,7 @@
 			<ng-container matColumnDef="actions">
 				<th mat-header-cell *matHeaderCellDef>Actions</th>
 				<td mat-cell *matCellDef="let user">
-					<app-user-edit [existingUser]="user" (userEditedEvent)="refreshListForUser($event)"></app-user-edit>
+            <app-user-edit [existingUser]="user" (userEditedEvent)="refreshListForUser($event)"></app-user-edit>
 					<button mat-button (click)="delete(user)">Delete</button>
 				</td>
 			</ng-container>
