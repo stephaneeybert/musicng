@@ -7,13 +7,13 @@
 			<form [formGroup]="form" (ngSubmit)="login()">
 				<p>Please login to continue</p>
 				<mat-form-field class="full-width-input">
-					<input matInput placeholder="User" formControlName="username" required>
+					<input matInput placeholder="User" formControlName="username">
 					<mat-error *ngIf="isFieldInvalid('username')">
 						Please inform your user name
 					</mat-error>
 				</mat-form-field>
 				<mat-form-field class="full-width-input">
-					<input matInput type="password" placeholder="Password" formControlName="password" required>
+					<input matInput type="password" placeholder="Password" formControlName="password">
 					<mat-error *ngIf="isFieldInvalid('password')">
 						Please inform your password
 					</mat-error>
