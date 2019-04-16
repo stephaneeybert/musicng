@@ -8,7 +8,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MaterialModule } from '@app/material.module';
 import { UnsecuredLayoutComponent } from '@app/layouts/unsecured/unsecured.layout';
 import { SecuredLayoutComponent } from '@app/layouts/secured/secured.layout';
-import { HeaderComponent } from '@app/layouts/secured/header/header.component';
+import { HeaderComponent } from '@app/layouts/secured/header.component';
 
 @NgModule({
   declarations: [
