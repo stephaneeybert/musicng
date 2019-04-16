@@ -12,8 +12,8 @@ import { MaterialModule } from './material.module';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-import { SecuredLayoutComponent } from './layouts/secured.layout';
-import { UnsecuredLayoutComponent } from './layouts/unsecured.layout';
+import { SecuredLayoutComponent } from './layouts/secured/secured.layout';
+import { UnsecuredLayoutComponent } from './layouts/unsecured/unsecured.layout';
 import { LoginComponent } from './core/login/login.component';
 import { UsersComponent } from './views/user/users.component';
 import { UserComponent } from './views/user/user.component';
