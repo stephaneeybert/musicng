@@ -46,12 +46,12 @@ import { DebounceClickDirective } from './debounce-click.directive';
     DebounceClickDirective
   ],
   imports: [
-    CoreModule,
     BrowserModule,
     LayoutModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AppRoutingModule,
     ErrorModule,
+    CoreModule,
     AuthModule,
     MaterialModule,
     AppUiModule,
