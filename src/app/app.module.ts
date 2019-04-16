@@ -6,7 +6,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { CoreModule } from './core.module';
 import { AppRoutingModule } from './app-routing.module';
 import { ErrorModule } from './core/error';
-import { AppGuiModule } from './app-gui.module';
+import { AppUiModule } from './app-ui.module';
 import { AuthModule } from './core/auth/auth.module';
 import { MaterialModule } from './material.module';
 
@@ -54,7 +54,7 @@ import { DebounceClickDirective } from './debounce-click.directive';
     ErrorModule,
     AuthModule,
     MaterialModule,
-    AppGuiModule,
+    AppUiModule,
   ],
   entryComponents: [
     LoginDialogComponent,
