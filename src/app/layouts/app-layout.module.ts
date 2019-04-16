@@ -9,12 +9,14 @@ import { MaterialModule } from '@app/material.module';
 import { UnsecuredLayoutComponent } from '@app/layouts/unsecured/unsecured.layout';
 import { SecuredLayoutComponent } from '@app/layouts/secured/secured.layout';
 import { HeaderComponent } from '@app/layouts/secured/header.component';
+import { SidenavComponent } from '@app/layouts/secured/sidenav.component';
 
 @NgModule({
   declarations: [
     SecuredLayoutComponent,
     UnsecuredLayoutComponent,
     HeaderComponent,
+    SidenavComponent
   ],
   imports: [
     BrowserModule,
