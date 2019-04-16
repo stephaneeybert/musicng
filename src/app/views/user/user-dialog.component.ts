@@ -20,7 +20,6 @@ export class UserDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.data.user);
     this.form = this.formBuilder.group({
       email: this.data.user ? this.data.user.email : '',
       firstname: this.data.user ? this.data.user.firstname : '',
