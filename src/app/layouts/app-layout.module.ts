@@ -10,6 +10,7 @@ import { UnsecuredLayoutComponent } from '@app/layouts/unsecured/unsecured.layou
 import { SecuredLayoutComponent } from '@app/layouts/secured/secured.layout';
 import { HeaderComponent } from '@app/layouts/secured/header.component';
 import { SecuredSidenavComponent } from '@app/layouts/secured/secured.sidenav.component';
+import { UnsecuredSidenavComponent } from '@app/layouts/unsecured/unsecured.sidenav.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { SecuredSidenavComponent } from '@app/layouts/secured/secured.sidenav.co
     UnsecuredLayoutComponent,
     HeaderComponent,
     SecuredSidenavComponent,
+    UnsecuredSidenavComponent
   ],
   imports: [
     BrowserModule,

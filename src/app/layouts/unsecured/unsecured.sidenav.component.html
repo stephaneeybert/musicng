@@ -1,0 +1,29 @@
+<mat-sidenav #sidenav mode="push" class="app-sidenav">
+  <mat-toolbar color="primary">
+    <!--future svg to go here-->
+    <span class="toolbar-filler"></span>
+    <button mat-icon-button (click)="sidenav.toggle()" class="mat-icon-button sidenav-toggle-button" [hidden]="!sidenav.opened">
+      <mat-icon aria-label="Menu" class="material-icons">close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-nav-list>
+    <a mat-list-item class="sidenav-link" [routerLink]="['/login']" (click)="sidenav.toggle()">
+      <mat-icon mat-list-icon>account_box</mat-icon>
+      <span class="title" mat-line>Log In</span>
+      <span mat-line class="secondary">Log in the application</span>
+    </a>
+    <a mat-list-item class="sidenav-link" [routerLink]="['/users']" (click)="sidenav.toggle()">
+      <mat-icon mat-list-icon>android</mat-icon>
+      <span class="title" mat-line>Users</span>
+      <span mat-line class="secondary">The users</span>
+    </a>
+  </mat-nav-list>
+</mat-sidenav>
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="sidenav.toggle()" class="mat-icon-button sidenav-toggle-button" [hidden]="sidenav.opened">
+    <mat-icon aria-label="Another menu" class="material-icons">menu</mat-icon>
+  </button>
+  <h1 class="component-title">
+    <a class="title-link">{{title}}</a>
+  </h1>
+</mat-toolbar>
