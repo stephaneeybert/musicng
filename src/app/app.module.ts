@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { AppLayoutModule } from '@app/app-layout.module';
+import { AppLayoutModule } from '@app/layouts/app-layout.module';
 import { AppUiModule } from './app-ui.module';
 import { ErrorModule } from './core/error';
 import { CoreModule } from './core.module';
