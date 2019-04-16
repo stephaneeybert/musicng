@@ -1,60 +1,48 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { LayoutModule } from '@angular/cdk/layout';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
-import { CoreModule } from './core.module';
-import { AppRoutingModule } from './app-routing.module';
-import { ErrorModule } from './core/error';
+import { AppLayoutModule } from '@app/app-layout.module';
 import { AppUiModule } from './app-ui.module';
+import { ErrorModule } from './core/error';
+import { CoreModule } from './core.module';
 import { AuthModule } from './core/auth/auth.module';
-import { MaterialModule } from './material.module';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-import { SecuredLayoutComponent } from './layouts/secured/secured.layout';
-import { UnsecuredLayoutComponent } from './layouts/unsecured/unsecured.layout';
 import { LoginComponent } from './core/login/login.component';
+import { LoginDialogComponent } from './core/login/login-dialog.component';
 import { UsersComponent } from './views/user/users.component';
 import { UserComponent } from './views/user/user.component';
 import { UserConfirmedComponent } from './views/user/user-confirmed.component';
+import { UserEditComponent } from '@app/views/user/user-edit.component';
+import { UserDialogComponent } from './views/user/user-dialog.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { DashboardViewComponent } from '@app/views/dashboard/dashboard.view.component';
-import { LoginDialogComponent } from './core/login/login-dialog.component';
-import { UserDialogComponent } from './views/user/user-dialog.component';
-import { HeaderComponent } from './views/header/header.component';
-import { UserEditComponent } from '@app/views/user/user-edit.component';
 import { DebounceDirective } from './debounce.directive';
 import { DebounceClickDirective } from './debounce-click.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
+    LoginDialogComponent,
     UsersComponent,
     UserComponent,
     UserConfirmedComponent,
     UserEditComponent,
+    UserDialogComponent,
     DashboardComponent,
     DashboardViewComponent,
-    SecuredLayoutComponent,
-    UnsecuredLayoutComponent,
-    LoginComponent,
-    LoginDialogComponent,
-    HeaderComponent,
-    UserDialogComponent,
     DebounceDirective,
     DebounceClickDirective
   ],
   imports: [
-    BrowserModule,
-    LayoutModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    AppRoutingModule,
+    AppLayoutModule,
+    AppUiModule,
     ErrorModule,
     CoreModule,
     AuthModule,
-    MaterialModule,
-    AppUiModule,
   ],
   entryComponents: [
     LoginDialogComponent,
