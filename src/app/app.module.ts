@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { AppLayoutModule } from '@app/app-layout.module';
 import { AppUiModule } from './app-ui.module';
@@ -7,7 +6,6 @@ import { ErrorModule } from './core/error';
 import { CoreModule } from './core.module';
 import { AuthModule } from './core/auth/auth.module';
 
-import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './core/login/login.component';
 import { LoginDialogComponent } from './core/login/login-dialog.component';
@@ -37,7 +35,6 @@ import { DebounceClickDirective } from './debounce-click.directive';
     DebounceClickDirective
   ],
   imports: [
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AppLayoutModule,
     AppUiModule,
     ErrorModule,
