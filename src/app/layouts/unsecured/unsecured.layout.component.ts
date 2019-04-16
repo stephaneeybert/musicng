@@ -4,8 +4,4 @@ import { Component } from '@angular/core';
   selector: 'app-unsecured-layout',
   templateUrl: './unsecured.layout.component.html'
 })
-export class UnsecuredLayoutComponent {
-
-  title = 'Tour of Zeroes';
-
-}
+export class UnsecuredLayoutComponent { }

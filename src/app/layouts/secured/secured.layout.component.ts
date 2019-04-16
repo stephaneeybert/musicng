@@ -8,8 +8,6 @@ import { LoginService } from '@app/core/service/login.service';
 })
 export class SecuredLayoutComponent {
 
-  title = 'Tour of Zeroes';
-
   constructor(
     private loginService: LoginService
   ) { }

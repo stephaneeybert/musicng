@@ -5,4 +5,8 @@ import { Component } from '@angular/core';
   selector: 'app-secured-sidenav',
   templateUrl: './secured.sidenav.component.html'
 })
-export class SecuredSidenavComponent { }
+export class SecuredSidenavComponent {
+
+  title = 'Tour of Zeroes';
+
+}
