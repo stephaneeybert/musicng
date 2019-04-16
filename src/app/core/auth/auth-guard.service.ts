@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Router, CanActivate, CanActivateChild, CanLoad, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 
 import { TokenService } from './token.service';
 import { AuthService } from './auth.service';

@@ -4,7 +4,7 @@ import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { map, tap, catchError } from 'rxjs/operators';
 import { of, empty } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 import { HttpService } from '@app/core/service/http.service';
 import { TokenService } from '@app/core/auth/token.service';
 
