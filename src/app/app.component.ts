@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { TranslateService } from '@ngx-translate/core';
 
+import { UiService } from '@app/core/service/ui.service';
+
 const LANGUAGE_CODE_ENGLISH = 'en';
 const LANGUAGE_CODE_FRANCAIS = 'fr';
 
@@ -12,7 +14,11 @@ const LANGUAGE_CODE_FRANCAIS = 'fr';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private swUpdate: SwUpdate, translate: TranslateService) {
+  constructor(
+    private swUpdate: SwUpdate,
+    private translate: TranslateService,
+    private uiService: UiService
+  ) {
     // The default language used as a fallback if a translation isn't found for the current language
     translate.setDefaultLang(LANGUAGE_CODE_ENGLISH);
     // The language to use
@@ -27,6 +33,15 @@ export class AppComponent implements OnInit {
         }
       });
     }
+
+    this.metaData();
+  }
+
+  metaData() {
+    this.uiService.setMetaData({
+      title: 'NgZero',
+      description: 'An Angular application'
+    });
   }
 
 }

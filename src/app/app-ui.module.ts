@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UiService } from '@app/core/service/ui.service';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   exports: [
     FormsModule,
     ReactiveFormsModule,
+  ],
+  providers: [
+    UiService
   ]
 })
 export class AppUiModule { }
