@@ -3,7 +3,6 @@ import { NgControl } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/takeUntil';
-import { Subject } from 'rxjs/internal/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 @Directive({
