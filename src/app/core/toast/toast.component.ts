@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, Inject } from '@angular/core';
 import { AnimationEvent } from '@angular/animations';
 
 import { ToastData, TOAST_CONFIG_TOKEN, ToastConfig } from './toast-config';
@@ -29,8 +29,11 @@ export class ToastComponent implements OnInit, OnDestroy {
     this.intervalId = setTimeout(() => this.animationState = 'closing', 5000);
   }
 
+  @HostListener('window:beforeunload')
   ngOnDestroy() {
-    clearTimeout(this.intervalId);
+    if (this.intervalId) {
+      clearTimeout(this.intervalId);
+    }
   }
 
   close() {
