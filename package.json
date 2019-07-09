@@ -34,6 +34,7 @@
     "hammerjs": "^2.0.8",
     "jwt-decode": "^2.2.0",
     "keycloak-js": "^5.0.0",
+    "midi-lib": "file:../midi-lib/dist/midi-lib/midi-lib-0.0.1.tgz",
     "npm": "^6.9.0",
     "rxjs": "^6.4.0",
     "rxjs-compat": "^6.4.0",
