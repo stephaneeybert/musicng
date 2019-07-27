@@ -1,5 +1,5 @@
 import { Component, Input, EventEmitter, Output, OnChanges, SimpleChange } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { filter } from 'rxjs/operators';
 
 import { User } from './user';
