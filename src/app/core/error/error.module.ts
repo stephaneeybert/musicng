@@ -8,7 +8,6 @@ import { ErrorService } from './error.service';
 import { ErrorRoutingModule } from './error-routing.module';
 import { ErrorComponent } from './error.component';
 import { ErrorRequestInterceptor } from './error-request-interceptor';
-import { ModuleWithProviders } from '@angular/compiler/src/core';
 
 // See https://medium.com/@aleixsuau/error-handling-angular-859d529fa53a
 
