@@ -1,6 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { ErrorHandler } from '@angular/core';
 
 import { ErrorService } from './error.service';
@@ -14,7 +13,6 @@ export class ErrorCustomHandler implements ErrorHandler {
     handleError(error: Error | HttpErrorResponse): void {
         const notificationService = this.injector.get(NotificationService);
         const errorService = this.injector.get(ErrorService);
-        const router = this.injector.get(Router);
 
         if (error instanceof HttpErrorResponse) {
             // Handle server or connection errors
@@ -38,7 +36,6 @@ export class ErrorCustomHandler implements ErrorHandler {
             // redirect the user to an error screen with all the information
             errorService.log(error).subscribe(errorWithContextInfo => {
                 console.log(errorWithContextInfo);
-                router.navigate(['error'], { queryParams: errorWithContextInfo });
             });
         }
     }
