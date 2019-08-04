@@ -10,7 +10,9 @@ const AUTH_BEARER_HEADER = 'Bearer';
 const REFRESH_TOKEN_HEADER_NAME = 'TokenRefresh';
 const CLIENT_ID_HEADER_NAME = 'ClientId';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class TokenService {
 
   // See https://stackoverflow.com/questions/49240232/getting-a-cyclic-dependency-error

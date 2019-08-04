@@ -16,7 +16,9 @@ const URI_LOGOUT = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_LOGO
 const PATH_TOKEN_REFRESH = 'token-refresh';
 const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_TOKEN_REFRESH;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
 
   private postLoginRedirectUrl: string;

@@ -3,7 +3,6 @@ import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AuthInterceptor } from './auth.interceptor';
-import { AuthService } from './auth.service';
 import { TokenService } from './token.service';
 import { AuthGuardService } from './auth-guard.service';
 
@@ -28,8 +27,6 @@ export function jwtOptionsFactory(tokenService: TokenService) {
     })
   ],
   providers: [
-    AuthService,
-    TokenService,
     AuthGuardService,
     {
       provide: HTTP_INTERCEPTORS,

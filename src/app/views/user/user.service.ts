@@ -10,7 +10,9 @@ import { User } from './user';
 
 const DOMAIN_URI = 'users';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService {
 
   private usersUrl = environment.BASE_REST_URI + '/' + DOMAIN_URI;

@@ -5,13 +5,6 @@ import { ToastModule } from '@app/core/toast';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { UtilsService } from './core/service/utils.service';
-import { HttpService } from './core/service/http.service';
-import { NotificationService } from './core/service/notification.service';
-import { PaginationService } from './core/service/pagination.service';
-import { LoginService } from './core/service/login.service';
-import { UserService } from './views/user/user.service';
-
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
@@ -27,15 +20,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     }),
     ToastModule.forRoot()
-  ],
-  providers: [
-    UtilsService,
-    HttpService,
-    NotificationService,
-    PaginationService,
-    UserService,
-    LoginService
-  ],
+  ]
 })
 export class CoreModule {
 

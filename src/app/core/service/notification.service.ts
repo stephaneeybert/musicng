@@ -3,7 +3,9 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { publish, refCount } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NotificationService {
 
     private _notification: BehaviorSubject<string> = new BehaviorSubject(null);
