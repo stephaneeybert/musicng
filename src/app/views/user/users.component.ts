@@ -37,8 +37,8 @@ export class UsersComponent implements OnInit {
   updateEvent = new EventEmitter<{ value: User }>();
   searchTermEvent = new EventEmitter<{ value: string }>();
   searchTerm: string;
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     private router: Router,
