@@ -1,0 +1,17 @@
+<table>
+  <thead>
+    <th>Soundtrack</th>
+  </thead>
+  <tbody>
+    <div *ngIf="soundtracks$">
+      <tr *ngFor="let soundtrack of soundtracks$ | async">
+        <td>
+          {{soundtrack.name}}
+          <midi-synth [soundtrack]="soundtrack"></midi-synth>
+          <midi-keyboard [soundtrack]="soundtrack"></midi-keyboard>
+          <!-- <midi-sheet [soundtrack]="soundtrack"></midi-sheet> -->
+        </td>
+      </tr>
+    </div>
+  </tbody>
+</table>

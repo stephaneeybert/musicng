@@ -13,7 +13,7 @@
       "node_modules/@types"
     ],
     "lib": [
-      "es2017",
+      "es2018",
       "dom"
     ],
     "baseUrl": "src",
@@ -27,6 +27,6 @@
   "exclude": [
     // IDEs should not type-check the different node_modules directories of the different packages.
     // This would cause the IDEs to be slower and also linters would check the node_modules.
-    "node_modules/"
+    // "node_modules/" TODO
   ]
 }

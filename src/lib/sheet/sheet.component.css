@@ -1,0 +1,8 @@
+.abcjs-cursor {
+  background-color: rgba(196,196,196,.5);
+}
+.cursor {
+  background-color: #ffffc0;
+  opacity: 0.5;
+  border-left: 1px solid black;
+}
