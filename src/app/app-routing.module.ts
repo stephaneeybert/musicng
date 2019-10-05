@@ -10,6 +10,7 @@ import { ErrorComponent } from './core/error/error.component';
 import { UsersComponent } from './views/user/users.component';
 import { UserComponent } from './views/user/user.component';
 import { DashboardComponent } from '@app/views/dashboard/dashboard.component';
+import { MidiLibComponent } from '@lib/midi-lib.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent
+      },
+      {
+        path: 'midi',
+        component: MidiLibComponent
       },
       {
         path: 'home',
