@@ -18,10 +18,21 @@
     ],
     "baseUrl": "src",
     "paths": {
-      "@app/*": ["app/*"],
-      "@app/core/*": ["app/core/*"],
-      "@app/views/*": ["app/views/*"],
-      "@env/*": ["environments/*"]
+      "@app/*": [
+        "app/*"
+      ],
+      "@app/core/*": [
+        "app/core/*"
+      ],
+      "@app/views/*": [
+        "app/views/*"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@env/*": [
+        "environments/*"
+      ]
     }
   },
   "exclude": [
