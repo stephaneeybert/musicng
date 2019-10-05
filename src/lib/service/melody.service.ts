@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SoundtrackStore } from 'lib/store/soundtrack-store';
 import { Soundtrack } from 'lib/model/soundtrack';
 import { Measure } from 'lib/model/measure/measure';
-import { ParseService } from 'lib/service/parse.service';
+import { ParseService } from './parse.service';
 import { CommonService } from './common.service';
 
 @Injectable({

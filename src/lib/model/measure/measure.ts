@@ -1,8 +1,8 @@
-import { TimeSignature } from 'lib/model';
-import { Note } from 'lib/model';
-import { Cursor } from 'lib/model';
-import { PlacedNote } from 'lib/model';
-import { Tempo } from 'lib/model';
+import { TimeSignature } from './time-signature';
+import { Note } from 'lib/model/note/note';
+import { Cursor } from 'lib/model/note/cursor';
+import { PlacedNote } from 'lib/model/note/placed-note';
+import { Tempo } from 'lib/model/tempo';
 
 export class Measure {
 

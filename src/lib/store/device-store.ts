@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from './store';
-import { CommonService } from 'lib/service';
+import { CommonService } from 'lib/service/common.service';
 import { Device } from 'lib/model';
 
 @Injectable({

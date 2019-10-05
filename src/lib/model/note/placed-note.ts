@@ -1,5 +1,5 @@
-import { Note } from 'lib/model';
-import { Cursor } from 'lib/model';
+import { Note } from './note';
+import { Cursor } from './cursor';
 
 export class PlacedNote {
 

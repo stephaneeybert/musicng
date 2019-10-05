@@ -1,6 +1,6 @@
-import { Control } from 'lib/model';
-import { Instrument } from 'lib/model';
-import { Measure } from 'lib/model';
+import { Control } from './control';
+import { Instrument } from './instrument';
+import { Measure } from 'lib/model/measure/measure';
 
 export class Track {
 

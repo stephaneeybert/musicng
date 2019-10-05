@@ -1,7 +1,7 @@
 import Tone from 'tone';
-import { Subdivisions } from 'lib/model';
-import { Subdivision } from 'lib/model';
-import { TempoUnit } from 'lib/model';
+import { Subdivisions } from './subdivisions';
+import { Subdivision } from './subdivision';
+import { TempoUnit } from 'lib/model/tempo-unit';
 
 export class Duration {
 

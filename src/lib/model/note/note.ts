@@ -1,5 +1,5 @@
-import { Pitch } from 'lib/model';
-import { TempoUnit } from 'lib/model';
+import { Pitch } from './pitch/pitch';
+import { TempoUnit } from 'lib/model/tempo-unit';
 
 const NOTE_VELOCITY_MAX = 127;
 

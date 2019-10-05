@@ -1,5 +1,5 @@
-import { Chroma } from 'lib/model';
-import { Octave } from 'lib/model';
+import { Chroma } from './chroma';
+import { Octave } from './octave';
 
 export class Pitch {
 

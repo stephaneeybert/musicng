@@ -1,5 +1,5 @@
 import Tone from 'tone';
-import { Duration } from 'lib/model';
+import { Duration } from './duration/duration';
 
 export class Cursor {
 

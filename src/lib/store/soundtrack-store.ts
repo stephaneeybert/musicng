@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from './store';
-import { CommonService } from 'lib/service';
+import { CommonService } from 'lib/service/common.service';
 import { Soundtrack } from 'lib/model';
 
 @Injectable({

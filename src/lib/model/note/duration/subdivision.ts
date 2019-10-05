@@ -1,4 +1,4 @@
-import { Subdivisions } from 'lib/model';
+import { Subdivisions } from './subdivisions';
 
 export class Subdivision {
 

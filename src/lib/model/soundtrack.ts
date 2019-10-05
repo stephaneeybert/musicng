@@ -1,5 +1,5 @@
-import { Track } from 'lib/model';
-import { Measure } from 'lib/model';
+import { Track } from './track';
+import { Measure } from 'lib/model/measure/measure';
 
 export class Soundtrack {
 
