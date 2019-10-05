@@ -18,7 +18,7 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { DashboardViewComponent } from '@app/views/dashboard/dashboard.view.component';
 import { DebounceDirective } from './debounce.directive';
 import { DebounceClickDirective } from './debounce-click.directive';
-// import { MidiLibModule } from 'midi-lib';
+import { MidiLibModule } from '@lib/midi-lib.module';
 
 @NgModule({
   declarations: [
@@ -41,11 +41,7 @@ import { DebounceClickDirective } from './debounce-click.directive';
     ErrorModule,
     CoreModule,
     AuthModule,
-    // MidiLibModule
-  ],
-  entryComponents: [
-    LoginDialogComponent,
-    UserDialogComponent
+    MidiLibModule
   ],
   bootstrap: [AppComponent]
 })
