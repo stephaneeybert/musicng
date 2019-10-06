@@ -13,6 +13,8 @@ import { HomeComponent } from './home.component';
     MaterialModule,
     MidiLibModule
   ],
-  declarations: [HomeComponent]
+  declarations: [
+    HomeComponent
+  ]
 })
 export class HomeModule { }
