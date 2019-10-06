@@ -18,7 +18,6 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { DashboardViewComponent } from '@app/views/dashboard/dashboard.view.component';
 import { DebounceDirective } from './debounce.directive';
 import { DebounceClickDirective } from './debounce-click.directive';
-import { HomeModule } from './views/home/home.module';
 
 @NgModule({
   declarations: [

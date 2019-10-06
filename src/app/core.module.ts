@@ -1,6 +1,5 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
 import { ToastModule } from '@app/core/toast';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
