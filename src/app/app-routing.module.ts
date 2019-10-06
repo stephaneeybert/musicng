@@ -22,7 +22,7 @@ const routes: Routes = [
         component: LoginComponent
       },
       {
-        path: 'music',
+        path: 'music', // TODO try having another custom module for the midi-lib
         loadChildren: () => import('./views/home/home.module').then(module => module.HomeModule),
         data: {
           preload: true,
