@@ -2,7 +2,8 @@
   <mat-toolbar color="primary">
     <!--future svg to go here-->
     <span class="toolbar-filler"></span>
-    <button mat-icon-button (click)="sidenav.toggle()" class="mat-icon-button sidenav-toggle-button" [hidden]="!sidenav.opened">
+    <button mat-icon-button (click)="sidenav.toggle()" class="mat-icon-button sidenav-toggle-button"
+      [hidden]="!sidenav.opened">
       <mat-icon aria-label="Menu" class="material-icons">close</mat-icon>
     </button>
   </mat-toolbar>
@@ -17,10 +18,16 @@
       <span class="title" mat-line>Users</span>
       <span mat-line class="secondary">The users</span>
     </a>
+    <a mat-list-item class="sidenav-link" [routerLink]="['/music']" (click)="sidenav.toggle()">
+      <mat-icon mat-list-icon>android</mat-icon>
+      <span class="title" mat-line>Music</span>
+      <span mat-line class="secondary">The music project</span>
+    </a>
   </mat-nav-list>
 </mat-sidenav>
 <mat-toolbar>
-  <button mat-icon-button (click)="sidenav.toggle()" class="mat-icon-button sidenav-toggle-button" [hidden]="sidenav.opened">
+  <button mat-icon-button (click)="sidenav.toggle()" class="mat-icon-button sidenav-toggle-button"
+    [hidden]="sidenav.opened">
     <mat-icon aria-label="Another menu" class="material-icons">menu</mat-icon>
   </button>
   <h1 class="component-title">
