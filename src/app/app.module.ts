@@ -40,8 +40,7 @@ import { MidiLibModule } from '@lib/midi-lib.module';
     AppUiModule,
     ErrorModule,
     CoreModule,
-    AuthModule,
-    MidiLibModule
+    AuthModule
   ],
   bootstrap: [AppComponent]
 })
