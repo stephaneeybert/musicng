@@ -17,6 +17,11 @@
       <span class="title" mat-line>Users</span>
       <span mat-line class="secondary">The users</span>
     </a>
+    <a mat-list-item class="sidenav-link" [routerLink]="['/music']" (click)="sidenav.toggle()">
+      <mat-icon mat-list-icon>android</mat-icon>
+      <span class="title" mat-line>Music</span>
+      <span mat-line class="secondary">The music project</span>
+    </a>
   </mat-nav-list>
 </mat-sidenav>
 <mat-toolbar color="primary">
