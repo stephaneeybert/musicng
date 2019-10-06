@@ -23,12 +23,15 @@ const routes: Routes = [
       },
       {
         path: 'music',
-        component: MidiLibComponent
+        loadChildren: () => import('./views/home/home.module').then(module => module.HomeModule),
+        data: {
+          preload: true,
+          delay: false
+        }
       },
       {
         path: 'home',
-        loadChildren: './views/home/home.module#HomeModule',
-        // loadChildren: () => import('./views/home/home.module').then(module => module.HomeModule),
+        loadChildren: () => import('./views/home/home.module').then(module => module.HomeModule),
         data: {
           preload: true,
           delay: false
