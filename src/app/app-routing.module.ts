@@ -19,7 +19,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'music',
         pathMatch: 'full'
       },
       {
@@ -27,7 +27,7 @@ const routes: Routes = [
         component: LoginComponent
       },
       {
-        path: 'midi',
+        path: 'music',
         component: MidiLibComponent
       },
       {
