@@ -18,11 +18,6 @@ const routes: Routes = [
     component: UnsecuredLayoutComponent,
     children: [
       {
-        path: '',
-        redirectTo: 'music',
-        pathMatch: 'full'
-      },
-      {
         path: 'login',
         component: LoginComponent
       },
@@ -33,10 +28,16 @@ const routes: Routes = [
       {
         path: 'home',
         loadChildren: './views/home/home.module#HomeModule',
+        // loadChildren: () => import('./views/home/home.module').then(module => module.HomeModule),
         data: {
           preload: true,
           delay: false
         }
+      },
+      {
+        path: '',
+        redirectTo: 'music',
+        pathMatch: 'full'
       },
     ]
   },
