@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'always'}),
   ],
   exports: [
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
   ]
