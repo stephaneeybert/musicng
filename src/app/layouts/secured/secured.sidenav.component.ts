@@ -8,7 +8,7 @@ import { LoginService } from '@app/core/service/login.service';
 })
 export class SecuredSidenavComponent {
 
-  title = 'Tour of Zeroes';
+  title = 'MusicNG';
 
   constructor(
     private loginService: LoginService

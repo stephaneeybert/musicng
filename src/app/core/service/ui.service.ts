@@ -8,8 +8,8 @@ export class UiService {
 
   private appColor: '#343a40';
   private appImage: '/assets/icons/icon-72x72.png';
-  private appTitle: 'Tour of Zeroes';
-  private appDescription: 'An Ng app from zero';
+  private appTitle: 'MusicNG';
+  private appDescription: 'A musical notes generator';
 
   constructor(private meta: Meta, private title: Title) { }
 

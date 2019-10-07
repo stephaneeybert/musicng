@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
 })
 export class UnsecuredSidenavComponent {
 
-  title = 'Tour of Zeroes';
+  title = 'MusicNG';
 
 }
