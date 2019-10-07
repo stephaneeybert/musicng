@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('ng-zero App', () => {
+describe('musicng App', () => {
   let page: AppPage;
 
   beforeEach(() => {

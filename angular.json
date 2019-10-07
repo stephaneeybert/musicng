@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ng-zero": {
+    "musicng": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -51,20 +51,20 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ng-zero:build",
+            "browserTarget": "musicng:build",
             "host": "localhost",
             "port": 4200
           },
           "configurations": {
             "production": {
-              "browserTarget": "ng-zero:build:production"
+              "browserTarget": "musicng:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ng-zero:build"
+            "browserTarget": "musicng:build"
           }
         },
         "test": {
@@ -99,7 +99,7 @@
         }
       }
     },
-    "ng-zero-e2e": {
+    "musicng-e2e": {
       "root": "e2e",
       "sourceRoot": "",
       "projectType": "application",
@@ -108,7 +108,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "ng-zero:serve"
+            "devServerTarget": "musicng:serve"
           }
         },
         "lint": {
@@ -125,7 +125,7 @@
       }
     }
   },
-  "defaultProject": "ng-zero",
+  "defaultProject": "musicng",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
