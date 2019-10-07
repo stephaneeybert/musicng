@@ -1,6 +1,6 @@
 #!/bin/sh -x
 
-filename=ng-zero
+filename=musicng
 
 zipfile=$filename.zip
 
