@@ -6,6 +6,7 @@ import { environment } from '@env/environment';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MaterialModule } from '@app/material.module';
+import { MDBootstrapModule } from '@app/mdbootstrap.module';
 import { UnsecuredLayoutComponent } from '@app/layouts/unsecured/unsecured.layout.component';
 import { SecuredLayoutComponent } from '@app/layouts/secured/secured.layout.component';
 import { HeaderComponent } from '@app/layouts/secured/header.component';
@@ -26,6 +27,7 @@ import { UnsecuredSidenavComponent } from '@app/layouts/unsecured/unsecured.side
     AppRoutingModule,
     LayoutModule,
     MaterialModule,
+    MDBootstrapModule
   ],
   exports: [
     BrowserModule,
