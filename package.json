@@ -42,6 +42,7 @@
     "keycloak-js": "^5.0.0",
     "midi-file-slicer": "^5.0.29",
     "midi-json-parser": "^6.4.1",
+    "midi-lib": "file:../midi-lib/dist/midi-lib/midi-lib-0.0.1.tgz",
     "nexusui": "^2.0.10",
     "npm": "^6.9.0",
     "rxjs": "^6.5.2",
