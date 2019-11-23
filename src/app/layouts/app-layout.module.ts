@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { environment } from '@env/environment';
@@ -22,7 +21,6 @@ import { UnsecuredSidenavComponent } from '@app/layouts/unsecured/unsecured.side
     UnsecuredSidenavComponent
   ],
   imports: [
-    BrowserModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AppRoutingModule,
     LayoutModule,
@@ -30,7 +28,6 @@ import { UnsecuredSidenavComponent } from '@app/layouts/unsecured/unsecured.side
     MDBootstrapModule
   ],
   exports: [
-    BrowserModule,
     AppRoutingModule,
     LayoutModule,
     MaterialModule,
