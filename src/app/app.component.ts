@@ -39,8 +39,8 @@ export class AppComponent implements OnInit {
 
   metaData() {
     this.uiService.setMetaData({
-      title: 'NgZero',
-      description: 'An Angular application'
+      title: 'MusicNg',
+      description: 'A music generator application'
     });
   }
 
