@@ -4,8 +4,8 @@ import { ToastModule } from '@app/core/toast';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+export function httpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
 }
 
 @NgModule({
@@ -14,7 +14,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: httpLoaderFactory,
         deps: [HttpClient]
       }
     }),
