@@ -16,13 +16,13 @@ export class AppComponent implements OnInit {
 
   constructor(
     private swUpdate: SwUpdate,
-    private translate: TranslateService,
+    private translateService: TranslateService,
     private uiService: UiService
   ) {
     // The default language used as a fallback if a translation isn't found for the current language
-    translate.setDefaultLang(LANGUAGE_CODE_ENGLISH);
+    translateService.setDefaultLang(LANGUAGE_CODE_ENGLISH);
     // The language to use
-    translate.use(LANGUAGE_CODE_FRANCAIS);
+    translateService.use(LANGUAGE_CODE_FRANCAIS);
   }
 
   ngOnInit() {
