@@ -1,27 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 
+const APP_COLOR = '#343a40';
+const APP_IMAGE = '/assets/icons/icon-72x72.png';
+const APP_TITLE = 'PierrePapierCiseaux';
+const APP_DESCRIPTION = 'Le jeu de pierre papier ciseaux';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UiService {
 
-  private appColor: '#343a40';
-  private appImage: '/assets/icons/icon-72x72.png';
-  private appTitle: 'MusicNG';
-  private appDescription: 'A musical notes generator';
-
   constructor(private meta: Meta, private title: Title) { }
 
-  public setMetaData(config) {
-    const description = config.description || this.appDescription;
-    const image = config.image || this.appImage;
-    const title = config.title ? `${config.title}` : this.appTitle;
+  public setMetaData(config: any) {
+    const description = config.description || APP_DESCRIPTION;
+    const image = config.image || APP_IMAGE;
+    const title = config.title ? `${config.title}` : APP_TITLE;
     this.title.setTitle(title);
 
     const tags = [
       { name: 'description', content: description },
-      { name: 'theme-color', content: this.appColor },
+      { name: 'theme-color', content: APP_COLOR },
       { name: 'twitter:card', content: 'summary' },
       { name: 'twitter:image', content: image },
       { name: 'twitter:title', content: title },
@@ -30,9 +30,9 @@ export class UiService {
       { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
       { name: 'apple-mobile-web-app-title', content: title },
       { name: 'apple-touch-startup-image', content: image },
-      { property: 'og:title', content: title },
-      { property: 'og:description', content: description },
-      { property: 'og:image', content: image },
+      { name: 'og:title', content: title },
+      { name: 'og:description', content: description },
+      { name: 'og:image', content: image },
     ];
     tags.forEach(tag => this.meta.updateTag(tag));
   }
