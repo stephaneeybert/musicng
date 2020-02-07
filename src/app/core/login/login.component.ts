@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { filter } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { TokenService } from '@app/core/auth/token.service';
@@ -18,10 +17,10 @@ export class LoginComponent implements OnInit {
   username = 'mittiprovence@yahoo.se';
   password = '';
 
-  form: FormGroup;
-  private formSubmitAttempt: boolean;
+  form!: FormGroup;
+  private formSubmitAttempt: boolean = false;
 
-  loginDialog: MatDialogRef<LoginDialogComponent>;
+  loginDialog!: MatDialogRef<LoginDialogComponent>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,19 +38,26 @@ export class LoginComponent implements OnInit {
   }
 
   isFieldInvalid(field: string): boolean {
-    return (
-      (!this.form.get(field).valid && this.form.get(field).touched) ||
-      (this.form.get(field).untouched && this.formSubmitAttempt)
-    );
+    let invalid = false;
+    let formField = this.form.get(field);
+    if ((formField && !formField.valid && formField.touched) ||
+      (formField && formField.untouched && this.formSubmitAttempt)) {
+      invalid = true;
+    }
+    return invalid;
   }
 
   login(): void {
     if (this.form.valid) {
-      this.loginService.login(this.form.get('username').value, this.form.get('password').value);
+      let usernameField = this.form.get('username');
+      let passwordField = this.form.get('password');
+      if (usernameField && passwordField) {
+        this.loginService.login(usernameField.value, passwordField.value);
+      }
     }
   }
 
-  openLoginDialog(username?): void {
+  openLoginDialog(username: string): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.hasBackdrop = false;
     dialogConfig.data = {
@@ -70,4 +76,3 @@ export class LoginComponent implements OnInit {
   }
 
 }
-

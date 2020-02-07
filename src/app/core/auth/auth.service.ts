@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpRequest, HttpResponse, HttpHeaders, HttpEvent } from '@angular/common/http';
 import { map, tap, catchError } from 'rxjs/operators';
 import { of, empty } from 'rxjs';
 
@@ -21,7 +21,15 @@ const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PA
 })
 export class AuthService {
 
-  private postLoginRedirectUrl: string;
+  private postLoginRedirectUrl: string = '';
+
+  public setPostLoginRedirectUrl(postLoginRedirectUrl: string) {
+    this.postLoginRedirectUrl = postLoginRedirectUrl;
+  }
+
+  public getPostLoginRedirectUrl() {
+    return this.postLoginRedirectUrl;
+  }
 
   constructor(
     private httpService: HttpService,
@@ -30,12 +38,14 @@ export class AuthService {
   public login(username: string, password: string): Observable<any> {
     console.log('Sending the login credentials to obtain a token');
     const credentials = { 'email': username, 'password': password };
-    let httpHeaders: HttpHeaders = this.httpService.buildHeader(null);
+    let httpHeaders: HttpHeaders = this.httpService.buildHeader();
     httpHeaders = this.addClientIdHeader(httpHeaders);
     return this.httpService.postWithHeadersInResponse(URI_LOGIN, credentials, httpHeaders)
       .pipe(
-        map((response: HttpResponse<any>) => {
-          this.storeTokensInLocalStorage(response);
+        map((response: HttpEvent<any>) => {
+          if (response instanceof HttpResponse) {
+            this.storeTokensInLocalStorage(response);
+          }
         })
       );
   }
@@ -43,8 +53,10 @@ export class AuthService {
   public logout(): Observable<any> {
     return this.httpService.postWithHeadersInResponse(URI_LOGOUT, {})
       .pipe(
-        map((response: HttpResponse<any>) => {
-          this.clearTokensFromLocalStorage(response);
+        map((response: HttpEvent<any>) => {
+          if (response instanceof HttpResponse) {
+            this.clearTokensFromLocalStorage(response);
+          }
         })
       );
   }
@@ -62,6 +74,8 @@ export class AuthService {
             if (response) {
               console.log('The access token has been refreshed');
               return true;
+            } else {
+              return false;
             }
           }),
           catchError((error, caught) => {
@@ -123,33 +137,37 @@ export class AuthService {
     return httpHeaders;
   }
 
-  public refreshAccessToken(): Observable<any> {
+  public refreshAccessToken(): Observable<boolean> {
     console.log('Sending the refresh token to obtain a new access token');
-    let httpHeaders: HttpHeaders = this.httpService.buildHeader(null);
+    let httpHeaders: HttpHeaders = this.httpService.buildHeader();
     httpHeaders = this.addRefreshTokenHeader(httpHeaders);
     httpHeaders = this.addClientIdHeader(httpHeaders);
 
     return this.httpService.postWithHeadersInResponse(URI_REFRESH_TOKEN, {}, httpHeaders)
       .pipe(
-        map((response: HttpResponse<any>) => {
+        map((response: HttpEvent<any>) => {
           // Only the access token is refreshed
           // Refresing the refresh token would be like giving a never expiring refresh token
-          this.storeAccessTokenInLocalStorage(response);
-          console.log('Stored the refreshed access token in the local storage');
-          return true;
+          if (response instanceof HttpResponse) {
+            this.storeAccessTokenInLocalStorage(response);
+            console.log('Stored the refreshed access token in the local storage');
+            return true;
+          } else {
+            return false;
+          }
         })
       );
   }
 
-  public isLoginRequest(request: HttpRequest<any>) {
+  public isLoginRequest(request: HttpRequest<any>): boolean {
     return request.url.includes(PATH_LOGIN);
   }
 
-  public isRefreshTokenRequest(request: HttpRequest<any>) {
+  public isRefreshTokenRequest(request: HttpRequest<any>): boolean {
     return request.url.includes(PATH_TOKEN_REFRESH);
   }
 
-  public isSecuredUrl(request: HttpRequest<any>) {
+  public isSecuredUrl(request: HttpRequest<any>): boolean {
     if (request.url.match(URI_LOGIN) || request.url.match(URI_REFRESH_TOKEN)) {
       return false;
     } else {
@@ -171,14 +189,6 @@ export class AuthService {
         'Pragma': 'no-cache'
       }
     });
-  }
-
-  public setPostLoginRedirectUrl(postLoginRedirectUrl: string) {
-    this.postLoginRedirectUrl = postLoginRedirectUrl;
-  }
-
-  public getPostLoginRedirectUrl() {
-    return this.postLoginRedirectUrl;
   }
 
 }

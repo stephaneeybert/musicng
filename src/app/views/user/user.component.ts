@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserService } from '@app/views/user/user.service';
 import { User } from '@app/views/user/user';
+import { last } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user',
@@ -12,10 +13,10 @@ import { User } from '@app/views/user/user';
 })
 export class UserComponent implements OnInit {
 
-  user: User;
+  user?: User;
 
-  form: FormGroup;
-  private formSubmitAttempt: boolean;
+  form?: FormGroup;
+  private formSubmitAttempt: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,31 +30,44 @@ export class UserComponent implements OnInit {
   }
 
   getUser(): void {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.userService.get(id)
-    .subscribe(user => {
-      this.user = user;
-      this.form = this.formBuilder.group({
-        firstname: [this.user.firstname, Validators.required],
-        lastname: [this.user.lastname, Validators.required]
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.userService.get(id)
+      .subscribe(user => {
+        this.user = user;
+        this.form = this.formBuilder.group({
+          firstname: [this.user.firstname, Validators.required],
+          lastname: [this.user.lastname, Validators.required]
+        });
       });
-    });
+    }
   }
 
   isFieldInvalid(field: string): boolean {
-    return (
-      (!this.form.get(field).valid && this.form.get(field).touched) ||
-      (this.form.get(field).untouched && this.formSubmitAttempt)
-    );
+    let invalid = false;
+    if (this.form) {
+      let formField = this.form.get(field);
+      if ((formField && !formField.valid && formField.touched) ||
+      (formField && formField.untouched && this.formSubmitAttempt)) {
+        invalid = true;
+      }
+    }
+    return invalid;
   }
 
   save(): void {
-    this.user.firstname = this.form.get('firstname').value;
-    this.user.lastname = this.form.get('lastname').value;
-    this.userService.partialUpdate(this.user)
-      .subscribe(() => {
-        this.router.navigate(['users']);
-      });
+    if (this.user && this.form) {
+      let firstnameField = this.form.get('firstname');
+      let lastnameField = this.form.get('lastname');
+      if (firstnameField && lastnameField) {
+        this.user.firstname = firstnameField.value;
+        this.user.lastname = lastnameField.value;
+        this.userService.partialUpdate(this.user)
+        .subscribe(() => {
+          this.router.navigate(['users']);
+        });
+      }
+    }
   }
 
   cancel(): void {

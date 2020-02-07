@@ -22,7 +22,7 @@ export class ErrorCustomHandler implements ErrorHandler {
             } else {
                 // Handle Http errors (like error.status === 403, 404...)
                 console.log('An HTTP error occured');
-                errorService.log(error).subscribe(errorWithContextInfo => {
+                errorService.log(error).subscribe((errorWithContextInfo: any) => {
                     console.log(errorWithContextInfo);
                 });
                 // TODO return notificationService.notify(`${error.status} - ${error.message}`);
@@ -34,7 +34,7 @@ export class ErrorCustomHandler implements ErrorHandler {
             // or keep the user working on stuff that wouldn’t be saved
             // If something is broken in the app, stop the app and
             // redirect the user to an error screen with all the information
-            errorService.log(error).subscribe(errorWithContextInfo => {
+            errorService.log(error).subscribe((errorWithContextInfo: any) => {
                 console.log(errorWithContextInfo);
             });
         }

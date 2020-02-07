@@ -8,22 +8,22 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 })
 export class LoginDialogComponent implements OnInit {
 
-  myform: FormGroup;
+  loginForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     private loginDialog: MatDialogRef<LoginDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private data
+    @Inject(MAT_DIALOG_DATA) private data: any
   ) { }
 
   ngOnInit() {
-    this.myform = this.formBuilder.group({
+    this.loginForm = this.formBuilder.group({
       username: this.data ? this.data.name : ''
     });
   }
 
-  submit(form) {
-    this.loginDialog.close(`${this.myform.value.username}`);
+  submit(form: FormGroup) {
+    this.loginDialog.close(`${this.loginForm.value.username}`);
   }
 
 }

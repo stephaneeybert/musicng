@@ -15,7 +15,7 @@ export class DebounceClickDirective implements OnInit, OnDestroy {
   @Output() appOnDebounceClick = new EventEmitter();
 
   private clicks = new Subject();
-  private subscription: Subscription;
+  private subscription!: Subscription;
 
   constructor() { }
 
@@ -30,7 +30,7 @@ export class DebounceClickDirective implements OnInit, OnDestroy {
   }
 
   @HostListener('click', ['$event'])
-  clickEvent(event) {
+  clickEvent(event: Event) {
     event.preventDefault();
     event.stopPropagation();
     this.clicks.next(event);

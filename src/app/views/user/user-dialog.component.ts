@@ -10,13 +10,13 @@ import { UserService } from './user.service';
 })
 export class UserDialogComponent implements OnInit {
 
-  form: FormGroup;
+  form!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     private userDialogRef: MatDialogRef<UserDialogComponent>,
     private userService: UserService,
-    @Inject(MAT_DIALOG_DATA) private data
+    @Inject(MAT_DIALOG_DATA) private data: any
   ) { }
 
   ngOnInit() {
@@ -27,7 +27,7 @@ export class UserDialogComponent implements OnInit {
     });
   }
 
-  submit(form) {
+  submit(form: FormGroup) {
     this.userDialogRef.close(form.value);
   }
 

@@ -41,7 +41,12 @@ export class TokenService {
   }
 
   public getAccessTokenFromLocalStorage(): string {
-    return localStorage.getItem(ACCESS_TOKEN_NAME);
+    const token: string | null = localStorage.getItem(ACCESS_TOKEN_NAME);
+    if (token != null) {
+      return token;
+    } else {
+      return '';
+    }
   }
 
   public setAccessTokenToLocalStorage(token: string): void {
@@ -49,7 +54,12 @@ export class TokenService {
   }
 
   public getRefreshTokenFromLocalStorage(): string {
-    return localStorage.getItem(REFRESH_TOKEN_NAME);
+    const token: string | null = localStorage.getItem(REFRESH_TOKEN_NAME);
+    if (token != null) {
+      return token;
+    } else {
+      return '';
+    }
   }
 
   public setRefreshTokenToLocalStorage(token: string): void {
@@ -60,7 +70,7 @@ export class TokenService {
     if (header.startsWith(AUTH_BEARER_HEADER)) {
       return header.substring(7, header.length);
     } else {
-      return null;
+      return '';
     }
   }
 

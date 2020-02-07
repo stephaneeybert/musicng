@@ -1,6 +1,5 @@
 import { Component, Input, EventEmitter, Output, OnChanges, SimpleChange } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { filter } from 'rxjs/operators';
 
 import { User } from './user';
 import { UserService } from './user.service';
@@ -14,10 +13,10 @@ import { UtilsService } from '@app/core/service/utils.service';
 export class UserEditComponent implements OnChanges {
 
   private _label = 'Edit'; // TODO Is using a _label part of the public API ?
-  @Input() existingUser: User;
+  @Input() existingUser?: User;
   @Output() userEditedEvent: EventEmitter<User> = new EventEmitter<User>();
 
-  userDialogRef: MatDialogRef<UserDialogComponent>;
+  userDialogRef!: MatDialogRef<UserDialogComponent>;
 
   constructor(
     private matDialog: MatDialog,

@@ -22,7 +22,7 @@ export class LocalizedPaginator extends MatPaginatorIntl {
     this.getAndInitTranslations();
   }
 
-  getRangeLabel = function (page, pageSize, length) {
+  getRangeLabel = (page: number, pageSize: number, length: number) => {
     const out_of = this.translate.instant(OUT_OF);
     if (length === 0 || pageSize === 0) {
       return '0 ' + out_of + ' ' + length;

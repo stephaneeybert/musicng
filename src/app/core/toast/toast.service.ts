@@ -11,13 +11,16 @@ import { ToastRef } from './toast-ref';
 })
 export class ToastService {
 
-  private lastToast: ToastRef;
+  private lastToast!: ToastRef;
+  private toastConfig!: ToastConfig;
 
   constructor(
     private overlay: Overlay,
     private parentInjector: Injector,
-    @Inject(TOAST_CONFIG_TOKEN) private toastConfig: ToastConfig
-  ) { }
+    @Inject(TOAST_CONFIG_TOKEN) toastConfig: ToastConfig
+  ) {
+    this.toastConfig = toastConfig;
+  }
 
   show(data: ToastData) {
     const positionStrategy = this.getPositionStrategy();

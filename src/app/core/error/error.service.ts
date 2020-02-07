@@ -29,12 +29,12 @@ export class ErrorService {
       });
   }
 
-  public log(error) {
+  public log(error: any) {
     const errorWithContext = this.addContextInfo(error);
     return MockHttpService.post(errorWithContext); // TODO Implement a server side error inbox
   }
 
-  private addContextInfo(error) {
+  private addContextInfo(error: any) {
     const appId = 'My API id'; // TODO get an env variable
     const location = this.injector.get(LocationStrategy);
     const url = location instanceof PathLocationStrategy ? location.path() : '';
@@ -66,7 +66,7 @@ export class ErrorService {
 }
 
 class MockHttpService {
-  static post(error): Observable<any> {
+  static post(error: any): Observable<any> {
     return of(error);
   }
 }

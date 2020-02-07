@@ -10,19 +10,22 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class DebounceDirective implements OnInit, OnDestroy {
 
-  @Output() public appOnDebounce: EventEmitter<string>;
-
   @Input() public debounceTime = 300;
 
-  private isFirstChange = true;
-  private subscription: Subscription;
+  @Output() public appOnDebounce: EventEmitter<string>;
 
-  constructor(public model: NgControl) {
+  private isFirstChange = true;
+  private subscription!: Subscription;
+  public model!: NgControl;
+
+  constructor(model: NgControl) {
+    this.model = model;
     this.appOnDebounce = new EventEmitter<string>();
   }
 
   ngOnInit() {
-    this.subscription = this.model.valueChanges
+    if (this.model.valueChanges) {
+      this.subscription = this.model.valueChanges
       .debounceTime(this.debounceTime)
       .distinctUntilChanged()
       .subscribe((modelValue: string) => {
@@ -33,6 +36,7 @@ export class DebounceDirective implements OnInit, OnDestroy {
           this.appOnDebounce.emit(modelValue);
         }
       });
+    }
   }
 
   ngOnDestroy() {

@@ -1,17 +1,19 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, EventEmitter, Output } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { merge, Observable, of as observableOf } from 'rxjs';
+import { merge, Observable, of as observableOf, of } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { HttpEvent, HttpResponse } from '@angular/common/http';
 
 import { User } from './user';
-import { UsersApi } from './users.api';
+import { UsersApi } from './users-api';
 import { UserService } from '@app/views/user/user.service';
 import { PaginationService } from '@app/core/service/pagination.service';
 import { UtilsService } from '@app/core/service/utils.service';
 import { ToastService } from '@app/core/toast/toast.service';
+import { HateoasPageable } from './hateoas-pageable';
 
 @Component({
   selector: 'app-users',
@@ -22,12 +24,12 @@ export class UsersComponent implements OnInit {
 
   displayedColumns: string[] = ['confirmed', 'firstname', 'lastname', 'actions'];
 
-  elementsPerPage: number;
-  pageSizeOptions: number[];
+  elementsPerPage: number = 0;
+  pageSizeOptions: number[] = [];
 
-  currentPageNumber: number;
-  totalElements: number;
-  totalPages: number;
+  currentPageNumber: number = 0;
+  totalElements: number = 0;
+  totalPages: number = 0;
 
   isLoadingResults = true;
   isRateLimitReached = false;
@@ -36,9 +38,9 @@ export class UsersComponent implements OnInit {
 
   updateEvent = new EventEmitter<{ value: User }>();
   searchTermEvent = new EventEmitter<{ value: string }>();
-  searchTerm: string;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  searchTerm: string = '';
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort = new MatSort();
 
   constructor(
     private router: Router,
@@ -64,7 +66,9 @@ export class UsersComponent implements OnInit {
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.getUsers(this.searchTerm, this.sort.active, this.sort.direction, this.paginator.pageIndex);
+          let pageIndex: number = 0;
+          pageIndex = this.paginator.pageIndex;
+          return this.getUsers(this.searchTerm, this.sort.active, this.sort.direction, pageIndex);
         }),
         map((usersApi: UsersApi) => {
           this.isLoadingResults = false;
@@ -88,13 +92,13 @@ export class UsersComponent implements OnInit {
   getUsers(searchTerm: string, sortFieldName: string, sortDirection: string, currentPageNumber: number): Observable<UsersApi> {
     return this.userService.getSome(searchTerm, sortFieldName, sortDirection, currentPageNumber, this.elementsPerPage)
       .pipe(
-        map(response => {
+        map((hateoasPageable: HateoasPageable) => {
           return new UsersApi(
-            response._embedded.userResourceList as User[],
-            response.page.number,
-            response.page.size,
-            response.page.totalElements,
-            response.page.totalPages
+            hateoasPageable._embedded.userResourceList as User[],
+            hateoasPageable.page.pageNumber,
+            hateoasPageable.page.pageSize,
+            hateoasPageable.page.totalElements,
+            hateoasPageable.page.totalPages
           );
         })
       );
@@ -107,9 +111,7 @@ export class UsersComponent implements OnInit {
       value: this.searchTerm
     });
 
-    if (this.paginator) {
-      this.paginator.firstPage();
-    }
+    this.paginator.firstPage();
   }
 
   delete(user: User): void {

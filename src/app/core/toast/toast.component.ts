@@ -13,7 +13,7 @@ import { toastAnimations, ToastAnimationState } from './toast-animation';
 })
 export class ToastComponent implements OnInit, OnDestroy {
   animationState: ToastAnimationState = 'default';
-  iconType: string;
+  iconType?: string;
 
   private intervalId: any;
 

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   HttpRequest,
-  HttpResponse,
   HttpErrorResponse,
   HttpHandler,
   HttpEvent,
@@ -10,8 +9,8 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { tap, catchError, take, filter, switchMap } from 'rxjs/operators';
-import { empty, throwError, Subject } from 'rxjs';
+import { tap, catchError, switchMap } from 'rxjs/operators';
+import { throwError, Subject } from 'rxjs';
 
 import { TokenService } from './token.service';
 import { AuthService } from '@app/core/auth/auth.service';
@@ -27,9 +26,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   // Contains the current refresh token or is null if
   // the refresh is pending and no refresh token is currently available
-  private refreshTokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(
-    null
-  );
+  private refreshTokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   constructor(
     private router: Router,
@@ -50,8 +47,6 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(request)
       .pipe(
         tap((response: HttpEvent<any>) => {
-          if (response instanceof HttpResponse) {
-          }
         }),
         catchError(error => {
           if (error instanceof HttpErrorResponse) {
@@ -92,7 +87,7 @@ export class AuthInterceptor implements HttpInterceptor {
       );
   }
 
-  private addAccessToken(request): HttpRequest<any> {
+  private addAccessToken(request: HttpRequest<any>): HttpRequest<any> {
     if (!this.tokenService.getAccessTokenFromLocalStorage()) {
       return request;
     }

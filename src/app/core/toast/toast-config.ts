@@ -1,7 +1,7 @@
 import { InjectionToken, TemplateRef } from '@angular/core';
 
 export class ToastData {
-  type: ToastType;
+  type?: ToastType;
   text?: string;
   template?: TemplateRef<any>;
   templateContext?: {};
@@ -10,11 +10,11 @@ export class ToastData {
 export type ToastType = 'warning' | 'info' | 'success';
 
 export interface ToastConfig {
-  position?: {
+  position: {
     top: number;
     right: number;
   };
-  animation?: {
+  animation: {
     fadeOut: number;
     fadeIn: number;
   };

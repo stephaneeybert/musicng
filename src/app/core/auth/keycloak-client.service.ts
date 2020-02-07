@@ -118,7 +118,7 @@ export class KeycloakClientService {
 
   public loadUserProfile(): any {
     return new Promise((resolve, reject) => {
-      KeycloakClientService.auth.authz.loadUserProfile().success((profile) => {
+      KeycloakClientService.auth.authz.loadUserProfile().success((profile: any) => {
         resolve(<object>profile);
       }).error(() => {
         reject('Failed to retrieve user profile');
