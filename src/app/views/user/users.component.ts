@@ -54,7 +54,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.elementsPerPage = this.paginationService.elementsPerPage;
-    this.pageSizeOptions = this.pageSizeOptions;
+    this.pageSizeOptions = this.paginationService.pageSizeOptions;
 
     // Select the first page when the sort order changes
     this.sort.sortChange.subscribe(() => {
