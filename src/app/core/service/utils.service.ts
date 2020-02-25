@@ -10,7 +10,7 @@ export class UtilsService {
         private matSnackBar: MatSnackBar
     ) { }
 
-    public showSnackBar(message: string, action?: string) {
+    public showSnackBar(message: string, action?: string): void {
         this.matSnackBar.open(message, action, {
             duration: 2000,
         });
