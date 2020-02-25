@@ -22,7 +22,7 @@ export class UserConfirmedComponent implements OnChanges {
     private userService: UserService
   ) { }
 
-  toggleConfirmed() {
+  toggleConfirmed(event: Event) {
     this.userService.get(this.userId)
       .pipe(
         switchMap((user: User) => {
