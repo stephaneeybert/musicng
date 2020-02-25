@@ -9,6 +9,7 @@
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
     "importHelpers": true,
+    "resolveJsonModule": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
