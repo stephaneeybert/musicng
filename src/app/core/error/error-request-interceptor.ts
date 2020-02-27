@@ -4,12 +4,10 @@ import {
     HttpHandler,
     HttpEvent,
     HttpInterceptor,
-    HttpResponse,
-    HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { of, throwError } from 'rxjs';
-import { catchError, retryWhen, switchMap, delay, take, concat } from 'rxjs/operators';
+import { retryWhen, switchMap, delay, take, concat } from 'rxjs/operators';
 
 import { ErrorCustomHandler } from './error-custom-handler';
 

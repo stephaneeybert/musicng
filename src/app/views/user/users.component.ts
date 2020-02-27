@@ -5,7 +5,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { merge, Observable, of as observableOf, of } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { HttpEvent, HttpResponse } from '@angular/common/http';
 
 import { User } from './user';
 import { UsersApi } from './users-api';

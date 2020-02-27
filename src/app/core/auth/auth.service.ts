@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { HttpRequest, HttpResponse, HttpHeaders, HttpEvent } from '@angular/common/http';
-import { map, tap, catchError } from 'rxjs/operators';
-import { of, empty } from 'rxjs';
+import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 import { environment } from '@env/environment';
 import { HttpService } from '@app/core/service/http.service';
