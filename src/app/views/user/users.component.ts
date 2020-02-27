@@ -88,7 +88,7 @@ export class UsersComponent implements OnInit {
       });
   }
 
-  getUsers(searchTerm: string, sortFieldName: string, sortDirection: string, currentPageNumber: number): Observable<UsersApi> {
+  private getUsers(searchTerm: string, sortFieldName: string, sortDirection: string, currentPageNumber: number): Observable<UsersApi> {
     return this.userService.getSome(searchTerm, sortFieldName, sortDirection, currentPageNumber, this.elementsPerPage)
       .pipe(
         map((hateoasPageable: HateoasPageable) => {
