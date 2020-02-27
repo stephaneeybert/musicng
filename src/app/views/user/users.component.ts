@@ -92,7 +92,6 @@ export class UsersComponent implements OnInit {
     return this.userService.getSome(searchTerm, sortFieldName, sortDirection, currentPageNumber, this.elementsPerPage)
       .pipe(
         map((hateoasPageable: HateoasPageable) => {
-          console.log(hateoasPageable);
           return new UsersApi(
             hateoasPageable._embedded.userModelList as User[],
             hateoasPageable.page.pageNumber,
@@ -105,7 +104,6 @@ export class UsersComponent implements OnInit {
   }
 
   search(searchTerm: string): void {
-    console.log('Searching for ' + searchTerm);
     this.searchTerm = searchTerm;
     this.searchTermEvent.emit({
       value: this.searchTerm
