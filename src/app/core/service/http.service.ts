@@ -7,7 +7,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 class HttpOptions {
   headers?: HttpHeaders;
   params?: HttpParams;
-  [key:string]: any;
+  [key: string]: any;
 }
 
 @Injectable({
@@ -15,60 +15,60 @@ class HttpOptions {
 })
 export class HttpService {
 
-    constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) { }
 
-    public get<T>(url: string, httpParams?: HttpParams, headers?: HttpHeaders): Observable<T> {
-        let options = this.buildOptions(headers);
-        options = this.addOptionParams(options, httpParams);
-        return this.httpClient.get<T>(url, options);
-    }
+  public get<T>(url: string, httpParams?: HttpParams, headers?: HttpHeaders): Observable<T> {
+    let options = this.buildOptions(headers);
+    options = this.addOptionParams(options, httpParams);
+    return this.httpClient.get<T>(url, options);
+  }
 
-    public post<T>(url: string, body: object, headers?: HttpHeaders): Observable<T> {
-        return this.httpClient.post<T>(url, body, this.buildOptions(headers));
-    }
+  public post<T>(url: string, body: object, headers?: HttpHeaders): Observable<T> {
+    return this.httpClient.post<T>(url, body, this.buildOptions(headers));
+  }
 
-    public postWithHeadersInResponse<T>(url: string, body: object, headers?: HttpHeaders): Observable<T> {
-        let options = this.buildOptions(headers);
-        options = this.addOptionForFullHttpResponse(options);
-        return this.httpClient.post<T>(url, body, options);
-    }
+  public postWithHeadersInResponse<T>(url: string, body: object, headers?: HttpHeaders): Observable<T> {
+    let options = this.buildOptions(headers);
+    options = this.addOptionForFullHttpResponse(options);
+    return this.httpClient.post<T>(url, body, options);
+  }
 
-    public put<T>(url: string, body: object, headers?: HttpHeaders): Observable<T> {
-        return this.httpClient.put<T>(url, body, this.buildOptions(headers));
-    }
+  public put<T>(url: string, body: object, headers?: HttpHeaders): Observable<T> {
+    return this.httpClient.put<T>(url, body, this.buildOptions(headers));
+  }
 
-    public patch<T>(url: string, body: object, headers?: HttpHeaders): Observable<T> {
-        return this.httpClient.patch<T>(url, body, this.buildOptions(headers));
-    }
+  public patch<T>(url: string, body: object, headers?: HttpHeaders): Observable<T> {
+    return this.httpClient.patch<T>(url, body, this.buildOptions(headers));
+  }
 
-    public delete<T>(url: string): Observable<T> {
-        return this.httpClient.delete<T>(url, this.buildOptions());
-    }
+  public delete<T>(url: string): Observable<T> {
+    return this.httpClient.delete<T>(url, this.buildOptions());
+  }
 
-    private buildOptions(headers?: HttpHeaders): HttpOptions {
-        const options = {
-            headers: this.buildHeader(headers),
-            responseType: 'json' as 'json'
-        };
-        return options;
-    }
+  private buildOptions(headers?: HttpHeaders): HttpOptions {
+    const options = {
+      headers: this.buildHeader(headers),
+      responseType: 'json' as 'json'
+    };
+    return options;
+  }
 
-    public buildHeader(headers?: HttpHeaders): HttpHeaders {
-        headers = headers || new HttpHeaders();
-        headers = headers.set('Content-Type', 'application/json');
-        headers = headers.set('Accept', 'application/json');
-        return headers;
-    }
+  public buildHeader(headers?: HttpHeaders): HttpHeaders {
+    headers = headers || new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/json');
+    headers = headers.set('Accept', 'application/json');
+    return headers;
+  }
 
-    private addOptionParams(options: HttpOptions, httpParams?: HttpParams) {
-        options['params'] = httpParams;
-        return options;
-    }
+  private addOptionParams(options: HttpOptions, httpParams?: HttpParams) {
+    options['params'] = httpParams;
+    return options;
+  }
 
-    // Return a full HTTP response with its headers instead of simply the response body
-    private addOptionForFullHttpResponse(options: HttpOptions): HttpOptions {
-        options['observe'] = 'response';
-        return options;
-    }
+  // Return a full HTTP response with its headers instead of simply the response body
+  private addOptionForFullHttpResponse(options: HttpOptions): HttpOptions {
+    options['observe'] = 'response';
+    return options;
+  }
 
 }
