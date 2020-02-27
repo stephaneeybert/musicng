@@ -121,7 +121,7 @@ export class UsersComponent implements OnInit {
   }
 
   displayConfirmed(user: User) {
-    const message = 'Toggled the mail confirmed status for ' + user.firstname + ' ' + user.lastname;
+    const message = 'Toggled the mail confirmed status for ' + user.firstname + ' ' + user.lastname; // TODO Have a language resource
     this.showToast(message);
     this.utilsService.showSnackBar(message);
   }
