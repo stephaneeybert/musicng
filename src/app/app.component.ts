@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SwUpdate } from '@angular/service-worker';
+import { SwUpdate, UpdateActivatedEvent, UpdateAvailableEvent } from '@angular/service-worker';
 import { TranslateService } from '@ngx-translate/core';
 
 import { UiService } from '@app/core/service/ui.service';
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     if (this.swUpdate.isEnabled) {
-      this.swUpdate.available.subscribe(() => {
+      this.swUpdate.available.subscribe((event: UpdateAvailableEvent) => {
         if (confirm('A newer version of the application is available. Load the new version ?')) {
           window.location.reload();
         }
