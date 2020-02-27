@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, EventEmitter, Output } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { merge, Observable, of as observableOf, of } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
@@ -56,7 +56,7 @@ export class UsersComponent implements OnInit {
     this.pageSizeOptions = this.paginationService.pageSizeOptions;
 
     // Select the first page when the sort order changes
-    this.sort.sortChange.subscribe(() => {
+    this.sort.sortChange.subscribe((sort: Sort) => {
       this.goToFirstPage();
     });
 
@@ -115,7 +115,7 @@ export class UsersComponent implements OnInit {
   }
 
   delete(user: User): void {
-    this.userService.delete(user).subscribe(() => {
+    this.userService.delete(user).subscribe((users: User) => {
       this.goToFirstPage();
       this.refreshListForUser(user);
       this.utilsService.showSnackBar('The user ' + user.firstname + ' ' + user.lastname + ' has been deleted.');

@@ -63,7 +63,7 @@ export class UserComponent implements OnInit {
         this.user.firstname = firstnameField.value;
         this.user.lastname = lastnameField.value;
         this.userService.partialUpdate(this.user)
-        .subscribe(() => {
+        .subscribe((user: User) => {
           this.router.navigate(['users']);
         });
       }
