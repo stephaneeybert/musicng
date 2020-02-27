@@ -54,6 +54,6 @@ export class ErrorRequestInterceptor implements HttpInterceptor {
     }
 
     private isServerError(error: any): boolean {
-        return HTTP_SERVER_ERROR.test((error.status.toString()));
+        return HTTP_SERVER_ERROR.test((String(error.status.toString)));
     }
 }
