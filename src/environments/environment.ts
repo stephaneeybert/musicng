@@ -7,8 +7,8 @@ export const environment = {
   production: false,
   CLIENT_ID: 'musicng',
   ROLE_PREFIX: 'role_',
-  BASE_REST_URI: 'https://dev.thalasoft.com:8443/api',
-  KEYCLOAK_URI: 'https://dev.thalasoft.com:8180/auth',
+  BASE_REST_URI: 'http://dev.musicng.thalasoft.com:8443/api',
+  KEYCLOAK_URI: 'https://dev.musicng.thalasoft.com:8180/auth',
   KEYCLOAK_REALM: 'learnintouch',
   KEYCLOAK_CLIENTID: 'learnintouch-js'
 };

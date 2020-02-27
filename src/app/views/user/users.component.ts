@@ -93,8 +93,9 @@ export class UsersComponent implements OnInit {
     return this.userService.getSome(searchTerm, sortFieldName, sortDirection, currentPageNumber, this.elementsPerPage)
       .pipe(
         map((hateoasPageable: HateoasPageable) => {
+          console.log(hateoasPageable);
           return new UsersApi(
-            hateoasPageable._embedded.userResourceList as User[],
+            hateoasPageable._embedded.userModelList as User[],
             hateoasPageable.page.pageNumber,
             hateoasPageable.page.pageSize,
             hateoasPageable.page.totalElements,

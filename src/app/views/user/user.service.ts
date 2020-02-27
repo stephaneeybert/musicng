@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { map, filter } from 'rxjs/operators';
+import { map, filter, catchError, tap } from 'rxjs/operators';
 import { HttpParams, HttpEvent, HttpResponse } from '@angular/common/http';
 
 import { environment } from '@env/environment';
@@ -22,10 +22,11 @@ export class UserService {
   ) { }
 
   public getAll(): Observable<User[]> {
-    return this.httpService.get(this.usersUrl)
+    return this.httpService.get<HateoasPageable>(this.usersUrl)
       .pipe(
-        map((data: any) => {
-          return data._embedded.userResourceList as User[];
+        map((hateoasPageable: HateoasPageable) => {
+          console.log(hateoasPageable);
+          return hateoasPageable._embedded.userModelList as User[];
         })
       );
   }
@@ -40,78 +41,36 @@ export class UserService {
     if (sortFieldName && sortDirection) {
       httpParams = httpParams.append('sort', sortFieldName + ',' + sortDirection);
     }
-    return this.httpService.get<HateoasPageable>(this.usersUrl, httpParams)
-    .pipe(
-      filter((httpEvent: HttpEvent<HateoasPageable>): httpEvent is HttpResponse<HateoasPageable> => httpEvent instanceof HttpResponse),
-      map((httpResponse: HttpResponse<HateoasPageable>) => {
-        return httpResponse.body as HateoasPageable;
-      })
-    );
+    return this.httpService.get<HateoasPageable>(this.usersUrl, httpParams);
   }
 
   public get(id: string): Observable<User> {
     const url = this.usersUrl + '/' + id.toString();
-    return this.httpService.get<User>(url)
-    .pipe(
-      filter((httpEvent: HttpEvent<User>): httpEvent is HttpResponse<User> => httpEvent instanceof HttpResponse),
-      map((httpResponse: HttpResponse<User>) => {
-        return httpResponse.body as User;
-      })
-    );
+    return this.httpService.get<User>(url);
   }
 
   public add(user: User): Observable<User> {
-    return this.httpService.post<User>(this.usersUrl, user)
-    .pipe(
-      filter((httpEvent: HttpEvent<User>): httpEvent is HttpResponse<User> => httpEvent instanceof HttpResponse),
-      map((httpResponse: HttpResponse<User>) => {
-        return httpResponse.body as User;
-      })
-    );
+    return this.httpService.post<User>(this.usersUrl, user);
   }
 
   public fullUpdate(user: User): Observable<User> {
     const url = this.usersUrl + '/' + user.id;
-    return this.httpService.put<User>(url, user)
-    .pipe(
-      filter((httpEvent: HttpEvent<User>): httpEvent is HttpResponse<User> => httpEvent instanceof HttpResponse),
-      map((httpResponse: HttpResponse<User>) => {
-        return httpResponse.body as User;
-      })
-    );
+    return this.httpService.put<User>(url, user);
   }
 
   public partialUpdate(user: User): Observable<User> {
     const url = this.usersUrl + '/' + user.id;
-    return this.httpService.patch<User>(url, user)
-    .pipe(
-      filter((httpEvent: HttpEvent<User>): httpEvent is HttpResponse<User> => httpEvent instanceof HttpResponse),
-      map((httpResponse: HttpResponse<User>) => {
-        return httpResponse.body as User;
-      })
-    );
+    return this.httpService.patch<User>(url, user);
   }
 
   public delete(user: User): Observable<User> {
     const url = this.usersUrl + '/' + user.id;
-    return this.httpService.delete<User>(url)
-    .pipe(
-      filter((httpEvent: HttpEvent<User>): httpEvent is HttpResponse<User> => httpEvent instanceof HttpResponse),
-      map((httpResponse: HttpResponse<User>) => {
-        return httpResponse.body as User;
-      })
-    );
+    return this.httpService.delete<User>(url);
   }
 
   public deleteById(userId: number): Observable<User> {
     const url = this.usersUrl + '/' + userId;
-    return this.httpService.delete<User>(url)
-    .pipe(
-      filter((httpEvent: HttpEvent<User>): httpEvent is HttpResponse<User> => httpEvent instanceof HttpResponse),
-      map((httpResponse: HttpResponse<User>) => {
-        return httpResponse.body as User;
-      })
-    );
+    return this.httpService.delete<User>(url);
   }
 
 }

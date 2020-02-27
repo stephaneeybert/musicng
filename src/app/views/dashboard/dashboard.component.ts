@@ -13,8 +13,9 @@ export class DashboardComponent {
 
   constructor(private userService: UserService) { }
 
-  users$: Observable<User[]> = this.userService.getAll().pipe(
-    map(users => {
+  users$: Observable<User[]> = this.userService.getAll()
+  .pipe(
+    map((users: User[]) => {
       return users.slice(1, 5);
     })
   );
