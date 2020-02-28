@@ -60,7 +60,7 @@ const routes: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         data: {
-          expectedRole: 'user' // 'admin' TODO put this back some time
+          expectedRole: 'user' // 'admin' TODO put this back
         }
       },
       {
