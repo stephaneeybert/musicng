@@ -15,7 +15,7 @@ export function httpLoaderFactory(httpClient: HttpClient) {
       loader: {
         provide: TranslateLoader,
         useFactory: httpLoaderFactory,
-        deps: [HttpClient]
+        deps: [ HttpClient ]
       }
     }),
     ToastModule.forRoot()
