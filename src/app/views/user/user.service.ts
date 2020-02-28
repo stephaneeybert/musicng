@@ -45,7 +45,7 @@ export class UserService {
   }
 
   public get(id: string): Observable<User> {
-    const url = this.usersUrl + '/' + String(id.toString);
+    const url = this.usersUrl + '/' + String(id);
     return this.httpService.get<User>(url);
   }
 
