@@ -25,20 +25,20 @@ export class UserEditComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    const log: string[] = [];
+    const loggedOutput: string[] = [];
     for (const propName of Object.keys(changes)) {
       const change = changes[propName];
       const currentValue  = JSON.stringify(change.currentValue);
       const previousValue = JSON.stringify(change.previousValue);
       const changedTo = JSON.stringify(change.currentValue);
       if (change.isFirstChange()) {
-        log.push(`Initial value of ${propName} set to ${changedTo}`);
+        loggedOutput.push(`Initial value of ${propName} set to ${changedTo}`);
       } else {
         const changedFrom = JSON.stringify(change.previousValue);
-        log.push(`${propName} changed from ${changedFrom} to ${changedTo}`);
+        loggedOutput.push(`${propName} changed from ${changedFrom} to ${changedTo}`);
       }
     }
-    console.log(log.join(', '));
+    console.log(loggedOutput.join(', '));
   }
 
   @Input()
