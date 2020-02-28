@@ -41,6 +41,9 @@ import { DebounceClickDirective } from './debounce-click.directive';
     CoreModule,
     AuthModule
   ],
+  entryComponents: [
+    UserDialogComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
