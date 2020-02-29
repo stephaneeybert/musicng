@@ -1,12 +1,17 @@
-import { Observable } from 'rxjs';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-unsecured-sidenav',
   templateUrl: './unsecured.sidenav.component.html'
 })
-export class UnsecuredSidenavComponent {
+export class UnsecuredSidenavComponent implements OnInit {
+  constructor(
+    private translateService: TranslateService
+  ) { }
 
-  title = 'MusicNG';
+  public ngOnInit(): void {
+    console.log('The app title: ' + this.translateService.instant('app.title'));
+  }
 
 }

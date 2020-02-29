@@ -18,6 +18,7 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { DashboardViewComponent } from '@app/views/dashboard/dashboard.view.component';
 import { DebounceDirective } from './debounce.directive';
 import { DebounceClickDirective } from './debounce-click.directive';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -39,11 +40,12 @@ import { DebounceClickDirective } from './debounce-click.directive';
     AppUiModule,
     ErrorModule,
     CoreModule,
-    AuthModule
+    AuthModule,
+    TranslateModule
   ],
   entryComponents: [
     UserDialogComponent
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

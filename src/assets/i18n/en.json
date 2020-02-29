@@ -1,4 +1,13 @@
 {
+  "app": {
+    "title": "MusicNG",
+    "description": "A music generator",
+    "new_version_available": "'A newer version of the application is available. Load the new version ?'"
+  },
+  "menu": {
+    "music": "Music",
+    "music_generator": "The music generator"
+  },
   "PAGINATOR": {
     "ITEMS_PER_PAGE": "Items per page:",
     "NEXT_PAGE": "Next page",

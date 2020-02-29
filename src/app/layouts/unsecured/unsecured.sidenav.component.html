@@ -7,20 +7,20 @@
     </button>
   </mat-toolbar>
   <mat-nav-list>
-    <a mat-list-item class="sidenav-link" [routerLink]="['/login']" (click)="sidenav.toggle()">
+    <!-- <a mat-list-item class="sidenav-link" [routerLink]="['/login']" (click)="sidenav.toggle()">
       <mat-icon mat-list-icon>account_box</mat-icon>
       <span class="title" mat-line>Log In</span>
       <span mat-line class="secondary">Log in the application</span>
-    </a>
-    <a mat-list-item class="sidenav-link" [routerLink]="['/users']" (click)="sidenav.toggle()">
+    </a> -->
+    <!-- <a mat-list-item class="sidenav-link" [routerLink]="['/users']" (click)="sidenav.toggle()">
       <mat-icon mat-list-icon>android</mat-icon>
       <span class="title" mat-line>Users</span>
       <span mat-line class="secondary">The users</span>
-    </a>
+    </a> -->
     <a mat-list-item class="sidenav-link" [routerLink]="['/music']" (click)="sidenav.toggle()">
       <mat-icon mat-list-icon>android</mat-icon>
-      <span class="title" mat-line>Music</span>
-      <span mat-line class="secondary">The music project</span>
+      <span class="title" mat-line>{{ 'menu.music' | translate }}</span>
+      <span mat-line class="secondary">{{ 'menu.music_generator' | translate }}</span>
     </a>
   </mat-nav-list>
 </mat-sidenav>
@@ -29,6 +29,6 @@
     <mat-icon aria-label="Another menu" class="material-icons">menu</mat-icon>
   </button>
   <h1 class="component-title">
-    <a class="title-link">{{title}}</a>
+    <a class="title-link">{{ 'app.title' | translate }}</a>
   </h1>
 </mat-toolbar>

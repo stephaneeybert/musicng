@@ -44,11 +44,11 @@ export class ErrorService {
     const user = ''; // TODO get the logged in user
     const id = `${appId}-${user}-${time}`;
     const status = error.status || null;
-    const message = (error && error.body) ? error.body.error : String(error);
+    const message = (error && error.body) ? error.body : error;
     const stack = error instanceof HttpErrorResponse ? null : error; // TODO StackTraceParser.parse(error);
     const method = (stack && stack[0]) ? stack[0].functionName : null;
 
-    const errorWithContext = { message, method, name, appId, user, time, id, url, status, stack };
+    const errorWithContext = { message, error, method, name, appId, user, time, id, url, status, stack };
     return errorWithContext;
   }
 

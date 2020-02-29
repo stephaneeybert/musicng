@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import { Component } from '@angular/core';
 import { LoginService } from '@app/core/service/login.service';
 
@@ -7,8 +6,6 @@ import { LoginService } from '@app/core/service/login.service';
   templateUrl: './secured.sidenav.component.html'
 })
 export class SecuredSidenavComponent {
-
-  title = 'MusicNG';
 
   constructor(
     private loginService: LoginService
