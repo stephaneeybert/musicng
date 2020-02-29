@@ -2,5 +2,5 @@
         { fadeIn: toastConfig.animation.fadeIn, fadeOut: toastConfig.animation.fadeOut }}" (@fadeAnimation.done)="onFadeFinished($event)">
   <mat-icon>{{ iconType }}</mat-icon>
   <div>{{ data.text }}</div>
-  <mat-icon (click)="close()">close</mat-icon>
+  <mat-icon (click)="close()">{{ 'toast.close' | translate }}</mat-icon>
 </div>

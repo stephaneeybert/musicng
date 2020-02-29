@@ -1,4 +1,4 @@
-<h3>Top Users</h3>
+<h3>{{ 'dashboard.title' | translate }}</h3>
 <div class="grid grid-pad">
   <a *ngFor="let user of users" class="col-1-4" routerLink="/user/{{user.id}}">
     <div class="module user">

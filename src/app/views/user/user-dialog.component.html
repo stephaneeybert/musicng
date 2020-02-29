@@ -1,22 +1,22 @@
 <form [formGroup]="form" (ngSubmit)="submit(form)">
-    <h1 mat-dialog-title>Adding or modifying a user</h1>
+    <h1 mat-dialog-title>{{ 'user.form.title' | translate }}</h1>
     <mat-dialog-content>
         <mat-form-field>
-            <input matInput formControlName="email" placeholder="Email">
+            <input matInput formControlName="email" placeholder="{{ 'user.form.email' | translate }}">
         </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-content>
         <mat-form-field>
-            <input matInput formControlName="firstname" placeholder="Firstname">
+            <input matInput formControlName="firstname" placeholder="{{ 'user.form.firstname' | translate }}">
         </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-content>
         <mat-form-field>
-            <input matInput formControlName="lastname" placeholder="Lastname">
+            <input matInput formControlName="lastname" placeholder="{{ 'user.form.lastname' | translate }}">
         </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button type="button" mat-dialog-close>Cancel</button>
-      <button mat-button type="submit">Save</button>
+      <button mat-button type="button" mat-dialog-close>{{ 'user.form.cancel' | translate }}</button>
+      <button mat-button type="submit">{{ 'user.form.save' | translate }}</button>
     </mat-dialog-actions>
 </form>

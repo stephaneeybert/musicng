@@ -2,11 +2,36 @@
   "app": {
     "title": "MusicNG",
     "description": "Un générateur de musique",
-    "new_version_available": "Une nouvelle version de l'application est disponible. Charger la nouvelle version ?"
+    "new_version_available": "Une nouvelle version de l'application est disponible. Charger la nouvelle version ?",
+    "like": "Aimer",
+    "share": "Partager"
   },
   "menu": {
     "music": "Musique",
     "music_generator": "Le générateur de musique"
+  },
+  "header": {
+    "home": "Home",
+    "users": "Utilisateurs",
+    "dashboard": "Tableau de bod",
+    "music": "Musique",
+    "logout": "Déconnexion"
+  },
+  "user": {
+    "form": {
+      "title": "Créer ou mettre à jour un utilisateur",
+      "email": "Email",
+      "firstname": "Prénom",
+      "lastname": "Nom",
+      "save": "Enregistrer",
+      "cancel": "Annuler"
+    }
+  },
+  "dashboard": {
+    "title": "Les utilisateurs"
+  },
+  "toast": {
+    "close": "Fermer"
   },
   "PAGINATOR": {
     "ITEMS_PER_PAGE": "Eléments par page:",
