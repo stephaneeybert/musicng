@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 
 const APP_COLOR = '#343a40';
-const APP_IMAGE = '/assets/icons/icon-72x72.png';
+const APP_IMAGE = 'assets/icons/icon-72x72.png';
 const APP_TITLE = 'PierrePapierCiseaux';
 const APP_DESCRIPTION = 'Le jeu de pierre papier ciseaux';
 
