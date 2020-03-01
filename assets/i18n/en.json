@@ -1,0 +1,44 @@
+{
+  "app": {
+    "title": "MusicNG",
+    "description": "A music generator",
+    "new_version_available": "A newer version of the application is available. Load the new version ?",
+    "like": "Like",
+    "share": "Share"
+  },
+  "menu": {
+    "music": "Music",
+    "music_generator": "The music generator"
+  },
+  "header": {
+    "home": "Home",
+    "users": "Users",
+    "dashboard": "Dashboard",
+    "music": "Music",
+    "logout": "Logout"
+  },
+  "user": {
+    "form": {
+      "title": "Create or update a user",
+      "email": "Email",
+      "firstname": "Firstname",
+      "lastname": "Lastname",
+      "save": "Save",
+      "cancel": "Cancel"
+    }
+  },
+  "dashboard": {
+    "title": "The users"
+  },
+  "toast": {
+    "close": "Close"
+  },
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "Items per page:",
+    "NEXT_PAGE": "Next page",
+    "PREVIOUS_PAGE": "Previous page",
+    "FIRST_PAGE": "First page",
+    "LAST_PAGE": "Last page",
+    "OUT_OF": "of"
+  }
+}
