@@ -1,23 +1,12 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ToastModule } from '@app/core/toast';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-export function httpLoaderFactory(httpClient: HttpClient) {
-  return new TranslateHttpLoader(httpClient, './assets/i18n/');
-}
+import { I18nModule } from './i18n.module';
 
 @NgModule({
   imports: [
     HttpClientModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [ HttpClient ]
-      }
-    }),
+    I18nModule,
     ToastModule.forRoot()
   ]
 })

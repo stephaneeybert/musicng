@@ -5,9 +5,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { UiService } from '@app/core/service/ui.service';
 import { Subscription } from 'rxjs';
 
-const LANGUAGE_CODE_ENGLISH = 'en';
-const LANGUAGE_CODE_FRANCAIS = 'fr';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -24,20 +21,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit() {
-    this.initLanguageTranslation();
-
     this.translateService.get('app.title').subscribe((text: string) => {
       this.afterLanguageResourcesLoaded();
     });
-  }
-
-  private initLanguageTranslation(): void {
-    this.translateService.addLangs([LANGUAGE_CODE_ENGLISH, LANGUAGE_CODE_FRANCAIS])
-    // The default language used as a fallback if a translation isn't found for the current language
-    this.translateService.setDefaultLang(LANGUAGE_CODE_FRANCAIS);
-    // The language to use
-    this.translateService.use(LANGUAGE_CODE_FRANCAIS);
-    console.log('The browser current language is: ' + this.translateService.getBrowserLang());
   }
 
   private afterLanguageResourcesLoaded(): void {
