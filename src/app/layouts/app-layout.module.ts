@@ -8,7 +8,7 @@ import { MaterialModule } from '@app/material.module';
 import { MDBootstrapModule } from '@app/mdbootstrap.module';
 import { UnsecuredLayoutComponent } from '@app/layouts/unsecured/unsecured.layout.component';
 import { SecuredLayoutComponent } from '@app/layouts/secured/secured.layout.component';
-import { HeaderComponent } from '@app/layouts/secured/header.component';
+import { HeaderComponent } from '@app/layouts/unsecured/header.component';
 import { SecuredSidenavComponent } from '@app/layouts/secured/secured.sidenav.component';
 import { UnsecuredSidenavComponent } from '@app/layouts/unsecured/unsecured.sidenav.component';
 import { TranslateModule } from '@ngx-translate/core';

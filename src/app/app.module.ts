@@ -19,6 +19,7 @@ import { DashboardViewComponent } from '@app/views/dashboard/dashboard.view.comp
 import { DebounceDirective } from './debounce.directive';
 import { DebounceClickDirective } from './debounce-click.directive';
 import { TranslateModule } from '@ngx-translate/core';
+import { SoundtrackModule } from './views/soundtrack/soundtrack.module';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { TranslateModule } from '@ngx-translate/core';
     ErrorModule,
     CoreModule,
     AuthModule,
-    TranslateModule
+    TranslateModule,
+    SoundtrackModule
   ],
   entryComponents: [
     UserDialogComponent

@@ -7,8 +7,16 @@
     "share": "Partager"
   },
   "menu": {
-    "music": "Musique",
-    "music_generator": "Le générateur de musique"
+    "soundtrack": "Musique",
+    "soundtrack.description": "Le générateur de musique",
+    "device": "Appareils",
+    "device.description": "Les appareils branchés",
+    "users": "Utilisateurs",
+    "users.description": "Les utilisateurs",
+    "login": "Connexion",
+    "login.description": "Me connecter à l'application",
+    "logout": "Déconnexion",
+    "logout.description": "Me déconnecter de l'application"
   },
   "header": {
     "home": "Home",

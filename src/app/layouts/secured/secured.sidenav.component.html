@@ -10,18 +10,13 @@
   <mat-nav-list>
     <a mat-list-item class="sidenav-link" (click)="sidenav.toggle();logout(); ">
       <mat-icon mat-list-icon>account_balance</mat-icon>
-      <span class="title" mat-line>Log out</span>
-      <span mat-line class="secondary">Log me out</span>
+      <span class="title" mat-line>{{ 'menu.logout' | translate }}</span>
+      <span mat-line class="secondary">{{ 'menu.logout.description' | translate }}</span>
     </a>
     <a mat-list-item class="sidenav-link" [routerLink]="['/users']" (click)="sidenav.toggle()">
       <mat-icon mat-list-icon>android</mat-icon>
-      <span class="title" mat-line>Users</span>
-      <span mat-line class="secondary">The users</span>
-    </a>
-    <a mat-list-item class="sidenav-link" [routerLink]="['/music']" (click)="sidenav.toggle()">
-      <mat-icon mat-list-icon>android</mat-icon>
-      <span class="title" mat-line>Music</span>
-      <span mat-line class="secondary">The music project</span>
+      <span class="title" mat-line>{{ 'menu.users' | translate }}</span>
+      <span mat-line class="secondary">{{ 'menu.users.description' | translate }}</span>
     </a>
   </mat-nav-list>
 </mat-sidenav>
