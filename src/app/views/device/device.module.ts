@@ -11,8 +11,6 @@ import { MidiLibModule } from 'midi-lib';
   ],
   imports: [
     DeviceRoutingModule,
-    MaterialModule, // TODO Remove ?
-    TranslateModule,
     MidiLibModule,
   ]
 })
