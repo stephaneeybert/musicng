@@ -22,8 +22,10 @@
     "home": "Home",
     "users": "Utilisateurs",
     "dashboard": "Tableau de bord",
+    "logout": "Déconnexion",
     "music": "Musique",
-    "logout": "Déconnexion"
+    "soundtrack": "Musique",
+    "device": "Appareils"
   },
   "user": {
     "form": {

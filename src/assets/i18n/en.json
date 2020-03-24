@@ -22,8 +22,10 @@
     "home": "Home",
     "users": "Users",
     "dashboard": "Dashboard",
+    "logout": "Logout",
     "music": "Music",
-    "logout": "Logout"
+    "soundtrack": "Soundtrack",
+    "device": "Devices"
   },
   "user": {
     "form": {
