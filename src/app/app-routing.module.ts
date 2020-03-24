@@ -6,7 +6,7 @@ import { SecuredLayoutComponent } from './layouts/secured/secured.layout.compone
 import { UnsecuredLayoutComponent } from './layouts/unsecured/unsecured.layout.component';
 import { LoginComponent } from './core/login/login.component';
 import { ErrorComponent } from './core/error/error.component';
-import { MidiSoundtracksComponent } from 'midi-lib';
+import { SoundtrackComponent } from './views/soundtrack/soundtrack.component';
 
 const routes: Routes = [
   {
@@ -19,7 +19,7 @@ const routes: Routes = [
       },
       {
         path: 'soundtracks',
-        component: MidiSoundtracksComponent
+        component: SoundtrackComponent
       },
       {
         path: 'devices',
