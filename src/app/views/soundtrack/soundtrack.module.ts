@@ -12,6 +12,8 @@ import { MidiLibModule } from 'midi-lib';
   imports: [
     SoundtrackRoutingModule,
     MidiLibModule,
+    MaterialModule,
+    TranslateModule,
   ]
 })
 export class SoundtrackModule { }

@@ -12,6 +12,8 @@ import { MidiLibModule } from 'midi-lib';
   imports: [
     DeviceRoutingModule,
     MidiLibModule,
+    MaterialModule,
+    TranslateModule,
   ]
 })
 export class DeviceModule { }
