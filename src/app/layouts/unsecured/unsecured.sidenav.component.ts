@@ -10,8 +10,10 @@ export class UnsecuredSidenavComponent implements OnInit {
     private translateService: TranslateService
   ) { }
 
-  public ngOnInit(): void {
-    console.log('The app title: ' + this.translateService.instant('app.title'));
+  public ngOnInit() {
+    this.translateService.get('app.title').subscribe((text: string) => {
+      console.log('The app title: ' + text);
+    });
   }
 
 }
