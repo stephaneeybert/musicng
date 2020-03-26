@@ -12,10 +12,10 @@ const OUT_OF = 'PAGINATOR.OUT_OF';
 @Injectable()
 export class LocalizedPaginator extends MatPaginatorIntl {
 
-  constructor(private translate: TranslateService) {
+  constructor(private translateService: TranslateService) {
     super();
 
-    this.translate.onLangChange.subscribe((e: Event) => {
+    this.translateService.onLangChange.subscribe((e: Event) => {
       this.getAndInitTranslations();
     });
 
@@ -23,7 +23,7 @@ export class LocalizedPaginator extends MatPaginatorIntl {
   }
 
   getRangeLabel = (page: number, pageSize: number, length: number) => {
-    const out_of = this.translate.instant(OUT_OF);
+    const out_of = this.translateService.instant(OUT_OF);
     if (length === 0 || pageSize === 0) {
       return '0 ' + out_of + ' ' + length;
     }
@@ -35,7 +35,7 @@ export class LocalizedPaginator extends MatPaginatorIntl {
   };
 
   public getAndInitTranslations(): void {
-    this.translate.get([
+    this.translateService.get([
       ITEMS_PER_PAGE,
       NEXT_PAGE,
       PREVIOUS_PAGE,
