@@ -18,8 +18,8 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { DashboardViewComponent } from '@app/views/dashboard/dashboard.view.component';
 import { DebounceDirective } from './debounce.directive';
 import { DebounceClickDirective } from './debounce-click.directive';
-import { TranslateModule } from '@ngx-translate/core';
 import { SoundtrackModule } from './views/soundtrack/soundtrack.module';
+import { LibI18nModule } from 'lib-i18n';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,7 @@ import { SoundtrackModule } from './views/soundtrack/soundtrack.module';
     ErrorModule,
     CoreModule,
     AuthModule,
-    TranslateModule,
+    LibI18nModule,
     SoundtrackModule
   ],
   entryComponents: [

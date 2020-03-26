@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { DeviceRoutingModule } from './device-routing.module';
-import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from '@app/material.module';
 import { DeviceComponent } from './device.component';
 import { MidiLibModule } from 'midi-lib';
+import { LibI18nModule } from 'lib-i18n';
 
 @NgModule({
   declarations: [
@@ -13,7 +13,7 @@ import { MidiLibModule } from 'midi-lib';
     DeviceRoutingModule,
     MidiLibModule,
     MaterialModule,
-    TranslateModule,
+    LibI18nModule,
   ]
 })
 export class DeviceModule { }

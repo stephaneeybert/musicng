@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from '@app/material.module';
 import { SoundtrackComponent } from './soundtrack.component';
 import { SoundtrackRoutingModule } from './soundtrack-routing.module';
 import { MidiLibModule } from 'midi-lib';
+import { LibI18nModule } from 'lib-i18n';
 
 @NgModule({
   declarations: [
@@ -13,7 +13,7 @@ import { MidiLibModule } from 'midi-lib';
     SoundtrackRoutingModule,
     MidiLibModule,
     MaterialModule,
-    TranslateModule,
+    LibI18nModule,
   ]
 })
 export class SoundtrackModule { }

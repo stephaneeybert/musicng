@@ -11,7 +11,7 @@ import { SecuredLayoutComponent } from '@app/layouts/secured/secured.layout.comp
 import { HeaderComponent } from '@app/layouts/unsecured/header.component';
 import { SecuredSidenavComponent } from '@app/layouts/secured/secured.sidenav.component';
 import { UnsecuredSidenavComponent } from '@app/layouts/unsecured/unsecured.sidenav.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { LibI18nModule } from 'lib-i18n';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,7 @@ import { TranslateModule } from '@ngx-translate/core';
     AppRoutingModule,
     LayoutModule,
     MaterialModule,
-    TranslateModule,
+    LibI18nModule,
     MDBootstrapModule
   ],
   exports: [

@@ -1,12 +1,12 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastModule } from '@app/core/toast';
-import { I18nModule } from './i18n.module';
+import { LibI18nModule } from 'lib-i18n';
 
 @NgModule({
   imports: [
     HttpClientModule,
-    I18nModule,
+    LibI18nModule,
     ToastModule.forRoot()
   ]
 })
