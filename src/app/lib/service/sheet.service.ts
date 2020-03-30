@@ -182,6 +182,7 @@ export class SheetService {
           if (voices.length > 0) {
             formatter.joinVoices(voices).format(voices, sheetWidth);
             for (const voice of voices) {
+              console.log('Min voice width: ' + formatter.getMinTotalWidth());
               voice.draw(context);
             }
           }
@@ -217,8 +218,8 @@ export class SheetService {
     return (
       new vexflow.Flow.Annotation(textNote))
       .setFont(VEXFLOW_FONT_TYPE, VEXFLOW_FONT_SIZE, VEXFLOW_FONT_WEIGHT)
-      .setJustification(vexflow.Flow.Annotation.Justify.CENTER)
-      .setVerticalJustification(vexflow.Flow.Annotation.VerticalJustify.BOTTOM);
+      .setJustification(vexflow.Flow.Annotation.Justify.RIGHT)
+      .setVerticalJustification(vexflow.Flow.Annotation.VerticalJustify.CENTER);
   }
 
   private renderNote(note: Note): string {
