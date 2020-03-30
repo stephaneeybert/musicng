@@ -33,7 +33,7 @@ export class SoundtracksComponent implements OnInit {
 
   generateSoundtrack() {
     this.generatorService.generateSoundtrack();
-    this.melodyService.addDummyMelody();
+    // this.melodyService.addDummyMelody();
   }
 
   playSoundtrack(soundtrack: Soundtrack) {
