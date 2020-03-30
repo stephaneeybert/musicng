@@ -4,6 +4,7 @@ const NOTE_VELOCITY_MAX = 127;
 
 export class Note {
 
+  // TODO index: number Maybe have an index to keep the notes sorted in the chord ?
   pitch: Pitch;
   velocity?: number;
   dotted: boolean;
