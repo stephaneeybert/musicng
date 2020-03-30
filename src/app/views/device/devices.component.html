@@ -1,16 +1,23 @@
-<table>
-  <thead>
-    <th *ngIf="devices.length > 0">{{ 'devices.title' | translate }}</th>
-    <th *ngIf="devices.length == 0">{{ 'devices.none' | translate }}</th>
-  </thead>
-  <tbody>
-    <tr *ngFor="let device of devices">
-      <td>
-        {{ device.name }}
-        <midi-synth [device]="device"></midi-synth>
-        <midi-keyboard [device]="device"></midi-keyboard>
-        <midi-sheet [device]="device"></midi-sheet>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title></mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <thead>
+        <th *ngIf="devices.length > 0">{{ 'devices.title' | translate }}</th>
+        <th *ngIf="devices.length == 0">{{ 'devices.none' | translate }}</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let device of devices">
+          <td>
+            {{ device.name }}
+            <midi-synth [device]="device"></midi-synth>
+            <midi-keyboard [device]="device"></midi-keyboard>
+            <midi-sheet [device]="device"></midi-sheet>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>
