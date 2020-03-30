@@ -21,11 +21,14 @@
   "header": {
     "home": "Home",
     "users": "Utilisateurs",
-    "dashboard": "Tableau de bord",
     "logout": "Déconnexion",
     "music": "Musique",
     "soundtrack": "Musique",
     "device": "Appareils"
+  },
+  "devices": {
+    "title": "Appareils connectés",
+    "none": "Il n'y a pas d'appareils connectés."
   },
   "user": {
     "form": {
@@ -36,9 +39,6 @@
       "save": "Enregistrer",
       "cancel": "Annuler"
     }
-  },
-  "dashboard": {
-    "title": "Les utilisateurs"
   },
   "toast": {
     "close": "Fermer"

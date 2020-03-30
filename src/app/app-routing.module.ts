@@ -6,7 +6,8 @@ import { SecuredLayoutComponent } from './layouts/secured/secured.layout.compone
 import { UnsecuredLayoutComponent } from './layouts/unsecured/unsecured.layout.component';
 import { LoginComponent } from './core/login/login.component';
 import { ErrorComponent } from './core/error/error.component';
-import { SoundtrackComponent } from './views/soundtrack/soundtrack.component';
+import { SoundtracksComponent } from './views/soundtrack/soundtracks.component';
+import { DevicesComponent } from './views/device/devices.component';
 
 const routes: Routes = [
   {
@@ -19,15 +20,11 @@ const routes: Routes = [
       },
       {
         path: 'soundtracks',
-        component: SoundtrackComponent
+        component: SoundtracksComponent
       },
       {
         path: 'devices',
-        loadChildren: () => import('./views/device/device.module').then(module => module.DeviceModule),
-        data: {
-          preload: true,
-          delay: false
-        }
+        component: DevicesComponent
       },
       {
         path: 'error',
@@ -45,14 +42,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  providers: [
-    AppPreloadingStrategy
-  ],
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: AppPreloadingStrategy })
   ],
   exports: [
     RouterModule
-  ]
+  ],
+  providers: [
+    AppPreloadingStrategy
+  ],
 })
 export class AppRoutingModule { }

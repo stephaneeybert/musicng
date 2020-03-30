@@ -1,0 +1,6 @@
+<mat-toolbar>
+  Upload a soundtrack
+  <span class="fill-remaining-space"></span>
+  <input mat-flat-button color="primary" type="file" (change)="onUpload($event.target.files)">
+  <pre>{{soundtrack?.name}} </pre>
+</mat-toolbar>

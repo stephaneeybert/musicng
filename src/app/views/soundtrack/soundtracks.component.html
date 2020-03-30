@@ -1,0 +1,31 @@
+<mat-toolbar>
+  <span class="fill-remaining-space"></span>
+  <button mat-flat-button color="primary" (click)="generateSoundtrack()">New</button>
+</mat-toolbar>
+<div *ngIf="soundtracks.length > 0">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <thead>
+        </thead>
+        <tbody>
+          <tr *ngFor="let soundtrack of soundtracks">
+            <td>
+              <mat-toolbar>
+                {{soundtrack.name}}
+                <span class="fill-remaining-space"></span>
+                <button mat-flat-button color="primary" (click)="playSoundtrack(soundtrack)">Play</button>
+              </mat-toolbar>
+              <midi-synth [soundtrack]="soundtrack"></midi-synth>
+              <midi-keyboard [soundtrack]="soundtrack"></midi-keyboard>
+              <midi-sheet [soundtrack]="soundtrack"></midi-sheet>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

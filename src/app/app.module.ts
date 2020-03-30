@@ -14,12 +14,14 @@ import { UserComponent } from './views/user/user.component';
 import { UserConfirmedComponent } from './views/user/user-confirmed.component';
 import { UserEditComponent } from '@app/views/user/user-edit.component';
 import { UserDialogComponent } from './views/user/user-dialog.component';
-import { DashboardComponent } from './views/dashboard/dashboard.component';
-import { DashboardViewComponent } from '@app/views/dashboard/dashboard.view.component';
 import { DebounceDirective } from './debounce.directive';
 import { DebounceClickDirective } from './debounce-click.directive';
-import { SoundtrackModule } from './views/soundtrack/soundtrack.module';
-import { LibI18nModule } from 'lib-i18n';
+import { SynthComponent } from './lib/synth/synth.component';
+import { KeyboardComponent } from './views/keyboard/keyboard.component';
+import { DevicesComponent } from './views/device/devices.component';
+import { SoundtracksComponent } from './views/soundtrack/soundtracks.component';
+import { SheetComponent } from './lib/sheet/sheet.component';
+import { UploadComponent } from './lib/upload/upload.component';
 
 @NgModule({
   declarations: [
@@ -31,19 +33,21 @@ import { LibI18nModule } from 'lib-i18n';
     UserConfirmedComponent,
     UserEditComponent,
     UserDialogComponent,
-    DashboardComponent,
-    DashboardViewComponent,
     DebounceDirective,
-    DebounceClickDirective
+    DebounceClickDirective,
+    SynthComponent,
+    SheetComponent,
+    KeyboardComponent,
+    DevicesComponent,
+    SoundtracksComponent,
+    UploadComponent
   ],
   imports: [
     AppLayoutModule,
     AppUiModule,
     ErrorModule,
     CoreModule,
-    AuthModule,
-    LibI18nModule,
-    SoundtrackModule
+    AuthModule
   ],
   entryComponents: [
     UserDialogComponent

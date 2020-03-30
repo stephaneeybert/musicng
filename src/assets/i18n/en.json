@@ -21,11 +21,14 @@
   "header": {
     "home": "Home",
     "users": "Users",
-    "dashboard": "Dashboard",
     "logout": "Logout",
     "music": "Music",
     "soundtrack": "Soundtrack",
     "device": "Devices"
+  },
+  "devices": {
+    "title": "Connected devices",
+    "none": "There are no plugged-in devices."
   },
   "user": {
     "form": {
@@ -36,9 +39,6 @@
       "save": "Save",
       "cancel": "Cancel"
     }
-  },
-  "dashboard": {
-    "title": "The users"
   },
   "toast": {
     "close": "Close"

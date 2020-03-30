@@ -25,14 +25,16 @@ import { LibI18nModule } from 'lib-i18n';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AppRoutingModule,
     LayoutModule,
-    MaterialModule,
     LibI18nModule,
+    MaterialModule,
     MDBootstrapModule
   ],
   exports: [
     AppRoutingModule,
     LayoutModule,
+    LibI18nModule,
     MaterialModule,
+    MDBootstrapModule
   ]
 })
 export class AppLayoutModule { }
