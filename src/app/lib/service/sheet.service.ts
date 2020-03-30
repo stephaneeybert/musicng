@@ -183,7 +183,6 @@ export class SheetService {
             formatter.joinVoices(voices).format(voices, sheetWidth);
             for (const voice of voices) {
               voice.draw(context);
-              console.log('Min voice width: ' + formatter.getMinTotalWidth());
             }
           }
         }
