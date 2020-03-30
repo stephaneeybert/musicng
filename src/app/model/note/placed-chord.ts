@@ -32,6 +32,17 @@ export class PlacedChord {
     }
   }
 
+  public renderAbc(): string {
+    let abc: string = '';
+    for (const note of this.notes) {
+      if (abc) {
+        abc += ' ';
+      }
+      abc += note.renderAbc();
+    }
+    return abc;
+  }
+
   public renderDuration(): string {
     return this.cursor.render();
   }

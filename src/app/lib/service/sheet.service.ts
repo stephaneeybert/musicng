@@ -19,6 +19,10 @@ const VEXFLOW_REST_SUFFIX = 'r';
 const VEXFLOW_TIME_SIGNATURE_SEPARATOR = '/';
 const VEXFLOW_NOTE_COLOR = 'black';
 const VEXFLOW_NOTE_HIGHLIGHT_COLOR = 'blue';
+const VEXFLOW_FONT_TYPE = 'Arial';
+const VEXFLOW_FONT_SIZE = 12;
+const VEXFLOW_FONT_WEIGHT = '';
+const VEXFLOW_FONT_WEIGHT_BOLD = 'Bold';
 
 const VEXFLOW_DOUBLE_BAR = '||';
 const VEXFLOW_REPEAT_BEGIN = '|:';
@@ -166,6 +170,8 @@ export class SheetService {
                   strokeStyle: VEXFLOW_NOTE_COLOR
                 });
 
+                staveNote.addAnnotation(0, this.renderAnnotation(placedChord.renderAbc()));
+
                 staveNotes.push(staveNote);
               }
               voice.addTickables(staveNotes);
@@ -206,6 +212,14 @@ export class SheetService {
       vexflowNotes.push(this.renderNote(note));
     });
     return vexflowNotes;
+  }
+
+  private renderAnnotation(textNote: string): vexflow.Flow.Annotation {
+    return (
+      new vexflow.Flow.Annotation(textNote))
+      .setFont(VEXFLOW_FONT_TYPE, VEXFLOW_FONT_SIZE, VEXFLOW_FONT_WEIGHT)
+      .setJustification(vexflow.Flow.Annotation.Justify.CENTER)
+      .setVerticalJustification(vexflow.Flow.Annotation.VerticalJustify.BOTTOM);
   }
 
   private renderNote(note: Note): string {
