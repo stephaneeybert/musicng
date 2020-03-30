@@ -27,8 +27,8 @@
     "device": "Devices"
   },
   "devices": {
-    "title": "Connected devices",
-    "none": "There are no plugged-in devices."
+    "title": "Connected MIDI devices",
+    "none": "There are no plugged-in MIDI devices."
   },
   "user": {
     "form": {
