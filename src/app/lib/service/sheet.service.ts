@@ -126,6 +126,7 @@ export class SheetService {
     const sheetWidth = screenWidth * SHEET_WIDTH_RATIO;
 
     const context = this.renderVexflowContext(name, sheetWidth, this.vexflowHeight(soundtrack));
+    const formatter = new vexflow.Flow.Formatter();
 
     const voices: Array<vexflow.Flow.Voice> = new Array<vexflow.Flow.Voice>();
     if (soundtrack.hasTracks()) {
@@ -159,9 +160,6 @@ export class SheetService {
                   clef: Clef.TREBLE
                 });
 
-                // Store the stave note for later access
-                placedChord.staveNote = staveNote;
-
                 this.addAccidentalOnNotes(placedChord);
                 this.addDotOnNotes(placedChord);
 
@@ -172,18 +170,16 @@ export class SheetService {
 
                 staveNote.addAnnotation(0, this.renderAnnotation(placedChord.renderAbc()));
 
+                // Store the stave note for later access
+                placedChord.staveNote = staveNote;
+
                 staveNotes.push(staveNote);
               }
               voice.addTickables(staveNotes);
-              voices.push(voice);
-            }
-          }
-          const formatter = new vexflow.Flow.Formatter();
-          if (voices.length > 0) {
-            formatter.joinVoices(voices).format(voices, sheetWidth);
-            for (const voice of voices) {
-              console.log('Min voice width: ' + formatter.getMinTotalWidth());
+              formatter.joinVoices([ voice ]);
+              formatter.formatToStave([ voice ], stave);
               voice.draw(context);
+              voices.push(voice);
             }
           }
         }
