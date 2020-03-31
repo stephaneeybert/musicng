@@ -59,11 +59,11 @@ export class DeviceStore extends Store<Array<Device>> {
     const index = this.getDeviceIndex(deviceName);
     if (index !== -1) {
       const devices = this.getState();
-      const currentDevice: Device = devices[index];
-      if (currentDevice.midiMessageSubscription != null) {
-        currentDevice.midiMessageSubscription.unsubscribe();
+      const itemDevice: Device = devices[index];
+      if (itemDevice.midiMessageSubscription != null) {
+        itemDevice.midiMessageSubscription.unsubscribe();
       }
-      devices[index] = currentDevice;
+      devices[index] = itemDevice;
       devices.splice(index, 1);
       this.setState(devices);
     }
@@ -71,16 +71,8 @@ export class DeviceStore extends Store<Array<Device>> {
 
   private muteToggle(device: Device, mute: boolean) {
     if (device.mute != mute) {
-      const index = this.getDeviceIndex(device.id);
-      if (index !== -1) {
-        const devices = this.getState();
-        const currentDevice: Device = devices[index];
-        currentDevice.mute = mute;
-        devices[index] = currentDevice;
-        this.setState(devices);
-        console.log('Unmuted (' + mute + ') the device ' + device.name);
-        console.log(this.getState());
-      }
+      device.mute = mute;
+      this.setDevice(device);
     }
   }
 
@@ -93,23 +85,20 @@ export class DeviceStore extends Store<Array<Device>> {
   }
 
   public setDeviceKeyboard(device: Device, keyboard: any) {
-    const index = this.getDeviceIndex(device.id);
-    if (index !== -1) {
-      const devices = this.getState();
-      const currentDevice: Device = devices[index];
-      currentDevice.keyboard = keyboard;
-      devices[index] = currentDevice;
-      this.setState(devices);
-    }
+    device.keyboard = keyboard;
+    this.setDevice(device);
   }
 
   public setDeviceSynth(device: Device, synth: any) {
+    device.synth = synth;
+    this.setDevice(device);
+  }
+
+  public setDevice(device: Device) {
     const index = this.getDeviceIndex(device.id);
     if (index !== -1) {
       const devices = this.getState();
-      const currentDevice: Device = devices[index];
-      currentDevice.synth = synth;
-      devices[index] = currentDevice;
+      devices[index] = device;
       this.setState(devices);
     }
   }

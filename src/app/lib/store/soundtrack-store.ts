@@ -43,23 +43,20 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
   }
 
   public setSoundtrackKeyboard(soundtrack: Soundtrack, keyboard: any) {
-    const index = this.getSoundtrackIndex(soundtrack.id);
-    if (index !== -1) {
-      const soundtracks = this.getState();
-      const currentSoundtrack: Soundtrack = soundtracks[index];
-      currentSoundtrack.keyboard = keyboard;
-      soundtracks[index] = currentSoundtrack;
-      this.setState(soundtracks);
-    }
+    soundtrack.keyboard = keyboard;
+    this.setSoundtrack(soundtrack);
   }
 
   public setSoundtrackSynth(soundtrack: Soundtrack, synth: any) {
+    soundtrack.synth = synth;
+    this.setSoundtrack(soundtrack);
+  }
+
+  public setSoundtrack(soundtrack: Soundtrack) {
     const index = this.getSoundtrackIndex(soundtrack.id);
     if (index !== -1) {
       const soundtracks = this.getState();
-      const currentSoundtrack: Soundtrack = soundtracks[index];
-      currentSoundtrack.synth = synth;
-      soundtracks[index] = currentSoundtrack;
+      soundtracks[index] = soundtrack;
       this.setState(soundtracks);
     }
   }
