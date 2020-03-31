@@ -112,14 +112,16 @@ export class KeyboardComponent implements AfterViewInit {
   private createDeviceKeyboard(device: Device): void {
     const keyboard = this.keyboardService.createKeyboard(this.id, this.screenWidth);
     this.deviceStore.setDeviceKeyboard(device, keyboard);
+    this.playSoundFromKeyboard(keyboard, device.synth);
+  }
 
+  private playSoundFromKeyboard(keyboard: any, synth: any) {
     keyboard.on('change', (note: any) => {
       if (note.state) {
-        this.synthService.noteOn(note.note, this.midiService.MIDI_VELOCITY_MAX, device.synth);
+        this.synthService.noteOn(note.note, this.midiService.MIDI_VELOCITY_MAX, synth);
       } else {
-        this.synthService.noteOff(note.note, device.synth);
+        this.synthService.noteOff(note.note, synth);
       }
     });
   }
-
 }
