@@ -113,7 +113,6 @@ export class SynthService {
               if (this.parseService.noteIsNotRest(note)) {
                 let triggerTime = measureStartTime + relativeTime;
                 const releaseTime = triggerTime + durationInSeconds;
-                console.log('Note: ' + note.render() + ' trigger: ' + triggerTime + ' release: ' + releaseTime + ' velocity: ' + note.velocity);
                 soundtrack.synth.triggerAttack(note.render(), triggerTime, note.velocity);
                 soundtrack.synth.triggerRelease(note.render(), releaseTime);
 
