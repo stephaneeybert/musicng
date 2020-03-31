@@ -19,6 +19,10 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     return this.state$!;
   }
 
+  public getSoundtracks(): Array<Soundtrack> {
+    return this.getState();
+  }
+
   public addSoundtrack(soundtrack: Soundtrack) {
     const index = this.getSoundtrackIndex(soundtrack.id);
     if (index === -1) {

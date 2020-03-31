@@ -20,4 +20,7 @@ export class SoundtrackService {
     this.soundtrackStore.addSoundtrack(soundtrack);
   }
 
+  public getSoundtracks(): Array<Soundtrack> {
+    return this.soundtrackStore.getSoundtracks();
+  }
 }

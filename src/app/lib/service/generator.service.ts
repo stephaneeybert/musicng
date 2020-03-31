@@ -25,7 +25,8 @@ export class GeneratorService {
   NOTE_OCTAVE: number = 4; // TODO What octave to use ?
 
   public generateSoundtrack() {
-    const soundtrackName = 'My little soundtrack';
+    const nbSoundtracks: number = this.soundtrackService.getSoundtracks().length;
+    const soundtrackName = 'My little soundtrack ' + nbSoundtracks;
     const generatedChords: Array<PlacedChord> = this.generateChords()
       .map((chord: Array<string>) => {
         const notes: Array<Note> = chord.map((note: string) => {
