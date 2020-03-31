@@ -35,7 +35,7 @@ export class MelodyService {
     this.soundtrackService.createSoundtrack(soundtrackName, measures);
   }
 
-  public getRandomMidiNotes(): Observable<number> {
+  public getRandomMidiNotes$(): Observable<number> {
     return interval(MIDI_NOTE_DURATION)
       .pipe(
         map(data => Math.floor(Math.random() * MIDI_NOTE_MAX) + MIDI_NOTE_MIN)

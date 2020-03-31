@@ -27,7 +27,7 @@ export class SoundtracksComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.soundtracks$ = this.soundtrackStore.getSoundtracks();
+    this.soundtracks$ = this.soundtrackStore.getSoundtracks$();
     this.observeSoundtracks();
   }
 
@@ -52,7 +52,7 @@ export class SoundtracksComponent implements OnInit {
   }
 
   private observeSoundtracks(): void {
-    this.soundtracksSubscription = this.soundtrackStore.getSoundtracks()
+    this.soundtracksSubscription = this.soundtrackStore.getSoundtracks$()
       .subscribe((soundtracks: Array<Soundtrack>) => {
         this.soundtracks = soundtracks;
         this.detectChanges();

@@ -107,7 +107,7 @@ export class AuthInterceptor implements HttpInterceptor {
     } else {
       this.refreshTokenInProgress = true;
       console.log('Sending a refresh token request...');
-      return this.authService.refreshAccessToken()
+      return this.authService.refreshAccessToken$()
         .pipe(
           tap(() => {
             console.log('The access token has been refreshed by the interceptor');
@@ -119,7 +119,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private logout() {
-    this.authService.logout();
+    this.authService.logout$();
     this.router.navigate(['login']);
   }
 

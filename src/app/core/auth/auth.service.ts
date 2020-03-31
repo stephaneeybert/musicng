@@ -50,7 +50,7 @@ export class AuthService {
       );
   }
 
-  public logout(): Observable<HttpResponse<User>> {
+  public logout$(): Observable<HttpResponse<User>> {
     return this.httpService.postWithHeadersInResponse<HttpResponse<User>>(URI_LOGOUT, {})
       .pipe(
         map((response: HttpResponse<User>) => {
@@ -60,14 +60,14 @@ export class AuthService {
       );
   }
 
-  public isAuthenticated(): Observable<boolean> {
+  public isAuthenticated$(): Observable<boolean> {
     if (this.tokenService.accessTokenExpired()) {
       console.log('The access token expired.');
       if (this.tokenService.refreshTokenExpired()) {
         console.log('The refresh token expired.');
         return of(false);
       } else {
-        return this.refreshAccessToken()
+        return this.refreshAccessToken$()
           .pipe(
             map((response: boolean) => {
               if (response) {
@@ -136,7 +136,7 @@ export class AuthService {
     return httpHeaders;
   }
 
-  public refreshAccessToken(): Observable<boolean> {
+  public refreshAccessToken$(): Observable<boolean> {
     console.log('Sending the refresh token to obtain a new access token');
     let httpHeaders: HttpHeaders = this.httpService.buildHeader();
     httpHeaders = this.addRefreshTokenHeader(httpHeaders);

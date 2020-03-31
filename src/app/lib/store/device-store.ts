@@ -16,7 +16,7 @@ export class DeviceStore extends Store<Array<Device>> {
     super(new Array<Device>());
   }
 
-  public getDevices(): Observable<Array<Device>> {
+  public getDevices$(): Observable<Array<Device>> {
     return this.state$!
       .pipe(
         map((devices: Array<Device>) => {

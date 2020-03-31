@@ -26,7 +26,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
   private midiInputSubscription!: Subscription;
 
   ngOnInit() {
-    this.devices$ = this.deviceStore.getDevices();
+    this.devices$ = this.deviceStore.getDevices$();
     this.observeDevices();
 
     this.getConnectedDevices();
@@ -52,7 +52,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
   }
 
   private observeDevices(): void {
-    this.devicesSubscription = this.deviceStore.getDevices()
+    this.devicesSubscription = this.deviceStore.getDevices$()
     .subscribe((devices: Array<Device>) => {
       this.devices = devices;
       this.detectChanges();
@@ -79,7 +79,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
   // }
 
   private handleDeviceHotPlug() {
-    this.midiAccessSubscription = this.midiService.requestMIDIAccess()
+    this.midiAccessSubscription = this.midiService.requestMIDIAccess$()
       .subscribe((midiAccess: WebMidi.MIDIAccess) => {
         midiAccess.onstatechange = (event: WebMidi.MIDIConnectionEvent) => {
           if (event.port.state === this.midiService.MIDI_DEVICE_CONNECTED) {
@@ -99,7 +99,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
     if (this.midiInputSubscription != null) {
       this.midiInputSubscription.unsubscribe();
     }
-    this.midiInputSubscription = this.midiService.getInputDevices()
+    this.midiInputSubscription = this.midiService.getInputDevices$()
       .subscribe((device: WebMidi.MIDIInput) => {
         this.midiService.addMidiDevice(device);
       });

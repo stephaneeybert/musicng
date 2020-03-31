@@ -29,7 +29,7 @@ export class KeycloakInterceptor implements HttpInterceptor {
 
   private addAuthHeader(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     console.log('=======>> Intercepting the http request to add the jwt token in the header');
-    const tokenObservable: Observable<any> = this.keycloakClientService.getToken();
+    const tokenObservable: Observable<any> = this.keycloakClientService.getToken$();
     tokenObservable
       .pipe(
         map(authToken => {

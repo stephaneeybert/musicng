@@ -21,7 +21,7 @@ export class UserService {
     private httpService: HttpService
   ) { }
 
-  public getAll(): Observable<User[]> {
+  public getAll$(): Observable<User[]> {
     return this.httpService.get<HateoasPageable>(this.usersUrl)
       .pipe(
         map((hateoasPageable: HateoasPageable) => {

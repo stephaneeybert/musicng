@@ -19,7 +19,7 @@ export class AuthGuardService implements CanActivate, CanActivateChild, CanLoad 
 
   // Check if the user can navigate to a route
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.authService.isAuthenticated()
+    return this.authService.isAuthenticated$()
     .pipe(
       map(isAuthenticated => {
         if (!isAuthenticated) {
@@ -38,7 +38,7 @@ export class AuthGuardService implements CanActivate, CanActivateChild, CanLoad 
   }
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.authService.isAuthenticated()
+    return this.authService.isAuthenticated$()
     .pipe(
       map(isAuthenticated => {
         if (!isAuthenticated) {
@@ -67,8 +67,8 @@ export class AuthGuardService implements CanActivate, CanActivateChild, CanLoad 
 
   // Check if a module should be loaded
   // It would be pointless to load a module if the user may not use it
-  canLoad(): Observable<boolean> {
-    if (this.authService.isAuthenticated()) {
+  canLoad$(): Observable<boolean> {
+    if (this.authService.isAuthenticated$()) {
       return of(true);
     } else {
       return of(false);

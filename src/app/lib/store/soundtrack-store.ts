@@ -15,7 +15,7 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     super(new Array<Soundtrack>());
   }
 
-  public getSoundtracks(): Observable<Array<Soundtrack>> {
+  public getSoundtracks$(): Observable<Array<Soundtrack>> {
     return this.state$!;
   }
 

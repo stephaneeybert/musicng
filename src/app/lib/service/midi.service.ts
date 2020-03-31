@@ -64,8 +64,8 @@ export class MidiService {
     private parseService: ParseService
   ) { }
 
-  public getInputDevices(): Observable<WebMidi.MIDIInput> {
-    return this.requestMIDIAccess()
+  public getInputDevices$(): Observable<WebMidi.MIDIInput> {
+    return this.requestMIDIAccess$()
       .pipe(
         switchMap((midiAccess: WebMidi.MIDIAccess) => {
           return midiAccess.inputs;
@@ -79,8 +79,8 @@ export class MidiService {
       );
   }
 
-  // public requestMIDIAccess(): Observable<WebMidi.MIDIAccess> {
-  public requestMIDIAccess(): Observable<any> {
+  // public requestMIDIAccess$(): Observable<WebMidi.MIDIAccess> {
+  public requestMIDIAccess$(): Observable<any> {
     return from(navigator.requestMIDIAccess())
     .pipe(
       catchError((error: any) => {
@@ -99,7 +99,7 @@ export class MidiService {
   }
 
   public logDeviceHotPlug(): Subscription {
-    return this.requestMIDIAccess()
+    return this.requestMIDIAccess$()
       .subscribe((midiAccess: WebMidi.MIDIAccess) => {
         midiAccess.onstatechange = e => {
           console.log('Port name: ' + e.port.name
@@ -118,7 +118,7 @@ export class MidiService {
   }
 
   private handleMessagesFromInputDevice(device: Device) {
-    const subscription = this.getInputDevices()
+    const subscription = this.getInputDevices$()
     .pipe(
       filter((midiInput: WebMidi.MIDIInput) => {
         return this.commonService.normalizeName(midiInput.name) === this.commonService.normalizeName(device.id);

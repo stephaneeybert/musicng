@@ -12,7 +12,7 @@ export class KeycloakClientService {
 
   constructor(private httpClient: HttpClient, private zone: NgZone) { }
 
-  public init(): Observable<any> {
+  public init$(): Observable<any> {
     KeycloakClientService.auth.loggedIn = false;
     return new Observable((observer) => {
       const keycloakConfig = {
@@ -76,7 +76,7 @@ export class KeycloakClientService {
     return KeycloakClientService.auth.authz.tokenParsed.name;
   }
 
-  public getToken(): Observable<string> {
+  public getToken$(): Observable<string> {
     console.log('Getting the retrieved token');
     return new Observable<string>((observer) => {
       if (KeycloakClientService.auth.authz && KeycloakClientService.auth.authz.token) {

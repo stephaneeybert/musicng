@@ -31,7 +31,7 @@ export class LoginService {
   }
 
   logout() {
-    this.authService.logout().subscribe(
+    this.authService.logout$().subscribe(
       (response: HttpResponse<User>) => {
         this.router.navigate(['login']);
       },
