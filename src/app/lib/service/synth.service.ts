@@ -93,7 +93,7 @@ export class SynthService {
   }
 
   private play(track: Track, soundtrack: Soundtrack) {
-    let pressedNotesCounter: number = 0;
+    let notesToPlayCounter: number = 0;
     let measureCounter: number = 0;
     let firstMeasure: boolean = true;
     let previousMeasure: Measure;
@@ -135,8 +135,8 @@ export class SynthService {
                 soundtrack.synth.triggerRelease(note.render(), releaseTime);
               }
 
-              console.log('pressedNotesCounter: ' + pressedNotesCounter);
-              pressedNotesCounter++;
+              console.log('notesToPlayCounter: ' + notesToPlayCounter);
+              notesToPlayCounter++;
 
               const midiNote = Tone.Frequency(note.render()).toMidi();
               Tone.Draw.schedule(() => {
@@ -146,9 +146,9 @@ export class SynthService {
               Tone.Draw.schedule(() => {
                 this.keyboardService.unpressKey(soundtrack.keyboard, midiNote);
                 this.sheetService.vexflowUnhighlightStaveNote(placedChord);
-                console.log('Check pressedNotesCounter: ' + pressedNotesCounter);
-                pressedNotesCounter--;
-                if (0 == pressedNotesCounter) {
+                console.log('Check notesToPlayCounter: ' + notesToPlayCounter);
+                notesToPlayCounter--;
+                if (0 == notesToPlayCounter) {
                   this.setPlaying(soundtrack, false);
                   console.log('Set stop');
                 }
