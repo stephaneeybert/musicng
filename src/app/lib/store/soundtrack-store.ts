@@ -27,18 +27,18 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     const index = this.getSoundtrackIndex(soundtrack.id);
     if (index === -1) {
       soundtrack.id = this.commonService.normalizeName(soundtrack.id);
-      const devices = this.getState();
-      devices.push(soundtrack);
-      this.setState(devices);
+      const soundtracks = this.getState();
+      soundtracks.push(soundtrack);
+      this.setState(soundtracks);
     }
   }
 
-  public removeSoundtrack(soundtrackName: string) {
-    const index = this.getSoundtrackIndex(soundtrackName);
+  public removeSoundtrack(soundtrack: Soundtrack) {
+    const index = this.getSoundtrackIndex(soundtrack.name);
     if (index !== -1) {
-      const devices = this.getState();
-      devices.splice(index);
-      this.setState(devices);
+      const soundtracks = this.getState();
+      soundtracks.splice(index);
+      this.setState(soundtracks);
     }
   }
 
