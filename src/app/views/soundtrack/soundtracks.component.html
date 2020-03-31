@@ -1,6 +1,6 @@
 <mat-toolbar>
   <span class="fill-remaining-space"></span>
-  <button mat-flat-button color="primary" (click)="generateSoundtrack()">New</button>
+  <mat-icon mat-icon (click)="generateSoundtrack()">add</mat-icon>
 </mat-toolbar>
 <div *ngIf="soundtracks.length > 0">
   <mat-card>
@@ -17,7 +17,8 @@
               <mat-toolbar>
                 {{soundtrack.name}}
                 <span class="fill-remaining-space"></span>
-                <button mat-flat-button color="primary" (click)="playSoundtrack(soundtrack)">Play</button>
+                <mat-icon mat-icon (click)="playSoundtrack(soundtrack)">play_arrow</mat-icon>
+                <mat-icon mat-icon (click)="deleteSoundtrack(soundtrack)">delete</mat-icon>
               </mat-toolbar>
               <midi-synth [soundtrack]="soundtrack"></midi-synth>
               <midi-keyboard [soundtrack]="soundtrack"></midi-keyboard>
