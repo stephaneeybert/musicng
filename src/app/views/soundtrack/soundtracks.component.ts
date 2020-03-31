@@ -40,6 +40,10 @@ export class SoundtracksComponent implements OnInit {
     this.synthService.playSoundtrack(soundtrack);
   }
 
+  deleteSoundtrack(soundtrack: Soundtrack) {
+    this.soundtrackStore.removeSoundtrack(soundtrack);
+  }
+
   ngOnDestroy() {
     if (this.soundtracksSubscription != null) {
       this.soundtracksSubscription.unsubscribe();
