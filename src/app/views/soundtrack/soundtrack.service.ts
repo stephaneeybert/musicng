@@ -23,4 +23,9 @@ export class SoundtrackService {
   public getSoundtracks(): Array<Soundtrack> {
     return this.soundtrackStore.getSoundtracks();
   }
+
+  public setSoundtrack(soundtrack: Soundtrack) {
+    this.soundtrackStore.setSoundtrack(soundtrack);
+  }
+
 }

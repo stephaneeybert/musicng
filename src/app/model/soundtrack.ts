@@ -10,6 +10,7 @@ export class Soundtrack {
   text: string;
   keyboard: any;
   synth: any;
+  nowPlaying: boolean;
 
   constructor(id: string, name: string) {
     this.tracks = new Array<Track>();
@@ -17,6 +18,7 @@ export class Soundtrack {
     this.name = name;
     this.copyright = '';
     this.text = '';
+    this.nowPlaying = false;
   }
 
   public addTrack(measures: Array<Measure>) {
@@ -49,6 +51,28 @@ export class Soundtrack {
       }
     }
     return false;
+  }
+
+  public getNbNotes(): number {
+    let nbNotes = 0;
+    if (this.tracks != null && this.tracks.length > 0) {
+      for (const track of this.tracks) {
+        if (track.hasMeasures()) {
+          for (const measure of track.measures) {
+            if (measure.hasChords()) {
+              for (const placedChord of measure.placedChords!) {
+                if (placedChord.hasNotes()) {
+                  for (const note of placedChord.notes!) {
+                    nbNotes++;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return nbNotes;
   }
 
 }

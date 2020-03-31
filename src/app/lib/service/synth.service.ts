@@ -9,6 +9,7 @@ import { Note } from '../../model/note/note';
 import { ParseService } from '../service/parse.service';
 import { TempoUnit } from '../../model/tempo-unit';
 import { SheetService } from './sheet.service';
+import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
 
 // Observation has shown that a delay between creating the service
 // and starting the transport is required for the transport to work
@@ -23,7 +24,8 @@ export class SynthService {
   constructor(
     private parseService: ParseService,
     private keyboardService: KeyboardService,
-    private sheetService: SheetService
+    private sheetService: SheetService,
+    private soundtrackService: SoundtrackService
   ) {
     this.startTransport();
   }
@@ -78,7 +80,20 @@ export class SynthService {
     }
   }
 
+  public stopSoundtrack(soundtrack: Soundtrack) {
+    this.setPlaying(soundtrack, false);
+    console.log('stopped playing');
+    this.clearTransport();
+  }
+
+  private setPlaying(soundtrack: Soundtrack, playing: boolean): void {
+    soundtrack.nowPlaying = playing;
+    console.log('set playing: ' + soundtrack.nowPlaying);
+    this.soundtrackService.setSoundtrack(soundtrack);
+  }
+
   private play(track: Track, soundtrack: Soundtrack) {
+    let pressedNotesCounter: number = 0;
     let measureCounter: number = 0;
     let firstMeasure: boolean = true;
     let previousMeasure: Measure;
@@ -86,6 +101,8 @@ export class SynthService {
     if (!this.transportIsStarted()) {
       throw new Error('The soundtrack cannot be played as the tone transport has not started.');
     }
+
+    this.setPlaying(soundtrack, true);
 
     track.measures.forEach((measure: Measure) => {
       // The first measure is always supposed to have a new tempo and time signature
@@ -109,23 +126,33 @@ export class SynthService {
             const duration: string = placedChord.renderDuration();
             const durationInSeconds = Tone.Time(duration).toSeconds();
             placedChord.notes.forEach((note: Note) => {
-              // If the note is a rest then do not play anything
+              let triggerTime = measureStartTime + relativeTime;
+              const releaseTime = triggerTime + durationInSeconds;
+
+              // If the note is a rest then do not play any sound
               if (this.parseService.noteIsNotRest(note)) {
-                let triggerTime = measureStartTime + relativeTime;
-                const releaseTime = triggerTime + durationInSeconds;
                 soundtrack.synth.triggerAttack(note.render(), triggerTime, note.velocity);
                 soundtrack.synth.triggerRelease(note.render(), releaseTime);
-
-                const midiNote = Tone.Frequency(note.render()).toMidi();
-                Tone.Draw.schedule(() => {
-                  this.keyboardService.pressKey(soundtrack.keyboard, midiNote);
-                  this.sheetService.vexflowHighlightStaveNote(placedChord);
-                }, triggerTime);
-                Tone.Draw.schedule(() => {
-                  this.keyboardService.unpressKey(soundtrack.keyboard, midiNote);
-                  this.sheetService.vexflowUnhighlightStaveNote(placedChord);
-                }, releaseTime);
               }
+
+              console.log('pressedNotesCounter: ' + pressedNotesCounter);
+              pressedNotesCounter++;
+
+              const midiNote = Tone.Frequency(note.render()).toMidi();
+              Tone.Draw.schedule(() => {
+                this.keyboardService.pressKey(soundtrack.keyboard, midiNote);
+                this.sheetService.vexflowHighlightStaveNote(placedChord);
+              }, triggerTime);
+              Tone.Draw.schedule(() => {
+                this.keyboardService.unpressKey(soundtrack.keyboard, midiNote);
+                this.sheetService.vexflowUnhighlightStaveNote(placedChord);
+                console.log('Check pressedNotesCounter: ' + pressedNotesCounter);
+                pressedNotesCounter--;
+                if (0 == pressedNotesCounter) {
+                  this.setPlaying(soundtrack, false);
+                  console.log('Set stop');
+                }
+              }, releaseTime);
             });
             relativeTime += durationInSeconds;
           });

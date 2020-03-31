@@ -40,6 +40,19 @@ export class SoundtracksComponent implements OnInit {
     this.synthService.playSoundtrack(soundtrack);
   }
 
+  stopSoundtrack(soundtrack: Soundtrack) {
+    this.synthService.stopSoundtrack(soundtrack);
+  }
+
+  replaySoundtrack(soundtrack: Soundtrack) {
+    this.synthService.stopSoundtrack(soundtrack);
+    this.synthService.playSoundtrack(soundtrack);
+  }
+
+  isNowPlaying(soundtrack: Soundtrack): boolean {
+    return soundtrack.nowPlaying;
+  }
+
   deleteSoundtrack(soundtrack: Soundtrack) {
     this.soundtrackStore.removeSoundtrack(soundtrack);
   }
@@ -59,6 +72,7 @@ export class SoundtracksComponent implements OnInit {
     this.soundtracksSubscription = this.soundtrackStore.getSoundtracks$()
       .subscribe((soundtracks: Array<Soundtrack>) => {
         this.soundtracks = soundtracks;
+        console.log(this.soundtracks);
         this.detectChanges();
       });
   }
