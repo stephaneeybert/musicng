@@ -37,7 +37,7 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     const index = this.getSoundtrackIndex(soundtrack.name);
     if (index !== -1) {
       const soundtracks = this.getState();
-      soundtracks.splice(index);
+      soundtracks.splice(index, 1);
       this.setState(soundtracks);
     }
   }

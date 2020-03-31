@@ -64,7 +64,7 @@ export class DeviceStore extends Store<Array<Device>> {
         currentDevice.midiMessageSubscription.unsubscribe();
       }
       devices[index] = currentDevice;
-      devices.splice(index);
+      devices.splice(index, 1);
       this.setState(devices);
     }
   }
