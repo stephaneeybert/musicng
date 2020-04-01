@@ -21,7 +21,7 @@ import { KeyboardComponent } from './views/keyboard/keyboard.component';
 import { DevicesComponent } from './views/device/devices.component';
 import { SoundtracksComponent } from './views/soundtrack/soundtracks.component';
 import { SheetComponent } from './lib/sheet/sheet.component';
-import { UploadComponent } from './lib/upload/upload.component';
+import { UploadComponent } from './views/upload/upload.component';
 
 @NgModule({
   declarations: [
