@@ -72,7 +72,6 @@ export class SoundtracksComponent implements OnInit {
     this.soundtracksSubscription = this.soundtrackStore.getSoundtracks$()
       .subscribe((soundtracks: Array<Soundtrack>) => {
         this.soundtracks = soundtracks;
-        console.log(this.soundtracks);
         this.detectChanges();
       });
   }

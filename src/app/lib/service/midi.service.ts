@@ -219,7 +219,7 @@ export class MidiService {
               midiNote.velocity,
               midiNote.durationTicks);
             const duration: Duration = midiNote.time; // TODO How to retrieve the note time and store it in the chord ?
-            const placedChord: PlacedChord = this.parseService.placeNote(duration);
+            const placedChord: PlacedChord = this.parseService.placeEmptyChord(duration);
             placedChord.addNote(note);
             placedChords.push(placedChord);
           });

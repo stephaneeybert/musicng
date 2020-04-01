@@ -1,6 +1,6 @@
 export class Chroma {
 
-  public static CHROMAS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'rest'];
+  public static CHROMAS = ['rest', 'end', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
   value: string;
 

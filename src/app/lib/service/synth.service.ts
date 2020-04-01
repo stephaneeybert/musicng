@@ -82,18 +82,15 @@ export class SynthService {
 
   public stopSoundtrack(soundtrack: Soundtrack) {
     this.setPlaying(soundtrack, false);
-    console.log('stopped playing');
     this.clearTransport();
   }
 
   private setPlaying(soundtrack: Soundtrack, playing: boolean): void {
     soundtrack.nowPlaying = playing;
-    console.log('set playing: ' + soundtrack.nowPlaying);
     this.soundtrackService.setSoundtrack(soundtrack);
   }
 
   private play(track: Track, soundtrack: Soundtrack) {
-    let notesToPlayCounter: number = 0;
     let measureCounter: number = 0;
     let firstMeasure: boolean = true;
     let previousMeasure: Measure;
@@ -135,22 +132,19 @@ export class SynthService {
                 soundtrack.synth.triggerRelease(note.render(), releaseTime);
               }
 
-              console.log('notesToPlayCounter: ' + notesToPlayCounter);
-              notesToPlayCounter++;
-
               const midiNote = Tone.Frequency(note.render()).toMidi();
               Tone.Draw.schedule(() => {
-                this.keyboardService.pressKey(soundtrack.keyboard, midiNote);
-                this.sheetService.vexflowHighlightStaveNote(placedChord);
+                if (!this.parseService.isEndOfTrackNote(note)) {
+                  this.keyboardService.pressKey(soundtrack.keyboard, midiNote);
+                  this.sheetService.vexflowHighlightStaveNote(placedChord);
+                }
               }, triggerTime);
               Tone.Draw.schedule(() => {
-                this.keyboardService.unpressKey(soundtrack.keyboard, midiNote);
-                this.sheetService.vexflowUnhighlightStaveNote(placedChord);
-                console.log('Check notesToPlayCounter: ' + notesToPlayCounter);
-                notesToPlayCounter--;
-                if (0 == notesToPlayCounter) {
+                if (!this.parseService.isEndOfTrackNote(note)) {
+                  this.keyboardService.unpressKey(soundtrack.keyboard, midiNote);
+                  this.sheetService.vexflowUnhighlightStaveNote(placedChord);
+                } else {
                   this.setPlaying(soundtrack, false);
-                  console.log('Set stop');
                 }
               }, releaseTime);
             });

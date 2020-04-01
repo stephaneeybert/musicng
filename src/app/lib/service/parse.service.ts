@@ -16,6 +16,9 @@ const CHORD_SEPARATOR = ' ';
 const CHORD_DURATION_SEPARATOR = '/';
 const NOTE_SEPARATOR = '|';
 const NOTE_REST = 'rest';
+const NOTE_END_OF_TRACK: string = 'rest';
+const NOTE_END_OF_TRACK_OCTAVE: number = 9;
+const NOTE_END_OF_TRACK_DURATION: string = '4';
 
 const DEFAULT_TEMPO_BPM_VALUE = '128';
 const DEFAULT_TIME_SIGNATURE_NUMERATOR = 2;
@@ -102,7 +105,7 @@ export class ParseService {
   public createPlacedChord(chordDuration: string, notes: Array<Note>): PlacedChord {
     const duration: Duration = this.duration(chordDuration, TempoUnit.DUPLE);
     const cursor: Cursor = new Cursor(duration);
-    const placedChord: PlacedChord = this.placedChord(cursor);
+    const placedChord: PlacedChord = this.createEmptyChord(cursor);
     this.addNotes(placedChord, notes);
     return placedChord;
   }
@@ -138,6 +141,27 @@ export class ParseService {
     return !abcNote.includes(NOTE_REST);
   }
 
+  public isEndOfTrackPlacedChord(placedChord: PlacedChord): boolean {
+    if (placedChord.hasNotes()) {
+      return this.isEndOfTrackNote(placedChord.notes[0]);
+    } else {
+      return false;
+    }
+  }
+
+  public isEndOfTrackNote(note: Note): boolean {
+    return this.isEndOfTrackAbcNote(note.render());
+  }
+
+  private isEndOfTrackAbcNote(abcNote: string): boolean {
+    return abcNote.includes(NOTE_END_OF_TRACK) && abcNote.includes(String(NOTE_END_OF_TRACK_OCTAVE));
+  }
+
+  public createLastInTrackPlacedChord(): PlacedChord {
+    const endNote: Note = this.createNote(NOTE_REST, NOTE_END_OF_TRACK_OCTAVE);
+    return this.createPlacedChord(NOTE_END_OF_TRACK_DURATION, [ endNote ]);
+  }
+
   public buildDefaultTempo(): Tempo {
     return new Tempo(DEFAULT_TEMPO_BPM_VALUE, TempoUnit.BPM);
   }
@@ -158,8 +182,8 @@ export class ParseService {
     return new Note(this.pitch(this.toChroma(abc), this.toOctave(octave)), velocity);
   }
 
-  public placeNote(noteDuration: Duration): PlacedChord {
-    return this.placedChord(new Cursor(noteDuration));
+  public placeEmptyChord(noteDuration: Duration): PlacedChord {
+    return this.createEmptyChord(new Cursor(noteDuration));
   }
 
   private toChroma(value: string): Chroma {
@@ -196,7 +220,7 @@ export class ParseService {
     return new Pitch(chroma, octave);
   }
 
-  private placedChord(cursor: Cursor): PlacedChord {
+  private createEmptyChord(cursor: Cursor): PlacedChord {
     const placedChod: PlacedChord = new PlacedChord(cursor);
     return placedChod;
   }

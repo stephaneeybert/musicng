@@ -97,13 +97,13 @@ export class SheetService {
 
   private addAccidentalOnNotes(placedChord: PlacedChord): void {
     const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
-      let i: number = 0;
-      placedChord.notes.forEach((note: Note) => {
-        if (note.pitch.accidental) {
-          staveNote.addAccidental(i, new vexflow.Flow.Accidental(note.pitch.accidental));
-        }
-        i++;
-      })
+    let i: number = 0;
+    placedChord.notes.forEach((note: Note) => {
+      if (note.pitch.accidental) {
+        staveNote.addAccidental(i, new vexflow.Flow.Accidental(note.pitch.accidental));
+      }
+      i++;
+    })
   }
 
   private addDotOnNotes(placedChord: PlacedChord): void {
@@ -152,32 +152,34 @@ export class SheetService {
               voice.setStrict(false);
               voice.setStave(stave);
               for (const placedChord of measure.placedChords!) {
-                const chordDuration: string = this.renderDuration(placedChord);
-                const staveNote: vexflow.Flow.StaveNote = new vexflow.Flow.StaveNote({
-                  keys: this.renderNotesSortedByFrequency(placedChord.notes),
-                  duration: chordDuration,
-                  auto_stem: true,
-                  clef: Clef.TREBLE
-                });
+                if (!this.parseService.isEndOfTrackPlacedChord(placedChord)) {
+                  const chordDuration: string = this.renderDuration(placedChord);
+                  const staveNote: vexflow.Flow.StaveNote = new vexflow.Flow.StaveNote({
+                    keys: this.renderNotesSortedByFrequency(placedChord.notes),
+                    duration: chordDuration,
+                    auto_stem: true,
+                    clef: Clef.TREBLE
+                  });
 
-                this.addAccidentalOnNotes(placedChord);
-                this.addDotOnNotes(placedChord);
+                  this.addAccidentalOnNotes(placedChord);
+                  this.addDotOnNotes(placedChord);
 
-                staveNote.setStyle({
-                  fillStyle: VEXFLOW_NOTE_COLOR,
-                  strokeStyle: VEXFLOW_NOTE_COLOR
-                });
+                  staveNote.setStyle({
+                    fillStyle: VEXFLOW_NOTE_COLOR,
+                    strokeStyle: VEXFLOW_NOTE_COLOR
+                  });
 
-                staveNote.addAnnotation(0, this.renderAnnotation(placedChord.renderAbc()));
+                  staveNote.addAnnotation(0, this.renderAnnotation(placedChord.renderAbc()));
 
-                // Store the stave note for later access
-                placedChord.staveNote = staveNote;
+                  // Store the stave note for later access
+                  placedChord.staveNote = staveNote;
 
-                staveNotes.push(staveNote);
+                  staveNotes.push(staveNote);
+                }
               }
               voice.addTickables(staveNotes);
-              formatter.joinVoices([ voice ]);
-              formatter.formatToStave([ voice ], stave);
+              formatter.joinVoices([voice]);
+              formatter.formatToStave([voice], stave);
               voice.draw(context);
               voices.push(voice);
             }
@@ -204,9 +206,9 @@ export class SheetService {
   private renderNotesSortedByFrequency(notes: Array<Note>): Array<string> {
     const vexflowNotes: Array<string> = new Array<string>();
     this.sortNotesByPitch(notes)
-    .forEach((note: Note) => {
-      vexflowNotes.push(this.renderNote(note));
-    });
+      .forEach((note: Note) => {
+        vexflowNotes.push(this.renderNote(note));
+      });
     return vexflowNotes;
   }
 
