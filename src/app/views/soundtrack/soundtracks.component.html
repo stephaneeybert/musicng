@@ -17,10 +17,10 @@
               <mat-toolbar>
                 {{soundtrack.name}}
                 <span class="fill-remaining-space"></span>
-                <mat-icon *ngIf="!isNowPlaying(soundtrack)" (click)="playSoundtrack(soundtrack)">play_circle_outline</mat-icon>
-                <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="stopSoundtrack(soundtrack)">stop</mat-icon>
-                <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="replaySoundtrack(soundtrack)">replay</mat-icon>
-                <mat-icon (click)="deleteSoundtrack(soundtrack)">delete</mat-icon>
+                <mat-icon *ngIf="!isNowPlaying(soundtrack)" (click)="playSoundtrack(soundtrack)" class="soundtrack-action">play_circle_outline</mat-icon>
+                <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="stopSoundtrack(soundtrack)" class="soundtrack-action">stop</mat-icon>
+                <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="replaySoundtrack(soundtrack)" class="soundtrack-action">replay</mat-icon>
+                <mat-icon (click)="deleteSoundtrack(soundtrack)" class="soundtrack-action">delete</mat-icon>
               </mat-toolbar>
               <midi-synth [soundtrack]="soundtrack"></midi-synth>
               <midi-keyboard [soundtrack]="soundtrack"></midi-keyboard>
