@@ -74,10 +74,17 @@ export class SynthService {
   public playSoundtrack(soundtrack: Soundtrack) {
     if (soundtrack.hasNotes()) {
       this.clearTransport();
+      this.stopAllOtherSoundtracks(soundtrack);
       soundtrack.tracks.forEach((track: Track) => {
         this.play(track, soundtrack);
       });
     }
+  }
+
+  public stopAllOtherSoundtracks(soundtrack: Soundtrack) {
+    this.soundtrackService.getSoundtracks().forEach((soundtrack: Soundtrack) => {
+      this.stopSoundtrack(soundtrack);
+    });
   }
 
   public stopSoundtrack(soundtrack: Soundtrack) {
