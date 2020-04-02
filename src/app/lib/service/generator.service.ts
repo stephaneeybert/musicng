@@ -4,6 +4,8 @@ import { ParseService } from './parse.service';
 import { PlacedChord } from '../../model/note/placed-chord';
 import { Note } from '../../model/note/note';
 import { SoundtrackService } from '../../views/soundtrack/soundtrack.service';
+import { CommonService } from './common.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +13,10 @@ import { SoundtrackService } from '../../views/soundtrack/soundtrack.service';
 export class GeneratorService {
 
   constructor(
+    private commonService: CommonService,
     private soundtrackService: SoundtrackService,
     private parseService: ParseService,
+    private translateService: TranslateService
   ) { }
 
   NB_CHORDS: number = 50;
@@ -25,8 +29,6 @@ export class GeneratorService {
   NOTE_OCTAVE: number = 4; // TODO What octave to use ?
 
   public generateSoundtrack() {
-    const nbSoundtracks: number = this.soundtrackService.getSoundtracks().length;
-    const soundtrackName = 'My little soundtrack ' + nbSoundtracks;
     const generatedChords: Array<PlacedChord> = this.generateChords()
       .map((chord: Array<string>) => {
         const notes: Array<Note> = chord.map((note: string) => {
@@ -50,10 +52,14 @@ export class GeneratorService {
         }
         measure.placedChords!.push(placedChord);
       });
-    this.soundtrackService.createSoundtrack(soundtrackName, measures);
+    this.soundtrackService.createSoundtrack(this.assignNewName(), measures);
   }
 
-  private addLastInTrackNote(chords: Array<PlacedChord>) {
+  private assignNewName(): string {
+    return this.translateService.instant('soundtracks.assignedName') + this.commonService.getRandomString(4);
+  }
+
+  private addLastInTrackNote(chords: Array<PlacedChord>): void {
     if (chords.length > 0) {
       chords[chords.length] = this.parseService.createLastInTrackPlacedChord();
     }

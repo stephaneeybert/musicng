@@ -26,6 +26,9 @@
     "soundtrack": "Soundtrack",
     "device": "Devices"
   },
+  "soundtracks": {
+    "assignedName": "Soundtrack"
+  },
   "devices": {
     "title": "Connected MIDI devices",
     "none": "There are no plugged-in MIDI devices."

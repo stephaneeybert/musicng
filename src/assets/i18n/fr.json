@@ -26,6 +26,9 @@
     "soundtrack": "Musique",
     "device": "Appareils"
   },
+  "soundtracks": {
+    "assignedName": "Morceau"
+  },
   "devices": {
     "title": "Appareils MIDI connectés",
     "none": "Il n'y a pas d'appareils MIDI connectés."

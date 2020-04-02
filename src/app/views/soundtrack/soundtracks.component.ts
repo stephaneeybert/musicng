@@ -57,6 +57,10 @@ export class SoundtracksComponent implements OnInit {
     this.soundtrackStore.removeSoundtrack(soundtrack);
   }
 
+  editSoundtrack(soundtrack: Soundtrack) {
+    // TODO
+  }
+
   ngOnDestroy() {
     if (this.soundtracksSubscription != null) {
       this.soundtracksSubscription.unsubscribe();
