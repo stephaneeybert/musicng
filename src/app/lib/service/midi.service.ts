@@ -298,7 +298,7 @@ export class MidiService {
             } else if (midiEvent.hasOwnProperty(MIDI_EVENT_TEXT)) {
               const textEvent: IMidiTextEvent = midiEvent;
               if (isFirstTrack) {
-                soundtrack.text += textEvent.text + ' ';
+                soundtrack.lyrics += textEvent.text + ' ';
               }
             } else if (midiEvent.hasOwnProperty(MIDI_EVENT_TIME_SIGNATURE)) {
               const timeSignatureEvent: IMidiTimeSignatureEvent = midiEvent;

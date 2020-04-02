@@ -7,7 +7,7 @@ export class Soundtrack {
   id: string;
   name: string;
   copyright: string;
-  text: string;
+  lyrics: string;
   keyboard: any;
   synth: any;
   nowPlaying: boolean;
@@ -17,7 +17,7 @@ export class Soundtrack {
     this.id = id;
     this.name = name;
     this.copyright = '';
-    this.text = '';
+    this.lyrics = '';
     this.nowPlaying = false;
   }
 
