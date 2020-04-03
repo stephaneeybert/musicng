@@ -101,8 +101,8 @@ export class SoundtracksComponent implements OnInit {
             existingSoundtrack.name = soundtrackEdition.name;
             existingSoundtrack.copyright = soundtrackEdition.copyright;
             existingSoundtrack.lyrics = soundtrackEdition.lyrics;
-
             this.soundtrackService.setSoundtrack(existingSoundtrack);
+
             this.soundtrackEditedEvent.emit(existingSoundtrack);
             const message: string = this.translateService.instant('soundtracks.message.updated', { name: existingSoundtrack.name });
             this.utilsService.showSnackBar(message);
@@ -110,8 +110,8 @@ export class SoundtracksComponent implements OnInit {
             const addedSoundtrack: Soundtrack = this.soundtrackService.createSoundtrack(soundtrackEdition.name);
             addedSoundtrack.copyright = soundtrackEdition.copyright;
             addedSoundtrack.lyrics = soundtrackEdition.lyrics;
+            this.soundtrackService.setSoundtrack(addedSoundtrack);
 
-            this.soundtrackService.setSoundtrack(addedSoundtrack)
             this.soundtrackEditedEvent.emit(addedSoundtrack);
             const message: string = this.translateService.instant('soundtracks.message.added', { name: addedSoundtrack.name });
             this.utilsService.showSnackBar(message);
