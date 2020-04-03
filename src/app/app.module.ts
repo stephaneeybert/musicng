@@ -22,6 +22,8 @@ import { DevicesComponent } from './views/device/devices.component';
 import { SoundtracksComponent } from './views/soundtrack/soundtracks.component';
 import { SheetComponent } from './lib/sheet/sheet.component';
 import { UploadComponent } from './views/upload/upload.component';
+import { SoundtrackDialogComponent } from './views/soundtrack/soundtrack-dialog.component';
+import { SoundtrackEditComponent } from './views/soundtrack/soundtrack-edit.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { UploadComponent } from './views/upload/upload.component';
     UsersComponent,
     UserComponent,
     UserConfirmedComponent,
+    SoundtrackEditComponent,
+    SoundtrackDialogComponent,
     UserEditComponent,
     UserDialogComponent,
     DebounceDirective,
@@ -50,6 +54,7 @@ import { UploadComponent } from './views/upload/upload.component';
     AuthModule
   ],
   entryComponents: [
+    SoundtrackDialogComponent,
     UserDialogComponent
   ],
   bootstrap: [ AppComponent ]

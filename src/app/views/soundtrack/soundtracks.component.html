@@ -17,12 +17,12 @@
               <mat-toolbar>
                 {{soundtrack.name}}
                 <span class="fill-remaining-space"></span>
-                <mat-icon *ngIf="!isNowPlaying(soundtrack)" (click)="playSoundtrack(soundtrack)" class="soundtrack-action">play_circle_outline</mat-icon>
-                <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="stopSoundtrack(soundtrack)" class="soundtrack-action">stop</mat-icon>
-                <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="replaySoundtrack(soundtrack)" class="soundtrack-action">replay</mat-icon>
-                <soundtrack-edit [existingSoundtrack]="soundtrack" (soundtrackEditedEvent)="refreshStuff($event)"><mat-icon (click)="editSoundtrack(soundtrack)" class="soundtrack-action">edit</mat-icon></soundtrack-edit>
-                <mat-icon (click)="editSoundtrack(soundtrack)" class="soundtrack-action">edit</mat-icon>
-                <mat-icon (click)="deleteSoundtrack(soundtrack)" class="soundtrack-action">delete</mat-icon>
+                <mat-icon *ngIf="!isNowPlaying(soundtrack)" (click)="playSoundtrack(soundtrack)" title="{{ 'soundtracks.play' | translate }}" class="soundtrack-action">play_circle_outline</mat-icon>
+                <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="stopSoundtrack(soundtrack)" title="{{ 'soundtracks.stop' | translate }}" class="soundtrack-action">stop</mat-icon>
+                <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="replaySoundtrack(soundtrack)" title="{{ 'soundtracks.replay' | translate }}" class="soundtrack-action">replay</mat-icon>
+                <mat-icon (click)="openSoundtrackDialog(soundtrack)" (soundtrackEditedEvent)="refreshSoundtrack($event)" title="{{ 'soundtracks.edit' | translate }}" class="soundtrack-action">edit</mat-icon>
+                <!-- <soundtrack-edit [existingSoundtrack]="soundtrack" (soundtrackEditedEvent)="refreshSoundtrack($event)"></soundtrack-edit> -->
+                <mat-icon (click)="deleteSoundtrack(soundtrack)" title="{{ 'soundtracks.delete' | translate }}" class="soundtrack-action">delete</mat-icon>
               </mat-toolbar>
               <midi-synth [soundtrack]="soundtrack"></midi-synth>
               <midi-keyboard [soundtrack]="soundtrack"></midi-keyboard>

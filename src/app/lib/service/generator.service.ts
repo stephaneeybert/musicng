@@ -6,6 +6,7 @@ import { Note } from '../../model/note/note';
 import { SoundtrackService } from '../../views/soundtrack/soundtrack.service';
 import { CommonService } from './common.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Soundtrack } from '@app/model/soundtrack';
 
 @Injectable({
   providedIn: 'root'
@@ -52,11 +53,12 @@ export class GeneratorService {
         }
         measure.placedChords!.push(placedChord);
       });
-    this.soundtrackService.createSoundtrack(this.assignNewName(), measures);
+    const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.assignNewName());
+    soundtrack.addTrack(measures);
   }
 
   private assignNewName(): string {
-    return this.translateService.instant('soundtracks.assignedName') + this.commonService.getRandomString(4);
+    return this.translateService.instant('soundtracks.assignedName') + '_' + this.commonService.getRandomString(4);
   }
 
   private addLastInTrackNote(chords: Array<PlacedChord>): void {

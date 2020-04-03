@@ -12,17 +12,17 @@ import { TimeSignature } from '../../model/measure/time-signature';
 import { Tempo } from '../../model/tempo';
 import { TempoUnit } from '../../model/tempo-unit';
 
-const CHORD_SEPARATOR = ' ';
-const CHORD_DURATION_SEPARATOR = '/';
-const NOTE_SEPARATOR = '|';
-const NOTE_REST = 'rest';
+const CHORD_SEPARATOR: string = ' ';
+const CHORD_DURATION_SEPARATOR: string = '/';
+const NOTE_SEPARATOR: string = '|';
+const NOTE_REST: string = 'rest';
 const NOTE_END_OF_TRACK: string = 'rest';
 const NOTE_END_OF_TRACK_OCTAVE: number = 9;
 const NOTE_END_OF_TRACK_DURATION: string = '4';
 
-const DEFAULT_TEMPO_BPM_VALUE = '128';
-const DEFAULT_TIME_SIGNATURE_NUMERATOR = 2;
-const DEFAULT_TIME_SIGNATURE_DENOMINATOR = 4;
+const DEFAULT_TEMPO_BPM_VALUE: string = '128';
+const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 2;
+const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 
 @Injectable({
   providedIn: 'root'

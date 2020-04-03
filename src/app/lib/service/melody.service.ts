@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { Measure } from '../../model/measure/measure';
 import { ParseService } from './parse.service';
 import { SoundtrackService } from '../../views/soundtrack/soundtrack.service';
+import { Soundtrack } from '@app/model/soundtrack';
 
 const MIDI_NOTE_MIN = 0;
 const MIDI_NOTE_MAX = 128;
@@ -32,7 +33,8 @@ export class MelodyService {
 
     const soundtrackName = 'Demo soundtrack';
     const measures: Array<Measure> = this.parseService.parseMeasures(textMeasures);
-    this.soundtrackService.createSoundtrack(soundtrackName, measures);
+    const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(soundtrackName);
+    soundtrack.addTrack(measures);
   }
 
   public getRandomMidiNotes$(): Observable<number> {

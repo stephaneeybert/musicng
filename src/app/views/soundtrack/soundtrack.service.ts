@@ -14,10 +14,10 @@ export class SoundtrackService {
     private soundtrackStore: SoundtrackStore
   ) { }
 
-  public createSoundtrack(name: string, measures: Array<Measure>) {
+  public createSoundtrack(name: string): Soundtrack {
     const soundtrack: Soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
-    soundtrack.addTrack(measures);
     this.soundtrackStore.addSoundtrack(soundtrack);
+    return soundtrack;
   }
 
   public getSoundtracks(): Array<Soundtrack> {

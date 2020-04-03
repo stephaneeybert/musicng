@@ -1,0 +1,26 @@
+<form [formGroup]="form" autocomplete="off" novalidate (ngSubmit)="save(form)">
+  <h1 mat-dialog-title>{{ 'soundtracks.form.title' | translate }}</h1>
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="{{ 'soundtracks.form.name.label' | translate }}">
+      <mat-hint>{{ 'soundtracks.form.name.hint' | translate }}</mat-hint>
+      <mat-error *ngIf="hasError('name', 'required')">{{ 'soundtracks.form.name.error.required' | translate }}</mat-error>
+      <mat-error *ngIf="hasError('name', 'maxlength')">{{ 'soundtracks.form.name.error.maxlength' | translate }}</mat-error>
+      <mat-error *ngIf="hasError('name', 'invalidPattern')">{{ 'soundtracks.form.name.error.invalidPattern' | translate }}</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput formControlName="copyright" placeholder="{{ 'soundtracks.form.copyright' | translate }}">
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput formControlName="lyrics" placeholder="{{ 'soundtracks.form.lyrics' | translate }}">
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button type="button" (click)="close()">{{ 'soundtracks.form.cancel' | translate }}</button>
+    <button mat-button [disabled]="!form.valid" type="submit">{{ 'soundtracks.form.save' | translate }}</button>
+  </mat-dialog-actions>
+</form>

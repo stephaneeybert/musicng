@@ -27,7 +27,35 @@
     "device": "Appareils"
   },
   "soundtracks": {
-    "assignedName": "Morceau"
+    "assignedName": "Morceau",
+    "add": "Ajouter",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "play": "Jouer",
+    "stop": "Arreter",
+    "replay": "Rejouer",
+    "form": {
+      "title": "Modifier un morceau",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "name": {
+        "label": "Nom:",
+        "hint": "Le nom du morceau",
+        "error": {
+          "required": "Le nom est requis",
+          "minlength": "Le nom requiers plus de lettres",
+          "maxlength": "Le nom requiers moins de lettres",
+          "invalidPattern": "Le nom n'accepte que des lettres et des chiffres"
+        }
+      },
+      "copyright": "Droits d'auteur:",
+      "lyrics": "Paroles:"
+    },
+    "message": {
+      "added": "Le morceau {{ name }} a été ajouté.",
+      "updated": "Le morceau {{ name }} a été modifié."
+    }
+
   },
   "devices": {
     "title": "Appareils MIDI connectés",

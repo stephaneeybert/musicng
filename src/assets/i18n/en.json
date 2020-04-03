@@ -27,7 +27,34 @@
     "device": "Devices"
   },
   "soundtracks": {
-    "assignedName": "Soundtrack"
+    "assignedName": "Soundtrack",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "play": "Play",
+    "stop": "Stop",
+    "replay": "Replay",
+    "form": {
+      "title": "Edit a soundtrack",
+      "cancel": "Cancel",
+      "save": "Save",
+      "name": {
+        "label": "Name:",
+        "hint": "The soundtrack name",
+        "error": {
+          "required": "The name is required",
+          "minlength": "The name requires more characters",
+          "maxlength": "The name requires less characters",
+          "invalidPattern": "The name accepts only letters and numbers"
+        }
+      },
+      "copyright": "Copyright:",
+      "lyrics": "Lyrics:"
+    },
+    "message": {
+      "added": "The soundtrack {{ name }} has been added.",
+      "updated": "The soundtrack {{ name }} has been updated."
+    }
   },
   "devices": {
     "title": "Connected MIDI devices",
