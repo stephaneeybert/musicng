@@ -91,7 +91,7 @@ export class SoundtracksComponent implements OnInit {
       soundtrack: existingSoundtrack
     };
 
-    this.dialogRef = this.matDialog.open<SoundtrackDialogComponent, SoundtrackEdition>(SoundtrackDialogComponent, dialogConfig);
+    this.dialogRef = this.matDialog.open<SoundtrackDialogComponent>(SoundtrackDialogComponent, dialogConfig);
 
     this.dialogRef
       .afterClosed()
