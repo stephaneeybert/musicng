@@ -55,6 +55,7 @@ export class GeneratorService {
       });
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.assignNewName());
     soundtrack.addTrack(measures);
+    this.soundtrackService.setSoundtrack(soundtrack);
   }
 
   private assignNewName(): string {

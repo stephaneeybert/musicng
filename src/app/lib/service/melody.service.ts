@@ -35,6 +35,7 @@ export class MelodyService {
     const measures: Array<Measure> = this.parseService.parseMeasures(textMeasures);
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(soundtrackName);
     soundtrack.addTrack(measures);
+    this.soundtrackService.setSoundtrack(soundtrack);
   }
 
   public getRandomMidiNotes$(): Observable<number> {
