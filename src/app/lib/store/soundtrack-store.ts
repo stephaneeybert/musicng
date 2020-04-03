@@ -23,7 +23,7 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     return this.getState();
   }
 
-  public addSoundtrack(soundtrack: Soundtrack) {
+  public add(soundtrack: Soundtrack) {
     const index = this.getSoundtrackIndex(soundtrack.id);
     if (index === -1) {
       soundtrack.id = this.commonService.normalizeName(soundtrack.id);
@@ -33,7 +33,7 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     }
   }
 
-  public removeSoundtrack(soundtrack: Soundtrack) {
+  public remove(soundtrack: Soundtrack) {
     const index = this.getSoundtrackIndex(soundtrack.name);
     if (index !== -1) {
       const soundtracks = this.getState();

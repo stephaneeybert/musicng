@@ -29,7 +29,7 @@ export class UploadComponent implements OnInit {
       this.midiService.parseRawMidiTonejs(file.name, this.rawMidiData).then((soundtrack: Soundtrack) => { // TODO
         this.soundtrack = soundtrack;
         console.log(this.soundtrack);
-        this.soundtrackStore.addSoundtrack(soundtrack);
+        this.soundtrackStore.add(soundtrack);
       });
     };
     fileReader.readAsArrayBuffer(file);

@@ -32,7 +32,7 @@ export class DeviceStore extends Store<Array<Device>> {
     return this.getState().length;
   }
 
-  public addDevice(device: Device) {
+  public add(device: Device) {
     const index = this.getDeviceIndex(device.id);
     if (index === -1) {
       device.id = this.commonService.normalizeName(device.id);
@@ -42,7 +42,7 @@ export class DeviceStore extends Store<Array<Device>> {
     }
   }
 
-  public removeAllDevices() {
+  public removeAll() {
     this.getState()
       .filter((device: Device) => device.midiMessageSubscription != null)
       .forEach((device: Device, index: number) => {
@@ -55,7 +55,7 @@ export class DeviceStore extends Store<Array<Device>> {
       });
   }
 
-  public removeDevice(deviceName: string) {
+  public unstore(deviceName: string) {
     const index = this.getDeviceIndex(deviceName);
     if (index !== -1) {
       const devices = this.getState();

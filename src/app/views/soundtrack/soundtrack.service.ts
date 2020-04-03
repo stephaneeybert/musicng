@@ -16,7 +16,7 @@ export class SoundtrackService {
 
   public createSoundtrack(name: string): Soundtrack {
     const soundtrack: Soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
-    this.soundtrackStore.addSoundtrack(soundtrack);
+    this.soundtrackStore.add(soundtrack);
     return soundtrack;
   }
 

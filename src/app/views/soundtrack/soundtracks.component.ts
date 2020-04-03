@@ -74,7 +74,7 @@ export class SoundtracksComponent implements OnInit {
   }
 
   deleteSoundtrack(soundtrack: Soundtrack): void {
-    this.soundtrackStore.removeSoundtrack(soundtrack);
+    this.soundtrackStore.remove(soundtrack);
   }
 
   refreshSoundtrack(soundtrack: Soundtrack): void {

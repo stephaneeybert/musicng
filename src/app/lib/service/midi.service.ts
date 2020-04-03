@@ -94,7 +94,7 @@ export class MidiService {
     if (inputDevice.name) {
       const device: Device = new Device(this.commonService.normalizeName(inputDevice.name), inputDevice.name);
       this.handleMessagesFromInputDevice(device);
-      this.deviceStore.addDevice(device);
+      this.deviceStore.add(device);
     }
   }
 
