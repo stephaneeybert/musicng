@@ -79,7 +79,7 @@ export class SoundtracksComponent implements OnInit {
 
   refreshSoundtrack(soundtrack: Soundtrack): void {
     console.log('refreshSoundtrack');
-    console.log(soundtrack);
+    console.log(soundtrack); // TODO Why is this not called ?
   }
 
   openSoundtrackDialog(existingSoundtrack: Soundtrack) {
@@ -104,8 +104,6 @@ export class SoundtracksComponent implements OnInit {
 
             this.soundtrackService.setSoundtrack(existingSoundtrack);
             this.soundtrackEditedEvent.emit(existingSoundtrack);
-            console.log('Emitted event');
-            console.log(existingSoundtrack);
             const message: string = this.translateService.instant('soundtracks.message.updated', { name: existingSoundtrack.name });
             this.utilsService.showSnackBar(message);
           } else {
