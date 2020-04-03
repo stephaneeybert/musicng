@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { SoundtrackEdition } from './soundtrack-edition';
-import { ValidateSoundtrackNameCharacters } from './validate-soundtrack-name';
+import { ValidateSoundtrackName } from './validate-soundtrack-name';
 
 const NAME_MAX_LENGTH: number = 50;
 
@@ -25,7 +25,7 @@ export class SoundtrackDialogComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      name: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.name : '', [ Validators.required, Validators.maxLength(NAME_MAX_LENGTH), ValidateSoundtrackNameCharacters ]),
+      name: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.name : '', [ Validators.required, Validators.maxLength(NAME_MAX_LENGTH), ValidateSoundtrackName ]),
       copyright: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.copyright : ''),
       lyrics: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.lyrics : ''),
     });
