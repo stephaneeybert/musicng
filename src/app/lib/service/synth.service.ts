@@ -78,6 +78,8 @@ export class SynthService {
       soundtrack.tracks.forEach((track: Track) => {
         this.play(track, soundtrack);
       });
+    } else {
+      throw new Error('The soundtrack contains no notes and could not be played.');
     }
   }
 
