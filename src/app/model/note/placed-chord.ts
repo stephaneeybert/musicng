@@ -6,7 +6,7 @@ export class PlacedChord {
 
   notes: Array<Note>;
   cursor: Cursor;
-  // TODO This causes an error in musicng
+  // TODO This causes an error
   // https://stackoverflow.com/q/60805037/958373
   staveNote: any;
   // staveNote: vexflow.Flow.StaveNote;
