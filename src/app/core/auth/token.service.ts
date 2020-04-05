@@ -17,7 +17,11 @@ export class TokenService {
 
   // See https://stackoverflow.com/questions/49240232/getting-a-cyclic-dependency-error
   jwtHelperService = new JwtHelperService();
-  constructor() { }
+  constructor() {
+    if (!window.localStorage) {
+      throw new Error('The browser does not support local storage.');
+    }
+  }
   // constructor(private jwtHelperService: JwtHelperService) {}
 
   public accessTokenExpired(): boolean {
