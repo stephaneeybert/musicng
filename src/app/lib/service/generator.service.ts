@@ -53,7 +53,7 @@ export class GeneratorService {
         }
         measure.placedChords!.push(placedChord);
       });
-    const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.assignNewName(), measures);
+    const soundtrack: Soundtrack = this.soundtrackService.createSoundtrackFromMeasures(this.assignNewName(), measures);
   }
 
   private assignNewName(): string {

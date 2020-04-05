@@ -14,7 +14,7 @@ export class SoundtrackService {
     private soundtrackStore: SoundtrackStore
   ) { }
 
-  public createSoundtrack(name: string, measures: Array<Measure>): Soundtrack {
+  public createSoundtrackFromMeasures(name: string, measures: Array<Measure>): Soundtrack {
     const soundtrack: Soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
     soundtrack.addTrack(measures);
     this.soundtrackStore.add(soundtrack);
