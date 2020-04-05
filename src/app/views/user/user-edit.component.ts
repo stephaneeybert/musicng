@@ -24,6 +24,8 @@ export class UserEditComponent implements OnChanges {
     private userService: UserService
   ) { }
 
+  // This method is called after the input bindings attempt
+  // and only if there was actual input provided to the bindings
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
     const loggedOutput: string[] = [];
     for (const propName of Object.keys(changes)) {
