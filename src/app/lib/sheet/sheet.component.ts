@@ -101,6 +101,8 @@ export class SheetComponent implements AfterViewInit {
     if (soundtrack != null) {
       if (soundtrack.hasNotes()) {
         this.sheetService.createSoundtrackSheet(this.id, this.screenWidth, soundtrack);
+      } else {
+        throw new Error('No sheet was created for the soundtrack. Notes should be set to the soundtrack before adding it to the observables data store, ensuring that when the new soundtrack is observed, it has notes and can get a sheet.');
       }
     }
   }

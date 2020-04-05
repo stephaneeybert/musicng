@@ -62,6 +62,8 @@ export class SynthComponent implements AfterViewInit {
       if (soundtrack.hasNotes()) {
         const synth = this.synthService.createSoundtrackSynth();
         this.soundtrackStore.setSoundtrackSynth(soundtrack, synth);
+      } else {
+        throw new Error('No synth was created for the soundtrack. Notes should be set to the soundtrack before adding it to the observables data store, ensuring that when the new soundtrack is observed, it has notes and can get a synth.');
       }
     }
   }
