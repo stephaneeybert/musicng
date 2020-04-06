@@ -9,6 +9,8 @@ import { CommonService } from '../../lib/service/common.service';
 })
 export class SoundtrackService {
 
+  NB_MAX: number = 10;
+
   constructor(
     private commonService: CommonService,
     private soundtrackStore: SoundtrackStore
@@ -19,6 +21,10 @@ export class SoundtrackService {
     soundtrack.addTrack(measures);
     this.soundtrackStore.add(soundtrack);
     return soundtrack;
+  }
+
+  public maximumNotYetReached(): boolean {
+    return this.getSoundtracks().length < this.NB_MAX;
   }
 
   public getSoundtracks(): Array<Soundtrack> {

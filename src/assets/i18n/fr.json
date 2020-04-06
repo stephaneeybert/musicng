@@ -53,7 +53,8 @@
     },
     "message": {
       "added": "Le morceau {{ name }} a été ajouté.",
-      "updated": "Le morceau {{ name }} a été modifié."
+      "updated": "Le morceau {{ name }} a été modifié.",
+      "maxNbReached": "Le nombre maximum de morceaux est atteint. Veuillez supprimer un morceau avant d'en ajouter un."
     }
 
   },

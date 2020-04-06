@@ -54,8 +54,13 @@ export class SoundtracksComponent implements OnInit {
   }
 
   generateSoundtrack(): void {
-    this.generatorService.generateSoundtrack();
-    // this.melodyService.addDummyMelody();
+    if (this.soundtrackService.maximumNotYetReached()) {
+      this.generatorService.generateSoundtrack();
+      // this.melodyService.addDummyMelody();
+    } else {
+      const message: string = this.translateService.instant('soundtracks.message.maxNbReached');
+      this.utilsService.showSnackBar(message);
+    }
   }
 
   playSoundtrack(soundtrack: Soundtrack): void {
