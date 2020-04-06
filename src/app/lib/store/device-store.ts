@@ -42,15 +42,15 @@ export class DeviceStore extends Store<Array<Device>> {
     }
   }
 
-  public removeAll() {
+  public deleteAll() {
     this.getState()
       .filter((device: Device) => device.midiMessageSubscription != null)
       .forEach((device: Device, index: number) => {
-        this.remove(device.id);
+        this.delete(device.id);
       });
   }
 
-  public remove(deviceId: string) {
+  public delete(deviceId: string) {
     const index = this.getDeviceIndex(deviceId);
     if (index !== -1) {
       const devices = this.getState();

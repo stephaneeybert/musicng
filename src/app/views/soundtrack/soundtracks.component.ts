@@ -85,7 +85,7 @@ export class SoundtracksComponent implements OnInit {
 
   deleteSoundtrack(soundtrack: Soundtrack): void {
     this.stopSoundtrack(soundtrack);
-    if (this.soundtrackStore.remove(soundtrack)) {
+    if (this.soundtrackStore.delete(soundtrack)) {
       const message: string = this.translateService.instant('soundtracks.message.deleted', { name: soundtrack.name });
       this.utilsService.showSnackBar(message);
     } else {

@@ -69,14 +69,14 @@ export class DevicesComponent implements OnInit, OnDestroy {
           } else if (event.port.state === this.midiService.MIDI_DEVICE_DISCONNECTED) {
             console.log('Disconnected the device: ' + event.port.name);
             const portName: string = (event && event.port && event.port.name) ? event.port.name : '';
-            this.deviceStore.remove(portName);
+            this.deviceStore.delete(portName);
           }
         };
       });
   }
 
   private getConnectedDevices() {
-    this.deviceStore.removeAll();
+    this.deviceStore.deleteAll();
     if (this.midiInputSubscription != null) {
       this.midiInputSubscription.unsubscribe();
     }
