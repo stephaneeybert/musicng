@@ -46,11 +46,14 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
       const soundtracks = this.getState();
       soundtracks.push(soundtrack);
       this.setState(soundtracks);
-
-      // Create a clean soundtrack before storing it
-      const cleanSoundtrack: Soundtrack = this.parseService.objectToNewSoundtrack(soundtrack);
-      this.soundtrackStorageService.setSoundtrack(cleanSoundtrack);
+      this.storeSoundtrack(soundtrack);
     }
+  }
+
+  private storeSoundtrack(soundtrack: Soundtrack): void {
+    // Create a clean soundtrack before storing it
+    const cleanSoundtrack: Soundtrack = this.parseService.objectToNewSoundtrack(soundtrack);
+    this.soundtrackStorageService.setSoundtrack(cleanSoundtrack);
   }
 
   public delete(soundtrack: Soundtrack): boolean {
@@ -83,6 +86,15 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
       const soundtracks = this.getState();
       soundtracks[index] = soundtrack;
       this.setState(soundtracks);
+      this.storeSoundtrack(soundtrack);
+    }
+  }
+
+  public findByName(name: string): Soundtrack | void {
+    for (let soundtrack of this.getSoundtracks()) {
+      if (soundtrack.name == name) {
+        return soundtrack;
+      }
     }
   }
 
