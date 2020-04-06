@@ -11,6 +11,9 @@ import { Measure } from '../../model/measure/measure';
 import { TimeSignature } from '../../model/measure/time-signature';
 import { Tempo } from '../../model/tempo';
 import { TempoUnit } from '../../model/tempo-unit';
+import { Soundtrack } from '@app/model/soundtrack';
+import { Track } from '@app/model/track';
+import { CommonService } from './common.service';
 
 const CHORD_SEPARATOR: string = ' ';
 const CHORD_DURATION_SEPARATOR: string = '/';
@@ -29,7 +32,9 @@ const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 })
 export class ParseService {
 
-  constructor() { }
+  constructor(
+    private commonService: CommonService
+  ) { }
 
   public parseMeasures(textMeasures: Array<string>): Array<Measure> {
     const measures: Array<Measure> = new Array<Measure>();
@@ -46,7 +51,7 @@ export class ParseService {
     return this.createMeasure(DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
   }
 
-  private createMeasure(tempo: string, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
+  public createMeasure(tempo: string, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
     const timeSignature: TimeSignature = this.timeSignature(timeSignatureNumerator, timeSignatureDenominator);
     const measure: Measure = new Measure(this.tempo(tempo, TempoUnit.BPM), timeSignature);
     return measure;
@@ -94,6 +99,52 @@ export class ParseService {
     const notes: Array<Note> = this.parseTextNotes(chordNotes);
     const placedChord: PlacedChord = this.createPlacedChord(chordDuration, notes);
     return placedChord;
+  }
+
+  public objectToNewSoundtrack(soundtrackObj: any): Soundtrack {
+    const soundtrack: Soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
+    soundtrack.id = soundtrackObj.id;
+    soundtrack.name = soundtrackObj.name;
+    soundtrack.copyright = soundtrackObj.copyright;
+    soundtrack.lyrics = soundtrackObj.lyrics;
+    soundtrack.tracks = new Array();
+    if (soundtrackObj.tracks && soundtrackObj.tracks.length > 0) {
+      soundtrackObj.tracks.forEach((trackObj: any) => {
+        const track: Track = new Track();
+        track.name = trackObj.name;
+        track.channel = trackObj.channel;
+        track.measures = new Array();
+        if (trackObj.measures && trackObj.measures.length > 0) {
+          trackObj.measures.forEach((measureObj: any) => {
+            if (measureObj.placedChords && measureObj.placedChords.length > 0) {
+              const measure: Measure = this.createMeasure(measureObj.tempo.value, parseInt(measureObj.timeSignature.numerator), parseInt(measureObj.timeSignature.denominator));
+              measure.placedChords = new Array();
+              measureObj.placedChords.forEach((placedChordObj: any) => {
+                if (placedChordObj.notes && placedChordObj.notes.length > 0 && placedChordObj.cursor && placedChordObj.cursor.noteDuration && placedChordObj.cursor.noteDuration.subdivision) {
+                  const notes: Array<Note> = new Array();
+                  placedChordObj.notes.forEach((noteObj: any) => {
+                    if (noteObj.pitch) {
+                      const note: Note = this.createNote(noteObj.pitch.chroma.value, noteObj.pitch.octave.value);
+                      note.pitch.accidental = noteObj.pitch.accidental;
+                      note.dotted = noteObj.dotted;
+                      note.velocity = noteObj.velocity;
+                      notes.push(note);
+                    }
+                  });
+                  const duration: string = placedChordObj.cursor.noteDuration.subdivision.left + placedChordObj.cursor.noteDuration.unit;
+                  const placedChord: PlacedChord = this.createPlacedChord(duration, notes);
+                  placedChord.dottedAll = placedChordObj.dottedAll;
+                  measure.placedChords!.push(placedChord);
+                }
+              });
+              track.measures.push(measure);
+            }
+          });
+        }
+        soundtrack.tracks.push(track);
+      });
+    }
+    return soundtrack;
   }
 
   private addNotes(placedChord: PlacedChord, notes: Array<Note>): void {
@@ -157,7 +208,13 @@ export class ParseService {
     return abcNote.includes(NOTE_END_OF_TRACK) && abcNote.includes(String(NOTE_END_OF_TRACK_OCTAVE));
   }
 
-  public createLastInTrackPlacedChord(): PlacedChord {
+  public addLastOfTrackNote(chords: Array<PlacedChord>): void {
+    if (chords.length > 0) {
+      chords[chords.length] = this.createLastOfTrackPlacedChord();
+    }
+  }
+
+  public createLastOfTrackPlacedChord(): PlacedChord {
     const endNote: Note = this.createNote(NOTE_REST, NOTE_END_OF_TRACK_OCTAVE);
     return this.createPlacedChord(NOTE_END_OF_TRACK_DURATION, [ endNote ]);
   }

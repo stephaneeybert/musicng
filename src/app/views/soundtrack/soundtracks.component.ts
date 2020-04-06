@@ -13,7 +13,7 @@ import { SoundtrackEdition } from './soundtrack-edition';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'soundtracks',
+  selector: 'soundtracks', // TODO Rename all selectors with the app- prefix
   templateUrl: './soundtracks.component.html',
   styleUrls: ['./soundtracks.component.css']
 })
@@ -43,6 +43,8 @@ export class SoundtracksComponent implements OnInit {
   ngOnInit() {
     this.soundtracks$ = this.soundtrackStore.getSoundtracks$();
     this.observeSoundtracks();
+    this.soundtrackStore.loadAllFromStorage();
+    // this.generateSoundtrack(); TODO Remove this
   }
 
   ngOnDestroy() {

@@ -38,7 +38,7 @@ export class GeneratorService {
         return this.parseService.createPlacedChord(this.CHORD_DURATION, notes)
       });
 
-    this.addLastInTrackNote(generatedChords);
+    this.parseService.addLastOfTrackNote(generatedChords);
 
     const measures: Array<Measure> = new Array<Measure>();
     let measure: Measure = this.parseService.createMeasureWithDefaultTempo();
@@ -58,12 +58,6 @@ export class GeneratorService {
 
   private assignNewName(): string {
     return this.translateService.instant('soundtracks.assignedName') + '_' + this.commonService.getRandomString(4);
-  }
-
-  private addLastInTrackNote(chords: Array<PlacedChord>): void {
-    if (chords.length > 0) {
-      chords[chords.length] = this.parseService.createLastInTrackPlacedChord();
-    }
   }
 
   private shiftOnceRight(chromas: Array<string>): Array<string> {

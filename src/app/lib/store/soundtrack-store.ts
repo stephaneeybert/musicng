@@ -3,6 +3,8 @@ import { Store } from './store';
 import { CommonService } from '../service/common.service';
 import { Soundtrack } from '../../model/soundtrack';
 import { Observable } from 'rxjs';
+import { SoundtrackStorageService } from '@app/views/soundtrack/soundtrack-storage.service';
+import { ParseService } from '../service/parse.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +12,23 @@ import { Observable } from 'rxjs';
 export class SoundtrackStore extends Store<Array<Soundtrack>> {
 
   constructor(
-    private commonService: CommonService
+    private commonService: CommonService,
+    private parseService: ParseService,
+    private soundtrackStorageService: SoundtrackStorageService
   ) {
     super(new Array<Soundtrack>());
+  }
+
+  public loadAllFromStorage(): void {
+    const soundtrackObjs: Array<any> = this.soundtrackStorageService.getAllSoundtracks();
+    if (soundtrackObjs && soundtrackObjs.length > 0) {
+      const soundtracks: Array<Soundtrack> = new Array();
+      soundtrackObjs.forEach((soundtrackObj: any) => {
+        const soundtrack: Soundtrack = this.parseService.objectToNewSoundtrack(soundtrackObj);
+        soundtracks.push(soundtrack);
+      });
+      this.setState(soundtracks);
+    }
   }
 
   public getSoundtracks$(): Observable<Array<Soundtrack>> {
@@ -30,6 +46,10 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
       const soundtracks = this.getState();
       soundtracks.push(soundtrack);
       this.setState(soundtracks);
+
+      // Create a clean soundtrack before storing it
+      const cleanSoundtrack: Soundtrack = this.parseService.objectToNewSoundtrack(soundtrack);
+      this.soundtrackStorageService.setSoundtrack(cleanSoundtrack);
     }
   }
 
@@ -39,6 +59,8 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
       const soundtracks = this.getState();
       soundtracks.splice(index, 1);
       this.setState(soundtracks);
+
+      this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
     }
   }
 

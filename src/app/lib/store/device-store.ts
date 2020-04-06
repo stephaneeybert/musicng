@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Store } from './store';
 import { CommonService } from '../service/common.service';
 import { Device } from '../../model/device';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -46,17 +46,12 @@ export class DeviceStore extends Store<Array<Device>> {
     this.getState()
       .filter((device: Device) => device.midiMessageSubscription != null)
       .forEach((device: Device, index: number) => {
-        if (device.midiMessageSubscription != null) {
-          device.midiMessageSubscription.unsubscribe();
-        }
-          const devices = this.getState();
-        devices.splice(index, 1);
-        this.setState(devices);
+        this.remove(device.id);
       });
   }
 
-  public unstore(deviceName: string) {
-    const index = this.getDeviceIndex(deviceName);
+  public remove(deviceId: string) {
+    const index = this.getDeviceIndex(deviceId);
     if (index !== -1) {
       const devices = this.getState();
       const itemDevice: Device = devices[index];

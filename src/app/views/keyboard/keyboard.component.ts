@@ -8,6 +8,7 @@ import { Subscription, ReplaySubject, Subject } from 'rxjs';
 import { CommonService } from '../../lib/service/common.service';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Device } from '@app/model/device';
+import { delay } from 'rxjs/operators';
 
 const NAME_PREFIX_SOUNDTRACK = 'keyboard-soundtrack-';
 const NAME_PREFIX_DEVICE = 'keyboard-device-';
@@ -53,11 +54,13 @@ export class KeyboardComponent implements AfterViewInit {
     this.initScreenWidth();
 
     this.soundtrackSubscription = this.soundtrack$
+    .pipe(delay(0)) // TODO https://stackoverflow.com/q/61043063/958373
     .subscribe((soundtrack: Soundtrack) => {
       this.initializeWithSoundtrackId(soundtrack);
     });
 
     this.deviceSubscription = this.device$
+    .pipe(delay(0)) // TODO
     .subscribe((device: Device) => {
       this.initializeWithDeviceId(device);
     });

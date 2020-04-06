@@ -1,9 +1,10 @@
-import { Component, Input, AfterViewInit, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, Input, ChangeDetectorRef, HostListener, OnInit } from '@angular/core';
 import { Device } from '../../model/device';
 import { SheetService } from '../service/sheet.service';
 import { Soundtrack } from '../../model/soundtrack';
 import { Subscription, Subject, ReplaySubject } from 'rxjs';
 import { CommonService } from '../service/common.service';
+import { delay } from 'rxjs/operators';
 
 const NAME_PREFIX_SOUNDTRACK = 'sheet-soundtrack-';
 const NAME_PREFIX_DEVICE = 'sheet-device-';
@@ -13,7 +14,7 @@ const NAME_PREFIX_DEVICE = 'sheet-device-';
   templateUrl: './sheet.component.html',
   styleUrls: ['./sheet.component.css']
 })
-export class SheetComponent implements AfterViewInit {
+export class SheetComponent implements OnInit {
 
   private soundtrack$: Subject<Soundtrack> = new ReplaySubject<Soundtrack>();
   // KNOW A setter with the very same name as the variable can be used in place of the variable
@@ -42,15 +43,17 @@ export class SheetComponent implements AfterViewInit {
     private commonService: CommonService
   ) { }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.initScreenWidth();
 
     this.soundtrackSubscription = this.soundtrack$
+      .pipe(delay(0)) // TODO
       .subscribe((soundtrack: Soundtrack) => {
         this.initializeWithSoundtrackId(soundtrack);
       });
 
     this.deviceSubscription = this.device$
+      .pipe(delay(0)) // TODO
       .subscribe((device: Device) => {
         this.initializeWithDeviceId(device);
       });
