@@ -78,7 +78,7 @@ export class ParseService {
       }
     } else {
       chroma = textNote;
-      octave = 0; // TODO What is the octave of a rest note ?
+      octave = 0;
     }
     const note: Note = this.createNote(chroma, octave);
     return note;
