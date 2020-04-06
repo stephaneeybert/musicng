@@ -196,7 +196,6 @@ export class SheetService {
 
   private sortNotesByPitch(notes: Array<Note>): Array<Note> {
     return notes.sort((noteA: Note, noteB: Note) => {
-      // TODO I'll strip the # accidental from the note if any then, so as to get E4 from E#4 as a note, before getting the frequency. 
       return this.getNoteFrequency(noteA) - this.getNoteFrequency(noteB);
     });
   }
