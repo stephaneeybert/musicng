@@ -10,10 +10,12 @@ import { ParseService } from '../service/parse.service';
 import { TempoUnit } from '../../model/tempo-unit';
 import { SheetService } from './sheet.service';
 import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
+import { Observable, interval } from 'rxjs';
+import { map, filter, take } from 'rxjs/operators';
 
 // Observation has shown that a delay between creating the service
 // and starting the transport is required for the transport to work
-const TRANSPORT_START_DELAY = 5;
+const TRANSPORT_START_DELAY = 10;
 const TRANSPORT_STATE_STARTED = 'started';
 
 @Injectable({
@@ -66,7 +68,17 @@ export class SynthService {
     Tone.Transport.stop();
   }
 
-  // TODO Create an observable used to enable play button
+  public synthTransportIsStarted$(): Observable<boolean>  {
+    return interval(1000)
+    .pipe(
+      map((value: number) => {
+        return this.transportIsStarted();
+      }),
+      filter((isStarted: boolean) => isStarted),
+      take(1)
+    );
+  }
+
   private transportIsStarted(): boolean {
     return Tone.Transport.state == TRANSPORT_STATE_STARTED;
   }

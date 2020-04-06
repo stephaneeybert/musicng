@@ -19,10 +19,11 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class SoundtracksComponent implements OnInit {
 
-  soundtracks$!: Observable<Array<Soundtrack>>;
+  soundtracks$?: Observable<Array<Soundtrack>>;
   soundtracks!: Array<Soundtrack>;
-
   private soundtracksSubscription!: Subscription;
+
+  synthStarted$?: Observable<boolean>;
 
   dialogRef!: MatDialogRef<SoundtrackDialogComponent>;
   @Output()
@@ -43,8 +44,10 @@ export class SoundtracksComponent implements OnInit {
   ngOnInit() {
     this.soundtracks$ = this.soundtrackStore.getSoundtracks$();
     this.observeSoundtracks();
+
+    this.synthStarted$ = this.synthService.synthTransportIsStarted$();
+
     this.soundtrackStore.loadAllFromStorage();
-    // this.generateSoundtrack(); TODO Remove this
   }
 
   ngOnDestroy() {
