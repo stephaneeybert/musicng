@@ -59,25 +59,6 @@ export class DevicesComponent implements OnInit, OnDestroy {
     });
   }
 
-  // // https://stackoverflow.com/questions/56392671/retrieving-a-midiinput-from-the-onstatechange-handler
-  // private handleDeviceHotPlug_TODO() {
-  //   this.midiService.getMidiAccess()
-  //     .subscribe((midiAccess: WebMidi.MIDIAccess) => {
-  //       midiAccess.onstatechange = (event: WebMidi.MIDIConnectionEvent) => {
-  //         console.log(event);
-  //         if (event.port.state === 'connected') {
-  //           console.log('Connected the device: ' + event.port);
-  //           this.midiService.addMidiDevice(event.port);
-  //         } else if (event.port.state === 'disconnected') {
-  //           console.log('Disconnected the device: ' + event.port.name);
-  //           this.deviceStore.removeDevice(event.port.name);
-  //         } else {
-  //           this.devices$ = this.deviceStore.getDevices();
-  //         }
-  //       };
-  //     });
-  // }
-
   private handleDeviceHotPlug() {
     this.midiAccessSubscription = this.midiService.requestMIDIAccess$()
       .subscribe((midiAccess: WebMidi.MIDIAccess) => {
