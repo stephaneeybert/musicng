@@ -47,13 +47,13 @@ export class SheetComponent implements OnInit {
     this.initScreenWidth();
 
     this.soundtrackSubscription = this.soundtrack$
-      .pipe(delay(0)) // TODO
+      .pipe(delay(0))
       .subscribe((soundtrack: Soundtrack) => {
         this.initializeWithSoundtrackId(soundtrack);
       });
 
     this.deviceSubscription = this.device$
-      .pipe(delay(0)) // TODO
+      .pipe(delay(0))
       .subscribe((device: Device) => {
         this.initializeWithDeviceId(device);
       });

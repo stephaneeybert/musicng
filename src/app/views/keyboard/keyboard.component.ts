@@ -54,13 +54,15 @@ export class KeyboardComponent implements AfterViewInit {
     this.initScreenWidth();
 
     this.soundtrackSubscription = this.soundtrack$
-    .pipe(delay(0)) // TODO https://stackoverflow.com/q/61043063/958373
+    // Wait for a change detection so as to get the soundtracks at loading time
+    // See https://stackoverflow.com/q/61043063/958373
+    .pipe(delay(0))
     .subscribe((soundtrack: Soundtrack) => {
       this.initializeWithSoundtrackId(soundtrack);
     });
 
     this.deviceSubscription = this.device$
-    .pipe(delay(0)) // TODO
+    .pipe(delay(0))
     .subscribe((device: Device) => {
       this.initializeWithDeviceId(device);
     });
