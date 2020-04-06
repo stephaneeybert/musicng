@@ -45,7 +45,8 @@
           "required": "Le nom est requis",
           "minlength": "Le nom requiers plus de lettres",
           "maxlength": "Le nom requiers moins de lettres",
-          "invalidPattern": "Le nom n'accepte que des lettres et des chiffres"
+          "invalidPattern": "Le nom n'accepte que des lettres et des chiffres",
+          "nameIsAlreadyUsed": "Le nom est déjà utilisé par un autre morceau."
         }
       },
       "copyright": "Droits d'auteur:",

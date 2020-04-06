@@ -7,6 +7,7 @@
       <mat-error *ngIf="hasError('name', 'required')">{{ 'soundtracks.form.name.error.required' | translate }}</mat-error>
       <mat-error *ngIf="hasError('name', 'maxlength')">{{ 'soundtracks.form.name.error.maxlength' | translate }}</mat-error>
       <mat-error *ngIf="hasError('name', 'invalidPattern')">{{ 'soundtracks.form.name.error.invalidPattern' | translate }}</mat-error>
+      <mat-error *ngIf="hasError('name', 'nameIsAlreadyUsed')">{{ 'soundtracks.form.name.error.nameIsAlreadyUsed' | translate }}</mat-error>
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-content>

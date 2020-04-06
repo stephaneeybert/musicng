@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { SoundtrackEdition } from './soundtrack-edition';
-import { ValidateSoundtrackName } from './validate-soundtrack-name';
+import { SoundtrackValidator } from './soundtrack-validator';
 
 const NAME_MAX_LENGTH: number = 50;
 
@@ -17,7 +17,8 @@ export class SoundtrackDialogComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<SoundtrackDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: any
+    @Inject(MAT_DIALOG_DATA) private data: any,
+    private soundtrackValidator: SoundtrackValidator
   ) {
     const inputSoundtrackEdition: SoundtrackEdition = data.soundtrack;
     this.soundtrackEdition = new SoundtrackEdition(inputSoundtrackEdition.name, inputSoundtrackEdition.copyright, inputSoundtrackEdition.lyrics);
@@ -25,7 +26,7 @@ export class SoundtrackDialogComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      name: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.name : '', [ Validators.required, Validators.maxLength(NAME_MAX_LENGTH), ValidateSoundtrackName ]),
+      name: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.name : '', [ Validators.required, Validators.maxLength(NAME_MAX_LENGTH), this.soundtrackValidator.validateNamePattern(), this.soundtrackValidator.validateNameIsNotAlreadyUsed() ]),
       copyright: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.copyright : ''),
       lyrics: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.lyrics : ''),
     });
