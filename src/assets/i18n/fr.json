@@ -53,8 +53,10 @@
     },
     "message": {
       "added": "Le morceau {{ name }} a été ajouté.",
+      "maxNbReached": "Le nombre maximum de morceaux est atteint. Veuillez supprimer un morceau avant d'en ajouter un.",
       "updated": "Le morceau {{ name }} a été modifié.",
-      "maxNbReached": "Le nombre maximum de morceaux est atteint. Veuillez supprimer un morceau avant d'en ajouter un."
+      "deleted": "Le morceau {{ name }} a été supprimé.",
+      "notFound": "Le morceau {{ name }} n'a pas pu être trouvé."
     }
 
   },

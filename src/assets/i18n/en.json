@@ -53,8 +53,10 @@
     },
     "message": {
       "added": "The soundtrack {{ name }} has been added.",
+      "maxNbReached": "The maximum number of soundtracks is reached. Delete a soundtrack before adding one.",
       "updated": "The soundtrack {{ name }} has been updated.",
-      "maxNbReached": "The maximum number of soundtracks is reached. Delete a soundtrack before adding one."
+      "deleted": "The soundtrack {{ name }} has been deleted.",
+      "notFound": "The soundtrack {{ name }} could not be found."
     }
   },
   "devices": {
