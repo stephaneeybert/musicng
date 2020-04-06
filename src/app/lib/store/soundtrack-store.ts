@@ -53,7 +53,7 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     }
   }
 
-  public remove(soundtrack: Soundtrack) {
+  public remove(soundtrack: Soundtrack): boolean {
     const index = this.getSoundtrackIndex(soundtrack.name);
     if (index !== -1) {
       const soundtracks = this.getState();
@@ -61,6 +61,9 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
       this.setState(soundtracks);
 
       this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
+      return true;
+    } else {
+      return false;
     }
   }
 
