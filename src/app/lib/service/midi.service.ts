@@ -79,10 +79,12 @@ export class MidiService {
       );
   }
 
-  // public requestMIDIAccess$(): Observable<WebMidi.MIDIAccess> {
-  public requestMIDIAccess$(): Observable<any> {
+  public requestMIDIAccess$(): Observable<WebMidi.MIDIAccess> {
     return from(navigator.requestMIDIAccess())
     .pipe(
+      map((midiAccess: any) => {
+        return midiAccess;
+      }),
       catchError((error: any) => {
         console.log('Your browser is not compatible with MIDI access. Try using the Chrome browser.');
         return empty();
