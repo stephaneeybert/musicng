@@ -57,7 +57,7 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
   }
 
   public delete(soundtrack: Soundtrack): boolean {
-    const index = this.getSoundtrackIndex(soundtrack.name);
+    const index = this.getSoundtrackIndex(soundtrack.id);
     if (index !== -1) {
       const soundtracks = this.getState();
       soundtracks.splice(index, 1);
