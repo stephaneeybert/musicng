@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-// import abcjs from 'abcjs/midi';
 import * as vexflow from 'vexflow';
 import * as Tone from 'tone';
 import { Soundtrack } from '../../model/soundtrack';
@@ -39,9 +38,6 @@ export enum VexfloWAccidental {
   hash = '#',
   hashDouble = '##'
 }
-
-const ABCJS_CHORD_SEPARATOR = '|';
-const ABCJS_NOTE_REST = 'z';
 
 @Injectable({
   providedIn: 'root'
@@ -249,79 +245,6 @@ export class SheetService {
     const renderer = new vexflow.Flow.Renderer(element!, vexflow.Flow.Renderer.Backends.SVG);
     renderer.resize(width, height);
     return renderer.getContext();
-  }
-
-  private createSheetAbcjs(name: string, soundtrack: Soundtrack): void {
-    let strNotes: string = '';
-    if (soundtrack.hasTracks()) {
-      for (const track of soundtrack.tracks) {
-        if (track.hasMeasures()) {
-          for (const measure of track.measures) {
-            if (measure.hasChords()) {
-              for (const placedChord of measure.placedChords!) {
-                if (strNotes.length > 0) {
-                  strNotes += ABCJS_CHORD_SEPARATOR;
-                }
-                placedChord.notes.forEach((note: Note) => {
-                  if (this.parseService.noteIsNotRest(note)) {
-                    strNotes += note.render();
-                  } else {
-                    strNotes += ABCJS_NOTE_REST;
-                  }
-                });
-              }
-            }
-          }
-        }
-      }
-    }
-
-    // const sheetAbc = abcjs.renderAbc(name, strNotes, {
-    //   add_classes: true
-    //   // animate: { listener: this.sheetMidiAnimate, target: strNotes[0], qpm: 120 }
-    //  });
-
-    // const element = document.getElementById(name);
-    // abcjs.startAnimation(element, sheetAbc[0], { showCursor: true });
-
-    // const timer = new abcjs.TimingCallbacks(name, {
-    //   beatCallback: this.beatCallbackIntercept,
-    //   eventCallback: this.eventCallbackIntercept,
-    //   lineEndCallback: this.lineEndCallbackIntercept,
-    // });
-    // timer.start();
-
-    // https://stackoverflow.com/questions/56418769/no-moving-cursor-when-playing-the-abcjs-animation/56473767#56473767
-    // const sheetMidi = abcjs.renderMidi(name, strNotes, {
-    //   animate: { listener: this.sheetMidiAnimate, target: strNotes[0], qpm: 120 }
-    // });
-    // abcjs.midi.startPlaying(element);
-  }
-
-  private beatCallbackIntercept(note: number): void {
-    // console.log('Sheet callback beat note: ' + note);
-  }
-
-  private eventCallbackIntercept(event: any): void {
-    // console.log('Sheet callback event: ' + event);
-  }
-
-  private lineEndCallbackIntercept(stuff: any): void {
-    // console.log('Sheet callback line end: ');
-    // console.log(stuff);
-  }
-
-  private sheetMidiAnimate(abcjsElement: any, currentEvent: any, context: any): void {
-    console.log(abcjsElement);
-    console.log(currentEvent);
-    console.log(context);
-  }
-
-  private doStuff(abcElem: any, tuneNumber: any, classes: any): void {
-    console.log('Doing stuff');
-    console.log(abcElem);
-    console.log(tuneNumber);
-    console.log(classes);
   }
 
 }
