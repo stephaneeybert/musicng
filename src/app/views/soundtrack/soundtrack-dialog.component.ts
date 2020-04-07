@@ -21,12 +21,12 @@ export class SoundtrackDialogComponent implements OnInit {
     private soundtrackValidator: SoundtrackValidator
   ) {
     const inputSoundtrackEdition: SoundtrackEdition = data.soundtrack;
-    this.soundtrackEdition = new SoundtrackEdition(inputSoundtrackEdition.name, inputSoundtrackEdition.copyright, inputSoundtrackEdition.lyrics);
+    this.soundtrackEdition = new SoundtrackEdition(inputSoundtrackEdition.id, inputSoundtrackEdition.name, inputSoundtrackEdition.copyright, inputSoundtrackEdition.lyrics);
   }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      name: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.name : '', [ Validators.required, Validators.maxLength(NAME_MAX_LENGTH), this.soundtrackValidator.validateNamePattern(), this.soundtrackValidator.validateNameIsNotAlreadyUsed() ]),
+      name: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.name : '', [ Validators.required, Validators.maxLength(NAME_MAX_LENGTH), this.soundtrackValidator.validateNamePattern(), this.soundtrackValidator.validateNameIsNotAlreadyUsed( this.soundtrackEdition.id) ]),
       copyright: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.copyright : ''),
       lyrics: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.lyrics : ''),
     });

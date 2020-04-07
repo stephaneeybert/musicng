@@ -22,9 +22,9 @@ export class SoundtrackValidator {
     }
   }
 
-  validateNameIsNotAlreadyUsed(): ValidatorFn {
+  validateNameIsNotAlreadyUsed(soundtrackId: string): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (this.soundtrackValidatorService.nameIsAlreadyUsed((control.value))) {
+      if (this.soundtrackValidatorService.nameIsAlreadyUsed(soundtrackId, control.value)) {
         return { nameIsAlreadyUsed: true };
       }
       return null;
