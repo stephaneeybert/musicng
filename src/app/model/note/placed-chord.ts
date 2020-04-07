@@ -32,9 +32,19 @@ export class PlacedChord {
     }
   }
 
+  public renderFirstNote(): string {
+    let abc: string = '';
+    if (this.notes.length > 0) {
+      const sortedNotes: Array<Note> = this.notes.sort((a, b) => a.index - b.index);
+      abc = sortedNotes[0].renderAbc();
+    }
+    return abc;
+  }
+
   public renderAbc(): string {
     let abc: string = '';
-    for (const note of this.notes) {
+    const sortedNotes: Array<Note> = this.notes.sort((a, b) => a.index - b.index);
+    for (const note of sortedNotes) {
       if (abc) {
         abc += ' ';
       }

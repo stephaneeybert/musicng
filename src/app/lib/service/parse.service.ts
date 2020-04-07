@@ -65,7 +65,7 @@ export class ParseService {
       });
   }
 
-  private parseTextNote(textNote: string): Note {
+  private parseTextNote(index: number, textNote: string): Note {
     let chroma: string;
     let octave: number;
     if (this.abcNoteIsNotRest(textNote)) {
@@ -80,15 +80,17 @@ export class ParseService {
       chroma = textNote;
       octave = 0;
     }
-    const note: Note = this.createNote(chroma, octave);
+    const note: Note = this.createNote(index, chroma, octave);
     return note;
   }
 
   private parseTextNotes(textNotes: string): Array<Note> {
+    let index: number = 0;
     return textNotes.split(NOTE_SEPARATOR)
       .filter(textNote => !!textNote)
       .map((textNote: string) => {
-        return this.parseTextNote(textNote);
+        return this.parseTextNote(index, textNote);
+        index++;
       });
   }
 
@@ -122,13 +124,15 @@ export class ParseService {
               measureObj.placedChords.forEach((placedChordObj: any) => {
                 if (placedChordObj.notes && placedChordObj.notes.length > 0 && placedChordObj.cursor && placedChordObj.cursor.noteDuration && placedChordObj.cursor.noteDuration.subdivision) {
                   const notes: Array<Note> = new Array();
+                  let index: number = 0;
                   placedChordObj.notes.forEach((noteObj: any) => {
                     if (noteObj.pitch) {
-                      const note: Note = this.createNote(noteObj.pitch.chroma.value, noteObj.pitch.octave.value);
+                      const note: Note = this.createNote(index, noteObj.pitch.chroma.value, noteObj.pitch.octave.value);
                       note.pitch.accidental = noteObj.pitch.accidental;
                       note.dotted = noteObj.dotted;
                       note.velocity = noteObj.velocity;
                       notes.push(note);
+                      index++;
                     }
                   });
                   const duration: string = placedChordObj.cursor.noteDuration.subdivision.left + placedChordObj.cursor.noteDuration.unit;
@@ -161,9 +165,9 @@ export class ParseService {
     return placedChord;
   }
 
-  public createNote(chroma: string, octave: number): Note {
+  public createNote(index: number, chroma: string, octave: number): Note {
     const pitch: Pitch = this.pitch(this.toChroma(chroma), this.toOctave(octave));
-    const note: Note = new Note(pitch);
+    const note: Note = new Note(index, pitch);
     return note;
   }
 
@@ -215,7 +219,8 @@ export class ParseService {
   }
 
   public createLastOfTrackPlacedChord(): PlacedChord {
-    const endNote: Note = this.createNote(NOTE_REST, NOTE_END_OF_TRACK_OCTAVE);
+    const index: number = 0;
+    const endNote: Note = this.createNote(index, NOTE_REST, NOTE_END_OF_TRACK_OCTAVE);
     return this.createPlacedChord(NOTE_END_OF_TRACK_DURATION, [ endNote ]);
   }
 
@@ -231,12 +236,11 @@ export class ParseService {
     return tempo && tempo.unit === TempoUnit.BPM;
   }
 
-  public buildNoteWithDuration(abc: string, octave: number, velocity: number, duration: string): Note {
-    return new Note(this.pitch(this.toChroma(abc), this.toOctave(octave)), velocity);
-  }
-
-  public buildNoteWithTicks(abc: string, octave: number, velocity: number, ticks: number): Note {
-    return new Note(this.pitch(this.toChroma(abc), this.toOctave(octave)), velocity);
+  public buildNoteWithTicks(abc: string, octave: number, velocity: number): Note {
+    const index: number = 0;
+    const note: Note = this.createNote(index, abc, octave);
+    note.velocity = velocity;
+    return note;
   }
 
   public placeEmptyChord(noteDuration: Duration): PlacedChord {

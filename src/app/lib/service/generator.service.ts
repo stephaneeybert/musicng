@@ -32,8 +32,11 @@ export class GeneratorService {
   public generateSoundtrack() {
     const generatedChords: Array<PlacedChord> = this.generateChords()
       .map((chord: Array<string>) => {
-        const notes: Array<Note> = chord.map((note: string) => {
-          return this.parseService.createNote(note, this.NOTE_OCTAVE);
+        let index: number = 0;
+        const notes: Array<Note> = chord.map((textNote: string) => {
+          const note: Note = this.parseService.createNote(index, textNote, this.NOTE_OCTAVE);
+          index++;
+          return note;
         })
         return this.parseService.createPlacedChord(this.CHORD_DURATION, notes)
       });

@@ -218,9 +218,8 @@ export class MidiService {
             const note: Note = this.parseService.buildNoteWithTicks(
               pitchOctave[0],
               parseInt(pitchOctave[1], 10),
-              midiNote.velocity,
-              midiNote.durationTicks);
-            const duration: Duration = midiNote.time; // TODO How to retrieve the note time and store it in the chord ?
+              midiNote.velocity);
+            const duration: Duration = midiNote.time; // TODO midiNote.durationTicks How to retrieve the note time and store it in the chord ?
             const placedChord: PlacedChord = this.parseService.placeEmptyChord(duration);
             placedChord.addNote(note);
             placedChords.push(placedChord);

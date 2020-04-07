@@ -165,7 +165,7 @@ export class SheetService {
                     strokeStyle: VEXFLOW_NOTE_COLOR
                   });
 
-                  staveNote.addAnnotation(0, this.renderAnnotation(placedChord.renderAbc()));
+                  staveNote.addAnnotation(0, this.renderAnnotation(placedChord.renderFirstNote()));
 
                   // Store the stave note for later access
                   placedChord.staveNote = staveNote;
