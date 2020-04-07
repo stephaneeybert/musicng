@@ -115,7 +115,7 @@ export class GeneratorService {
     while (nbAddedChord < this.NB_CHORDS) {
       const chord: Array<string> = new Array();
       for (let noteIndex = 0; noteIndex < this.CHORD_WIDTH; noteIndex++) {
-        const chromaNoteIndex = chordIndex % (this.CHROMAS.length + 1);
+        const chromaNoteIndex = chordIndex % (this.CHROMAS.length);
         chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);
       }
       // Consider a chord only if it is similar to its previous one
