@@ -30,6 +30,8 @@ export class SoundtrackDialogComponent implements OnInit {
       copyright: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.copyright : ''),
       lyrics: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.lyrics : ''),
     });
+    // Have the form fields error messages shown on keystroke
+    this.form.markAllAsTouched();
   }
 
   public hasError(controlName: string, errorName: string): boolean {
