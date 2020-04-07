@@ -29,7 +29,7 @@ export class GeneratorService {
   CHORD_DURATION = '8'; // TODO What duration to use ?
   NOTE_OCTAVE: number = 4; // TODO What octave to use ?
 
-  public generateSoundtrack() {
+  public generateSoundtrack(): Soundtrack {
     const generatedChords: Array<PlacedChord> = this.generateChords()
       .map((chord: Array<string>) => {
         let index: number = 0;
@@ -56,7 +56,9 @@ export class GeneratorService {
         }
         measure.placedChords!.push(placedChord);
       });
+
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrackFromMeasures(this.assignNewName(), measures);
+    return soundtrack;
   }
 
   private assignNewName(): string {
