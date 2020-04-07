@@ -43,10 +43,10 @@
         "hint": "The soundtrack name",
         "error": {
           "required": "The name is required",
-          "minlength": "The name requires more characters",
-          "maxlength": "The name requires less characters",
-          "invalidPattern": "The name accepts only letters and numbers",
-          "nameIsAlreadyUsed": "The name is already used by another soundtrack."
+          "minlength": "The name is too short",
+          "maxlength": "The name is too long",
+          "invalidPattern": "No special characters",
+          "nameIsAlreadyUsed": "This name is already used"
         }
       },
       "copyright": "Copyright:",
