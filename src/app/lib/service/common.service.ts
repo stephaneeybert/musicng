@@ -12,7 +12,7 @@ export class CommonService {
   }
 
   public getRandomIntegerBetween(min: number, max: number): number {
-    return Math.floor(Math.random() * max) + min);
+    return Math.floor(Math.random() * max) + min;
   }
 
   public getRandomString(length: number): string {
