@@ -101,6 +101,7 @@ export class GeneratorService {
     const chords: Array<Array<string>> = new Array();
     // Create shifted chromas, each starting some notes down the previous chroma
     // The number of shifted chromas is the width of the chord
+    //  Do   Re   Mi   Fa   Sol  La   Si
     // 'C', 'D', 'E', 'F', 'G', 'A', 'B'
     // 'A', 'B', 'C', 'D', 'E', 'F', 'G'
     // 'F', 'G', 'A', 'B', 'C', 'D', 'E'
