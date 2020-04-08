@@ -21,7 +21,7 @@ export class GeneratorService {
   ) { }
 
   NB_CHORDS: number = 50;
-  CHROMAS: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+  CHROMAS: Array<string> = ['G', 'A', 'B', 'C', 'D', 'E', 'F'];
   CHROMA_SHIFT_TIMES: number = 2;
   CHORD_WIDTH: number = 3;
   CHORDS_PER_MEASURE: number = 4;
