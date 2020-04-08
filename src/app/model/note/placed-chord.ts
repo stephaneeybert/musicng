@@ -41,6 +41,15 @@ export class PlacedChord {
     return abc;
   }
 
+  public renderLastNote(): string {
+    let abc: string = '';
+    if (this.notes.length > 0) {
+      const sortedNotes: Array<Note> = this.notes.sort((a, b) => b.index - a.index);
+      abc = sortedNotes[0].renderAbc();
+    }
+    return abc;
+  }
+
   public renderAbc(): string {
     let abc: string = '';
     const sortedNotes: Array<Note> = this.notes.sort((a, b) => a.index - b.index);
