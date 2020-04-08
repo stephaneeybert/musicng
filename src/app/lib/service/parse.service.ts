@@ -24,7 +24,7 @@ const NOTE_END_OF_TRACK_OCTAVE: number = 9;
 const NOTE_END_OF_TRACK_DURATION: string = '4';
 
 const DEFAULT_TEMPO_BPM_VALUE: string = '128';
-const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 2;
+const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 2; // TODO Change to 4
 const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 
 @Injectable({
