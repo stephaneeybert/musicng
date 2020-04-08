@@ -65,22 +65,22 @@ export class GeneratorService {
     return this.translateService.instant('soundtracks.assignedName') + '_' + this.commonService.getRandomString(4);
   }
 
-  private shiftOnceRight(chromas: Array<string>): Array<string> {
+  private createArrayShiftOnceRight(items: Array<string>): Array<string> {
     // Make a deep copy
-    let shiftedChromas: Array<string> = new Array();
-    chromas.map((chroma: string) => {
-      shiftedChromas.push(chroma);
+    let shiftedItems: Array<string> = new Array();
+    items.map((chroma: string) => {
+      shiftedItems.push(chroma);
     })
 
     // Shift the copy and not the original
-    const item: string |undefined = shiftedChromas.pop();
-    shiftedChromas.unshift(item!);
-    return shiftedChromas;
+    const item: string |undefined = shiftedItems.pop();
+    shiftedItems.unshift(item!);
+    return shiftedItems;
   }
 
-  private shiftTimesRight(chromas: Array<string>): Array<string> {
+  private createShiftedChromas(chromas: Array<string>): Array<string> {
     for (var i = 0; i < this.CHROMA_SHIFT_TIMES; i++) {
-      chromas = this.shiftOnceRight(chromas);
+      chromas = this.createArrayShiftOnceRight(chromas);
     }
     return chromas;
   }
@@ -96,6 +96,10 @@ export class GeneratorService {
     return (nbSameNotes >= this.SIMILAR_NOTE_MIN);
   }
 
+  private createShiftedChord(chord: Array<string>): Array<string> {
+    return this.createArrayShiftOnceRight(chord);
+  }
+
   private generateChords(): Array<Array<string>> {
     const shiftedChromas: Array<Array<string>> = new Array();
     const chords: Array<Array<string>> = new Array();
@@ -109,13 +113,15 @@ export class GeneratorService {
     // Build the shifted chromas
     shiftedChromas[0] = this.CHROMAS;
     for (let index = 1; index < this.CHORD_WIDTH; index++) {
-      shiftedChromas[index] = this.shiftTimesRight(shiftedChromas[index - 1]);
+      shiftedChromas[index] = this.createShiftedChromas(shiftedChromas[index - 1]);
     }
 
     let previousChord: Array<string> = new Array();
     let nbAddedChord: number = 0;
     while (nbAddedChord < this.NB_CHORDS) {
       const chord: Array<string> = new Array();
+
+      // Randomly pick a chord
       for (let noteIndex = 0; noteIndex < this.CHORD_WIDTH; noteIndex++) {
         const chromaNoteIndex = this.commonService.getRandomIntegerBetween(0, this.CHROMAS.length - 1);
         chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);
@@ -124,8 +130,12 @@ export class GeneratorService {
       if (chords.length == 0 || this.isSimilarToPrevious(previousChord, chord)) {
         chords.push(chord);
         previousChord = chord;
-        nbAddedChord++;
+      } else {
+        // Create a chord from a variation on the previous one
+        const slidedChord: Array<string> = this.createShiftedChord(previousChord);
+        chords.push(chord);
       }
+      nbAddedChord++;
     }
     return chords;
   }
