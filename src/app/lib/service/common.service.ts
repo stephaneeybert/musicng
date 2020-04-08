@@ -11,6 +11,10 @@ export class CommonService {
     return name ? name.replace(/\s/g, '') : '';
   }
 
+  public getRandomIntegerBetween(min: number, max: number): number {
+    return Math.floor(Math.random() * max) + min);
+  }
+
   public getRandomString(length: number): string {
     return Math.random().toString(36).substring(length);
   }

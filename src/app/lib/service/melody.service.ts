@@ -5,6 +5,7 @@ import { Measure } from '../../model/measure/measure';
 import { ParseService } from './parse.service';
 import { SoundtrackService } from '../../views/soundtrack/soundtrack.service';
 import { Soundtrack } from '@app/model/soundtrack';
+import { CommonService } from './common.service';
 
 const MIDI_NOTE_MIN = 0;
 const MIDI_NOTE_MAX = 128;
@@ -17,6 +18,7 @@ export class MelodyService {
 
   constructor(
     private soundtrackService: SoundtrackService,
+    private commonService: CommonService,
     private parseService: ParseService,
   ) { }
 
@@ -39,7 +41,7 @@ export class MelodyService {
   public getRandomMidiNotes$(): Observable<number> {
     return interval(MIDI_NOTE_DURATION)
       .pipe(
-        map(data => Math.floor(Math.random() * MIDI_NOTE_MAX) + MIDI_NOTE_MIN)
+        map(data => this.commonService.getRandomIntegerBetween(MIDI_NOTE_MIN, MIDI_NOTE_MAX)
       );
   }
 
