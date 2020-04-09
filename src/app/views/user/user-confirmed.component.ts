@@ -59,8 +59,7 @@ export class UserConfirmedComponent implements OnChanges {
     this.confirmed = confirmedEmail;
   }
 
-  // Assert the user is defined,
-  // that is, the required input binding was actually provided by the calling context
+  // Assert the equired input binding was actually provided by the calling context
   private assertInputsProvided(): void {
     if (!this.userId) {
       throw (new Error("The required input [userId] was not provided"));
