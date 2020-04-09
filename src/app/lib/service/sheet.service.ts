@@ -167,13 +167,9 @@ export class SheetService {
                   });
 
                   const noteName: string = this.renderChordNoteInLatin(placedChord);
-                  console.log('previous: ' + previousNoteName + ' note: ' + noteName + ' ' + placedChord.renderAbc());
                   if (noteName != previousNoteName) {
                     staveNote.addAnnotation(0, this.renderAnnotation(noteName));
-                    console.log('Annotating..');
                     previousNoteName = noteName;
-                  } else {
-                    console.log('Skipping note: ' + noteName);
                   }
 
                   // Store the stave note for later access
