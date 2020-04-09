@@ -41,6 +41,9 @@ export class GeneratorService {
         return this.parseService.createPlacedChord(this.CHORD_DURATION, notes)
       });
 
+    // Have a few end of track notes as a note may not be played by an unreliable synth
+    this.parseService.addEndOfTrackNote(generatedChords);
+    this.parseService.addEndOfTrackNote(generatedChords);
     this.parseService.addEndOfTrackNote(generatedChords);
 
     const measures: Array<Measure> = new Array<Measure>();

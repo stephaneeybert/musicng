@@ -132,57 +132,59 @@ export class SheetService {
         if (track.hasMeasures()) {
           for (const measure of track.measures) {
             if (measure.placedChords) {
-              const stave = new vexflow.Flow.Stave(0, staveIndex * (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN), sheetWidth);
-              staveIndex++;
-              stave.setContext(context);
-              stave.addClef(Clef.TREBLE);
-              stave.addTimeSignature(this.renderTimeSignature(measure));
-              stave.draw();
+              if (!this.parseService.isOnlyEndOfTrackChords(measure.placedChords)) {
+                const stave = new vexflow.Flow.Stave(0, staveIndex * (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN), sheetWidth);
+                staveIndex++;
+                stave.setContext(context);
+                stave.addClef(Clef.TREBLE);
+                stave.addTimeSignature(this.renderTimeSignature(measure));
+                stave.draw();
 
-              const staveNotes = new Array<vexflow.Flow.StaveNote>();
+                const staveNotes = new Array<vexflow.Flow.StaveNote>();
 
-              const voice: vexflow.Flow.Voice = new vexflow.Flow.Voice({
-                num_beats: measure.timeSignature.numerator,
-                beat_value: measure.timeSignature.denominator,
-                resolution: vexflow.Flow.RESOLUTION
-              });
-              voice.setStrict(false);
-              voice.setStave(stave);
-              for (const placedChord of measure.placedChords) {
-                if (!this.parseService.isEndOfTrackPlacedChord(placedChord)) {
-                  const chordDuration: string = this.renderDuration(placedChord);
-                  const staveNote: vexflow.Flow.StaveNote = new vexflow.Flow.StaveNote({
-                    keys: this.renderNotesSortedByFrequency(placedChord.notes),
-                    duration: chordDuration,
-                    auto_stem: true,
-                    clef: Clef.TREBLE
-                  });
+                const voice: vexflow.Flow.Voice = new vexflow.Flow.Voice({
+                  num_beats: measure.timeSignature.numerator,
+                  beat_value: measure.timeSignature.denominator,
+                  resolution: vexflow.Flow.RESOLUTION
+                });
+                voice.setStrict(false);
+                voice.setStave(stave);
+                for (const placedChord of measure.placedChords) {
+                  if (!this.parseService.isEndOfTrackPlacedChord(placedChord)) {
+                    const chordDuration: string = this.renderDuration(placedChord);
+                    const staveNote: vexflow.Flow.StaveNote = new vexflow.Flow.StaveNote({
+                      keys: this.renderNotesSortedByFrequency(placedChord.notes),
+                      duration: chordDuration,
+                      auto_stem: true,
+                      clef: Clef.TREBLE
+                    });
 
-                  this.addAccidentalOnNotes(placedChord);
-                  this.addDotOnNotes(placedChord);
+                    this.addAccidentalOnNotes(placedChord);
+                    this.addDotOnNotes(placedChord);
 
-                  staveNote.setStyle({
-                    fillStyle: VEXFLOW_NOTE_COLOR,
-                    strokeStyle: VEXFLOW_NOTE_COLOR
-                  });
+                    staveNote.setStyle({
+                      fillStyle: VEXFLOW_NOTE_COLOR,
+                      strokeStyle: VEXFLOW_NOTE_COLOR
+                    });
 
-                  const noteName: string = this.renderChordNoteInLatin(placedChord);
-                  if (noteName != previousNoteName) {
-                    staveNote.addAnnotation(0, this.renderAnnotation(noteName));
-                    previousNoteName = noteName;
+                    const noteName: string = this.renderChordNoteInLatin(placedChord);
+                    if (noteName != previousNoteName) {
+                      staveNote.addAnnotation(0, this.renderAnnotation(noteName));
+                      previousNoteName = noteName;
+                    }
+
+                    // Store the stave note for later access
+                    placedChord.staveNote = staveNote;
+
+                    staveNotes.push(staveNote);
                   }
-
-                  // Store the stave note for later access
-                  placedChord.staveNote = staveNote;
-
-                  staveNotes.push(staveNote);
                 }
+                voice.addTickables(staveNotes);
+                formatter.joinVoices([voice]);
+                formatter.formatToStave([voice], stave);
+                voice.draw(context);
+                voices.push(voice);
               }
-              voice.addTickables(staveNotes);
-              formatter.joinVoices([voice]);
-              formatter.formatToStave([voice], stave);
-              voice.draw(context);
-              voices.push(voice);
             } else {
               throw new Error('The measure placed chords array has not been instantiated.');
             }

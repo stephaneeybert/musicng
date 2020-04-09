@@ -229,8 +229,27 @@ export class ParseService {
     return abcNote.includes(NOTE_END_OF_TRACK) && abcNote.includes(String(NOTE_END_OF_TRACK_OCTAVE));
   }
 
+  public isOnlyEndOfTrackChords(placedChords: Array<PlacedChord>): boolean {
+    let onlyEndOfTrackNotes: boolean = true;
+    for (const placedChord of placedChords) {
+      for (const note of placedChord.notes) {
+        if (!this.isEndOfTrackNote(note)) {
+          onlyEndOfTrackNotes = false;
+          break;
+        }
+      }
+      if (!onlyEndOfTrackNotes) {
+        break;
+      }
+    }
+    return onlyEndOfTrackNotes;
+  }
+
   public addEndOfTrackNote(chords: Array<PlacedChord>): void {
     if (chords.length > 0) {
+      // Have a few end of track notes as a note may not be played by an unreliable synth
+      chords[chords.length] = this.createLastOfTrackPlacedChord();
+      chords[chords.length] = this.createLastOfTrackPlacedChord();
       chords[chords.length] = this.createLastOfTrackPlacedChord();
     }
   }
