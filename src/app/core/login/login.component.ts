@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TokenService } from '@app/core/auth/token.service';
 import { LoginService } from '@app/core/service/login.service';
 import { LoginDialogComponent } from './login-dialog.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +23,8 @@ export class LoginComponent implements OnInit {
 
   loginDialog!: MatDialogRef<LoginDialogComponent>;
 
+  private dialogSubscription?: Subscription;
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -35,6 +38,12 @@ export class LoginComponent implements OnInit {
       username: [this.username, Validators.required],
       password: [this.password, Validators.required]
     });
+  }
+
+  ngOnDestroy() {
+    if (this.dialogSubscription) {
+      this.dialogSubscription.unsubscribe();
+    }
   }
 
   isFieldInvalid(field: string): boolean {
@@ -65,7 +74,7 @@ export class LoginComponent implements OnInit {
     };
     this.loginDialog = this.dialog.open(LoginDialogComponent, dialogConfig);
 
-    this.loginDialog.afterClosed().subscribe(name => {
+    this.dialogSubscription = this.loginDialog.afterClosed().subscribe(name => {
       console.log(name);
       this.username = name;
     });

@@ -30,8 +30,8 @@ export class SheetComponent implements OnInit {
     this.device$.next(device);
   };
 
-  private soundtrackSubscription!: Subscription;
-  private deviceSubscription!: Subscription;
+  private soundtrackSubscription?: Subscription;
+  private deviceSubscription?: Subscription;
 
   id!: string;
 

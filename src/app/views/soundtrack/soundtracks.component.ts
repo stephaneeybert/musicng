@@ -21,13 +21,15 @@ export class SoundtracksComponent implements OnInit {
 
   soundtracks$?: Observable<Array<Soundtrack>>;
   soundtracks!: Array<Soundtrack>;
-  private soundtracksSubscription!: Subscription;
+  private soundtracksSubscription?: Subscription;
 
   synthStarted$?: Observable<boolean>;
 
   dialogRef!: MatDialogRef<SoundtrackDialogComponent>;
   @Output()
   soundtrackEditedEvent: EventEmitter<Soundtrack> = new EventEmitter<Soundtrack>();
+
+  private dialogSubscription?: Subscription;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -53,6 +55,9 @@ export class SoundtracksComponent implements OnInit {
   ngOnDestroy() {
     if (this.soundtracksSubscription != null) {
       this.soundtracksSubscription.unsubscribe();
+    }
+    if (this.dialogSubscription) {
+      this.dialogSubscription.unsubscribe();
     }
   }
 
@@ -111,7 +116,7 @@ export class SoundtracksComponent implements OnInit {
 
     this.dialogRef = this.matDialog.open<SoundtrackDialogComponent>(SoundtrackDialogComponent, dialogConfig);
 
-    this.dialogRef
+    this.dialogSubscription = this.dialogRef
       .afterClosed()
       .subscribe((soundtrackEdition: SoundtrackEdition) => {
         if (soundtrackEdition) {

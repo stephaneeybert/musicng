@@ -15,7 +15,7 @@ export class DebounceDirective implements OnInit, OnDestroy {
   @Output() public appOnDebounce: EventEmitter<string>;
 
   private isFirstChange = true;
-  private subscription!: Subscription;
+  private subscription?: Subscription;
   public model!: NgControl;
 
   constructor(model: NgControl) {

@@ -20,10 +20,10 @@ export class DevicesComponent implements OnInit, OnDestroy {
     private midiService: MidiService
   ) { }
 
-  private devicesSubscription!: Subscription;
-  private logDeviceHotPlugSubscription!: Subscription;
-  private midiAccessSubscription!: Subscription;
-  private midiInputSubscription!: Subscription;
+  private devicesSubscription?: Subscription;
+  private logDeviceHotPlugSubscription?: Subscription;
+  private midiAccessSubscription?: Subscription;
+  private midiInputSubscription?: Subscription;
 
   ngOnInit() {
     this.devices$ = this.deviceStore.getDevices$();

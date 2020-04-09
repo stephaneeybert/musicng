@@ -33,8 +33,8 @@ export class KeyboardComponent implements AfterViewInit {
     this.device$.next(device);
   };
 
-  private soundtrackSubscription!: Subscription;
-  private deviceSubscription!: Subscription;
+  private soundtrackSubscription?: Subscription;
+  private deviceSubscription?: Subscription;
 
   id!: string;
 

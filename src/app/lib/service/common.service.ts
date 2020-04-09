@@ -7,7 +7,7 @@ export class CommonService {
 
   constructor() { }
 
-  public normalizeName(name?: string): string {
+  public normalizeName(name: string): string {
     return name ? name.replace(/\s/g, '') : '';
   }
 

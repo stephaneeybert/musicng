@@ -5,6 +5,7 @@ import { User } from './user';
 import { UserService } from './user.service';
 import { UserDialogComponent } from './user-dialog.component';
 import { UtilsService } from '@app/core/service/utils.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-edit',
@@ -18,11 +19,22 @@ export class UserEditComponent implements OnChanges {
 
   userDialogRef!: MatDialogRef<UserDialogComponent>;
 
+  private dialogSubscription?: Subscription;
+
   constructor(
     private matDialog: MatDialog,
     private utilsService: UtilsService,
     private userService: UserService
   ) { }
+
+  @Input()
+  set label(label: string) {
+    this._label = (label && label.trim()) || '<no label set>';
+  }
+
+  get label(): string {
+    return this._label;
+  }
 
   // This method is called after the input bindings attempt
   // and only if there was actual input provided to the bindings
@@ -43,13 +55,10 @@ export class UserEditComponent implements OnChanges {
     console.log(loggedOutput.join(', '));
   }
 
-  @Input()
-  set label(label: string) {
-    this._label = (label && label.trim()) || '<no label set>';
-  }
-
-  get label(): string {
-    return this._label;
+  ngOnDestroy() {
+    if (this.dialogSubscription) {
+      this.dialogSubscription.unsubscribe();
+    }
   }
 
   openUserDialog() {
@@ -60,7 +69,7 @@ export class UserEditComponent implements OnChanges {
       }
     });
 
-    this.userDialogRef
+    this.dialogSubscription = this.userDialogRef
       .afterClosed()
       .subscribe(user => {
         // TODO validate the edited user
