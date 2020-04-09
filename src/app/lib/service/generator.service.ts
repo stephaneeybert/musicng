@@ -41,7 +41,7 @@ export class GeneratorService {
         return this.parseService.createPlacedChord(this.CHORD_DURATION, notes)
       });
 
-    this.parseService.addLastOfTrackNote(generatedChords);
+    this.parseService.addEndOfTrackNote(generatedChords);
 
     const measures: Array<Measure> = new Array<Measure>();
     let measure: Measure = this.parseService.createMeasureWithDefaultTempo();

@@ -229,7 +229,7 @@ export class ParseService {
     return abcNote.includes(NOTE_END_OF_TRACK) && abcNote.includes(String(NOTE_END_OF_TRACK_OCTAVE));
   }
 
-  public addLastOfTrackNote(chords: Array<PlacedChord>): void {
+  public addEndOfTrackNote(chords: Array<PlacedChord>): void {
     if (chords.length > 0) {
       chords[chords.length] = this.createLastOfTrackPlacedChord();
     }
