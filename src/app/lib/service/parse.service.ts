@@ -27,6 +27,8 @@ const DEFAULT_TEMPO_BPM_VALUE: string = '128';
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 2; // TODO Change to 4
 const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 
+const CHROMAS_LATIN: Map<string, string> = new Map([ ['C', 'Do'], ['D', 'Re'], ['E', 'Mi'], ['F', 'Fa'], ['G', 'Sol'], ['A', 'La'], ['B', 'Si'] ]);
+
 @Injectable({
   providedIn: 'root'
 })
@@ -155,6 +157,14 @@ export class ParseService {
     notes.forEach((note: Note) => {
       placedChord.addNote(note);
     });
+  }
+
+  public chromaLetterToChromaLatin(chroma: string): string {
+    if (CHROMAS_LATIN.has(chroma)) {
+      return CHROMAS_LATIN.get(chroma)!;
+    } else {
+      throw new Error('No Latin chroma could be found for the chroma letter ' + chroma);
+    }
   }
 
   public createPlacedChord(chordDuration: string, notes: Array<Note>): PlacedChord {

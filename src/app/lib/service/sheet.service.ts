@@ -165,7 +165,7 @@ export class SheetService {
                     strokeStyle: VEXFLOW_NOTE_COLOR
                   });
 
-                  staveNote.addAnnotation(0, this.renderAnnotation(placedChord.renderLastNote()));
+                  staveNote.addAnnotation(0, this.renderAnnotation(this.renderChordNoteInLatin(placedChord)));
 
                   // Store the stave note for later access
                   placedChord.staveNote = staveNote;
@@ -183,6 +183,10 @@ export class SheetService {
         }
       }
     }
+  }
+
+  private renderChordNoteInLatin(placedChord: PlacedChord): string {
+    return this.parseService.chromaLetterToChromaLatin(placedChord.renderLastNoteChroma());
   }
 
   private getNoteFrequency(note: Note): number {
