@@ -11,7 +11,7 @@ import { PlacedChord } from '../../model/note/placed-chord';
 
 const SHEET_WIDTH_RATIO = 0.8;
 const VEXFLOW_STAVE_HEIGHT = 50;
-const VEXFLOW_STAVE_MARGIN = 25;
+const VEXFLOW_STAVE_MARGIN = 30;
 const VEXFLOW_OCTAVE_SEPARATOR = '/';
 const VEXFLOW_REST_NOTE = 'b/4';
 const VEXFLOW_REST_SUFFIX = 'r';
@@ -217,8 +217,8 @@ export class SheetService {
     return (
       new vexflow.Flow.Annotation(textNote))
       .setFont(VEXFLOW_FONT_TYPE, VEXFLOW_FONT_SIZE, VEXFLOW_FONT_WEIGHT)
-      .setJustification(vexflow.Flow.Annotation.Justify.LEFT)
-      .setVerticalJustification(vexflow.Flow.Annotation.VerticalJustify.TOP);
+      .setJustification(vexflow.Flow.Annotation.Justify.CENTER_STEM)
+      .setVerticalJustification(vexflow.Flow.Annotation.VerticalJustify.BOTTOM);
   }
 
   private renderNote(note: Note): string {
