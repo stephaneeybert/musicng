@@ -215,8 +215,8 @@ export class SheetService {
     return (
       new vexflow.Flow.Annotation(textNote))
       .setFont(VEXFLOW_FONT_TYPE, VEXFLOW_FONT_SIZE, VEXFLOW_FONT_WEIGHT)
-      .setJustification(vexflow.Flow.Annotation.Justify.RIGHT)
-      .setVerticalJustification(vexflow.Flow.Annotation.VerticalJustify.CENTER);
+      .setJustification(vexflow.Flow.Annotation.Justify.LEFT)
+      .setVerticalJustification(vexflow.Flow.Annotation.VerticalJustify.TOP);
   }
 
   private renderNote(note: Note): string {
