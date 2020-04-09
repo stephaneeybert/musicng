@@ -128,13 +128,13 @@ export class GeneratorService {
 
       // Randomly pick a chord
       const chromaNoteIndex = this.commonService.getRandomIntegerBetweenAndExcept(0, this.CHROMAS.length - 1, [ previousChromaChordIndex ]);
-      previousChromaChordIndex = chromaNoteIndex;
       for (let noteIndex = 0; noteIndex < this.CHORD_WIDTH; noteIndex++) {
         chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);
       }
 
       // Consider a chord only if it is similar to its previous one
       if (chords.length == 0 || this.isSimilarToPrevious(previousChord, chord)) {
+        previousChromaChordIndex = chromaNoteIndex;
         previousChord = chord;
         // Add twice the same chord
         chords.push(chord);
