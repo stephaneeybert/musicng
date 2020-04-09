@@ -23,9 +23,9 @@
                 <mat-icon (click)="openSoundtrackDialog(soundtrack)" (soundtrackEditedEvent)="refreshSoundtrack($event)" title="{{ 'soundtracks.edit' | translate }}" class="soundtrack-action">edit</mat-icon>
                 <mat-icon (click)="deleteSoundtrack(soundtrack)" title="{{ 'soundtracks.delete' | translate }}" class="soundtrack-action">delete</mat-icon>
               </mat-toolbar>
-              <midi-synth [soundtrack]="soundtrack"></midi-synth>
-              <midi-keyboard [soundtrack]="soundtrack"></midi-keyboard>
-              <midi-sheet [soundtrack]="soundtrack"></midi-sheet>
+              <app-midi-synth [soundtrack]="soundtrack"></app-midi-synth>
+              <app-midi-keyboard [soundtrack]="soundtrack"></app-midi-keyboard>
+              <app-midi-sheet [soundtrack]="soundtrack"></app-midi-sheet>
             </td>
           </tr>
         </tbody>

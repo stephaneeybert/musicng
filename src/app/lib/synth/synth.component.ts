@@ -7,7 +7,7 @@ import { DeviceStore } from '../store/device-store';
 import { Subscription, ReplaySubject, Subject } from 'rxjs';
 
 @Component({
-  selector: 'midi-synth',
+  selector: 'app-midi-synth',
   templateUrl: './synth.component.html',
   styleUrls: ['./synth.component.css']
 })

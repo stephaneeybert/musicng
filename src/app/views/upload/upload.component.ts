@@ -4,7 +4,7 @@ import { Soundtrack } from '../../model/soundtrack';
 import { SoundtrackStore } from '../../lib/store/soundtrack-store';
 
 @Component({
-  selector: 'upload',
+  selector: 'app-upload',
   templateUrl: './upload.component.html',
 })
 export class UploadComponent implements OnInit {

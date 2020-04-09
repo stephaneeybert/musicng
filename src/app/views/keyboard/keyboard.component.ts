@@ -14,7 +14,7 @@ const NAME_PREFIX_SOUNDTRACK = 'keyboard-soundtrack-';
 const NAME_PREFIX_DEVICE = 'keyboard-device-';
 
 @Component({
-  selector: 'midi-keyboard',
+  selector: 'app-midi-keyboard',
   templateUrl: './keyboard.component.html'
 })
 export class KeyboardComponent implements AfterViewInit {

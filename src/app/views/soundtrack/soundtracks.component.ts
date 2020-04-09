@@ -13,7 +13,7 @@ import { SoundtrackEdition } from './soundtrack-edition';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'soundtracks', // TODO Rename all selectors with the app- prefix
+  selector: 'app-soundtracks',
   templateUrl: './soundtracks.component.html',
   styleUrls: ['./soundtracks.component.css']
 })

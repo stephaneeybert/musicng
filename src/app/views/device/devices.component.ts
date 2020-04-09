@@ -6,7 +6,7 @@ import { MidiService } from '../../lib/service/midi.service';
 import { DeviceStore } from '../../lib/store/device-store';
 
 @Component({
-  selector: 'devices',
+  selector: 'app-devices',
   templateUrl: './devices.component.html',
 })
 export class DevicesComponent implements OnInit, OnDestroy {

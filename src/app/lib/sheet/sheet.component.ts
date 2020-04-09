@@ -10,7 +10,7 @@ const NAME_PREFIX_SOUNDTRACK = 'sheet-soundtrack-';
 const NAME_PREFIX_DEVICE = 'sheet-device-';
 
 @Component({
-  selector: 'midi-sheet',
+  selector: 'app-midi-sheet',
   templateUrl: './sheet.component.html',
   styleUrls: ['./sheet.component.css']
 })

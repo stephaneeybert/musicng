@@ -12,9 +12,9 @@
         <tr *ngFor="let device of devices">
           <td>
             {{ device.name }}
-            <midi-synth [device]="device"></midi-synth>
-            <midi-keyboard [device]="device"></midi-keyboard>
-            <midi-sheet [device]="device"></midi-sheet>
+            <app-midi-synth [device]="device"></app-midi-synth>
+            <app-midi-keyboard [device]="device"></app-midi-keyboard>
+            <app-midi-sheet [device]="device"></app-midi-sheet>
           </td>
         </tr>
       </tbody>
