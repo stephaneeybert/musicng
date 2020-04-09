@@ -15,7 +15,7 @@ export class DebounceClickDirective implements OnInit, OnDestroy {
   @Output() appOnDebounceClick = new EventEmitter();
 
   private clicks = new Subject();
-  private subscription!: Subscription;
+  private subscription?: Subscription;
 
   constructor() { }
 
@@ -26,7 +26,9 @@ export class DebounceClickDirective implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   @HostListener('click', ['$event'])

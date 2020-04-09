@@ -44,6 +44,9 @@ export class DevicesComponent implements OnInit, OnDestroy {
     if (this.midiAccessSubscription != null) {
       this.midiAccessSubscription.unsubscribe();
     }
+    if (this.midiInputSubscription) {
+      this.midiInputSubscription.unsubscribe();
+    }
   }
 
   // Updating a view model in a subscribe() block requires an explicit call to the change detection
