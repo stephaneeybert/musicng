@@ -120,6 +120,7 @@ export class SheetService {
   private vexflowRenderSoundtrack(name: string, screenWidth: number, soundtrack: Soundtrack): void {
     // The sheet width must fit within the screen
     const sheetWidth = screenWidth * SHEET_WIDTH_RATIO;
+    let previousNoteName: string = '';
 
     const context = this.renderVexflowContext(name, sheetWidth, this.vexflowHeight(soundtrack));
     const formatter = new vexflow.Flow.Formatter();
@@ -165,7 +166,15 @@ export class SheetService {
                     strokeStyle: VEXFLOW_NOTE_COLOR
                   });
 
-                  staveNote.addAnnotation(0, this.renderAnnotation(this.renderChordNoteInLatin(placedChord)));
+                  const noteName: string = this.renderChordNoteInLatin(placedChord);
+                  console.log('previous: ' + previousNoteName + ' note: ' + noteName + ' ' + placedChord.renderAbc());
+                  if (noteName != previousNoteName) {
+                    staveNote.addAnnotation(0, this.renderAnnotation(noteName));
+                    console.log('Annotating..');
+                    previousNoteName = noteName;
+                  } else {
+                    console.log('Skipping note: ' + noteName);
+                  }
 
                   // Store the stave note for later access
                   placedChord.staveNote = staveNote;
