@@ -132,8 +132,8 @@ export class GeneratorService {
         previousChord = chord;
       } else {
         // Create a chord from a variation on the previous one
-        const slidedChord: Array<string> = this.createShiftedChord(previousChord);
-        chords.push(chord);
+        // const slidedChord: Array<string> = this.createShiftedChord(previousChord);
+        // chords.push(chord);
       }
       nbAddedChord++;
     }
