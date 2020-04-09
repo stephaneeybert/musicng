@@ -132,8 +132,11 @@ export class GeneratorService {
       }
       // Consider a chord only if it is similar to its previous one
       if (chords.length == 0 || this.isSimilarToPrevious(previousChord, chord)) {
-        chords.push(chord);
         previousChord = chord;
+        // Add twice the same chord
+        chords.push(chord);
+        nbAddedChord++;
+        chords.push(chord);
         nbAddedChord++;
       } else {
         // Create a chord from a variation on the previous one
