@@ -139,8 +139,8 @@ export class SynthService {
         // Note that a non zero init time is needed to have the first note key press displayed
         let relativeTime: number = 0.01;
 
-        if (measure.hasChords()) {
-          measure.placedChords!.forEach((placedChord: PlacedChord) => {
+        if (measure.placedChords) {
+          measure.placedChords.forEach((placedChord: PlacedChord) => {
             const duration: string = placedChord.renderDuration();
             const durationInSeconds = Tone.Time(duration).toSeconds();
             placedChord.notes.forEach((note: Note) => {
@@ -171,6 +171,8 @@ export class SynthService {
             });
             relativeTime += durationInSeconds;
           });
+        } else {
+          throw new Error('The measure placed chords array has not been instantiated.');
         }
       }, measureCounter + TempoUnit.MEASURE);
       measureCounter++;

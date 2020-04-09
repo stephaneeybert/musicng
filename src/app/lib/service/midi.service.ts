@@ -236,7 +236,11 @@ export class MidiService {
             const midiControl: any = midiTrack.controlChanges[key];
             const control = new Control(midiControl.number, midiControl.time, midiControl.ticks, midiControl.value);
             console.log(control);
-            track.controls!.push(control);
+            if (track.controls) {
+              track.controls.push(control);
+            } else {
+              throw new Error('The track controls array has not been instantiated.');
+            }
           });
         }
         if (midiTrack.instrument != null) {
@@ -366,7 +370,11 @@ export class MidiService {
   }
 
   private placeEventOnNewMeasure(noteOnTime: TValue, pulsesPerMeasure: number, measureCounter: number): boolean {
-    noteOnTime = parseInt(noteOnTime!.toString(), 10);
+    if (noteOnTime) {
+      noteOnTime = parseInt(noteOnTime.toString(), 10);
+    } else {
+      throw new Error('The noteOnTime has not been instantiated.');
+    }
     return noteOnTime >= (pulsesPerMeasure * measureCounter);
   }
 
@@ -450,7 +458,11 @@ export class MidiService {
   }
 
   private delta(t2: TValue, t1: TValue): number {
-    return parseInt(t2!.toString(), 10) - parseInt(t1!.toString(), 10);
+    if (t2 && t1) {
+      return parseInt(t2.toString(), 10) - parseInt(t1.toString(), 10);
+    } else {
+      throw new Error('The delta times t1 or t2 have not been instantiated.');
+    }
   }
 
   // Add a time property to all events of all tracks

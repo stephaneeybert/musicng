@@ -49,12 +49,16 @@ export class GeneratorService {
     measures.push(measure);
     generatedChords
       .map((placedChord: PlacedChord) => {
-        if (measure.placedChords!.length >= this.CHORDS_PER_MEASURE) {
-          measure = this.parseService.createMeasureWithDefaultTempo();
-          measure.placedChords = new Array<PlacedChord>();
-          measures.push(measure);
+        if (measure.placedChords) {
+          if (measure.placedChords.length >= this.CHORDS_PER_MEASURE) {
+            measure = this.parseService.createMeasureWithDefaultTempo();
+            measure.placedChords = new Array<PlacedChord>();
+            measures.push(measure);
+          }
+          measure.placedChords.push(placedChord);
+        } else {
+          throw new Error('The measure placed chords array has not been instantiated.');
         }
-        measure.placedChords!.push(placedChord);
       });
 
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrackFromMeasures(this.assignNewName(), measures);

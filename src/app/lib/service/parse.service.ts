@@ -140,7 +140,11 @@ export class ParseService {
                   const duration: string = placedChordObj.cursor.noteDuration.subdivision.left + placedChordObj.cursor.noteDuration.unit;
                   const placedChord: PlacedChord = this.createPlacedChord(duration, notes);
                   placedChord.dottedAll = placedChordObj.dottedAll;
-                  measure.placedChords!.push(placedChord);
+                  if (measure.placedChords) {
+                    measure.placedChords.push(placedChord);
+                  } else {
+                    throw new Error('The measure placed chords array has not yet been instantiated.');
+                  }
                 }
               });
               track.measures.push(measure);
@@ -161,7 +165,12 @@ export class ParseService {
 
   public chromaLetterToChromaLatin(chroma: string): string {
     if (CHROMAS_LATIN.has(chroma)) {
-      return CHROMAS_LATIN.get(chroma)!;
+      const latinChroma: string | undefined = CHROMAS_LATIN.get(chroma);
+      if (latinChroma) {
+        return latinChroma;
+      } else {
+        throw new Error('The Latin chromas array has not been instantiated.');
+      }
     } else {
       throw new Error('No Latin chroma could be found for the chroma letter ' + chroma);
     }

@@ -130,7 +130,7 @@ export class SheetService {
       for (const track of soundtrack.tracks) {
         if (track.hasMeasures()) {
           for (const measure of track.measures) {
-            if (measure.hasChords()) {
+            if (measure.placedChords) {
               const stave = new vexflow.Flow.Stave(0, staveIndex * (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN), sheetWidth);
               staveIndex++;
               stave.setContext(context);
@@ -147,7 +147,7 @@ export class SheetService {
               });
               voice.setStrict(false);
               voice.setStave(stave);
-              for (const placedChord of measure.placedChords!) {
+              for (const placedChord of measure.placedChords) {
                 if (!this.parseService.isEndOfTrackPlacedChord(placedChord)) {
                   const chordDuration: string = this.renderDuration(placedChord);
                   const staveNote: vexflow.Flow.StaveNote = new vexflow.Flow.StaveNote({
@@ -178,6 +178,8 @@ export class SheetService {
               formatter.formatToStave([voice], stave);
               voice.draw(context);
               voices.push(voice);
+            } else {
+              throw new Error('The measure placed chords array has not been instantiated.');
             }
           }
         }

@@ -15,11 +15,19 @@ export abstract class Store<T> {
   }
 
   public getState(): T {
-    return this._state$!.getValue();
+    if (this._state$) {
+      return this._state$.getValue();
+    } else {
+      throw new Error('The data store state was not yet defined and its value could not be obtained.');
+    }
   }
 
   public setState(nextState: T) {
-    this._state$!.next(nextState);
+    if (this._state$) {
+      this._state$.next(nextState);
+    } else {
+      throw new Error('The data store state was not yet defined and its value could not be set.');
+    }
   }
 
 }
