@@ -11,6 +11,14 @@ export class CommonService {
     return name ? name.replace(/\s/g, '') : '';
   }
 
+  public getRandomIntegerBetweenAndExcept(min: number, max: number, except: Array<number>): number {
+    let random: number;
+    do {
+      random = this.getRandomIntegerBetween(min, max);
+    } while (except.includes(random));
+    return random;
+  }
+
   public getRandomIntegerBetween(min: number, max: number): number {
     return Math.floor(Math.random() * max) + min;
   }

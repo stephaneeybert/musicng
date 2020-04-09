@@ -121,15 +121,18 @@ export class GeneratorService {
     }
 
     let previousChord: Array<string> = new Array();
+    let previousChromaChordIndex: number = 0;
     let nbAddedChord: number = 0;
     while (nbAddedChord < this.NB_CHORDS) {
       const chord: Array<string> = new Array();
 
       // Randomly pick a chord
+      const chromaNoteIndex = this.commonService.getRandomIntegerBetweenAndExcept(0, this.CHROMAS.length - 1, [ previousChromaChordIndex ]);
+      previousChromaChordIndex = chromaNoteIndex;
       for (let noteIndex = 0; noteIndex < this.CHORD_WIDTH; noteIndex++) {
-        const chromaNoteIndex = this.commonService.getRandomIntegerBetween(0, this.CHROMAS.length - 1);
         chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);
       }
+
       // Consider a chord only if it is similar to its previous one
       if (chords.length == 0 || this.isSimilarToPrevious(previousChord, chord)) {
         previousChord = chord;
