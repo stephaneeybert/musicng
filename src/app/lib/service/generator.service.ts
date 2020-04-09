@@ -134,12 +134,13 @@ export class GeneratorService {
       if (chords.length == 0 || this.isSimilarToPrevious(previousChord, chord)) {
         chords.push(chord);
         previousChord = chord;
+        nbAddedChord++;
       } else {
         // Create a chord from a variation on the previous one
         // const slidedChord: Array<string> = this.createShiftedChord(previousChord);
         // chords.push(chord);
+        // nbAddedChord++;
       }
-      nbAddedChord++;
     }
     return chords;
   }
