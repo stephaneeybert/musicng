@@ -61,7 +61,6 @@ export class ParseService {
 
   private parseTextMeasure(textMeasure: string): Array<PlacedChord> {
     return textMeasure.split(CHORD_SEPARATOR)
-      .filter(textChord => !!textChord)
       .map((textChord: string) => {
         return this.parseTextChord(textChord);
       });
@@ -89,7 +88,6 @@ export class ParseService {
   private parseTextNotes(textNotes: string): Array<Note> {
     let index: number = 0;
     return textNotes.split(NOTE_SEPARATOR)
-      .filter(textNote => !!textNote)
       .map((textNote: string) => {
         return this.parseTextNote(index, textNote);
         index++;
