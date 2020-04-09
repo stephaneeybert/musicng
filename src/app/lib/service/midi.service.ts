@@ -123,7 +123,7 @@ export class MidiService {
     const subscription = this.getInputDevices$()
     .pipe(
       filter((midiInput: WebMidi.MIDIInput) => {
-        return this.commonService.normalizeName(midiInput.name) === this.commonService.normalizeName(device.id);
+        return (midiInput.name != undefined) && this.commonService.normalizeName(midiInput.name) === this.commonService.normalizeName(device.id);
       }),
       switchMap((midiInput: WebMidi.MIDIInput) => this.midiMessageAsObservable(midiInput)),
     ).subscribe((message: WebMidi.MIDIMessageEvent) => {
