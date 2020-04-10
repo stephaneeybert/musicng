@@ -73,6 +73,19 @@ export class GeneratorService {
     return this.translateService.instant('soundtracks.assignedName') + '_' + this.commonService.getRandomString(4);
   }
 
+  private createArrayShiftOnceLeft(items: Array<string>): Array<string> {
+    // Make a deep copy
+    let shiftedItems: Array<string> = new Array();
+    items.map((chroma: string) => {
+      shiftedItems.push(chroma);
+    })
+
+    // Shift the copy and not the original
+    const item: string |undefined = shiftedItems.shift();
+    shiftedItems.push(item!);
+    return shiftedItems;
+  }
+
   private createArrayShiftOnceRight(items: Array<string>): Array<string> {
     // Make a deep copy
     let shiftedItems: Array<string> = new Array();
@@ -88,7 +101,7 @@ export class GeneratorService {
 
   private createShiftedChromas(chromas: Array<string>): Array<string> {
     for (var i = 0; i < this.CHROMA_SHIFT_TIMES; i++) {
-      chromas = this.createArrayShiftOnceRight(chromas);
+      chromas = this.createArrayShiftOnceLeft(chromas);
     }
     return chromas;
   }
