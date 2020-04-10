@@ -32,10 +32,10 @@ export class PlacedChord {
     }
   }
 
-  public renderLastNoteChroma(): string {
+  public renderFirstNoteChroma(): string {
     let abc: string = '';
     if (this.notes.length > 0) {
-      const sortedNotes: Array<Note> = this.notes.sort((a, b) => b.index - a.index);
+      const sortedNotes: Array<Note> = this.notes.sort((a, b) => a.index - b.index);
       abc = sortedNotes[0].renderChroma();
     }
     return abc;

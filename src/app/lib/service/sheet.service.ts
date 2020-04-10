@@ -124,7 +124,6 @@ export class SheetService {
 
     const context = this.renderVexflowContext(name, sheetWidth, this.vexflowHeight(soundtrack));
     const formatter = new vexflow.Flow.Formatter();
-
     const voices: Array<vexflow.Flow.Voice> = new Array<vexflow.Flow.Voice>();
     if (soundtrack.hasTracks()) {
       let staveIndex: number = 0;
@@ -195,7 +194,7 @@ export class SheetService {
   }
 
   private renderChordNoteInLatin(placedChord: PlacedChord): string {
-    return this.notationService.chromaLetterToChromaLatin(placedChord.renderLastNoteChroma());
+    return this.notationService.chromaLetterToChromaLatin(placedChord.renderFirstNoteChroma());
   }
 
   private getNoteFrequency(note: Note): number {
