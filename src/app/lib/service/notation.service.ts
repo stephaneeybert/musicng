@@ -32,7 +32,7 @@ const CHROMAS_SYLLABIC: Map<string, string> = new Map([ ['C', 'Do'], ['D', 'Re.m
 @Injectable({
   providedIn: 'root'
 })
-export class ParseService {
+export class NotationService {
 
   constructor(
     private commonService: CommonService

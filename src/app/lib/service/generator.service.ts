@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Measure } from '../../model/measure/measure';
-import { ParseService } from './parse.service';
+import { NotationService } from './notation.service';
 import { PlacedChord } from '../../model/note/placed-chord';
 import { Note } from '../../model/note/note';
 import { SoundtrackService } from '../../views/soundtrack/soundtrack.service';
@@ -16,7 +16,7 @@ export class GeneratorService {
   constructor(
     private commonService: CommonService,
     private soundtrackService: SoundtrackService,
-    private parseService: ParseService,
+    private notationService: NotationService,
     private translateService: TranslateService
   ) { }
 
@@ -35,27 +35,27 @@ export class GeneratorService {
       .map((chord: Array<string>) => {
         let index: number = 0;
         const notes: Array<Note> = chord.map((textNote: string) => {
-          const note: Note = this.parseService.createNote(index, textNote, this.NOTE_OCTAVE);
+          const note: Note = this.notationService.createNote(index, textNote, this.NOTE_OCTAVE);
           index++;
           return note;
         })
-        return this.parseService.createPlacedChord(this.CHORD_DURATION, notes)
+        return this.notationService.createPlacedChord(this.CHORD_DURATION, notes)
       });
 
     // Have a few end of track notes as a note may not be played by an unreliable synth
-    this.parseService.addEndOfTrackNote(generatedChords);
-    this.parseService.addEndOfTrackNote(generatedChords);
-    this.parseService.addEndOfTrackNote(generatedChords);
+    this.notationService.addEndOfTrackNote(generatedChords);
+    this.notationService.addEndOfTrackNote(generatedChords);
+    this.notationService.addEndOfTrackNote(generatedChords);
 
     const measures: Array<Measure> = new Array<Measure>();
-    let measure: Measure = this.parseService.createMeasureWithDefaultTempo();
+    let measure: Measure = this.notationService.createMeasureWithDefaultTempo();
     measure.placedChords = new Array<PlacedChord>();
     measures.push(measure);
     generatedChords
       .map((placedChord: PlacedChord) => {
         if (measure.placedChords) {
           if (measure.placedChords.length >= this.CHORDS_PER_MEASURE) {
-            measure = this.parseService.createMeasureWithDefaultTempo();
+            measure = this.notationService.createMeasureWithDefaultTempo();
             measure.placedChords = new Array<PlacedChord>();
             measures.push(measure);
           }

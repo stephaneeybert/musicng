@@ -3,7 +3,7 @@ import * as vexflow from 'vexflow';
 import * as Tone from 'tone';
 import { Soundtrack } from '../../model/soundtrack';
 import { Device } from '../../model/device';
-import { ParseService } from '../service/parse.service';
+import { NotationService } from './notation.service';
 import { Note } from '../../model/note/note';
 import { Measure } from '../../model/measure/measure';
 import { Clef } from '../../model/clef';
@@ -45,7 +45,7 @@ export enum VexfloWAccidental {
 export class SheetService {
 
   constructor(
-    private parseService: ParseService
+    private notationService: NotationService
   ) { }
 
   public createSoundtrackSheet(name: string, screenWidth: number, soundtrack: Soundtrack): void {
@@ -132,7 +132,7 @@ export class SheetService {
         if (track.hasMeasures()) {
           for (const measure of track.measures) {
             if (measure.placedChords) {
-              if (!this.parseService.isOnlyEndOfTrackChords(measure.placedChords)) {
+              if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
                 const stave = new vexflow.Flow.Stave(0, staveIndex * (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN), sheetWidth);
                 staveIndex++;
                 stave.setContext(context);
@@ -150,7 +150,7 @@ export class SheetService {
                 voice.setStrict(false);
                 voice.setStave(stave);
                 for (const placedChord of measure.placedChords) {
-                  if (!this.parseService.isEndOfTrackPlacedChord(placedChord)) {
+                  if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
                     const chordDuration: string = this.renderDuration(placedChord);
                     const staveNote: vexflow.Flow.StaveNote = new vexflow.Flow.StaveNote({
                       keys: this.renderNotesSortedByFrequency(placedChord.notes),
@@ -195,7 +195,7 @@ export class SheetService {
   }
 
   private renderChordNoteInLatin(placedChord: PlacedChord): string {
-    return this.parseService.chromaLetterToChromaLatin(placedChord.renderLastNoteChroma());
+    return this.notationService.chromaLetterToChromaLatin(placedChord.renderLastNoteChroma());
   }
 
   private getNoteFrequency(note: Note): number {
@@ -230,7 +230,7 @@ export class SheetService {
 
   private renderNote(note: Note): string {
     let vexflowNote: string = '';
-    if (!this.parseService.noteIsNotRest(note)) {
+    if (!this.notationService.noteIsNotRest(note)) {
       vexflowNote = VEXFLOW_REST_NOTE;
     } else {
       vexflowNote = note.renderChroma();
@@ -242,7 +242,7 @@ export class SheetService {
   }
 
   private renderDuration(placedChord: PlacedChord): string {
-    if (!this.parseService.placedChordIsNotRest(placedChord)) {
+    if (!this.notationService.placedChordIsNotRest(placedChord)) {
       return placedChord.renderDuration() + VEXFLOW_REST_SUFFIX;
     } else {
       return placedChord.renderDuration();

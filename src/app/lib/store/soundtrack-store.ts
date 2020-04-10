@@ -4,7 +4,7 @@ import { CommonService } from '../service/common.service';
 import { Soundtrack } from '../../model/soundtrack';
 import { Observable } from 'rxjs';
 import { SoundtrackStorageService } from '@app/views/soundtrack/soundtrack-storage.service';
-import { ParseService } from '../service/parse.service';
+import { NotationService } from '../service/notation.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
 
   constructor(
     private commonService: CommonService,
-    private parseService: ParseService,
+    private notationService: NotationService,
     private soundtrackStorageService: SoundtrackStorageService
   ) {
     super(new Array<Soundtrack>());
@@ -24,7 +24,7 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     if (soundtrackObjs && soundtrackObjs.length > 0) {
       const soundtracks: Array<Soundtrack> = new Array();
       soundtrackObjs.forEach((soundtrackObj: any) => {
-        const soundtrack: Soundtrack = this.parseService.objectToNewSoundtrack(soundtrackObj);
+        const soundtrack: Soundtrack = this.notationService.objectToNewSoundtrack(soundtrackObj);
         soundtracks.push(soundtrack);
       });
       this.setState(soundtracks);
@@ -52,7 +52,7 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
 
   private storeSoundtrack(soundtrack: Soundtrack): void {
     // Create a clean soundtrack before storing it
-    const cleanSoundtrack: Soundtrack = this.parseService.objectToNewSoundtrack(soundtrack);
+    const cleanSoundtrack: Soundtrack = this.notationService.objectToNewSoundtrack(soundtrack);
     this.soundtrackStorageService.setSoundtrack(cleanSoundtrack);
   }
 

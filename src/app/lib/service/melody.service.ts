@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Measure } from '../../model/measure/measure';
-import { ParseService } from './parse.service';
+import { NotationService } from './notation.service';
 import { SoundtrackService } from '../../views/soundtrack/soundtrack.service';
 import { Soundtrack } from '@app/model/soundtrack';
 import { CommonService } from './common.service';
@@ -19,7 +19,7 @@ export class MelodyService {
   constructor(
     private soundtrackService: SoundtrackService,
     private commonService: CommonService,
-    private parseService: ParseService,
+    private notationService: NotationService,
   ) { }
 
   public addDummyMelody() {
@@ -34,7 +34,7 @@ export class MelodyService {
       'E5/4'];
 
     const soundtrackName = 'Demo soundtrack';
-    const measures: Array<Measure> = this.parseService.parseMeasures(textMeasures);
+    const measures: Array<Measure> = this.notationService.parseMeasures(textMeasures);
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrackFromMeasures(soundtrackName, measures);
   }
 

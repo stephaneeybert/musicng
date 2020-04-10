@@ -6,7 +6,7 @@ import { Soundtrack } from '../../model/soundtrack';
 import { KeyboardService } from '../service/keyboard.service';
 import { PlacedChord } from '../../model/note/placed-chord';
 import { Note } from '../../model/note/note';
-import { ParseService } from '../service/parse.service';
+import { NotationService } from './notation.service';
 import { TempoUnit } from '../../model/tempo-unit';
 import { SheetService } from './sheet.service';
 import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
@@ -24,7 +24,7 @@ const TRANSPORT_STATE_STARTED = 'started';
 export class SynthService {
 
   constructor(
-    private parseService: ParseService,
+    private notationService: NotationService,
     private keyboardService: KeyboardService,
     private sheetService: SheetService,
     private soundtrackService: SoundtrackService
@@ -148,20 +148,20 @@ export class SynthService {
               const releaseTime = triggerTime + durationInSeconds;
 
               // If the note is a rest then do not play any sound
-              if (this.parseService.noteIsNotRest(note)) {
+              if (this.notationService.noteIsNotRest(note)) {
                 soundtrack.synth.triggerAttack(note.render(), triggerTime, note.velocity);
                 soundtrack.synth.triggerRelease(note.render(), releaseTime);
               }
 
               const midiNote = Tone.Frequency(note.render()).toMidi();
               Tone.Draw.schedule(() => {
-                if (!this.parseService.isEndOfTrackNote(note)) {
+                if (!this.notationService.isEndOfTrackNote(note)) {
                   this.keyboardService.pressKey(soundtrack.keyboard, midiNote);
                   this.sheetService.vexflowHighlightStaveNote(placedChord);
                 }
               }, triggerTime);
               Tone.Draw.schedule(() => {
-                if (!this.parseService.isEndOfTrackNote(note)) {
+                if (!this.notationService.isEndOfTrackNote(note)) {
                   this.keyboardService.unpressKey(soundtrack.keyboard, midiNote);
                   this.sheetService.vexflowUnhighlightStaveNote(placedChord);
                 } else {
@@ -187,7 +187,7 @@ export class SynthService {
    */
   private updateTempo(previousMeasure: Measure, measure: Measure, ramp: boolean) {
     if (previousMeasure == null || previousMeasure.tempo.value !== measure.tempo.value) {
-      if (this.parseService.isBpmTempoUnit(measure.tempo)) {
+      if (this.notationService.isBpmTempoUnit(measure.tempo)) {
         if (ramp) {
           Tone.Transport.bpm.rampTo(measure.tempo.value, 1);
         } else {

@@ -22,7 +22,7 @@ import { Tempo } from '../../model/tempo';
 import { DeviceStore } from '../store/device-store';
 import { Measure } from '../../model/measure/measure';
 import { TimeSignature } from '../../model/measure/time-signature';
-import { ParseService } from '../service/parse.service';
+import { NotationService } from './notation.service';
 import { Note } from '../../model/note/note';
 import { PlacedChord } from '../../model/note/placed-chord';
 import { Chroma } from '../../model/note/pitch/chroma';
@@ -61,7 +61,7 @@ export class MidiService {
     private deviceStore: DeviceStore,
     private commonService: CommonService,
     private keyboardService: KeyboardService,
-    private parseService: ParseService
+    private notationService: NotationService
   ) { }
 
   public getInputDevices$(): Observable<WebMidi.MIDIInput> {
@@ -208,19 +208,19 @@ export class MidiService {
             midiTrack.instrument.name,
             midiTrack.instrument.percussion);
         }
-        const tempo: Tempo = this.parseService.buildDefaultTempo();
-        const timeSignature: TimeSignature = this.parseService.buildDefaultTimeSignature();
+        const tempo: Tempo = this.notationService.buildDefaultTempo();
+        const timeSignature: TimeSignature = this.notationService.buildDefaultTimeSignature();
         if (midiTrack.notes != null) {
           const measures = new Array<Measure>();
           const placedChords: Array<PlacedChord> = new Array<PlacedChord>();
           midiTrack.notes.forEach((midiNote: any) => {
-            const pitchOctave: Array<string> = this.parseService.noteToChromaOctave(midiNote.name);
-            const note: Note = this.parseService.buildNoteWithTicks(
+            const pitchOctave: Array<string> = this.notationService.noteToChromaOctave(midiNote.name);
+            const note: Note = this.notationService.buildNoteWithTicks(
               pitchOctave[0],
               parseInt(pitchOctave[1], 10),
               midiNote.velocity);
             const duration: Duration = midiNote.time; // TODO midiNote.durationTicks How to retrieve the note time and store it in the chord ?
-            const placedChord: PlacedChord = this.parseService.placeEmptyChord(duration);
+            const placedChord: PlacedChord = this.notationService.placeEmptyChord(duration);
             placedChord.addNote(note);
             placedChords.push(placedChord);
           });
@@ -275,7 +275,7 @@ export class MidiService {
         console.log('PPQ: ' + jsonMidi.division + ' pulsesPerQuarter: ' + pulsesPerQuarter);
         let currentTempo: number = this.bpmToMicroSeconds(DEFAULT_MIDI_TEMPO);
         let currentNoteOnEvent: IMidiNoteOnEvent;
-        let currentTimeSignature: TimeSignature = this.parseService.buildDefaultTimeSignature();
+        let currentTimeSignature: TimeSignature = this.notationService.buildDefaultTimeSignature();
         let pulsesPerMeasure: number;
         jsonMidi.tracks.forEach((midiTrack: TMidiEvent[]) => {
           const track: Track = new Track();
@@ -307,7 +307,7 @@ export class MidiService {
               }
             } else if (midiEvent.hasOwnProperty(MIDI_EVENT_TIME_SIGNATURE)) {
               const timeSignatureEvent: IMidiTimeSignatureEvent = midiEvent;
-              currentTimeSignature = this.parseService.timeSignature(
+              currentTimeSignature = this.notationService.timeSignature(
                 timeSignatureEvent.timeSignature.numerator,
                 timeSignatureEvent.timeSignature.denominator);
               pulsesPerMeasure = this.pulsesPerMeasure(this.quarterNotesPerMeasure(currentTimeSignature), pulsesPerQuarter);
@@ -328,7 +328,7 @@ export class MidiService {
               if (currentNoteOnEvent != null) {
                 const delta: number = this.delta(controlChangeEvent.time, currentNoteOnEvent.time);
                 if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, pulsesPerMeasure, measureCounter)) {
-                  const tempo: Tempo = this.parseService.tempo(this.microSecondsToBpm(currentTempo).toString(), TempoUnit.BPM);
+                  const tempo: Tempo = this.notationService.tempo(this.microSecondsToBpm(currentTempo).toString(), TempoUnit.BPM);
                   currentMeasure = new Measure(tempo, currentTimeSignature);
                   currentMeasure.placedChords = new Array<PlacedChord>();
                   measures.push(currentMeasure);
@@ -345,7 +345,7 @@ export class MidiService {
                 // console.log('Note off');
                 const delta: number = this.delta(noteOffEvent.time, currentNoteOnEvent.time);
                 if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, pulsesPerMeasure, measureCounter)) {
-                  const tempo: Tempo = this.parseService.tempo(this.microSecondsToBpm(currentTempo).toString(), TempoUnit.BPM);
+                  const tempo: Tempo = this.notationService.tempo(this.microSecondsToBpm(currentTempo).toString(), TempoUnit.BPM);
                   currentMeasure = new Measure(tempo, currentTimeSignature);
                   currentMeasure.placedChords = new Array<PlacedChord>();
                   measures.push(currentMeasure);
@@ -486,8 +486,8 @@ export class MidiService {
   //   const abc: string = this.midi2Abc(currentNoteOnEvent.noteOn.noteNumber);
   //   const octave: number = this.midi2octave(currentNoteOnEvent.noteOn.noteNumber);
   //   const velocity: number = currentNoteOnEvent.noteOn.velocity;
-  //   const note: Note = this.parseService.buildNoteWithTicks(abc, octave, velocity, deltaInTicks);
-  //   const placedChord: PlacedChord = this.parseService.placeNote(duration);
+  //   const note: Note = this.notationService.buildNoteWithTicks(abc, octave, velocity, deltaInTicks);
+  //   const placedChord: PlacedChord = this.notationService.placeNote(duration);
   //   placedChord.addNote(note);
   //   return placedChord;
   // }
