@@ -130,8 +130,8 @@ export class GeneratorService {
     while (nbAddedChord < this.NB_CHORDS) {
       const chord: Array<string> = new Array();
 
-      // Randomly pick a chord
-      const chromaNoteIndex = this.commonService.getRandomIntegerBetweenAndExcept(0, this.CHROMAS_ALPHABETICAL.length - 1, [ previousChromaChordIndex ]);
+      // Start on the Do chord and then randomly pick a chord
+      const chromaNoteIndex = (nbAddedChord == 0) ? 0 : this.commonService.getRandomIntegerBetweenAndExcept(0, this.CHROMAS_ALPHABETICAL.length - 1, [ previousChromaChordIndex ]);
       for (let noteIndex = 0; noteIndex < this.CHORD_WIDTH; noteIndex++) {
         chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);
       }
