@@ -22,6 +22,7 @@ export class GeneratorService {
 
   NB_CHORDS: number = 52;
   CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+  CHROMAS_GERMAN_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'H'];
   CHROMA_SHIFT_TIMES: number = 2;
   CHORD_WIDTH: number = 3;
   CHORDS_PER_MEASURE: number = 4;
