@@ -35,4 +35,8 @@ export class SoundtrackService {
     this.soundtrackStore.setSoundtrack(soundtrack);
   }
 
+  public setAndStoreSoundtrack(soundtrack: Soundtrack) {
+    this.soundtrackStore.setAndStoreSoundtrack(soundtrack);
+  }
+
 }

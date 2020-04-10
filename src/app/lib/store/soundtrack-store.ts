@@ -50,12 +50,6 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     }
   }
 
-  private storeSoundtrack(soundtrack: Soundtrack): void {
-    // Create a clean soundtrack before storing it
-    const cleanSoundtrack: Soundtrack = this.notationService.objectToNewSoundtrack(soundtrack);
-    this.soundtrackStorageService.setSoundtrack(cleanSoundtrack);
-  }
-
   public delete(soundtrack: Soundtrack): boolean {
     const index = this.getSoundtrackIndex(soundtrack.id);
     if (index !== -1) {
@@ -79,6 +73,16 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     soundtrack.synth = synth;
     this.setSoundtrack(soundtrack);
   }
+  public setAndStoreSoundtrack(soundtrack: Soundtrack) {
+    this.setSoundtrack(soundtrack);
+    this.storeSoundtrack(soundtrack);
+  }
+
+  private storeSoundtrack(soundtrack: Soundtrack): void {
+    // Create a clean soundtrack before storing it
+    const cleanSoundtrack: Soundtrack = this.notationService.objectToNewSoundtrack(soundtrack);
+    this.soundtrackStorageService.setSoundtrack(cleanSoundtrack);
+  }
 
   public setSoundtrack(soundtrack: Soundtrack) {
     const index = this.getSoundtrackIndex(soundtrack.id);
@@ -86,7 +90,6 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
       const soundtracks = this.getState();
       soundtracks[index] = soundtrack;
       this.setState(soundtracks);
-      this.storeSoundtrack(soundtrack);
     }
   }
 

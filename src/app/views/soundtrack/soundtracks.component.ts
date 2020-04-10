@@ -124,7 +124,7 @@ export class SoundtracksComponent implements OnInit {
             existingSoundtrack.name = soundtrackEdition.name;
             existingSoundtrack.copyright = soundtrackEdition.copyright;
             existingSoundtrack.lyrics = soundtrackEdition.lyrics;
-            this.soundtrackService.setSoundtrack(existingSoundtrack);
+            this.soundtrackService.setAndStoreSoundtrack(existingSoundtrack);
 
             this.soundtrackEditedEvent.emit(existingSoundtrack);
             const message: string = this.translateService.instant('soundtracks.message.updated', { name: existingSoundtrack.name });
