@@ -161,7 +161,7 @@ export class NotationService {
     });
   }
 
-  public chromaLetterToChromaLatin(chroma: string): string {
+  public chromaLetterToChromaSyllabic(chroma: string): string {
     if (CHROMAS_SYLLABIC.has(chroma)) {
       const latinChroma: string | undefined = CHROMAS_SYLLABIC.get(chroma);
       if (latinChroma) {

@@ -194,7 +194,7 @@ export class SheetService {
   }
 
   private renderChordNoteInLatin(placedChord: PlacedChord): string {
-    return this.notationService.chromaLetterToChromaLatin(placedChord.renderFirstNoteChroma());
+    return this.notationService.chromaLetterToChromaSyllabic(placedChord.renderFirstNoteChroma());
   }
 
   private getNoteFrequency(note: Note): number {
