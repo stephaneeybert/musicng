@@ -20,7 +20,7 @@ export class GeneratorService {
     private translateService: TranslateService
   ) { }
 
-  NB_CHORDS: number = 52;
+  NB_CHORDS: number = 120;
   CHROMA_SHIFT_TIMES: number = 2;
   CHORD_WIDTH: number = 3;
   CHORDS_PER_MEASURE: number = 4;
