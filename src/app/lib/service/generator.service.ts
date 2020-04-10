@@ -20,8 +20,8 @@ export class GeneratorService {
     private translateService: TranslateService
   ) { }
 
-  NB_CHORDS: number = 50;
-  CHROMAS: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+  NB_CHORDS: number = 52;
+  CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
   CHROMA_SHIFT_TIMES: number = 2;
   CHORD_WIDTH: number = 3;
   CHORDS_PER_MEASURE: number = 4;
@@ -112,13 +112,13 @@ export class GeneratorService {
     const chords: Array<Array<string>> = new Array();
     // Create shifted chromas, each starting some notes down the previous chroma
     // The number of shifted chromas is the width of the chord
-    //  Do   Re   Mi   Fa   Sol  La   Si
+    //  Do Re.m  Mi.m  Fa  Sol  La.m  Si-
     // 'C', 'D', 'E', 'F', 'G', 'A', 'B'
     // 'A', 'B', 'C', 'D', 'E', 'F', 'G'
     // 'F', 'G', 'A', 'B', 'C', 'D', 'E'
 
     // Build the shifted chromas
-    shiftedChromas[0] = this.CHROMAS;
+    shiftedChromas[0] = this.CHROMAS_ALPHABETICAL;
     for (let index = 1; index < this.CHORD_WIDTH; index++) {
       shiftedChromas[index] = this.createShiftedChromas(shiftedChromas[index - 1]);
     }
@@ -130,7 +130,7 @@ export class GeneratorService {
       const chord: Array<string> = new Array();
 
       // Randomly pick a chord
-      const chromaNoteIndex = this.commonService.getRandomIntegerBetweenAndExcept(0, this.CHROMAS.length - 1, [ previousChromaChordIndex ]);
+      const chromaNoteIndex = this.commonService.getRandomIntegerBetweenAndExcept(0, this.CHROMAS_ALPHABETICAL.length - 1, [ previousChromaChordIndex ]);
       for (let noteIndex = 0; noteIndex < this.CHORD_WIDTH; noteIndex++) {
         chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);
       }
