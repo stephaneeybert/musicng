@@ -166,7 +166,7 @@ export class SheetService {
                       strokeStyle: VEXFLOW_NOTE_COLOR
                     });
 
-                    const noteName: string = this.renderChordNoteInLatin(placedChord);
+                    const noteName: string = this.renderChordNoteInSyllabic(placedChord);
                     if (noteName != previousNoteName) {
                       staveNote.addAnnotation(0, this.renderAnnotation(noteName));
                       previousNoteName = noteName;
@@ -193,7 +193,7 @@ export class SheetService {
     }
   }
 
-  private renderChordNoteInLatin(placedChord: PlacedChord): string {
+  private renderChordNoteInSyllabic(placedChord: PlacedChord): string {
     return this.notationService.chromaLetterToChromaSyllabic(placedChord.renderFirstNoteChroma());
   }
 
