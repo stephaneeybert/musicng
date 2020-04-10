@@ -21,8 +21,6 @@ export class GeneratorService {
   ) { }
 
   NB_CHORDS: number = 52;
-  CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-  CHROMAS_GERMAN_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'H'];
   CHROMA_SHIFT_TIMES: number = 2;
   CHORD_WIDTH: number = 3;
   CHORDS_PER_MEASURE: number = 4;
@@ -132,7 +130,7 @@ export class GeneratorService {
     // 'F', 'G', 'A', 'B', 'C', 'D', 'E'
 
     // Build the shifted chromas
-    shiftedChromas[0] = this.CHROMAS_ALPHABETICAL;
+    shiftedChromas[0] = this.notationService.chromasAlphabetical();
     for (let index = 1; index < this.CHORD_WIDTH; index++) {
       shiftedChromas[index] = this.createShiftedChromas(shiftedChromas[index - 1]);
     }
@@ -144,7 +142,7 @@ export class GeneratorService {
       const chord: Array<string> = new Array();
 
       // Start on the Do chord and then randomly pick a chord
-      const chromaNoteIndex = (nbAddedChord == 0) ? 0 : this.commonService.getRandomIntegerBetweenAndExcept(0, this.CHROMAS_ALPHABETICAL.length - 1, [ previousChromaChordIndex ]);
+      const chromaNoteIndex = (nbAddedChord == 0) ? 0 : this.commonService.getRandomIntegerBetweenAndExcept(0, this.notationService.chromasAlphabetical().length - 1, [ previousChromaChordIndex ]);
       for (let noteIndex = 0; noteIndex < this.CHORD_WIDTH; noteIndex++) {
         chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);
       }

@@ -27,6 +27,8 @@ const DEFAULT_TEMPO_BPM_VALUE: string = '128';
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 2; // TODO Change to 4
 const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 
+const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+const CHROMAS_GERMAN_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'H'];
 const CHROMAS_SYLLABIC: Map<string, string> = new Map([ ['C', 'Do'], ['D', 'Re.m'], ['E', 'Mi.m'], ['F', 'Fa'], ['G', 'Sol'], ['A', 'La.m'], ['B', 'Si-'] ]);
 
 @Injectable({
@@ -159,6 +161,10 @@ export class NotationService {
     notes.forEach((note: Note) => {
       placedChord.addNote(note);
     });
+  }
+
+  public chromasAlphabetical(): Array<string> {
+    return CHROMAS_ALPHABETICAL;
   }
 
   public chromaLetterToChromaSyllabic(chroma: string): string {
