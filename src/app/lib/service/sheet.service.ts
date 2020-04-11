@@ -61,7 +61,15 @@ export class SheetService {
     if (soundtrack.hasTracks()) {
       for (const track of soundtrack.tracks) {
         if (track.hasMeasures()) {
-          nbMeasures += track.measures.length;
+          for (const measure of track.measures) {
+            if (measure.placedChords) {
+              if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
+                nbMeasures++;;
+              }
+            } else {
+              throw new Error('The measure placed chords array has not been instantiated.');
+            }
+          }
         }
       }
     }
