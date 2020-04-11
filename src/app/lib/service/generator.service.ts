@@ -188,39 +188,39 @@ export class GeneratorService {
     return this.commonService.getRandomIntegerBetweenAndExcept(0, this.notationService.chromasAlphabetical().length - 1, [ chromaIndex ])
   }
 
-  // The table of malus per chroma
-  // For a given chroma there is a series of malus numbers
-  // A malus represents the level of dissonance by a following chroma
+  // The table of bonus per chroma
+  // For a given chroma there is a series of bonus numbers
+  // A bonus represents the level of harmony between a chroma and its following chroma
   // The chromas are indexed in the chromas alphabetical array
-  private getMalusTable(): Array<Array<number>> {
+  private getBonusTable(): Array<Array<number>> {
     const matrix: Array<Array<number>> = [
     //  C  D  E  F  G  A  B
-      [ 0, 5, 1, 3, 3, 2, 5 ],
-      [ 5, 0, 5, 2, 4, 3, 2 ],
-      [ 1, 5, 0, 4, 2, 5, 4 ],
-      [ 3, 2, 4, 0, 6, 1, 4 ],
+      [ 6, 1, 5, 3, 3, 4, 1 ],
+      [ 1, 6, 1, 4, 2, 3, 4 ],
+      [ 5, 1, 6, 2, 4, 1, 2 ],
       [ 3, 4, 2, 6, 0, 5, 2 ],
-      [ 2, 3, 5, 1, 5, 0, 5 ],
-      [ 5, 2, 4, 4, 2, 5, 0 ]
+      [ 3, 2, 4, 0, 6, 1, 4 ],
+      [ 4, 3, 1, 5, 1, 6, 1 ],
+      [ 1, 4, 2, 2, 4, 1, 6 ]
     ];
     return matrix;
   }
 
-  private getChromaMaluses(chromaIndex: number): Array<number> {
-    return this.getMalusTable()[chromaIndex];
+  private getChromaBonuses(chromaIndex: number): Array<number> {
+    return this.getBonusTable()[chromaIndex];
   }
 
-  private buildUpChromasPoolFromMaluses(chromaIndex: number): Array<number> {
-    // The higher the more random
-    const RANDOMLINESS: number = 5;
-    const MAX_MALUS: number = 3;
-    const chromaMaluses: Array<number> = this.getChromaMaluses(chromaIndex);
+  private buildUpChromasPoolFromBonuses(chromaIndex: number): Array<number> {
+    const RANDOMLINESS: number = 0;
+    const MIN_BONUS: number = 3;
+    const chromaBonuses: Array<number> = this.getChromaBonuses(chromaIndex);
     let currentChromaIndex: number = 0;
     const chromasPool: Array<number> = new Array();
-    chromaMaluses.forEach((chromaMalus: number) => {
-      const chromaBonus: number = RANDOMLINESS - chromaMalus;
-      // If a maximum malus is specified then do not consider the chromas that have a higher malus
-      if ((MAX_MALUS > 0 && chromaBonus > (RANDOMLINESS - MAX_MALUS)) || 0 == MAX_MALUS) {
+    chromaBonuses.forEach((chromaBonus: number) => {
+      // If a minimum bonus is specified then do not consider the chromas that have a lower bonus
+      if ((MIN_BONUS > 0 && chromaBonus >= MIN_BONUS) || 0 == MIN_BONUS) {
+        // The higher the more random
+        chromaBonus = RANDOMLINESS + chromaBonus;
         for (let nb = 0; nb < chromaBonus; nb++) {
           chromasPool.push(currentChromaIndex);
         }
@@ -231,7 +231,7 @@ export class GeneratorService {
   }
 
   private randomlyPickChromaFromChromasPool(chromaIndex: number): number {
-    const chromasPool: Array<number> = this.buildUpChromasPoolFromMaluses(chromaIndex);
+    const chromasPool: Array<number> = this.buildUpChromasPoolFromBonuses(chromaIndex);
     let pickedChromaIndex: number;
     do {
       const random: number = this.commonService.getRandomIntegerBetween(0, chromasPool.length - 1);
