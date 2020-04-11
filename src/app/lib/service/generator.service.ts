@@ -8,6 +8,11 @@ import { CommonService } from './common.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Soundtrack } from '@app/model/soundtrack';
 
+enum RANDOM_METHOD {
+  BASE = 0,
+  MALUS_TABLE = 1
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -136,27 +141,28 @@ export class GeneratorService {
     }
 
     let previousChord: Array<string> = new Array();
-    let previousChromaChordIndex: number = 0;
+    let previousChromaNoteIndex: number = 0;
     let nbAddedChord: number = 0;
     while (nbAddedChord < this.NB_CHORDS) {
       const chord: Array<string> = new Array();
 
       // Start on the Do chord and then randomly pick a chord
-      const chromaNoteIndex = (nbAddedChord == 0) ? 0 : this.commonService.getRandomIntegerBetweenAndExcept(0, this.notationService.chromasAlphabetical().length - 1, [ previousChromaChordIndex ]);
+      const chromaNoteIndex = (nbAddedChord == 0) ? 0 : this.randomlyPickChroma(previousChromaNoteIndex);
       for (let noteIndex = 0; noteIndex < this.CHORD_WIDTH; noteIndex++) {
         chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);
       }
 
       // Consider a chord only if it is similar to its previous one
       if (chords.length == 0 || this.isSimilarToPrevious(previousChord, chord)) {
-        previousChromaChordIndex = chromaNoteIndex;
+        previousChromaNoteIndex = chromaNoteIndex;
         previousChord = chord;
         // Add twice the same chord
         chords.push(chord);
         nbAddedChord++;
-        chords.push(chord);
+        chords.push(chord); // TODO Do we still double the notes ?
         nbAddedChord++;
       } else {
+        // TODO Do we still not reverse the notes ?
         // Create a chord from a variation on the previous one
         // const slidedChord: Array<string> = this.createShiftedChord(previousChord);
         // chords.push(chord);
@@ -164,6 +170,75 @@ export class GeneratorService {
       }
     }
     return chords;
+  }
+
+  private randomlyPickChroma(chromaIndex: number): number {
+    const randomMethod: number = RANDOM_METHOD.MALUS_TABLE; // TODO Have a pref to choose the method
+    switch (randomMethod) {
+      case RANDOM_METHOD.BASE:
+        return this.randomlyPickChromaFromBaseChromas(chromaIndex);
+      case RANDOM_METHOD.MALUS_TABLE:
+        return this.randomlyPickChromaFromChromasPool(chromaIndex);
+      default:
+        throw new Error('The selected random method does not exist.');
+    }
+  }
+
+  private randomlyPickChromaFromBaseChromas(chromaIndex: number): number {
+    return this.commonService.getRandomIntegerBetweenAndExcept(0, this.notationService.chromasAlphabetical().length - 1, [ chromaIndex ])
+  }
+
+  // The table of malus per chroma
+  // For a given chroma there is a series of malus numbers
+  // A malus represents the level of dissonance by a following chroma
+  // The chromas are indexed in the chromas alphabetical array
+  private getMalusTable(): Array<Array<number>> {
+    const matrix: Array<Array<number>> = [
+    //  C  D  E  F  G  A  B
+      [ 0, 5, 1, 3, 3, 2, 5 ],
+      [ 5, 0, 5, 2, 4, 3, 2 ],
+      [ 1, 5, 0, 4, 2, 5, 4 ],
+      [ 3, 2, 4, 0, 6, 1, 4 ],
+      [ 3, 4, 2, 6, 0, 5, 2 ],
+      [ 2, 3, 5, 1, 5, 0, 5 ],
+      [ 5, 2, 4, 4, 2, 5, 0 ]
+    ];
+    return matrix;
+  }
+
+  private getChromaMaluses(chromaIndex: number): Array<number> {
+    return this.getMalusTable()[chromaIndex];
+  }
+
+  private buildUpChromasPoolFromMaluses(chromaIndex: number): Array<number> {
+    // The higher the more random
+    const RANDOMLINESS: number = 5;
+    const MAX_MALUS: number = 3;
+    const chromaMaluses: Array<number> = this.getChromaMaluses(chromaIndex);
+    let currentChromaIndex: number = 0;
+    const chromasPool: Array<number> = new Array();
+    chromaMaluses.forEach((chromaMalus: number) => {
+      const chromaBonus: number = RANDOMLINESS - chromaMalus;
+      // If a maximum malus is specified then do not consider the chromas that have a higher malus
+      if ((MAX_MALUS > 0 && chromaBonus > (RANDOMLINESS - MAX_MALUS)) || 0 == MAX_MALUS) {
+        for (let nb = 0; nb < chromaBonus; nb++) {
+          chromasPool.push(currentChromaIndex);
+        }
+      }
+      currentChromaIndex++;
+    });
+    return chromasPool;
+  }
+
+  private randomlyPickChromaFromChromasPool(chromaIndex: number): number {
+    const chromasPool: Array<number> = this.buildUpChromasPoolFromMaluses(chromaIndex);
+    let pickedChromaIndex: number;
+    do {
+      const random: number = this.commonService.getRandomIntegerBetween(0, chromasPool.length - 1);
+      pickedChromaIndex = chromasPool[random];
+    // Avoid picking the same chroma as the previous one
+    } while (pickedChromaIndex == chromaIndex)
+    return pickedChromaIndex;
   }
 
 }
