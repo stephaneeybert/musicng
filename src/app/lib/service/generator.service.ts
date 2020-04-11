@@ -211,7 +211,7 @@ export class GeneratorService {
   }
 
   private buildUpChromasPoolFromBonuses(chromaIndex: number): Array<number> {
-    const RANDOMLINESS: number = 10;
+    const RANDOMLINESS: number = 0;
     const MIN_BONUS: number = 3;
     const chromaBonuses: Array<number> = this.getChromaBonuses(chromaIndex);
     let currentChromaIndex: number = 0;
