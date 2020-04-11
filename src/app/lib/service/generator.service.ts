@@ -232,13 +232,8 @@ export class GeneratorService {
 
   private randomlyPickChromaFromChromasPool(chromaIndex: number): number {
     const chromasPool: Array<number> = this.buildUpChromasPoolFromBonuses(chromaIndex);
-    let pickedChromaIndex: number;
-    do {
-      const random: number = this.commonService.getRandomIntegerBetween(0, chromasPool.length - 1);
-      pickedChromaIndex = chromasPool[random];
-    // Avoid picking the same chroma as the previous one
-    } while (pickedChromaIndex == chromaIndex)
-    return pickedChromaIndex;
+    const random: number = this.commonService.getRandomIntegerBetween(0, chromasPool.length - 1);
+    return chromasPool[random];
   }
 
 }
