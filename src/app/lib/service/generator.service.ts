@@ -195,13 +195,13 @@ export class GeneratorService {
   private getBonusTable(): Array<Array<number>> {
     const matrix: Array<Array<number>> = [
     //  C  D  E  F  G  A  B
-      [ 6, 1, 5, 3, 3, 4, 1 ],
-      [ 1, 6, 1, 4, 2, 3, 4 ],
-      [ 5, 1, 6, 2, 4, 1, 2 ],
-      [ 3, 4, 2, 6, 0, 5, 2 ],
-      [ 3, 2, 4, 0, 6, 1, 4 ],
-      [ 4, 3, 1, 5, 1, 6, 1 ],
-      [ 1, 4, 2, 2, 4, 1, 6 ]
+      [ 30, 0, 15, 5, 5, 10, 0 ],
+      [ 0, 30, 0, 10, 0, 5, 10 ],
+      [ 15, 0, 30, 0, 10, 0, 0 ],
+      [ 5, 10, 0, 30, 0, 15, 0 ],
+      [ 5, 0, 10, 0, 30, 0, 10 ],
+      [ 10, 5, 0, 15, 0, 30, 0 ],
+      [ 0, 10, 0, 0, 10, 0, 30 ]
     ];
     return matrix;
   }
@@ -211,7 +211,7 @@ export class GeneratorService {
   }
 
   private buildUpChromasPoolFromBonuses(chromaIndex: number): Array<number> {
-    const RANDOMLINESS: number = 0;
+    const RANDOMLINESS: number = 10;
     const MIN_BONUS: number = 3;
     const chromaBonuses: Array<number> = this.getChromaBonuses(chromaIndex);
     let currentChromaIndex: number = 0;
