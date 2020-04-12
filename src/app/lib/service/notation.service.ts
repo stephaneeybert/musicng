@@ -57,7 +57,7 @@ export class NotationService {
 
   public createMeasure(tempo: string, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
     const timeSignature: TimeSignature = this.createTimeSignature(timeSignatureNumerator, timeSignatureDenominator);
-    const measure: Measure = new Measure(this.tempo(tempo, TempoUnit.BPM), timeSignature);
+    const measure: Measure = new Measure(this.createTempo(tempo, TempoUnit.BPM), timeSignature);
     return measure;
   }
 
@@ -198,7 +198,7 @@ export class NotationService {
   }
 
   public createNote(index: number, chroma: string, octave: number): Note {
-    const pitch: Pitch = this.pitch(this.toChroma(chroma), this.toOctave(octave));
+    const pitch: Pitch = this.createPitch(this.createChroma(chroma), this.createOctave(octave));
     const note: Note = new Note(index, pitch);
     return note;
   }
@@ -275,11 +275,11 @@ export class NotationService {
     return this.createPlacedChord(NOTE_END_OF_TRACK_DURATION, TempoUnit.DUPLE, [endNote]);
   }
 
-  public buildDefaultTempo(): Tempo {
+  public createDefaultTempo(): Tempo {
     return new Tempo(DEFAULT_TEMPO_BPM_VALUE, TempoUnit.BPM);
   }
 
-  public buildDefaultTimeSignature(): TimeSignature {
+  public createDefaultTimeSignature(): TimeSignature {
     return new TimeSignature(DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
   }
 
@@ -298,16 +298,16 @@ export class NotationService {
     return this.createEmptyChord(duration);
   }
 
-  private toChroma(value: string): Chroma {
+  private createChroma(value: string): Chroma {
     return new Chroma(value);
   }
 
-  private toOctave(value: number): Octave {
+  private createOctave(value: number): Octave {
     return new Octave(value);
   }
 
   // TODO See https://music.stackexchange.com/questions/96150/how-to-express-a-duration-in-bpm-into-a-duration-in-division-subdivision
-  private subdivision(duration: number): Subdivision {
+  private createSubdivision(duration: number): Subdivision {
     if (duration === Subdivisions.HUNDERD_TWENTY_EIGHTH) {
       return Subdivision.HUNDERD_TWENTY_EIGHTH;
     } else if (duration === (Subdivisions.HUNDERD_TWENTY_EIGHTH + Subdivisions.TWO_HUNDRED_FIFTY_SIXTH)) {
@@ -346,10 +346,10 @@ export class NotationService {
   }
 
   private createDuration(duration: number, tempoUnit: TempoUnit) {
-    return new Duration(this.subdivision(duration), tempoUnit);
+    return new Duration(this.createSubdivision(duration), tempoUnit);
   }
 
-  private pitch(chroma: Chroma, octave: Octave): Pitch {
+  private createPitch(chroma: Chroma, octave: Octave): Pitch {
     return new Pitch(chroma, octave);
   }
 
@@ -362,7 +362,7 @@ export class NotationService {
     return new TimeSignature(numerator, denominator);
   }
 
-  public tempo(tempo: string, unit: TempoUnit): Tempo {
+  public createTempo(tempo: string, unit: TempoUnit): Tempo {
     return new Tempo(tempo, unit);
   }
 
