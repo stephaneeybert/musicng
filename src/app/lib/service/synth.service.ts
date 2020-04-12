@@ -144,6 +144,8 @@ export class SynthService {
               const releaseTime = triggerTime + durationInSeconds;
 
               // If the note is a rest then do not play any sound
+              // TODO For the synth, a rest note is a null value
+              // so maybe play rest notes ?
               if (this.notationService.noteIsNotRest(note)) {
                 soundtrack.synth.triggerAttack(note.render(), triggerTime, note.velocity);
                 soundtrack.synth.triggerRelease(note.render(), releaseTime);
