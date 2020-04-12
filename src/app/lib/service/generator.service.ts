@@ -7,6 +7,7 @@ import { SoundtrackService } from '../../views/soundtrack/soundtrack.service';
 import { CommonService } from './common.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Soundtrack } from '@app/model/soundtrack';
+import { TempoUnit } from '@app/model/tempo-unit';
 
 enum RANDOM_METHOD {
   BASE = 0,
@@ -42,7 +43,7 @@ export class GeneratorService {
           index++;
           return note;
         })
-        return this.notationService.createPlacedChord(this.CHORD_DURATION, notes)
+        return this.notationService.createPlacedChord(this.CHORD_DURATION, TempoUnit.DUPLE, notes); // Maybe have a default chord unit ?
       });
 
     // Have a few end of track notes as a note may not be played by an unreliable synth

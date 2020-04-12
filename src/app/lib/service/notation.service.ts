@@ -14,6 +14,7 @@ import { TempoUnit } from '../../model/tempo-unit';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Track } from '@app/model/track';
 import { CommonService } from './common.service';
+import { Subdivisions } from '@app/model/note/duration/subdivisions';
 
 const CHORD_SEPARATOR: string = ' ';
 const CHORD_DURATION_SEPARATOR: string = '/';
@@ -101,7 +102,7 @@ export class NotationService {
     const chordNotes: string = chordAndDuration[0];
     const chordDuration: string = chordAndDuration[1];
     const notes: Array<Note> = this.parseTextNotes(chordNotes);
-    const placedChord: PlacedChord = this.createPlacedChord(chordDuration, notes);
+    const placedChord: PlacedChord = this.createPlacedChord(chordDuration, TempoUnit.DUPLE, notes);
     return placedChord;
   }
 
@@ -137,8 +138,11 @@ export class NotationService {
                       index++;
                     }
                   });
-                  const duration: string = placedChordObj.cursor.noteDuration.subdivision.left + placedChordObj.cursor.noteDuration.unit;
-                  const placedChord: PlacedChord = this.createPlacedChord(duration, notes);
+                  const duration: string = String(parseInt(placedChordObj.cursor.noteDuration.subdivision.left, 10));
+                  console.log('duration: ' + duration);
+                  const tempoUnit: TempoUnit = placedChordObj.cursor.noteDuration.unit as TempoUnit; // TempoUnit[ placedChordObj.cursor.noteDuration.unit as keyof typeof TempoUnit ]; TODO Remove
+                  console.log(tempoUnit);
+                  const placedChord: PlacedChord = this.createPlacedChord(duration, tempoUnit, notes);
                   placedChord.dottedAll = placedChordObj.dottedAll;
                   if (measure.placedChords) {
                     measure.placedChords.push(placedChord);
@@ -180,8 +184,8 @@ export class NotationService {
     }
   }
 
-  public createPlacedChord(chordDuration: string, notes: Array<Note>): PlacedChord {
-    const duration: Duration = this.duration(chordDuration, TempoUnit.DUPLE);
+  public createPlacedChord(chordDuration: string, tempoUnit: TempoUnit, notes: Array<Note>): PlacedChord {
+    const duration: Duration = this.createDuration(chordDuration, tempoUnit); // TODO Do not hard code the duration unit here
     const cursor: Cursor = new Cursor(duration);
     const placedChord: PlacedChord = this.createEmptyChord(cursor);
     this.addNotes(placedChord, notes);
@@ -263,7 +267,7 @@ export class NotationService {
   public createLastOfTrackPlacedChord(): PlacedChord {
     const index: number = 0;
     const endNote: Note = this.createNote(index, NOTE_REST, NOTE_END_OF_TRACK_OCTAVE);
-    return this.createPlacedChord(NOTE_END_OF_TRACK_DURATION, [ endNote ]);
+    return this.createPlacedChord(NOTE_END_OF_TRACK_DURATION, TempoUnit.DUPLE, [endNote]);
   }
 
   public buildDefaultTempo(): Tempo {
@@ -337,7 +341,7 @@ export class NotationService {
     }
   }
 
-  private duration(duration: string, tempoUnit: TempoUnit) {
+  private createDuration(duration: string, tempoUnit: TempoUnit) {
     return new Duration(this.subdivision(duration), tempoUnit);
   }
 
