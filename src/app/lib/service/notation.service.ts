@@ -8,7 +8,6 @@ import { Pitch } from '../../model/note/pitch/pitch';
 import { PlacedChord } from '../../model/note/placed-chord';
 import { Measure } from '../../model/measure/measure';
 import { TimeSignature } from '../../model/measure/time-signature';
-import { Tempo } from '../../model/tempo';
 import { TempoUnit } from '../../model/tempo-unit';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Track } from '@app/model/track';
@@ -23,7 +22,7 @@ const NOTE_END_OF_TRACK: string = 'rest';
 const NOTE_END_OF_TRACK_OCTAVE: number = 9;
 const NOTE_END_OF_TRACK_DURATION: number = 1;
 
-const DEFAULT_TEMPO_BPM_VALUE: string = '128';
+const DEFAULT_TEMPO_BPM_VALUE: number = 128;
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4; // TODO Change to 4
 const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 
@@ -55,9 +54,9 @@ export class NotationService {
     return this.createMeasure(DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
   }
 
-  public createMeasure(tempo: string, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
+  public createMeasure(duration: number, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
     const timeSignature: TimeSignature = this.createTimeSignature(timeSignatureNumerator, timeSignatureDenominator);
-    const measure: Measure = new Measure(this.createTempo(tempo, TempoUnit.BPM), timeSignature);
+    const measure: Measure = new Measure(this.createDuration(duration, TempoUnit.BPM), timeSignature);
     return measure;
   }
 
@@ -121,16 +120,18 @@ export class NotationService {
         if (trackObj.measures && trackObj.measures.length > 0) {
           trackObj.measures.forEach((measureObj: any) => {
             if (measureObj.placedChords && measureObj.placedChords.length > 0) {
-              const measure: Measure = this.createMeasure(measureObj.tempo.value, parseInt(measureObj.timeSignature.numerator), parseInt(measureObj.timeSignature.denominator));
+              const measure: Measure = this.createMeasure(measureObj.duration.subdivision.value, parseInt(measureObj.timeSignature.numerator), parseInt(measureObj.timeSignature.denominator));
               measure.placedChords = new Array();
-              measure.tempo = measureObj.tempo; // TODO Is that okay ? Use a createTempo method.
+              if (!measureObj.duration || !measureObj.duration.subdivision || !measureObj.duration.subdivision.left || !measureObj.duration.subdivision.right || !measureObj.duration.unit) {
+                // TODO empty local storage of soundtracks
+                throw new Error('The measure duration subdivision or unit could not be restored from the local storage.');
+              }
+              const measureDuration: number = parseInt(measureObj.duration.subdivision.left, 10) + parseInt(measureObj.duration.subdivision.right, 10);
+              measure.duration = this.createDuration(measureDuration, measureObj.duration.unit);
               measure.timeSignature = this.createTimeSignature(measureObj.timeSignature.numerator, measureObj.timeSignature.denominator);
               measureObj.placedChords.forEach((placedChordObj: any) => {
                 if (!placedChordObj.notes || placedChordObj.notes.length == 0) {
                   throw new Error('The measure placed chords could not be restored from the local storage.');
-                }
-                if (!placedChordObj.noteDuration || !placedChordObj.noteDuration.subdivision) {
-                  throw new Error('The measure duration or subdivision could not be restored from the local storage.');
                 }
                 const notes: Array<Note> = new Array();
                 let index: number = 0;
@@ -144,10 +145,10 @@ export class NotationService {
                     index++;
                   }
                 });
-                const duration: number = parseInt(placedChordObj.noteDuration.subdivision.left, 10) + parseInt(placedChordObj.noteDuration.subdivision.right, 10);
-                if (!placedChordObj.noteDuration || !placedChordObj.noteDuration.unit) {
-                  throw new Error('The duration unit could not be restored from the local storage.');
+                if (!placedChordObj.noteDuration || !placedChordObj.noteDuration.subdivision || !placedChordObj.noteDuration.subdivision.left || !placedChordObj.noteDuration.subdivision.right || !placedChordObj.noteDuration.unit) {
+                  throw new Error('The chord duration subdivistion or unit could not be restored from the local storage.');
                 }
+                const duration: number = parseInt(placedChordObj.noteDuration.subdivision.left, 10) + parseInt(placedChordObj.noteDuration.subdivision.right, 10);
                 const tempoUnit: TempoUnit = placedChordObj.noteDuration.unit as TempoUnit;
                 const placedChord: PlacedChord = this.createPlacedChord(duration, tempoUnit, notes);
                 placedChord.dottedAll = placedChordObj.dottedAll;
@@ -275,16 +276,16 @@ export class NotationService {
     return this.createPlacedChord(NOTE_END_OF_TRACK_DURATION, TempoUnit.DUPLE, [endNote]);
   }
 
-  public createDefaultTempo(): Tempo {
-    return new Tempo(DEFAULT_TEMPO_BPM_VALUE, TempoUnit.BPM);
+  public createDefaultTempo(): Duration {
+    return this.createDuration(DEFAULT_TEMPO_BPM_VALUE, TempoUnit.BPM);
   }
 
   public createDefaultTimeSignature(): TimeSignature {
     return new TimeSignature(DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
   }
 
-  public isBpmTempoUnit(tempo: Tempo) {
-    return tempo && tempo.unit === TempoUnit.BPM;
+  public isBpmTempoUnit(duration: Duration) {
+    return duration && duration.unit === TempoUnit.BPM;
   }
 
   public buildNoteWithTicks(abc: string, octave: number, velocity: number): Note {
@@ -360,10 +361,6 @@ export class NotationService {
 
   public createTimeSignature(numerator: number, denominator: number): TimeSignature {
     return new TimeSignature(numerator, denominator);
-  }
-
-  public createTempo(tempo: string, unit: TempoUnit): Tempo {
-    return new Tempo(tempo, unit);
   }
 
 }

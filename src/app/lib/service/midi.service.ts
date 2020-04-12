@@ -18,7 +18,6 @@ import { Control } from '../../model/control';
 import { Instrument } from '../../model/instrument';
 import { CommonService } from './common.service';
 import { TempoUnit } from '../../model/tempo-unit';
-import { Tempo } from '../../model/tempo';
 import { DeviceStore } from '../store/device-store';
 import { Measure } from '../../model/measure/measure';
 import { TimeSignature } from '../../model/measure/time-signature';
@@ -26,8 +25,6 @@ import { NotationService } from './notation.service';
 import { Note } from '../../model/note/note';
 import { PlacedChord } from '../../model/note/placed-chord';
 import { Chroma } from '../../model/note/pitch/chroma';
-import { Subdivision } from '../../model/note/duration/subdivision';
-import { Subdivisions } from '../../model/note/duration/subdivisions';
 import { Duration } from '../../model/note/duration/duration';
 
 const NOTE_ON = 144; // A command value of 144 is a "note on"
@@ -208,7 +205,7 @@ export class MidiService {
             midiTrack.instrument.name,
             midiTrack.instrument.percussion);
         }
-        const tempo: Tempo = this.notationService.createDefaultTempo();
+        const duration: Duration = this.notationService.createDefaultTempo();
         const timeSignature: TimeSignature = this.notationService.createDefaultTimeSignature();
         if (midiTrack.notes != null) {
           const measures = new Array<Measure>();
@@ -224,7 +221,7 @@ export class MidiService {
             placedChord.addNote(note);
             placedChords.push(placedChord);
           });
-          const measure: Measure = new Measure(tempo, timeSignature);
+          const measure: Measure = new Measure(duration, timeSignature);
           measure.placedChords = placedChords;
           measures.push(measure);
           track.measures = measures;

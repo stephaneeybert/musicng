@@ -1,15 +1,15 @@
 import { TimeSignature } from './time-signature';
 import { PlacedChord } from '../note/placed-chord';
-import { Tempo } from '../tempo';
+import { Duration } from '../note/duration/duration';
 
 export class Measure {
 
-  tempo: Tempo;
+  duration: Duration;
   timeSignature: TimeSignature;
   placedChords?: Array<PlacedChord>;
 
-  constructor(tempo: Tempo, timeSignature: TimeSignature) {
-    this.tempo = tempo;
+  constructor(duration: Duration, timeSignature: TimeSignature) {
+    this.duration = duration;
     this.timeSignature = timeSignature;
     this.placedChords;
   }
@@ -22,16 +22,21 @@ export class Measure {
     }
   }
 
-  public withNewTimeSignature(numerator: number, denominator: number): Measure { // TODO
-    return new Measure(new Tempo(this.tempo.value, this.tempo.unit), new TimeSignature(numerator, denominator));
+  public getDuration(): number {
+    return this.duration.calculate();
+  }
   }
 
-  public changeNumerator(numerator: number): Measure { // TODO
-    return this.withNewTimeSignature(numerator, this.timeSignature.denominator);
+  public createWithNewTimeSignature(numerator: number, denominator: number): Measure {
+    return new Measure(new Duration(this.duration.subdivision, this.duration.unit), new TimeSignature(numerator, denominator));
   }
 
-  public changeDenominator(denominator: number): Measure { // TODO
-    return this.withNewTimeSignature(this.timeSignature.numerator, denominator);
+  public createWithNewNumerator(numerator: number): Measure {
+    return this.createWithNewTimeSignature(numerator, this.timeSignature.denominator);
+  }
+
+  public createWithNewDenominator(denominator: number): Measure {
+    return this.createWithNewTimeSignature(this.timeSignature.numerator, denominator);
   }
 
 }

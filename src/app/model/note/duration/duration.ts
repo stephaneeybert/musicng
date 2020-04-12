@@ -11,6 +11,10 @@ export class Duration {
     this.unit = tempoUnit;
   }
 
+  public calculate(): number {
+    return (this.subdivision.left + this.subdivision.right);
+  }
+
   public render(): string {
     return (this.subdivision.left + this.subdivision.right) + this.unit;
   }
