@@ -56,7 +56,7 @@ export class NotationService {
   }
 
   public createMeasure(tempo: string, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
-    const timeSignature: TimeSignature = this.timeSignature(timeSignatureNumerator, timeSignatureDenominator);
+    const timeSignature: TimeSignature = this.createTimeSignature(timeSignatureNumerator, timeSignatureDenominator);
     const measure: Measure = new Measure(this.tempo(tempo, TempoUnit.BPM), timeSignature);
     return measure;
   }
@@ -124,7 +124,7 @@ export class NotationService {
               const measure: Measure = this.createMeasure(measureObj.tempo.value, parseInt(measureObj.timeSignature.numerator), parseInt(measureObj.timeSignature.denominator));
               measure.placedChords = new Array();
               measure.tempo = measureObj.tempo; // TODO Is that okay ? Use a createTempo method.
-              measure.timeSignature = measureObj.timeSignature // TODO Is that okay ?
+              measure.timeSignature = this.createTimeSignature(measureObj.timeSignature.numerator, measureObj.timeSignature.denominator);
               measureObj.placedChords.forEach((placedChordObj: any) => {
                 if (!placedChordObj.notes || placedChordObj.notes.length == 0) {
                   throw new Error('The measure placed chords could not be restored from the local storage.');
@@ -358,7 +358,7 @@ export class NotationService {
     return placedChod;
   }
 
-  public timeSignature(numerator: number, denominator: number): TimeSignature {
+  public createTimeSignature(numerator: number, denominator: number): TimeSignature {
     return new TimeSignature(numerator, denominator);
   }
 
