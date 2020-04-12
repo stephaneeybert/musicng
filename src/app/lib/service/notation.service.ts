@@ -22,7 +22,7 @@ const NOTE_SEPARATOR: string = '|';
 const NOTE_REST: string = 'rest';
 const NOTE_END_OF_TRACK: string = 'rest';
 const NOTE_END_OF_TRACK_OCTAVE: number = 9;
-const NOTE_END_OF_TRACK_DURATION: string = '4';
+const NOTE_END_OF_TRACK_DURATION: number = 4;
 
 const DEFAULT_TEMPO_BPM_VALUE: string = '128';
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4; // TODO Change to 4
@@ -100,7 +100,7 @@ export class NotationService {
   private parseTextChord(textChord: string): PlacedChord {
     const chordAndDuration: Array<string> = textChord.split(CHORD_DURATION_SEPARATOR);
     const chordNotes: string = chordAndDuration[0];
-    const chordDuration: string = chordAndDuration[1];
+    const chordDuration: number = parseInt(chordAndDuration[1], 10);
     const notes: Array<Note> = this.parseTextNotes(chordNotes);
     const placedChord: PlacedChord = this.createPlacedChord(chordDuration, TempoUnit.DUPLE, notes);
     return placedChord;
@@ -138,7 +138,7 @@ export class NotationService {
                       index++;
                     }
                   });
-                  const duration: string = String(parseInt(placedChordObj.cursor.noteDuration.subdivision.left, 10));
+                  const duration: number = parseInt(placedChordObj.cursor.noteDuration.subdivision.left, 10);
                   console.log('duration: ' + duration);
                   const tempoUnit: TempoUnit = placedChordObj.cursor.noteDuration.unit as TempoUnit; // TempoUnit[ placedChordObj.cursor.noteDuration.unit as keyof typeof TempoUnit ]; TODO Remove
                   console.log(tempoUnit);
@@ -184,8 +184,8 @@ export class NotationService {
     }
   }
 
-  public createPlacedChord(chordDuration: string, tempoUnit: TempoUnit, notes: Array<Note>): PlacedChord {
-    const duration: Duration = this.createDuration(chordDuration, tempoUnit); // TODO Do not hard code the duration unit here
+  public createPlacedChord(chordDuration: number, tempoUnit: TempoUnit, notes: Array<Note>): PlacedChord {
+    const duration: Duration = this.createDuration(chordDuration, tempoUnit);
     const cursor: Cursor = new Cursor(duration);
     const placedChord: PlacedChord = this.createEmptyChord(cursor);
     this.addNotes(placedChord, notes);
@@ -302,46 +302,45 @@ export class NotationService {
   }
 
   // TODO See https://music.stackexchange.com/questions/96150/how-to-express-a-duration-in-bpm-into-a-duration-in-division-subdivision
-  private subdivision(duration: string): Subdivision {
-    const intValue: number = parseInt(duration, 10);
-    if (intValue === Subdivisions.HUNDERD_TWENTY_EIGHTH) {
+  private subdivision(duration: number): Subdivision {
+    if (duration === Subdivisions.HUNDERD_TWENTY_EIGHTH) {
       return Subdivision.HUNDERD_TWENTY_EIGHTH;
-    } else if (intValue === (Subdivisions.HUNDERD_TWENTY_EIGHTH + Subdivisions.TWO_HUNDRED_FIFTY_SIXTH)) {
+    } else if (duration === (Subdivisions.HUNDERD_TWENTY_EIGHTH + Subdivisions.TWO_HUNDRED_FIFTY_SIXTH)) {
       return Subdivision.DOTTED_HUNDERD_TWENTY_EIGHTH;
-    } else if (intValue === Subdivisions.SIXTY_FOURTH) {
+    } else if (duration === Subdivisions.SIXTY_FOURTH) {
       return Subdivision.SIXTY_FOURTH;
-    } else if (intValue === (Subdivisions.SIXTY_FOURTH + Subdivisions.HUNDERD_TWENTY_EIGHTH)) {
+    } else if (duration === (Subdivisions.SIXTY_FOURTH + Subdivisions.HUNDERD_TWENTY_EIGHTH)) {
       return Subdivision.DOTTED_SIXTY_FOURTH;
-    } else if (intValue === Subdivisions.THIRTY_SECONDTH) {
+    } else if (duration === Subdivisions.THIRTY_SECONDTH) {
       return Subdivision.THIRTY_SECONDTH;
-    } else if (intValue === (Subdivisions.THIRTY_SECONDTH + Subdivisions.SIXTY_FOURTH)) {
+    } else if (duration === (Subdivisions.THIRTY_SECONDTH + Subdivisions.SIXTY_FOURTH)) {
       return Subdivision.DOTTED_THIRTY_SECOND;
-    } else if (intValue === Subdivisions.SIXTEENTH) {
+    } else if (duration === Subdivisions.SIXTEENTH) {
       return Subdivision.SIXTEENTH;
-    } else if (intValue === (Subdivisions.SIXTEENTH + Subdivisions.THIRTY_SECONDTH)) {
+    } else if (duration === (Subdivisions.SIXTEENTH + Subdivisions.THIRTY_SECONDTH)) {
       return Subdivision.DOTTED_SIXTEENTH;
-    } else if (intValue === Subdivisions.EIGHTH) {
+    } else if (duration === Subdivisions.EIGHTH) {
       return Subdivision.EIGHTH;
-    } else if (intValue === (Subdivisions.EIGHTH + Subdivisions.SIXTEENTH)) {
+    } else if (duration === (Subdivisions.EIGHTH + Subdivisions.SIXTEENTH)) {
       return Subdivision.DOTTED_EIGHTH;
-    } else if (intValue === Subdivisions.QUARTER) {
+    } else if (duration === Subdivisions.QUARTER) {
       return Subdivision.QUARTER;
-    } else if (intValue === (Subdivisions.QUARTER + Subdivisions.EIGHTH)) {
+    } else if (duration === (Subdivisions.QUARTER + Subdivisions.EIGHTH)) {
       return Subdivision.DOTTED_QUARTER;
-    } else if (intValue === Subdivisions.HALF) {
+    } else if (duration === Subdivisions.HALF) {
       return Subdivision.HALF;
-    } else if (intValue === (Subdivisions.HALF + Subdivisions.QUARTER)) {
+    } else if (duration === (Subdivisions.HALF + Subdivisions.QUARTER)) {
       return Subdivision.DOTTED_HALF;
-    } else if (intValue === Subdivisions.WHOLE) {
+    } else if (duration === Subdivisions.WHOLE) {
       return Subdivision.WHOLE;
-    } else if (intValue === Subdivisions.NONE) {
+    } else if (duration === Subdivisions.NONE) {
       return Subdivision.NONE;
     } else {
       throw new Error('Unknown subdivision for duration: ' + duration);
     }
   }
 
-  private createDuration(duration: string, tempoUnit: TempoUnit) {
+  private createDuration(duration: number, tempoUnit: TempoUnit) {
     return new Duration(this.subdivision(duration), tempoUnit);
   }
 

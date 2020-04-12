@@ -31,7 +31,7 @@ export class GeneratorService {
   CHORD_WIDTH: number = 3;
   CHORDS_PER_MEASURE: number = 4;
   SIMILAR_NOTE_MIN: number = 2;
-  CHORD_DURATION = '4'; // TODO What duration to use ?
+  CHORD_DURATION = 4; // TODO What duration to use ? Maybe a random duration per chord ?
   NOTE_OCTAVE: number = 4; // TODO What octave to use ?
 
   public generateSoundtrack(): Soundtrack {
