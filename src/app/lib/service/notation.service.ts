@@ -22,7 +22,7 @@ const NOTE_SEPARATOR: string = '|';
 const NOTE_REST: string = 'rest';
 const NOTE_END_OF_TRACK: string = 'rest';
 const NOTE_END_OF_TRACK_OCTAVE: number = 9;
-const NOTE_END_OF_TRACK_DURATION: number = 4;
+const NOTE_END_OF_TRACK_DURATION: number = 1;
 
 const DEFAULT_TEMPO_BPM_VALUE: string = '128';
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4; // TODO Change to 4
