@@ -16,7 +16,7 @@ export class Duration {
   }
 
   public render(): string {
-    return (this.subdivision.left + this.subdivision.right) + this.unit;
+    return this.calculate() + this.unit;
   }
 
 }
