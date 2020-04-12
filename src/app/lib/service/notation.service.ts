@@ -332,7 +332,7 @@ export class NotationService {
     return new TimeSignature(numerator, denominator);
   }
 
-  public tempo(tempo: string, unit: string): Tempo {
+  public tempo(tempo: string, unit: TempoUnit): Tempo {
     return new Tempo(tempo, unit);
   }
 
