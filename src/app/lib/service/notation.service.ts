@@ -138,7 +138,7 @@ export class NotationService {
                       index++;
                     }
                   });
-                  const duration: number = parseInt(placedChordObj.cursor.noteDuration.subdivision.left, 10);
+                  const duration: number = parseInt(placedChordObj.cursor.noteDuration.subdivision.left, 10) + parseInt(placedChordObj.cursor.noteDuration.subdivision.right, 10);
                   console.log('duration: ' + duration);
                   const tempoUnit: TempoUnit = placedChordObj.cursor.noteDuration.unit as TempoUnit; // TempoUnit[ placedChordObj.cursor.noteDuration.unit as keyof typeof TempoUnit ]; TODO Remove
                   console.log(tempoUnit);
