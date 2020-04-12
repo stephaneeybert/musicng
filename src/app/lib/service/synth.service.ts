@@ -37,14 +37,10 @@ export class SynthService {
   }
 
   public createDeviceSynth(): any {
-    const synth = new Tone.PolySynth(8, Tone.Synth, {
+
+    const synth: any = new Tone.PolySynth(8, Tone.Synth, {
       oscillator: {
-      },
-      envelope: {
-        attack: 0.02,
-        decay: 0.1,
-        sustain: 0.3,
-        release: 1
+        partials: [0, 2, 3, 4]
       }
     }).toMaster();
 
