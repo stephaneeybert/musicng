@@ -139,8 +139,10 @@ export class NotationService {
                     }
                   });
                   const duration: number = parseInt(placedChordObj.cursor.noteDuration.subdivision.left, 10) + parseInt(placedChordObj.cursor.noteDuration.subdivision.right, 10);
-                  console.log('duration: ' + duration);
-                  const tempoUnit: TempoUnit = placedChordObj.cursor.noteDuration.unit as TempoUnit; // TempoUnit[ placedChordObj.cursor.noteDuration.unit as keyof typeof TempoUnit ]; TODO Remove
+                  if (!placedChordObj.cursor || !placedChordObj.cursor.noteDuration || !placedChordObj.cursor.noteDuration.unit) {
+                    throw new Error('The duration unit could not be restored from the local storage.');
+                  }
+                  const tempoUnit: TempoUnit = placedChordObj.cursor.noteDuration.unit as TempoUnit;
                   console.log(tempoUnit);
                   const placedChord: PlacedChord = this.createPlacedChord(duration, tempoUnit, notes);
                   placedChord.dottedAll = placedChordObj.dottedAll;
