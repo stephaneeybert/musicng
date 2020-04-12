@@ -1,20 +1,20 @@
 // import * as vexflow from 'vexflow';
 import { Note } from './note';
-import { Cursor } from './cursor';
+import { Duration } from './duration/duration';
 
 export class PlacedChord {
 
   notes: Array<Note>;
-  cursor: Cursor;
+  duration: Duration;
   // TODO This causes an error
   // https://stackoverflow.com/q/60805037/958373
   staveNote: any;
   // staveNote: vexflow.Flow.StaveNote;
   dottedAll: boolean;
 
-  constructor(cursor: Cursor) {
+  constructor(duration: Duration) {
     this.notes =  new Array<Note>();
-    this.cursor = cursor;
+    this.duration = duration;
     this.dottedAll = false;
   }
 
@@ -54,6 +54,6 @@ export class PlacedChord {
   }
 
   public renderDuration(): string {
-    return this.cursor.render();
+    return this.duration.render();
   }
 }

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Chroma } from '../../model/note/pitch/chroma';
 import { Octave } from '../../model/note/pitch/octave';
-import { Cursor } from '../../model/note/cursor';
 import { Subdivision } from '../../model/note/duration/subdivision';
 import { Duration } from '../../model/note/duration/duration';
 import { Note } from '../../model/note/note';
@@ -124,33 +123,38 @@ export class NotationService {
             if (measureObj.placedChords && measureObj.placedChords.length > 0) {
               const measure: Measure = this.createMeasure(measureObj.tempo.value, parseInt(measureObj.timeSignature.numerator), parseInt(measureObj.timeSignature.denominator));
               measure.placedChords = new Array();
+              measure.tempo = measureObj.tempo; // TODO Is that okay ? Use a createTempo method.
+              measure.timeSignature = measureObj.timeSignature // TODO Is that okay ?
               measureObj.placedChords.forEach((placedChordObj: any) => {
-                if (placedChordObj.notes && placedChordObj.notes.length > 0 && placedChordObj.cursor && placedChordObj.cursor.noteDuration && placedChordObj.cursor.noteDuration.subdivision) {
-                  const notes: Array<Note> = new Array();
-                  let index: number = 0;
-                  placedChordObj.notes.forEach((noteObj: any) => {
-                    if (noteObj.pitch) {
-                      const note: Note = this.createNote(index, noteObj.pitch.chroma.value, noteObj.pitch.octave.value);
-                      note.pitch.accidental = noteObj.pitch.accidental;
-                      note.dotted = noteObj.dotted;
-                      note.velocity = noteObj.velocity;
-                      notes.push(note);
-                      index++;
-                    }
-                  });
-                  const duration: number = parseInt(placedChordObj.cursor.noteDuration.subdivision.left, 10) + parseInt(placedChordObj.cursor.noteDuration.subdivision.right, 10);
-                  if (!placedChordObj.cursor || !placedChordObj.cursor.noteDuration || !placedChordObj.cursor.noteDuration.unit) {
-                    throw new Error('The duration unit could not be restored from the local storage.');
+                if (!placedChordObj.notes || placedChordObj.notes.length == 0) {
+                  throw new Error('The measure placed chords could not be restored from the local storage.');
+                }
+                if (!placedChordObj.noteDuration || !placedChordObj.noteDuration.subdivision) {
+                  throw new Error('The measure duration or subdivision could not be restored from the local storage.');
+                }
+                const notes: Array<Note> = new Array();
+                let index: number = 0;
+                placedChordObj.notes.forEach((noteObj: any) => {
+                  if (noteObj.pitch) {
+                    const note: Note = this.createNote(index, noteObj.pitch.chroma.value, noteObj.pitch.octave.value);
+                    note.pitch.accidental = noteObj.pitch.accidental;
+                    note.dotted = noteObj.dotted;
+                    note.velocity = noteObj.velocity;
+                    notes.push(note);
+                    index++;
                   }
-                  const tempoUnit: TempoUnit = placedChordObj.cursor.noteDuration.unit as TempoUnit;
-                  console.log(tempoUnit);
-                  const placedChord: PlacedChord = this.createPlacedChord(duration, tempoUnit, notes);
-                  placedChord.dottedAll = placedChordObj.dottedAll;
-                  if (measure.placedChords) {
-                    measure.placedChords.push(placedChord);
-                  } else {
-                    throw new Error('The measure placed chords array has not yet been instantiated.');
-                  }
+                });
+                const duration: number = parseInt(placedChordObj.noteDuration.subdivision.left, 10) + parseInt(placedChordObj.noteDuration.subdivision.right, 10);
+                if (!placedChordObj.noteDuration || !placedChordObj.noteDuration.unit) {
+                  throw new Error('The duration unit could not be restored from the local storage.');
+                }
+                const tempoUnit: TempoUnit = placedChordObj.noteDuration.unit as TempoUnit;
+                const placedChord: PlacedChord = this.createPlacedChord(duration, tempoUnit, notes);
+                placedChord.dottedAll = placedChordObj.dottedAll;
+                if (measure.placedChords) {
+                  measure.placedChords.push(placedChord);
+                } else {
+                  throw new Error('The measure placed chords array has not yet been instantiated.');
                 }
               });
               track.measures.push(measure);
@@ -188,8 +192,7 @@ export class NotationService {
 
   public createPlacedChord(chordDuration: number, tempoUnit: TempoUnit, notes: Array<Note>): PlacedChord {
     const duration: Duration = this.createDuration(chordDuration, tempoUnit);
-    const cursor: Cursor = new Cursor(duration);
-    const placedChord: PlacedChord = this.createEmptyChord(cursor);
+    const placedChord: PlacedChord = this.createEmptyChord(duration);
     this.addNotes(placedChord, notes);
     return placedChord;
   }
@@ -291,8 +294,8 @@ export class NotationService {
     return note;
   }
 
-  public placeEmptyChord(noteDuration: Duration): PlacedChord {
-    return this.createEmptyChord(new Cursor(noteDuration));
+  public placeEmptyChord(duration: Duration): PlacedChord {
+    return this.createEmptyChord(duration);
   }
 
   private toChroma(value: string): Chroma {
@@ -350,8 +353,8 @@ export class NotationService {
     return new Pitch(chroma, octave);
   }
 
-  private createEmptyChord(cursor: Cursor): PlacedChord {
-    const placedChod: PlacedChord = new PlacedChord(cursor);
+  private createEmptyChord(duration: Duration): PlacedChord {
+    const placedChod: PlacedChord = new PlacedChord(duration);
     return placedChod;
   }
 
