@@ -262,7 +262,7 @@ export class MidiService {
     await parseArrayBuffer(rawMidiData)
     .then((jsonMidi: IMidiFile) => {
       if (jsonMidi.format === 1) {
-        jsonMidi = this.addCursorTime(jsonMidi);
+        jsonMidi = this.addEventTime(jsonMidi);
         const assumedTempoTrackIndex = 0;
         if (this.isTempoTrack(jsonMidi.tracks[assumedTempoTrackIndex])) {
           jsonMidi = this.copyTempoTrackEventsAndSortByTime(assumedTempoTrackIndex, jsonMidi);
@@ -467,7 +467,7 @@ export class MidiService {
 
   // Add a time property to all events of all tracks
   // representing the absolute time of each event
-  private addCursorTime(jsonMidi: IMidiFile): IMidiFile {
+  private addEventTime(jsonMidi: IMidiFile): IMidiFile {
     jsonMidi.tracks.forEach((midiTrack: TMidiEvent[], trackIndex: number) => {
       let time: number = 0;
       midiTrack.forEach((midiEvent: any, eventIndex: number) => {
