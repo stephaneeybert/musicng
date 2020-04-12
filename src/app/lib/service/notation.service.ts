@@ -300,16 +300,38 @@ export class NotationService {
   // TODO See https://music.stackexchange.com/questions/96150/how-to-express-a-duration-in-bpm-into-a-duration-in-division-subdivision
   private subdivision(duration: string): Subdivision {
     const intValue: number = parseInt(duration, 10);
-    if (intValue === Subdivision.EIGHTH.left) { // TODO Add more if cases
-      return Subdivision.EIGHTH;
-    } else if (intValue === Subdivision.QUARTER.left) {
-      return Subdivision.QUARTER;
-    } else if (intValue === Subdivision.SIXTEENTH.left) {
+    if (intValue === Subdivisions.HUNDERD_TWENTY_EIGHTH) {
+      return Subdivision.HUNDERD_TWENTY_EIGHTH;
+    } else if (intValue === (Subdivisions.HUNDERD_TWENTY_EIGHTH + Subdivisions.TWO_HUNDRED_FIFTY_SIXTH)) {
+      return Subdivision.DOTTED_HUNDERD_TWENTY_EIGHTH;
+    } else if (intValue === Subdivisions.SIXTY_FOURTH) {
+      return Subdivision.SIXTY_FOURTH;
+    } else if (intValue === (Subdivisions.SIXTY_FOURTH + Subdivisions.HUNDERD_TWENTY_EIGHTH)) {
+      return Subdivision.DOTTED_SIXTY_FOURTH;
+    } else if (intValue === Subdivisions.THIRTY_SECONDTH) {
+      return Subdivision.THIRTY_SECONDTH;
+    } else if (intValue === (Subdivisions.THIRTY_SECONDTH + Subdivisions.SIXTY_FOURTH)) {
+      return Subdivision.DOTTED_THIRTY_SECOND;
+    } else if (intValue === Subdivisions.SIXTEENTH) {
       return Subdivision.SIXTEENTH;
-    } else if (intValue === Subdivision.HALF.left) {
+    } else if (intValue === (Subdivisions.SIXTEENTH + Subdivisions.THIRTY_SECONDTH)) {
+      return Subdivision.DOTTED_SIXTEENTH;
+    } else if (intValue === Subdivisions.EIGHTH) {
+      return Subdivision.EIGHTH;
+    } else if (intValue === (Subdivisions.EIGHTH + Subdivisions.SIXTEENTH)) {
+      return Subdivision.DOTTED_EIGHTH;
+    } else if (intValue === Subdivisions.QUARTER) {
+      return Subdivision.QUARTER;
+    } else if (intValue === (Subdivisions.QUARTER + Subdivisions.EIGHTH)) {
+      return Subdivision.DOTTED_QUARTER;
+    } else if (intValue === Subdivisions.HALF) {
       return Subdivision.HALF;
-    } else if (intValue === Subdivision.THIRTY_SECOND.left) {
-      return Subdivision.THIRTY_SECOND;
+    } else if (intValue === (Subdivisions.HALF + Subdivisions.QUARTER)) {
+      return Subdivision.DOTTED_HALF;
+    } else if (intValue === Subdivisions.WHOLE) {
+      return Subdivision.WHOLE;
+    } else if (intValue === Subdivisions.NONE) {
+      return Subdivision.NONE;
     } else {
       throw new Error('Unknown subdivision for duration: ' + duration);
     }

@@ -6,7 +6,7 @@ export class Subdivision {
   static readonly DOTTED_HUNDERD_TWENTY_EIGHTH = new Subdivision(Subdivisions.HUNDERD_TWENTY_EIGHTH, Subdivisions.TWO_HUNDRED_FIFTY_SIXTH);
   static readonly SIXTY_FOURTH = new Subdivision(Subdivisions.SIXTY_FOURTH, 0);
   static readonly DOTTED_SIXTY_FOURTH = new Subdivision(Subdivisions.SIXTY_FOURTH, Subdivisions.HUNDERD_TWENTY_EIGHTH);
-  static readonly THIRTY_SECOND = new Subdivision(Subdivisions.THIRTY_SECONDTH, 0);
+  static readonly THIRTY_SECONDTH = new Subdivision(Subdivisions.THIRTY_SECONDTH, 0);
   static readonly DOTTED_THIRTY_SECOND = new Subdivision(Subdivisions.THIRTY_SECONDTH, Subdivisions.SIXTY_FOURTH);
   static readonly SIXTEENTH = new Subdivision(Subdivisions.SIXTEENTH, 0);
   static readonly DOTTED_SIXTEENTH = new Subdivision(Subdivisions.SIXTEENTH, Subdivisions.THIRTY_SECONDTH);
