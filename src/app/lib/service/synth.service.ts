@@ -152,13 +152,13 @@ export class SynthService {
               }
 
               const midiNote = Tone.Frequency(note.render()).toMidi();
-              Tone.Draw.schedule(() => {
+              Tone.Draw.schedule((actualTime: any) => {
                 if (!this.notationService.isEndOfTrackNote(note)) {
                   this.keyboardService.pressKey(soundtrack.keyboard, midiNote);
                   this.sheetService.vexflowHighlightStaveNote(placedChord);
                 }
               }, triggerTime);
-              Tone.Draw.schedule(() => {
+              Tone.Draw.schedule((actualTime: any) => {
                 if (!this.notationService.isEndOfTrackNote(note)) {
                   this.keyboardService.unpressKey(soundtrack.keyboard, midiNote);
                   this.sheetService.vexflowUnhighlightStaveNote(placedChord);
