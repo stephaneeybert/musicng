@@ -53,7 +53,11 @@ export class PlacedChord {
     return abc;
   }
 
+  public getDuration(): number {
+    return this.duration.renderValue();
+  }
+
   public renderDuration(): string {
-    return this.duration.render();
+    return this.duration.renderValueWithUnit();
   }
 }

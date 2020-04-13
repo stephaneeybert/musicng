@@ -29,7 +29,6 @@ export class GeneratorService {
   NB_CHORDS: number = 120;
   CHROMA_SHIFT_TIMES: number = 2;
   CHORD_WIDTH: number = 3;
-  CHORDS_PER_MEASURE: number = 4;
   SIMILAR_NOTE_MIN: number = 2;
   CHORD_DURATION = 4; // TODO What duration to use ? Maybe a random duration per chord ?
   NOTE_OCTAVE: number = 4; // TODO What octave to use ?
@@ -58,7 +57,7 @@ export class GeneratorService {
     generatedChords
       .map((placedChord: PlacedChord) => {
         if (measure.placedChords) {
-          if (measure.placedChords.length >= this.CHORDS_PER_MEASURE) {
+          if (measure.getPlacedChordsNbBeats() >= measure.getNbBeats()) {
             measure = this.notationService.createMeasureWithDefaultTempo();
             measure.placedChords = new Array<PlacedChord>();
             measures.push(measure);
@@ -148,6 +147,7 @@ export class GeneratorService {
       const chord: Array<string> = new Array();
 
       // Start on the Do chord and then randomly pick a chord
+      // TODO Change all == by ===
       const chromaNoteIndex = (nbAddedChord == 0) ? 0 : this.randomlyPickChroma(previousChromaNoteIndex);
       for (let noteIndex = 0; noteIndex < this.CHORD_WIDTH; noteIndex++) {
         chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);

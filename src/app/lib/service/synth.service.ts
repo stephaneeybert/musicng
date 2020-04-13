@@ -184,12 +184,12 @@ export class SynthService {
    * @param boolean ramp If true, the tempo will ramp up or down otherwise it will change instantly.
    */
   private updateTempo(previousMeasure: Measure, measure: Measure, ramp: boolean) {
-    if (previousMeasure == null || previousMeasure.duration.subdivision.left !== measure.duration.subdivision.left || previousMeasure.duration.subdivision.right !== measure.duration.subdivision.right) {
-      if (this.notationService.isBpmTempoUnit(measure.duration)) {
+    if (previousMeasure == null || previousMeasure.tempo.subdivision.left !== measure.tempo.subdivision.left || previousMeasure.tempo.subdivision.right !== measure.tempo.subdivision.right) {
+      if (this.notationService.isBpmTempoUnit(measure.tempo)) {
         if (ramp) {
-          Tone.Transport.bpm.rampTo(measure.getDuration(), 1);
+          Tone.Transport.bpm.rampTo(measure.getTempo(), 1);
         } else {
-          Tone.Transport.bpm.value = measure.getDuration();
+          Tone.Transport.bpm.value = measure.getTempo();
         }
       }
     }

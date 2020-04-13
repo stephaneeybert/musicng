@@ -130,14 +130,14 @@ export class NotationService {
               this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
               throw new Error('The placed chords could not be accessed from the untyped soundtrack.');
             }
-            if (!measureObj.duration || !measureObj.duration.subdivision || !this.is(measureObj.duration.subdivision.left) || !this.is(measureObj.duration.subdivision.right) || !measureObj.duration.unit) {
+            if (!measureObj.tempo || !measureObj.tempo.subdivision || !this.is(measureObj.tempo.subdivision.left) || !this.is(measureObj.tempo.subdivision.right) || !measureObj.tempo.unit) {
                 this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
                 throw new Error('The measure duration subdivision or unit could not be accessed from the untyped soundtrack.');
             }
-            const measureDuration: number = parseInt(measureObj.duration.subdivision.left, 10) + parseInt(measureObj.duration.subdivision.right, 10);
+            const measureDuration: number = parseInt(measureObj.tempo.subdivision.left, 10) + parseInt(measureObj.tempo.subdivision.right, 10);
             const measure: Measure = this.createMeasure(measureDuration, parseInt(measureObj.timeSignature.numerator), parseInt(measureObj.timeSignature.denominator));
             measure.placedChords = new Array();
-            measure.duration = this.createDuration(measureDuration, measureObj.duration.unit);
+            measure.tempo = this.createDuration(measureDuration, measureObj.tempo.unit);
             measure.timeSignature = this.createTimeSignature(measureObj.timeSignature.numerator, measureObj.timeSignature.denominator);
             measureObj.placedChords.forEach((placedChordObj: any) => {
               if (!placedChordObj.notes || placedChordObj.notes.length == 0) {
