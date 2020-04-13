@@ -57,6 +57,7 @@ export class GeneratorService {
     generatedChords
       .map((placedChord: PlacedChord) => {
         if (measure.placedChords) {
+          // The number of beats of the chords placed in a measure must equal the number of beats of the measure
           if (measure.getPlacedChordsNbBeats() >= measure.getNbBeats()) {
             measure = this.notationService.createMeasureWithDefaultTempo();
             measure.placedChords = new Array<PlacedChord>();
