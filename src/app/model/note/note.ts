@@ -1,6 +1,7 @@
 import { Pitch } from './pitch/pitch';
 
-const NOTE_VELOCITY_MAX = 127;
+const VELOCITY_TONEJS_MAX = 1;
+const VELOCITY_MIDI_MAX = 127;
 
 export class Note {
 
@@ -11,17 +12,26 @@ export class Note {
   velocity?: number;
   dotted: boolean;
 
-  constructor(index: number, pitch: Pitch, velocity?: number) {
+  constructor(index: number, pitch: Pitch, midiVelocity?: number) {
     this.index = index;
     this.pitch = pitch;
-    if (velocity != null) {
-      if (velocity >= 0 && velocity <= NOTE_VELOCITY_MAX) {
-        this.velocity = velocity;
-      } else {
-        throw new Error('The velocity ' + velocity + ' must be greater or equal to 0 and lesser or equal to ' + NOTE_VELOCITY_MAX);
-      }
+    if (midiVelocity != null) {
+      this.velocity = this.velocityMidiToTonejs(midiVelocity);
+    } else {
+      this.velocity = VELOCITY_TONEJS_MAX;
     }
     this.dotted = false;
+  }
+
+  public velocityMidiToTonejs(midiVelocity: number): number {
+    if (midiVelocity > VELOCITY_MIDI_MAX) {
+      throw new Error('The MIDI velocity ' + midiVelocity + ' is greater than the maximum MIDI velocity ' + VELOCITY_MIDI_MAX);
+    }
+    return midiVelocity / VELOCITY_MIDI_MAX;
+  }
+
+  public velocityTonejsToMidi(tonejsVelocity: number): number {
+    return tonejsVelocity * VELOCITY_MIDI_MAX;
   }
 
   public renderChroma(): string {
