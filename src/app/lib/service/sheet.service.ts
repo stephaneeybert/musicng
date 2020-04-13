@@ -94,7 +94,7 @@ export class SheetService {
         });
         staveNote.draw();
       } else {
-        console.warn('The placed chord has no vexflow stave note');
+        throw new Error('The placed chord has no vexflow stave note');
       }
     }
   }
