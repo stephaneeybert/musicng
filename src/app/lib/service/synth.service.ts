@@ -38,9 +38,9 @@ export class SynthService {
 
   public createDeviceSynth(): any {
 
-    const synth: any = new Tone.PolySynth(8, Tone.Synth, {
+    const synth: any = new Tone.PolySynth(1, Tone.Synth, {
       oscillator: {
-        partials: [0, 2, 3, 4]
+        type: 'sine',
       }
     }).toMaster();
 
