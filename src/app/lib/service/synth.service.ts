@@ -164,6 +164,7 @@ export class SynthService {
                   this.sheetService.vexflowUnhighlightStaveNote(placedChord);
                 } else {
                   this.setPlaying(soundtrack, false);
+                  this.keyboardService.unpressAll(soundtrack.keyboard);
                 }
               }, releaseTime);
             });
