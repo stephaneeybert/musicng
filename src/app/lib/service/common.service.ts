@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Injectable({
   providedIn: 'root'
@@ -6,6 +7,10 @@ import { Injectable } from '@angular/core';
 export class CommonService {
 
   constructor() { }
+
+  public is(value: any): boolean {
+    return coerceBooleanProperty(value);
+  }
 
   public normalizeName(name: string): string {
     return name ? name.replace(/\s/g, '') : '';

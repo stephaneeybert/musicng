@@ -13,6 +13,8 @@ import { Soundtrack } from '@app/model/soundtrack';
 import { Track } from '@app/model/track';
 import { CommonService } from './common.service';
 import { Subdivisions } from '@app/model/note/duration/subdivisions';
+import { SoundtrackStorageService } from '@app/views/soundtrack/soundtrack-storage.service';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 const CHORD_SEPARATOR: string = ' ';
 const CHORD_DURATION_SEPARATOR: string = '/';
@@ -23,7 +25,7 @@ const NOTE_END_OF_TRACK_OCTAVE: number = 9;
 const NOTE_END_OF_TRACK_DURATION: number = 1;
 
 const DEFAULT_TEMPO_BPM_VALUE: number = 128;
-const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4; // TODO Change to 4
+const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
 const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 
 const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
@@ -36,7 +38,8 @@ const CHROMAS_SYLLABIC: Map<string, string> = new Map([ ['C', 'Do'], ['D', 'Re.m
 export class NotationService {
 
   constructor(
-    private commonService: CommonService
+    private commonService: CommonService,
+    private soundtrackStorageService: SoundtrackStorageService
   ) { }
 
   public parseMeasures(textMeasures: Array<string>): Array<Measure> {
@@ -104,6 +107,10 @@ export class NotationService {
     return placedChord;
   }
 
+  private is(value: any): boolean {
+    return this.commonService.is(value);
+  }
+
   public objectToNewSoundtrack(soundtrackObj: any): Soundtrack {
     const soundtrack: Soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
     soundtrack.id = soundtrackObj.id;
@@ -119,47 +126,51 @@ export class NotationService {
         track.measures = new Array();
         if (trackObj.measures && trackObj.measures.length > 0) {
           trackObj.measures.forEach((measureObj: any) => {
-            if (measureObj.placedChords && measureObj.placedChords.length > 0) {
-              const measure: Measure = this.createMeasure(measureObj.duration.subdivision.value, parseInt(measureObj.timeSignature.numerator), parseInt(measureObj.timeSignature.denominator));
-              measure.placedChords = new Array();
-              if (!measureObj.duration || !measureObj.duration.subdivision || !measureObj.duration.subdivision.left || !measureObj.duration.subdivision.right || !measureObj.duration.unit) {
-                // TODO empty local storage of soundtracks
-                throw new Error('The measure duration subdivision or unit could not be restored from the local storage.');
+            if (!measureObj.placedChords || measureObj.placedChords.length == 0) {
+              this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
+              throw new Error('The placed chords could not be accessed from the untyped soundtrack.');
+            }
+            if (!measureObj.duration || !measureObj.duration.subdivision || !this.is(measureObj.duration.subdivision.left) || !this.is(measureObj.duration.subdivision.right) || !measureObj.duration.unit) {
+                this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
+                throw new Error('The measure duration subdivision or unit could not be accessed from the untyped soundtrack.');
+            }
+            const measureDuration: number = parseInt(measureObj.duration.subdivision.left, 10) + parseInt(measureObj.duration.subdivision.right, 10);
+            const measure: Measure = this.createMeasure(measureDuration, parseInt(measureObj.timeSignature.numerator), parseInt(measureObj.timeSignature.denominator));
+            measure.placedChords = new Array();
+            measure.duration = this.createDuration(measureDuration, measureObj.duration.unit);
+            measure.timeSignature = this.createTimeSignature(measureObj.timeSignature.numerator, measureObj.timeSignature.denominator);
+            measureObj.placedChords.forEach((placedChordObj: any) => {
+              if (!placedChordObj.notes || placedChordObj.notes.length == 0) {
+                this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
+                throw new Error('The notes could not be accessed from the untyped soundtrack.');
               }
-              const measureDuration: number = parseInt(measureObj.duration.subdivision.left, 10) + parseInt(measureObj.duration.subdivision.right, 10);
-              measure.duration = this.createDuration(measureDuration, measureObj.duration.unit);
-              measure.timeSignature = this.createTimeSignature(measureObj.timeSignature.numerator, measureObj.timeSignature.denominator);
-              measureObj.placedChords.forEach((placedChordObj: any) => {
-                if (!placedChordObj.notes || placedChordObj.notes.length == 0) {
-                  throw new Error('The measure placed chords could not be restored from the local storage.');
-                }
-                const notes: Array<Note> = new Array();
-                let index: number = 0;
-                placedChordObj.notes.forEach((noteObj: any) => {
-                  if (noteObj.pitch) {
-                    const note: Note = this.createNote(index, noteObj.pitch.chroma.value, noteObj.pitch.octave.value);
-                    note.pitch.accidental = noteObj.pitch.accidental;
-                    note.dotted = noteObj.dotted;
-                    note.velocity = noteObj.velocity;
-                    notes.push(note);
-                    index++;
-                  }
-                });
-                if (!placedChordObj.noteDuration || !placedChordObj.noteDuration.subdivision || !placedChordObj.noteDuration.subdivision.left || !placedChordObj.noteDuration.subdivision.right || !placedChordObj.noteDuration.unit) {
-                  throw new Error('The chord duration subdivistion or unit could not be restored from the local storage.');
-                }
-                const duration: number = parseInt(placedChordObj.noteDuration.subdivision.left, 10) + parseInt(placedChordObj.noteDuration.subdivision.right, 10);
-                const tempoUnit: TempoUnit = placedChordObj.noteDuration.unit as TempoUnit;
-                const placedChord: PlacedChord = this.createPlacedChord(duration, tempoUnit, notes);
-                placedChord.dottedAll = placedChordObj.dottedAll;
-                if (measure.placedChords) {
-                  measure.placedChords.push(placedChord);
-                } else {
-                  throw new Error('The measure placed chords array has not yet been instantiated.');
+              const notes: Array<Note> = new Array();
+              let index: number = 0;
+              placedChordObj.notes.forEach((noteObj: any) => {
+                if (noteObj.pitch) {
+                  const note: Note = this.createNote(index, noteObj.pitch.chroma.value, noteObj.pitch.octave.value);
+                  note.pitch.accidental = noteObj.pitch.accidental;
+                  note.dotted = noteObj.dotted;
+                  note.velocity = noteObj.velocity;
+                  notes.push(note);
+                  index++;
                 }
               });
-              track.measures.push(measure);
-            }
+              if (!placedChordObj.duration || !placedChordObj.duration.subdivision || !this.is(placedChordObj.duration.subdivision.left) || !this.is(placedChordObj.duration.subdivision.right) || !placedChordObj.duration.unit) {
+                this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
+                throw new Error('The placed chord duration subdivistion or unit could not be accessed from the untyped soundtrack.');
+              }
+              const duration: number = parseInt(placedChordObj.duration.subdivision.left, 10) + parseInt(placedChordObj.duration.subdivision.right, 10);
+              const tempoUnit: TempoUnit = placedChordObj.duration.unit as TempoUnit;
+              const placedChord: PlacedChord = this.createPlacedChord(duration, tempoUnit, notes);
+              placedChord.dottedAll = placedChordObj.dottedAll;
+              if (!measure.placedChords) {
+                this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
+                throw new Error('The measure placed chords array could not be accessed from the untyped soundtrack.');
+              }
+              measure.placedChords.push(placedChord);
+            });
+            track.measures.push(measure);
           });
         }
         soundtrack.tracks.push(track);
