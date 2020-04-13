@@ -32,7 +32,6 @@ export class KeyboardService {
         keyboard.toggleIndex(keyIndex, false);
       }
     }
-
   }
 
   public pressKey(keyboard: any, midiNote: number): void {
