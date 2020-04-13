@@ -15,7 +15,7 @@ import { map, filter, take } from 'rxjs/operators';
 
 // Observation has shown that a delay between creating the service
 // and starting the transport is required for the transport to work
-const TRANSPORT_START_DELAY = 5;
+const TRANSPORT_START_DELAY = 3;
 const TRANSPORT_STATE_STARTED = 'started';
 
 @Injectable({
