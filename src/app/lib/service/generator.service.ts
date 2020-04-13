@@ -47,8 +47,6 @@ export class GeneratorService {
 
     // Have a few end of track notes as a note may not be played by an unreliable synth
     this.notationService.addEndOfTrackNote(generatedChords);
-    this.notationService.addEndOfTrackNote(generatedChords);
-    this.notationService.addEndOfTrackNote(generatedChords);
 
     const measures: Array<Measure> = new Array<Measure>();
     let measure: Measure = this.notationService.createMeasureWithDefaultTempo();
