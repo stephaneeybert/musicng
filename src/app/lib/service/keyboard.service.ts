@@ -26,15 +26,24 @@ export class KeyboardService {
     return piano;
   }
 
-  public pressKey(keyboard: any, midiNote: number) {
+  public unpressAll(keyboard: any): void {
+    if (keyboard.range && keyboard.range.low && keyboard.range.high) {
+      for (let keyIndex: number = 0; keyIndex <= (keyboard.range.high - keyboard.range.low); keyIndex++) {
+        keyboard.toggleIndex(keyIndex, false);
+      }
+    }
+
+  }
+
+  public pressKey(keyboard: any, midiNote: number): void {
     this.toggleKey(keyboard, midiNote, true);
   }
 
-  public unpressKey(keyboard: any, midiNote: number) {
+  public unpressKey(keyboard: any, midiNote: number): void {
     this.toggleKey(keyboard, midiNote, false);
   }
 
-  private toggleKey(keyboard: any, midiNote: number, isOn: boolean) {
+  private toggleKey(keyboard: any, midiNote: number, isOn: boolean): void {
     if ((RANGE_MIN <= midiNote) && (midiNote <= RANGE_MAX)) {
       if (keyboard != null) { // TODO Do I need this not null ? What about using is() ?
         keyboard.toggleKey(midiNote, isOn);
