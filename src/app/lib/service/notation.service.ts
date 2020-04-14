@@ -283,7 +283,7 @@ export class NotationService {
 
   public createLastOfTrackPlacedChord(): PlacedChord {
     const index: number = 0;
-    const endNote: Note = this.createNote(index, NOTE_REST, NOTE_END_OF_TRACK_OCTAVE);
+    const endNote: Note = this.createNote(index, NOTE_END_OF_TRACK, NOTE_END_OF_TRACK_OCTAVE);
     return this.createPlacedChord(NOTE_END_OF_TRACK_DURATION, TempoUnit.DUPLE, [endNote]);
   }
 
