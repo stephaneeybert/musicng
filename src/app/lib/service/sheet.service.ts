@@ -30,13 +30,13 @@ const VEXFLOW_DOUBLE_REPEAT = '::';
 const VEXFLOW_END_BAR = '|=';
 
 export enum VexfloWAccidental {
-  b = 'b',
+  sharp = '#',
+  flat = 'b',
   o = 'o',
   k = 'k',
-  n = 'n',
-  bDouble = 'bb',
-  hash = '#',
-  hashDouble = '##'
+  natural = 'n',
+  doubleFlat = 'bb',
+  doubleSharp = '##'
 }
 
 @Injectable({
