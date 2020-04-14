@@ -547,7 +547,7 @@ export class MidiService {
   }
 
   private midi2Abc(midiNote: number) {
-    return Chroma.CHROMAS[midiNote % 12];
+    return Chroma.CHROMAS_ALPHABETICAL[midiNote % 12];
   }
 
   private microSecondsToBpm(microSeconds: number): number {
