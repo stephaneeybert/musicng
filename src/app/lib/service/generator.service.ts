@@ -11,7 +11,7 @@ import { TempoUnit } from '@app/model/tempo-unit';
 
 enum RANDOM_METHOD {
   BASE = 0,
-  MALUS_TABLE = 1
+  BONUS_TABLE = 1
 }
 
 @Injectable({
@@ -173,11 +173,11 @@ export class GeneratorService {
   }
 
   private randomlyPickChroma(chromaIndex: number): number {
-    const randomMethod: number = RANDOM_METHOD.MALUS_TABLE; // TODO Have a pref to choose the method
+    const randomMethod: number = RANDOM_METHOD.BONUS_TABLE; // TODO Have a pref to choose the method
     switch (randomMethod) {
       case RANDOM_METHOD.BASE:
         return this.randomlyPickChromaFromBaseChromas(chromaIndex);
-      case RANDOM_METHOD.MALUS_TABLE:
+      case RANDOM_METHOD.BONUS_TABLE:
         return this.randomlyPickChromaFromChromasPool(chromaIndex);
       default:
         throw new Error('The selected random method does not exist.');
