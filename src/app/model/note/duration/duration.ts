@@ -12,7 +12,11 @@ export class Duration {
   }
 
   public renderValue(): number {
-    return (this.subdivision.left + this.subdivision.right);
+    if (this.subdivision.left > 0) {
+      return (this.subdivision.left + this.subdivision.right);
+    } else {
+      throw new Error('The subdivision left value was not defined.');
+    }
   }
 
   public renderValueWithUnit(): string {
