@@ -45,7 +45,6 @@ export class GeneratorService {
         return this.notationService.createPlacedChord(this.CHORD_DURATION, TempoUnit.DUPLE, notes); // Maybe have a default chord unit ?
       });
 
-    // Have a few end of track notes as a note may not be played by an unreliable synth
     this.notationService.addEndOfTrackNote(generatedChords);
 
     const measures: Array<Measure> = new Array<Measure>();
