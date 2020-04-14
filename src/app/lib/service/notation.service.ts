@@ -20,9 +20,9 @@ const CHORD_SEPARATOR: string = ' ';
 const CHORD_DURATION_SEPARATOR: string = '/';
 const NOTE_SEPARATOR: string = '|';
 const NOTE_REST: string = 'rest';
-const NOTE_END_OF_TRACK: string = 'rest';
-const NOTE_END_OF_TRACK_OCTAVE: number = 9;
-const NOTE_END_OF_TRACK_DURATION: number = 1;
+const NOTE_END_OF_TRACK: string = 'end';
+const NOTE_END_OF_TRACK_OCTAVE: number = 0;
+const NOTE_END_OF_TRACK_DURATION: number = 8;
 
 const DEFAULT_TEMPO_BPM_VALUE: number = 128;
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;

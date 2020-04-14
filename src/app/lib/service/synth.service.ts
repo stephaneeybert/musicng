@@ -17,6 +17,10 @@ import { map, filter, take } from 'rxjs/operators';
 // and starting the transport is required for the transport to work
 const TRANSPORT_START_DELAY = 7;
 const TRANSPORT_STATE_STARTED = 'started';
+const PLAY_START_DELAY = 0.5;
+
+// The rest note for the synth is the empty string
+const SYNTH_REST_NOTE: string = '';
 
 @Injectable({
   providedIn: 'root'
@@ -64,15 +68,15 @@ export class SynthService {
     Tone.Transport.stop();
   }
 
-  public synthTransportIsStarted$(): Observable<boolean>  {
+  public synthTransportIsStarted$(): Observable<boolean> {
     return interval(1000)
-    .pipe(
-      map((value: number) => {
-        return this.transportIsStarted();
-      }),
-      filter((isStarted: boolean) => isStarted),
-      take(1)
-    );
+      .pipe(
+        map((value: number) => {
+          return this.transportIsStarted();
+        }),
+        filter((isStarted: boolean) => isStarted),
+        take(1)
+      );
   }
 
   private transportIsStarted(): boolean {
@@ -126,6 +130,9 @@ export class SynthService {
         firstMeasure = false;
       }
 
+      // Wait for user idleness before starting playing
+      let relativeTime: number = PLAY_START_DELAY;
+
       // Schedule each measure independently
       Tone.Transport.scheduleOnce((measureStartTime: any) => {
         this.updateTempo(previousMeasure, measure, true);
@@ -133,7 +140,7 @@ export class SynthService {
 
         // The time of notes relative to the start of the current measure
         // Note that a non zero init time is needed to have the first note key press displayed
-        let relativeTime: number = 0.01;
+        relativeTime += 0.01;
 
         if (measure.placedChords) {
           measure.placedChords.forEach((placedChord: PlacedChord) => {
@@ -143,12 +150,15 @@ export class SynthService {
               let triggerTime = measureStartTime + relativeTime;
               const releaseTime = triggerTime + durationInSeconds;
 
-              // If the note is a rest then do not play any sound
-              // TODO For the synth, a rest note is a null value
-              // so maybe play rest notes ?
-              if (this.notationService.noteIsNotRest(note)) {
-                soundtrack.synth.triggerAttack(note.render(), triggerTime, note.velocity);
-                soundtrack.synth.triggerRelease(note.render(), releaseTime);
+              if (!this.notationService.isEndOfTrackNote(note)) {
+                let textNote: string;
+                if (this.notationService.noteIsNotRest(note)) {
+                  textNote = note.render();
+                } else {
+                  textNote = SYNTH_REST_NOTE;
+                }
+                soundtrack.synth.triggerAttack(textNote, triggerTime, note.velocity);
+                soundtrack.synth.triggerRelease(textNote, releaseTime);
               }
 
               const midiNote = Tone.Frequency(note.render()).toMidi();
