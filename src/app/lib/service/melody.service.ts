@@ -23,6 +23,7 @@ export class MelodyService {
   ) { }
 
   public addDummyMelody() {
+    const endOfTrackNote: string = this.notationService.buildEndOfTrackNote();
     const textMeasures = ['rest/4 B4|A4|F5/16 A4|A5|B5/16 G#4|C6|G5/16 A4/16',
       'C5/8 rest/8 D5/16 C5/16 B4/16 C5/16',
       'E5/8 rest/8 F5/16 E5/16 D#5/16 E5/16',
@@ -31,7 +32,7 @@ export class MelodyService {
       'B5/8 A5/8 G5/8 A5/8',
       'B5/8 A5/8 G5/8 A5/8',
       'B5/8 A5/8 G5/8 F#5/8',
-      'E5/4'];
+      'E5/4' + ' ' + endOfTrackNote];
 
     const soundtrackName = 'Demo soundtrack';
     const measures: Array<Measure> = this.notationService.parseMeasures(textMeasures);

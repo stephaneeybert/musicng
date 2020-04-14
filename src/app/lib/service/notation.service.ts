@@ -287,6 +287,10 @@ export class NotationService {
     return this.createPlacedChord(NOTE_END_OF_TRACK_DURATION, TempoUnit.DUPLE, [endNote]);
   }
 
+  public buildEndOfTrackNote(): string {
+    return NOTE_END_OF_TRACK + NOTE_END_OF_TRACK_OCTAVE + CHORD_DURATION_SEPARATOR + NOTE_END_OF_TRACK_DURATION;
+  }
+
   public createDefaultTempo(): Duration {
     return this.createDuration(DEFAULT_TEMPO_BPM_VALUE, TempoUnit.BPM);
   }
