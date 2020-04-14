@@ -195,10 +195,10 @@ export class NotationService {
       if (latinChroma) {
         return latinChroma;
       } else {
-        throw new Error('The Latin chromas array has not been instantiated.');
+        throw new Error('The alphabetical chromas array has not been instantiated.');
       }
     } else {
-      throw new Error('No Latin chroma could be found for the chroma letter ' + chroma);
+      throw new Error('No alphabetical chroma could be found for the chroma letter ' + chroma);
     }
   }
 
