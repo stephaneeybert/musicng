@@ -130,8 +130,8 @@ export class GeneratorService {
     // The number of shifted chromas is the width of the chord
     //  Do Re.m  Mi.m  Fa  Sol  La.m  Si-
     // 'C', 'D', 'E', 'F', 'G', 'A', 'B'
-    // 'A', 'B', 'C', 'D', 'E', 'F', 'G'
-    // 'F', 'G', 'A', 'B', 'C', 'D', 'E'
+    // 'E', 'F', 'G', 'A', 'B', 'C', 'D'
+    // 'G', 'A', 'B', 'C', 'D', 'E', 'F'
 
     // Build the shifted chromas
     shiftedChromas[0] = this.notationService.chromasAlphabetical();
