@@ -320,6 +320,7 @@ export class NotationService {
 
   // TODO See https://music.stackexchange.com/questions/96150/how-to-express-a-duration-in-bpm-into-a-duration-in-division-subdivision
   private createSubdivision(duration: number): Subdivision {
+    // TODO A number of dots (n) lengthen the note value by (2n − 1) / 2n  its value, so two dots add two lower note values, making a total of one and three quarters times its original duration. The rare three dots make it one and seven eighths the duration, and so on.
     if (duration === Subdivisions.HUNDERD_TWENTY_EIGHTH) {
       return Subdivision.HUNDERD_TWENTY_EIGHTH;
     } else if (duration === (Subdivisions.HUNDERD_TWENTY_EIGHTH + Subdivisions.TWO_HUNDRED_FIFTY_SIXTH)) {
