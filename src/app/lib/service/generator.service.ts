@@ -14,6 +14,10 @@ enum RANDOM_METHOD {
   BONUS_TABLE = 1
 }
 
+const DEFAULT_TEMPO_BPM_VALUE: number = 128;
+const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
+const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -48,7 +52,7 @@ export class GeneratorService {
     this.notationService.addEndOfTrackNote(generatedChords);
 
     const measures: Array<Measure> = new Array<Measure>();
-    let measure: Measure = this.notationService.createMeasureWithDefaultTempo();
+    let measure: Measure = this.notationService.createMeasure(DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
     measure.placedChords = new Array<PlacedChord>();
     measures.push(measure);
     generatedChords
@@ -56,7 +60,7 @@ export class GeneratorService {
         if (measure.placedChords) {
           // The number of beats of the chords placed in a measure must equal the number of beats of the measure
           if (measure.getPlacedChordsNbBeats() >= measure.getNbBeats()) {
-            measure = this.notationService.createMeasureWithDefaultTempo();
+            measure = this.notationService.createMeasure(DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
             measure.placedChords = new Array<PlacedChord>();
             measures.push(measure);
           }

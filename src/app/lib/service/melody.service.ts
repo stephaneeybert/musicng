@@ -7,6 +7,10 @@ import { SoundtrackService } from '../../views/soundtrack/soundtrack.service';
 import { Soundtrack } from '@app/model/soundtrack';
 import { CommonService } from './common.service';
 
+const DEFAULT_TEMPO_BPM_VALUE: number = 128;
+const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 2;
+const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
+
 const MIDI_NOTE_MIN = 0;
 const MIDI_NOTE_MAX = 128;
 const MIDI_NOTE_DURATION = 300;
@@ -35,7 +39,7 @@ export class MelodyService {
       'E5/4' + ' ' + endOfTrackNote];
 
     const soundtrackName = 'Demo soundtrack';
-    const measures: Array<Measure> = this.notationService.parseMeasures(textMeasures);
+    const measures: Array<Measure> = this.notationService.parseMeasures(textMeasures, DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrackFromMeasures(soundtrackName, measures);
     return soundtrack;
   }

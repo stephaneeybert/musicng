@@ -42,24 +42,20 @@ export class NotationService {
     private soundtrackStorageService: SoundtrackStorageService
   ) { }
 
-  public parseMeasures(textMeasures: Array<string>): Array<Measure> {
+  public parseMeasures(textMeasures: Array<string>, tempo: number, timeSignatureNumerator: number, timeSignatureDenominator: number): Array<Measure> {
     const measures: Array<Measure> = new Array<Measure>();
     for (const textMeasure of textMeasures) {
       const placedChords: Array<PlacedChord> = this.parseTextMeasure(textMeasure);
-      const measure: Measure = this.createMeasureWithDefaultTempo();
+      const measure: Measure = this.createMeasure(tempo, timeSignatureNumerator, timeSignatureDenominator);
       measure.placedChords = placedChords;
       measures.push(measure);
     }
     return measures;
   }
 
-  public createMeasureWithDefaultTempo(): Measure {
-    return this.createMeasure(DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
-  }
-
-  public createMeasure(duration: number, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
+  public createMeasure(tempo: number, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
     const timeSignature: TimeSignature = this.createTimeSignature(timeSignatureNumerator, timeSignatureDenominator);
-    const measure: Measure = new Measure(this.createDuration(duration, TempoUnit.BPM), timeSignature);
+    const measure: Measure = new Measure(this.createDuration(tempo, TempoUnit.BPM), timeSignature);
     return measure;
   }
 
