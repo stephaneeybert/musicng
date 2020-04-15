@@ -34,7 +34,7 @@ export class GeneratorService {
   CHROMA_SHIFT_TIMES: number = 2;
   CHORD_WIDTH: number = 3;
   SIMILAR_NOTE_MIN: number = 2;
-  CHORD_DURATION = 4; // TODO What duration to use ? Maybe a random duration per chord ?
+  CHORD_DURATION = 4; // TODO Offer the duration in settings or have a random one
   NOTE_OCTAVE: number = 5; // TODO Offer the octave in settings
 
   public generateSoundtrack(): Soundtrack {
