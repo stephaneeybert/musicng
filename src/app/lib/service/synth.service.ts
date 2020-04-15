@@ -15,8 +15,9 @@ import { map, filter, take } from 'rxjs/operators';
 
 // Observation has shown that a delay between creating the service
 // and starting the transport is required for the transport to work
-const TRANSPORT_START_DELAY = 7;
+const TRANSPORT_START_DELAY = 0;
 const TRANSPORT_STATE_STARTED = 'started';
+const AUDIO_CONTEXT_RUNNING: string = 'running';
 const PLAY_START_DELAY = 0.5;
 const CHORD_WIDTH: number = 3;
 
@@ -33,9 +34,7 @@ export class SynthService {
     private keyboardService: KeyboardService,
     private sheetService: SheetService,
     private soundtrackService: SoundtrackService
-  ) {
-    this.startTransport();
-  }
+  ) { }
 
   public createSoundtrackSynth(): any {
     return this.createDeviceSynth();
@@ -54,19 +53,21 @@ export class SynthService {
 
   // Start the transport
   private startTransport() {
-    Tone.Transport.stop();
     Tone.Transport.start(TRANSPORT_START_DELAY);
+    console.log('Started the transport');
   }
 
   // Rewind a the position and clear all events if any
   private clearTransport() {
     Tone.Transport.position = 0;
     Tone.Transport.cancel();
+    console.log('Cleared the transport');
   }
 
   // Stop the transport
   private stopTransport() {
     Tone.Transport.stop();
+    console.log('Stopped the transport');
   }
 
   public synthTransportIsStarted$(): Observable<boolean> {
@@ -80,13 +81,22 @@ export class SynthService {
       );
   }
 
-  private transportIsStarted(): boolean {
+  private isAudioContextRunning(): boolean {
+    return Tone.context.state == AUDIO_CONTEXT_RUNNING;
+  }
+
+  private isTransportStarted(): boolean {
+    console.log('Current transport state: ' + Tone.Transport.state);
+    console.log('Audio context: ' + Tone.context.state);
     return Tone.Transport.state == TRANSPORT_STATE_STARTED;
   }
 
   public playSoundtrack(soundtrack: Soundtrack) {
+    if (!this.isTransportStarted()) {
+      this.startTransport();
+    }
+    this.clearTransport();
     if (soundtrack.hasNotes()) {
-      this.clearTransport();
       this.stopAllOtherSoundtracks(soundtrack);
       soundtrack.tracks.forEach((track: Track) => {
         this.play(track, soundtrack);
@@ -117,7 +127,7 @@ export class SynthService {
     let firstMeasure: boolean = true;
     let previousMeasure: Measure;
 
-    if (!this.transportIsStarted()) {
+    if (!this.isTransportStarted()) {
       throw new Error('The soundtrack cannot be played as the tone transport has not started.');
     }
 

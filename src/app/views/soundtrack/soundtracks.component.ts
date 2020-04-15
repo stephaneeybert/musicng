@@ -23,8 +23,6 @@ export class SoundtracksComponent implements OnInit {
   soundtracks!: Array<Soundtrack>;
   private soundtracksSubscription?: Subscription;
 
-  synthStarted$?: Observable<boolean>;
-
   dialogRef!: MatDialogRef<SoundtrackDialogComponent>;
   @Output()
   soundtrackEditedEvent: EventEmitter<Soundtrack> = new EventEmitter<Soundtrack>();
@@ -46,8 +44,6 @@ export class SoundtracksComponent implements OnInit {
   ngOnInit() {
     this.soundtracks$ = this.soundtrackStore.getSoundtracks$();
     this.observeSoundtracks();
-
-    this.synthStarted$ = this.synthService.synthTransportIsStarted$();
 
     this.soundtrackStore.loadAllFromStorage();
   }
