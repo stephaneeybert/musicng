@@ -18,6 +18,7 @@ import { map, filter, take } from 'rxjs/operators';
 const TRANSPORT_START_DELAY = 7;
 const TRANSPORT_STATE_STARTED = 'started';
 const PLAY_START_DELAY = 0.5;
+const CHORD_WIDTH: number = 3;
 
 // The rest note for the synth is the empty string
 const SYNTH_REST_NOTE: string = '';
@@ -42,7 +43,7 @@ export class SynthService {
 
   public createDeviceSynth(): any {
 
-    const synth: any = new Tone.PolySynth(1, Tone.Synth, {
+    const synth: any = new Tone.PolySynth(CHORD_WIDTH, Tone.Synth, {
       oscillator: {
         type: 'sine',
       }
