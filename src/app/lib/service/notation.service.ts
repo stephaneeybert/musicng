@@ -31,6 +31,7 @@ const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const CHROMAS_GERMAN_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'H'];
 const CHROMAS_SYLLABIC: Map<string, string> = new Map([ ['rest', 'rest'], ['C', 'Do'], ['C#', '???'], ['D', 'Re.m'], ['D#', '???'], ['E', 'Mi.m'], ['F', 'Fa'], ['F#', '???'], ['G', 'Sol'], ['G#', '???'], ['A', 'La.m'], ['A#', '???'], ['B', 'Si-'] ]);
+const OCTAVES: Array<number> = [ 1, 2, 3, 4, 5, 6 ];
 
 @Injectable({
   providedIn: 'root'
