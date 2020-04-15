@@ -74,7 +74,7 @@ export class SynthService {
     return interval(1000)
       .pipe(
         map((value: number) => {
-          return this.transportIsStarted();
+          return this.isTransportStarted();
         }),
         filter((isStarted: boolean) => isStarted),
         take(1)
