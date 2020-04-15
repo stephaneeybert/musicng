@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { SoundtrackEdition } from './soundtrack-edition';
 import { SoundtrackValidator } from './soundtrack-validator';
 
-const NAME_MAX_LENGTH: number = 50;
+const NAME_MAX_LENGTH: number = 15;
 
 @Component({
   templateUrl: './soundtrack-dialog.component.html',
