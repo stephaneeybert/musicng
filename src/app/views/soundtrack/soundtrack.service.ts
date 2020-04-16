@@ -4,12 +4,12 @@ import { SoundtrackStore } from '../../lib/store/soundtrack-store';
 import { Soundtrack } from '../../model/soundtrack';
 import { CommonService } from '../../lib/service/common.service';
 
+const NB_SOUNDTRACKS_MAX: number = 10;
+
 @Injectable({
   providedIn: 'root'
 })
 export class SoundtrackService {
-
-  NB_MAX: number = 10;
 
   constructor(
     private commonService: CommonService,
@@ -24,7 +24,7 @@ export class SoundtrackService {
   }
 
   public maximumNotYetReached(): boolean {
-    return this.getSoundtracks().length < this.NB_MAX;
+    return this.getSoundtracks().length < NB_SOUNDTRACKS_MAX;
   }
 
   public getSoundtracks(): Array<Soundtrack> {
