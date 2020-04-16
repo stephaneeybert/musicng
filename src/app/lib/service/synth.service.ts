@@ -12,6 +12,7 @@ import { SheetService } from './sheet.service';
 import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
 import { Observable, interval } from 'rxjs';
 import { map, filter, take } from 'rxjs/operators';
+import { CommonService } from './common.service';
 
 // Observation has shown that a delay between creating the service
 // and starting the transport is required for the transport to work
@@ -33,7 +34,8 @@ export class SynthService {
     private notationService: NotationService,
     private keyboardService: KeyboardService,
     private sheetService: SheetService,
-    private soundtrackService: SoundtrackService
+    private soundtrackService: SoundtrackService,
+    private commonService: CommonService
   ) {
     this.startTransport();
   }
@@ -114,6 +116,7 @@ export class SynthService {
   }
 
   public playSoundtrack(soundtrack: Soundtrack) {
+    this.commonService.requestWakeLock();
     if (soundtrack.hasNotes()) {
       this.stopAllSoundtracks(soundtrack);
       soundtrack.tracks.forEach((track: Track) => {
@@ -204,6 +207,7 @@ export class SynthService {
                 } else {
                   this.setPlaying(soundtrack, false);
                   this.keyboardService.unpressAll(soundtrack.keyboard);
+                  this.commonService.releaseWakeLock();
                 }
               }, releaseTime);
             });

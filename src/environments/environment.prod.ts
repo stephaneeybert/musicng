@@ -1,4 +1,5 @@
 export const environment = {
+  wakeLock: null,
   production: true,
   CLIENT_ID: 'NG-ZERO',
   ROLE_PREFIX: 'role_',
