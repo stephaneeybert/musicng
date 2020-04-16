@@ -64,6 +64,11 @@
     "title": "Connected MIDI devices",
     "none": "There are no plugged-in MIDI devices."
   },
+  "synth": {
+    "sound": {
+      "switchOn": "Switch the sound on"
+    }
+  },
   "user": {
     "form": {
       "title": "Create or update a user",

@@ -15,10 +15,10 @@ import { map, filter, take } from 'rxjs/operators';
 
 // Observation has shown that a delay between creating the service
 // and starting the transport is required for the transport to work
-const TRANSPORT_START_DELAY = 0;
+const TRANSPORT_START_DELAY = 5;
 const TRANSPORT_STATE_STARTED = 'started';
 const AUDIO_CONTEXT_RUNNING: string = 'running';
-const PLAY_START_DELAY = 0.5;
+const PLAY_START_DELAY = 0;
 const CHORD_WIDTH: number = 3;
 const VELOCITY_MIDI_MAX = 127; // TODO Duplicate
 
@@ -35,7 +35,9 @@ export class SynthService {
     private keyboardService: KeyboardService,
     private sheetService: SheetService,
     private soundtrackService: SoundtrackService
-  ) { }
+  ) {
+    this.startTransport();
+  }
 
   public createSoundtrackSynth(): any {
     return this.createDeviceSynth();
@@ -73,7 +75,7 @@ export class SynthService {
   }
 
   // Start the transport
-  private startTransport() {
+  public startTransport() {
     Tone.Transport.start(TRANSPORT_START_DELAY);
     console.log('Started the transport');
   }
@@ -113,12 +115,8 @@ export class SynthService {
   }
 
   public playSoundtrack(soundtrack: Soundtrack) {
-    if (!this.isTransportStarted()) {
-      this.startTransport();
-    }
-    this.clearTransport();
     if (soundtrack.hasNotes()) {
-      this.stopAllOtherSoundtracks(soundtrack);
+      this.stopAllSoundtracks(soundtrack);
       soundtrack.tracks.forEach((track: Track) => {
         this.play(track, soundtrack);
       });
@@ -127,7 +125,7 @@ export class SynthService {
     }
   }
 
-  public stopAllOtherSoundtracks(soundtrack: Soundtrack) {
+  public stopAllSoundtracks(soundtrack: Soundtrack) {
     this.soundtrackService.getSoundtracks().forEach((soundtrack: Soundtrack) => {
       this.stopSoundtrack(soundtrack);
     });
