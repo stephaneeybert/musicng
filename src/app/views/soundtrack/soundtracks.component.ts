@@ -29,6 +29,7 @@ export class SoundtracksComponent implements OnInit {
   @Output()
   soundtrackEditedEvent: EventEmitter<Soundtrack> = new EventEmitter<Soundtrack>();
 
+  private dialogEmitterSubscription?: Subscription;
   private dialogSubscription?: Subscription;
 
   constructor(
@@ -58,6 +59,9 @@ export class SoundtracksComponent implements OnInit {
     }
     if (this.dialogSubscription) {
       this.dialogSubscription.unsubscribe();
+    }
+    if (this.dialogEmitterSubscription) {
+      this.dialogEmitterSubscription.unsubscribe();
     }
   }
 
@@ -105,11 +109,6 @@ export class SoundtracksComponent implements OnInit {
     }
   }
 
-  refreshSoundtrack(soundtrack: Soundtrack): void {
-    console.log('refreshSoundtrack');
-    console.log(soundtrack); // TODO Why is this not called ?
-  }
-
   openSoundtrackDialog(existingSoundtrack: Soundtrack) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -137,6 +136,15 @@ export class SoundtracksComponent implements OnInit {
           }
         }
       });
+
+      this.dialogEmitterSubscription = this.soundtrackEditedEvent
+      .subscribe((soundtrack: Soundtrack) => {
+        this.refreshSoundtrack(soundtrack);
+      });
+  }
+
+  refreshSoundtrack(soundtrack: Soundtrack): void {
+    console.log(soundtrack);
   }
 
   // Updating a view model in a subscribe() block requires an explicit call to the change detection
