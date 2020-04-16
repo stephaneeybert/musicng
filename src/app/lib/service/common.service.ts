@@ -29,7 +29,8 @@ export class CommonService {
   }
 
   public getRandomString(length: number): string {
-    return Math.random().toString(36).substring(length);
+    const start: number = 2;
+    return Math.random().toString(36).substring(start, start + length);
   }
 
   private getDeviceWindowRef(): any {
