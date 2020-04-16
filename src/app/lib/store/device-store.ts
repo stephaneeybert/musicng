@@ -65,7 +65,7 @@ export class DeviceStore extends Store<Array<Device>> {
   }
 
   private muteToggle(device: Device, mute: boolean) {
-    if (device.mute != mute) {
+    if (device.mute !== mute) {
       device.mute = mute;
       this.setDevice(device);
     }

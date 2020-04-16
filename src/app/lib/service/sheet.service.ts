@@ -175,7 +175,7 @@ export class SheetService {
                     });
 
                     const noteName: string = this.renderChordNoteInSyllabic(placedChord);
-                    if (noteName != previousNoteName) {
+                    if (noteName !== previousNoteName) {
                       staveNote.addAnnotation(0, this.renderAnnotation(noteName));
                       previousNoteName = noteName;
                     }

@@ -95,7 +95,7 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
 
   public findByName(soundtrackId: string, name: string): Soundtrack | void {
     for (let soundtrack of this.getSoundtracks()) {
-      if (soundtrack.name === name && soundtrack.id != soundtrackId) {
+      if (soundtrack.name === name && soundtrack.id !== soundtrackId) {
         return soundtrack;
       }
     }
