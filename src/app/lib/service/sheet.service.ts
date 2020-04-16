@@ -100,28 +100,32 @@ export class SheetService {
   }
 
   private addAccidentalOnNotes(placedChord: PlacedChord): void {
-    const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
-    let i: number = 0;
-    placedChord.notes.forEach((note: Note) => {
-      if (note.pitch.accidental) {
-        staveNote.addAccidental(i, new vexflow.Flow.Accidental(note.pitch.accidental));
-      }
-      i++;
-    })
-  }
-
-  private addDotOnNotes(placedChord: PlacedChord): void {
-    const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
-    if (placedChord.dottedAll) {
-      staveNote.addDotToAll();
-    } else {
+    if (placedChord.staveNote) {
+      const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
       let i: number = 0;
       placedChord.notes.forEach((note: Note) => {
-        if (note.dotted) {
-          staveNote.addDot(i);
+        if (note.pitch.accidental) {
+          staveNote.addAccidental(i, new vexflow.Flow.Accidental(note.pitch.accidental));
         }
         i++;
       })
+    }
+  }
+
+  private addDotOnNotes(placedChord: PlacedChord): void {
+    if (placedChord.staveNote) {
+      const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
+      if (placedChord.dottedAll) {
+        staveNote.addDotToAll();
+      } else {
+        let i: number = 0;
+        placedChord.notes.forEach((note: Note) => {
+          if (note.dotted) {
+            staveNote.addDot(i);
+          }
+          i++;
+        })
+      }
     }
   }
 

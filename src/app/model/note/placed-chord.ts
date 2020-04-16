@@ -1,4 +1,4 @@
-// import * as vexflow from 'vexflow';
+import * as vexflow from 'vexflow';
 import { Note } from './note';
 import { Duration } from './duration/duration';
 
@@ -6,10 +6,7 @@ export class PlacedChord {
 
   notes: Array<Note>;
   duration: Duration;
-  // TODO This causes an error
-  // https://stackoverflow.com/q/60805037/958373
-  staveNote: any;
-  // staveNote: vexflow.Flow.StaveNote;
+  staveNote?: vexflow.Flow.StaveNote;
   dottedAll: boolean;
 
   constructor(duration: Duration) {
