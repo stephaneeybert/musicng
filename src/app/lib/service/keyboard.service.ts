@@ -44,7 +44,7 @@ export class KeyboardService {
 
   private toggleKey(keyboard: any, midiNote: number, isOn: boolean): void {
     if ((RANGE_MIN <= midiNote) && (midiNote <= RANGE_MAX)) {
-      if (keyboard != null) { // TODO Do I need this not null ? What about using is() ?
+      if (keyboard != null) {
         keyboard.toggleKey(midiNote, isOn);
       }
     }

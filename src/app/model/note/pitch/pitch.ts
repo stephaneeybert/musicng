@@ -23,7 +23,7 @@ export class Pitch {
 
   public renderAbc(): string {
     let abc: string = this.chroma.value;
-    if (this.octave != null) { // TODO How about using is() ?
+    if (this.octave != null) {
       abc += this.octave.value;
     }
     return abc;
