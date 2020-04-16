@@ -20,7 +20,6 @@ const TRANSPORT_STATE_STARTED = 'started';
 const AUDIO_CONTEXT_RUNNING: string = 'running';
 const PLAY_START_DELAY = 0;
 const CHORD_WIDTH: number = 3;
-const VELOCITY_MIDI_MAX = 127; // TODO Duplicate
 
 // The rest note for the synth is the empty string
 const SYNTH_REST_NOTE: string = '';
@@ -245,8 +244,8 @@ export class SynthService {
     }
   }
 
-  public noteOn(midiNote: number, synth: any) {
-    synth.triggerAttack(midiNote, null, VELOCITY_MIDI_MAX);
+  public noteOn(midiNote: number, velocity: number, synth: any) {
+    synth.triggerAttack(midiNote, null, velocity);
   }
 
   public noteOff(midiNote: number, synth: any) {
