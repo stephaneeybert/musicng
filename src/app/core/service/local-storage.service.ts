@@ -50,7 +50,7 @@ export abstract class LocalStorageService<T> {
   }
 
   public isEmpty(): boolean {
-    return localStorage.length == 0;
+    return localStorage.length === 0;
   }
 
 }

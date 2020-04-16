@@ -105,13 +105,13 @@ export class SynthService {
   }
 
   private isAudioContextRunning(): boolean {
-    return Tone.context.state == AUDIO_CONTEXT_RUNNING;
+    return Tone.context.state === AUDIO_CONTEXT_RUNNING;
   }
 
   private isTransportStarted(): boolean {
     console.log('Current transport state: ' + Tone.Transport.state);
     console.log('Audio context: ' + Tone.context.state);
-    return Tone.Transport.state == TRANSPORT_STATE_STARTED;
+    return Tone.Transport.state === TRANSPORT_STATE_STARTED;
   }
 
   public playSoundtrack(soundtrack: Soundtrack) {

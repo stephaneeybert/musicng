@@ -123,7 +123,7 @@ export class NotationService {
         track.measures = new Array();
         if (trackObj.measures && trackObj.measures.length > 0) {
           trackObj.measures.forEach((measureObj: any) => {
-            if (!measureObj.placedChords || measureObj.placedChords.length == 0) {
+            if (!measureObj.placedChords || measureObj.placedChords.length === 0) {
               this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
               throw new Error('The placed chords could not be accessed from the untyped soundtrack.');
             }
@@ -137,7 +137,7 @@ export class NotationService {
             measure.tempo = this.createDuration(measureDuration, measureObj.tempo.unit);
             measure.timeSignature = this.createTimeSignature(measureObj.timeSignature.numerator, measureObj.timeSignature.denominator);
             measureObj.placedChords.forEach((placedChordObj: any) => {
-              if (!placedChordObj.notes || placedChordObj.notes.length == 0) {
+              if (!placedChordObj.notes || placedChordObj.notes.length === 0) {
                 this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
                 throw new Error('The notes could not be accessed from the untyped soundtrack.');
               }

@@ -150,13 +150,13 @@ export class GeneratorService {
 
       // Start on the Do chord and then randomly pick a chord
       // TODO Change all == by ===
-      const chromaNoteIndex = (nbAddedChord == 0) ? 0 : this.randomlyPickChroma(previousChromaNoteIndex);
+      const chromaNoteIndex = (nbAddedChord === 0) ? 0 : this.randomlyPickChroma(previousChromaNoteIndex);
       for (let noteIndex = 0; noteIndex < this.CHORD_WIDTH; noteIndex++) {
         chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);
       }
 
       // Consider a chord only if it is similar to its previous one
-      if (chords.length == 0 || this.isSimilarToPrevious(previousChord, chord)) {
+      if (chords.length === 0 || this.isSimilarToPrevious(previousChord, chord)) {
         previousChromaNoteIndex = chromaNoteIndex;
         previousChord = chord;
         // Add twice the same chord
@@ -221,7 +221,7 @@ export class GeneratorService {
     const chromasPool: Array<number> = new Array();
     chromaBonuses.forEach((chromaBonus: number) => {
       // If a minimum bonus is specified then do not consider the chromas that have a lower bonus
-      if ((MIN_BONUS > 0 && chromaBonus >= MIN_BONUS) || 0 == MIN_BONUS) {
+      if ((MIN_BONUS > 0 && chromaBonus >= MIN_BONUS) || 0 === MIN_BONUS) {
         // The higher the more random
         chromaBonus = RANDOMLINESS + chromaBonus;
         for (let nb = 0; nb < chromaBonus; nb++) {

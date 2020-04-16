@@ -6,7 +6,7 @@
     <table>
       <thead>
         <th *ngIf="devices.length > 0">{{ 'devices.title' | translate }}</th>
-        <th *ngIf="devices.length == 0">{{ 'devices.none' | translate }}</th>
+        <th *ngIf="devices.length === 0">{{ 'devices.none' | translate }}</th>
       </thead>
       <tbody>
         <tr *ngFor="let device of devices">
