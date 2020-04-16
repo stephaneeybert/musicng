@@ -52,7 +52,6 @@ export class MidiService {
 
   public MIDI_DEVICE_CONNECTED = 'connected';
   public MIDI_DEVICE_DISCONNECTED = 'disconnected';
-  public MIDI_VELOCITY_MAX = 127;
 
   constructor(
     private deviceStore: DeviceStore,

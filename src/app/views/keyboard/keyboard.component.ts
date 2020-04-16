@@ -123,7 +123,7 @@ export class KeyboardComponent implements AfterViewInit {
   private playSoundFromKeyboard(keyboard: any, synth: any) {
     keyboard.on('change', (note: any) => {
       if (note.state) {
-        this.synthService.noteOn(note.note, this.midiService.MIDI_VELOCITY_MAX, synth);
+        this.synthService.noteOn(note.note, synth);
       } else {
         this.synthService.noteOff(note.note, synth);
       }
