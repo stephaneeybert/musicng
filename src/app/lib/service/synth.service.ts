@@ -246,12 +246,12 @@ export class SynthService {
     }
   }
 
-  public noteOn(note: number, velocity: number, synth: any) {
-    synth.triggerAttack(note, null, velocity);
+  public noteOn(midiNote: number, midiVelocity: number, synth: any) {
+    synth.triggerAttack(midiNote, null, midiVelocity);
   }
 
-  public noteOff(note: number, synth: any) {
-    synth.triggerRelease(note);
+  public noteOff(midiNote: number, synth: any) {
+    synth.triggerRelease(midiNote);
   }
 
   public renderDurationInTicks(duration: string): string {
