@@ -48,6 +48,26 @@ export class SynthService {
       }
     }).toMaster();
 
+    // const synthFilter: any = new Tone.Filter(300, 'lowpass').connect(
+    //   new Tone.Gain(0.4).toMaster()
+    // );
+    // const synthConfig: any = {
+    //   oscillator: {
+    //     type: 'fattriangle'
+    //   },
+    //   envelope: {
+    //     attack: 3,
+    //     sustain: 1,
+    //     release: 1
+    //   }
+    // };
+    // const synth: any = new Tone.PolySynth(CHORD_WIDTH, Tone.Synth, synthConfig)
+    // .connect(synthFilter)
+    // .toMaster();
+
+    // const synth: any = new Tone.Synth(synthConfig)
+    // .connect(synthFilter);
+
     return synth;
   }
 
