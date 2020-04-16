@@ -1,7 +1,7 @@
 import { Pitch } from './pitch/pitch';
 
-const VELOCITY_TONEJS_MAX = 1;
-const VELOCITY_MIDI_MAX = 127;
+const VELOCITY_TONEJS_MAX: number = 1;
+const VELOCITY_MIDI_MAX: number = 127;
 
 export class Note {
 
