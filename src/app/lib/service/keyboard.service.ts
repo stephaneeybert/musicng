@@ -34,20 +34,22 @@ export class KeyboardService {
     }
   }
 
-  public pressKey(keyboard: any, midiNote: number): void {
-    this.toggleKey(keyboard, midiNote, true);
+  public pressKey(keyboard: any, midiNotes: Array<number>): void {
+    this.toggleKey(keyboard, midiNotes, true);
   }
 
-  public unpressKey(keyboard: any, midiNote: number): void {
-    this.toggleKey(keyboard, midiNote, false);
+  public unpressKey(keyboard: any, midiNotes: Array<number>): void {
+    this.toggleKey(keyboard, midiNotes, false);
   }
 
-  private toggleKey(keyboard: any, midiNote: number, isOn: boolean): void {
-    if ((RANGE_MIN <= midiNote) && (midiNote <= RANGE_MAX)) {
-      if (keyboard != null) {
-        keyboard.toggleKey(midiNote, isOn);
+  private toggleKey(keyboard: any, midiNotes: Array<number>, isOn: boolean): void {
+    midiNotes.forEach((midiNote: number) => {
+      if ((RANGE_MIN <= midiNote) && (midiNote <= RANGE_MAX)) {
+        if (keyboard != null) {
+          keyboard.toggleKey(midiNote, isOn);
+        }
       }
-    }
+    });
   }
 
 }

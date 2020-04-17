@@ -161,17 +161,17 @@ export class MidiService {
     switch (status) {
       case NOTE_ON:
         if (velocity > 0) {
-          this.keyboardService.pressKey(device.keyboard, midiNote);
+          this.keyboardService.pressKey(device.keyboard, [ midiNote ]);
           // this.synthService.noteOn(midiNote, velocity);
           // A keyboard handler already sends the note to the synth
         } else {
           // But a velocity of 0 is a "note off"
-          this.keyboardService.unpressKey(device.keyboard, midiNote);
+          this.keyboardService.unpressKey(device.keyboard, [ midiNote ]);
           // this.synthService.noteOff(midiNote);
         }
         break;
       case NOTE_OFF:
-        this.keyboardService.unpressKey(device.keyboard, midiNote);
+        this.keyboardService.unpressKey(device.keyboard, [ midiNote ]);
         // this.synthService.noteOff(midiNote);
         break;
     }

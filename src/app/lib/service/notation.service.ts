@@ -245,7 +245,7 @@ export class NotationService {
     return this.abcNoteIsNotRest(note.render());
   }
 
-  private abcNoteIsNotRest(abcNote: string): boolean {
+  public abcNoteIsNotRest(abcNote: string): boolean {
     return !abcNote.includes(NOTE_REST);
   }
 

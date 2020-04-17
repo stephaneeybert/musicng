@@ -21,6 +21,7 @@ const TRANSPORT_STATE_STARTED = 'started';
 const AUDIO_CONTEXT_RUNNING: string = 'running';
 const PLAY_START_DELAY = 0;
 const CHORD_WIDTH: number = 3;
+const VELOCITY_TONEJS_MAX: number = 1;
 
 // The rest note for the synth is the empty string
 const SYNTH_REST_NOTE: string = '';
@@ -186,41 +187,28 @@ export class SynthService {
           measure.placedChords.forEach((placedChord: PlacedChord) => {
             const duration: string = placedChord.renderDuration();
             const durationInSeconds = Tone.Time(duration).toSeconds();
-            placedChord.notes.forEach((note: Note) => {
-              let triggerTime = measureStartTime + relativeTime;
-              const releaseTime = triggerTime + durationInSeconds;
+            let triggerTime = measureStartTime + relativeTime;
+            const releaseTime = triggerTime + durationInSeconds;
 
-              if (!this.notationService.isEndOfTrackNote(note)) {
-                let textNote: string;
-                if (this.notationService.noteIsNotRest(note)) {
-                  textNote = note.render();
-                } else {
-                  textNote = SYNTH_REST_NOTE;
-                }
-                console.log('Text note: ' + textNote + ' ' + note.velocity);
-                // textNote = Tone.Midi.toNote(Tone.Midi.toMidi(textNote));
-                soundtrack.synth.triggerAttack(textNote, triggerTime, note.velocity);
-                soundtrack.synth.triggerRelease(textNote, releaseTime);
-              }
-
-              const midiNote = Tone.Frequency(note.render()).toMidi();
+            if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
+              const textNotes: Array<string> = this.restToSynthRest(placedChord.renderAbc());
+              soundtrack.synth.triggerAttack(textNotes, triggerTime, VELOCITY_TONEJS_MAX);
+              soundtrack.synth.triggerRelease(textNotes, releaseTime);
               Tone.Draw.schedule((actualTime: any) => {
-                if (!this.notationService.isEndOfTrackNote(note)) {
-                  this.keyboardService.pressKey(soundtrack.keyboard, midiNote);
-                  this.sheetService.vexflowHighlightStaveNote(placedChord);
-                }
+                this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
+                this.sheetService.vexflowHighlightStaveNote(placedChord);
               }, triggerTime);
               Tone.Draw.schedule((actualTime: any) => {
-                if (!this.notationService.isEndOfTrackNote(note)) {
-                  this.keyboardService.unpressKey(soundtrack.keyboard, midiNote);
-                  this.sheetService.vexflowUnhighlightStaveNote(placedChord);
-                } else {
-                  this.setPlaying(soundtrack, false);
-                  this.keyboardService.unpressAll(soundtrack.keyboard);
-                  this.commonService.releaseWakeLock();
-                }
+                this.keyboardService.unpressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
+                this.sheetService.vexflowUnhighlightStaveNote(placedChord);
               }, releaseTime);
-            });
+            } else {
+              Tone.Draw.schedule((actualTime: any) => {
+                this.setPlaying(soundtrack, false);
+                this.keyboardService.unpressAll(soundtrack.keyboard);
+                this.commonService.releaseWakeLock();
+              }, releaseTime);
+            }
             relativeTime += durationInSeconds;
           });
         } else {
@@ -271,6 +259,28 @@ export class SynthService {
 
   public midiToTextNote(midiNote: number): string {
     return Tone.Midi(midiNote).toNote();
+  }
+
+  public textToMidiNote(textNote: string): number {
+    return Tone.Midi(textNote).toMidi();
+  }
+
+  private textToMidiNotes(textNotes: Array<string>): Array<number> {
+    return textNotes
+    .map((textNote: string) => {
+      return this.textToMidiNote(textNote);
+    });
+  }
+
+  private restToSynthRest(textNotes: Array<string>): Array<string> {
+    return textNotes
+    .map((textNote: string) => {
+      if (!this.notationService.abcNoteIsNotRest(textNote)) {
+        return SYNTH_REST_NOTE;
+      } else {
+        return textNote;
+      }
+    });
   }
 
 }

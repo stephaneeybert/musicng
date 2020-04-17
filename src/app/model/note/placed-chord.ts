@@ -38,16 +38,13 @@ export class PlacedChord {
     return abc;
   }
 
-  public renderAbc(): string {
-    let abc: string = '';
-    const sortedNotes: Array<Note> = this.notes.sort((a, b) => a.index - b.index);
-    for (const note of sortedNotes) {
-      if (abc) {
-        abc += ' ';
-      }
-      abc += note.renderAbc();
-    }
-    return abc;
+  public renderAbc(): Array<string> {
+    const sortedNotes: Array<string> = this.notes
+    .sort((a, b) => a.index - b.index)
+    .map((note: Note) => {
+      return note.renderAbc();
+    });
+    return sortedNotes;
   }
 
   public getDuration(): number {
