@@ -129,14 +129,25 @@ export class SynthService {
       );
   }
 
-  private isAudioContextRunning(): boolean {
-    return Tone.context.state === AUDIO_CONTEXT_RUNNING;
+  private isTransportStarted(): boolean {
+    console.log('Tone Transport: ' + Tone.Transport.state);
+    return Tone.Transport.state === TRANSPORT_STATE_STARTED;
   }
 
-  private isTransportStarted(): boolean {
-    console.log('Current transport state: ' + Tone.Transport.state);
-    console.log('Audio context: ' + Tone.context.state);
-    return Tone.Transport.state === TRANSPORT_STATE_STARTED;
+  public audioIsRunning$(): Observable<boolean> {
+    return interval(1000)
+      .pipe(
+        map((value: number) => {
+          return this.isAudioContextRunning();
+        }),
+        filter((isRunning: boolean) => isRunning),
+        take(1)
+      );
+  }
+
+  private isAudioContextRunning(): boolean {
+    console.log('Audio Context: ' + Tone.context.state);
+    return Tone.context.state === AUDIO_CONTEXT_RUNNING;
   }
 
   public playSoundtrack(soundtrack: Soundtrack) {
