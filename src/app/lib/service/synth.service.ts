@@ -107,6 +107,7 @@ export class SynthService {
 
   // Rewind a the position and clear all events if any
   private clearTransport() {
+    Tone.Transport.position = 0;
     Tone.Transport.cancel();
     console.log('Cleared the transport');
   }
