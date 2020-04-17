@@ -21,7 +21,7 @@ const TRANSPORT_STATE_STARTED = 'started';
 const AUDIO_CONTEXT_RUNNING: string = 'running';
 const PLAY_START_DELAY = 0;
 const CHORD_WIDTH: number = 3;
-const VELOCITY_TONEJS_MAX: number = 1;
+const VELOCITY_TONEJS: number = 0.5;
 
 // The rest note for the synth is the empty string
 const SYNTH_REST_NOTE: string = '';
@@ -207,8 +207,8 @@ export class SynthService {
 
             if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
               const textNotes: Array<string> = this.restToSynthRest(placedChord.renderAbc());
-              // TODO soundtrack.synth.triggerAttackRelease(textNotes, durationInSeconds, triggerTime, VELOCITY_TONEJS_MAX);
-              soundtrack.synth.triggerAttack(textNotes, triggerTime, VELOCITY_TONEJS_MAX);
+              // soundtrack.synth.triggerAttackRelease(textNotes, durationInSeconds, triggerTime, VELOCITY_TONEJS); // TODO
+              soundtrack.synth.triggerAttack(textNotes, triggerTime, VELOCITY_TONEJS);
               soundtrack.synth.triggerRelease(textNotes, releaseTime);
               Tone.Draw.schedule((actualTime: any) => {
                 this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
