@@ -52,6 +52,14 @@ export class SynthService {
       }
     }).toMaster();
 
+    // const synth: any = new Tone.PolySynth(4, Tone.Synth, {
+    //   "volume" : -8,
+    //   "oscillator" : {
+    //       "partials" : [1, 2, 5],
+    //   },
+    //   "portamento" : 0.005
+    // }).toMaster()
+
     // const synthFilter: any = new Tone.Filter(300, 'lowpass').connect(
     //   new Tone.Gain(0.4).toMaster()
     // );
