@@ -264,7 +264,6 @@ export class SynthService {
 
   public noteOn(midiNote: number, velocity: number, synth: any) {
     const textNote: string = this.midiToTextNote(midiNote);
-    console.log(textNote + ' ' + this.notationService.velocityMidiToTonejs(velocity));
     synth.triggerAttack(textNote, Tone.Context.currentTime, this.notationService.velocityMidiToTonejs(velocity));
   }
 
