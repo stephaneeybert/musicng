@@ -192,6 +192,7 @@ export class SynthService {
 
             if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
               const textNotes: Array<string> = this.restToSynthRest(placedChord.renderAbc());
+              // TODO soundtrack.synth.triggerAttackRelease(textNotes, durationInSeconds, triggerTime, VELOCITY_TONEJS_MAX);
               soundtrack.synth.triggerAttack(textNotes, triggerTime, VELOCITY_TONEJS_MAX);
               soundtrack.synth.triggerRelease(textNotes, releaseTime);
               Tone.Draw.schedule((actualTime: any) => {
