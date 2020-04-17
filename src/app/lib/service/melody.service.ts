@@ -28,7 +28,11 @@ export class MelodyService {
 
   public addDummyMelody(): Soundtrack {
     const endOfTrackNote: string = this.notationService.buildEndOfTrackNote();
-    const textMeasures = ['rest/4 B4|A4|F5/16 A4|A5|B5/16 G#4|C6|G5/16 A4/16',
+    const textMeasures = ['rest/4 D5|D5|D5/16 B4|B4|B4/16 G#4|G#4|G#4/16 A4/16',
+      'D5|D5|D5/16 B4|B4|B4/16 G#4|G#4|G#4/16 A4|A4|A4/16 A4|A4|A4/16 A4|A4|A4/16 A4|A4|A4/16 A4|A4|A4/16',
+      'D5|D5|D5/16 B4|B4|B4/16 G#4|G#4|G#4/16 A4|A4|A4/16 A4|A4|A4/16 A4|A4|A4/16 A4|A4|A4/16 A4|A4|A4/16',
+      'D5|D5|D5/16 B4|B4|B4/16 G#4|G#4|G#4/16 A4|A4|A4/16 A4|A4|A4/16 A4|A4|A4/16 A4|A4|A4/16 A4|A4|A4/16',
+      'D5|D5|D5/16 B4|B4|B4/16 G#4|G#4|G#4/16 A4|A4|A4/16 A4|A4|A4/16 A4|A4|A4/16 A4|A4|A4/16 A4|A4|A4/16',
       'C5/8 rest/8 D5/16 C5/16 B4/16 C5/16',
       'E5/8 rest/8 F5/16 E5/16 D#5/16 E5/16',
       'B5/16 A5/16 G#5/16 A5/16 B5/16 A5/16 G#5/16 A5/16',
