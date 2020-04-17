@@ -107,7 +107,6 @@ export class SynthService {
 
   // Rewind a the position and clear all events if any
   private clearTransport() {
-    Tone.Transport.position = 0;
     Tone.Transport.cancel();
     console.log('Cleared the transport');
   }
@@ -168,9 +167,10 @@ export class SynthService {
   }
 
   private play(track: Track, soundtrack: Soundtrack) {
-    let measureCounter: number = 0;
     let firstMeasure: boolean = true;
     let previousMeasure: Measure;
+    // By starting at 1 instead of 0 the first measure is never skipped
+    let measureCounter: number = 1;
 
     if (!this.isTransportStarted()) {
       throw new Error('The soundtrack cannot be played as the tone transport has not started.');
