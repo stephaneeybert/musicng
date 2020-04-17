@@ -28,6 +28,7 @@ const DEFAULT_TEMPO_BPM_VALUE: number = 128;
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
 const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 
+const VELOCITY_MIDI_MAX: number = 127;
 const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const CHROMAS_GERMAN_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'H'];
 const CHROMAS_SYLLABIC: Map<string, string> = new Map([ ['rest', 'rest'], ['C', 'Do'], ['C#', '???'], ['D', 'Re.m'], ['D#', '???'], ['E', 'Mi.m'], ['F', 'Fa'], ['F#', '???'], ['G', 'Sol'], ['G#', '???'], ['A', 'La.m'], ['A#', '???'], ['B', 'Si-'] ]);
@@ -210,6 +211,17 @@ export class NotationService {
     const pitch: Pitch = this.createPitch(this.createChroma(chroma), this.createOctave(octave));
     const note: Note = new Note(index, pitch);
     return note;
+  }
+
+  public velocityMidiToTonejs(midiVelocity: number): number {
+    if (midiVelocity > VELOCITY_MIDI_MAX) {
+      throw new Error('The MIDI velocity ' + midiVelocity + ' is greater than the maximum MIDI velocity ' + VELOCITY_MIDI_MAX);
+    }
+    return midiVelocity / VELOCITY_MIDI_MAX;
+  }
+
+  public velocityTonejsToMidi(tonejsVelocity: number): number {
+    return tonejsVelocity * VELOCITY_MIDI_MAX;
   }
 
   public noteToChromaOctave(note: string): Array<string> {

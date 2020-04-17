@@ -189,6 +189,8 @@ export class SynthService {
                 } else {
                   textNote = SYNTH_REST_NOTE;
                 }
+                console.log('Text note: ' + textNote + ' ' + note.velocity);
+                // textNote = Tone.Midi.toNote(Tone.Midi.toMidi(textNote));
                 soundtrack.synth.triggerAttack(textNote, triggerTime, note.velocity);
                 soundtrack.synth.triggerRelease(textNote, releaseTime);
               }
@@ -249,15 +251,18 @@ export class SynthService {
   }
 
   public noteOn(midiNote: number, velocity: number, synth: any) {
-    synth.triggerAttack(midiNote, null, velocity);
+    const textNote: string = this.midiToTextNote(midiNote);
+    console.log(textNote + ' ' + this.notationService.velocityMidiToTonejs(velocity));
+    synth.triggerAttack(textNote, Tone.Context.currentTime, this.notationService.velocityMidiToTonejs(velocity));
   }
 
   public noteOff(midiNote: number, synth: any) {
-    synth.triggerRelease(midiNote);
+    const textNote: string = this.midiToTextNote(midiNote);
+    synth.triggerRelease(textNote, Tone.Context.currentTime);
   }
 
-  public renderDurationInTicks(duration: string): string {
-    return Tone.Time(duration).toTicks() + TempoUnit.TICK;
+  public midiToTextNote(midiNote: number): string {
+    return Tone.Midi(midiNote).toNote();
   }
 
 }

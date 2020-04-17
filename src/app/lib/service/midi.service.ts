@@ -26,6 +26,7 @@ import { Note } from '../../model/note/note';
 import { PlacedChord } from '../../model/note/placed-chord';
 import { Chroma } from '../../model/note/pitch/chroma';
 import { Duration } from '../../model/note/duration/duration';
+import { SynthService } from './synth.service';
 
 const NOTE_ON = 144; // A command value of 144 is a "note on"
 const NOTE_OFF = 128; // A command value of 128 is a "note off"
@@ -57,7 +58,8 @@ export class MidiService {
     private deviceStore: DeviceStore,
     private commonService: CommonService,
     private keyboardService: KeyboardService,
-    private notationService: NotationService
+    private notationService: NotationService,
+    private synthService: SynthService
   ) { }
 
   public getInputDevices$(): Observable<WebMidi.MIDIInput> {
@@ -149,7 +151,7 @@ export class MidiService {
 
     const midiNote = message.data[1];
     const octave = Math.trunc(midiNote / 12);
-    const musicNote = this.midi2Abc(midiNote);
+    const musicNote = this.synthService.midiToTextNote(midiNote);
 
     // console.log('Device: ' + deviceName + ' Command: ' + command.toString(16) + ' ' + commandName
     //   + ' Channel: ' + channel.toString(16)
@@ -479,7 +481,7 @@ export class MidiService {
   //   deltaInTicks: number, ticksPerQuarter: number,
   //   tempoInMicroSecondsPerBeat: number, currentNoteOnEvent: IMidiNoteOnEvent): PlacedChord {
   //   const duration: Duration; // TODO this.ticksToBpm(deltaInTicks, ticksPerQuarter, tempoInMicroSecondsPerBeat).toString();
-  //   const abc: string = this.midi2Abc(currentNoteOnEvent.noteOn.noteNumber);
+  //   const abc: string = this.synthService.midiToTextNote(currentNoteOnEvent.noteOn.noteNumber);
   //   const octave: number = this.midi2octave(currentNoteOnEvent.noteOn.noteNumber);
   //   const velocity: number = currentNoteOnEvent.noteOn.velocity;
   //   const note: Note = this.notationService.buildNoteWithTicks(abc, octave, velocity, deltaInTicks);
@@ -540,14 +542,6 @@ export class MidiService {
     //   throw new Error('Unknown subdivision for duration: ' + subdivisionSlices);
     // }
   // }
-
-  private midi2octave(midiNote: number): number {
-    return Math.round(midiNote / 12) - 1;
-  }
-
-  private midi2Abc(midiNote: number) {
-    return Chroma.CHROMAS_ALPHABETICAL[midiNote % 12];
-  }
 
   private microSecondsToBpm(microSeconds: number): number {
     return Math.round(60000 / (microSeconds / 1000));
