@@ -80,7 +80,6 @@ export class CommonService {
       environment.wakeLock = wakeLock;
       console.log('Got the window Wake Lock');
 
-
     } else if ('wakeLock' in navigator && 'request' in navigator.wakeLock) {
 
       console.warn('The Wake Lock API is supported by the browser navigator object.');
