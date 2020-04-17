@@ -53,6 +53,21 @@ export class SynthService {
       }
     }).toMaster();
 
+    // var synth = new Tone.PolySynth(3, Tone.Synth, {
+    //   "oscillator" : {
+    //     "type" : "fatsawtooth",
+    //     "count" : 3,
+    //     "spread" : 30
+    //   },
+    //   "envelope": {
+    //     "attack": 0.01,
+    //     "decay": 0.1,
+    //     "sustain": 0.5,
+    //     "release": 0.4,
+    //     "attackCurve" : "exponential"
+    //   },
+    // }).toMaster();
+
     // const synth: any = new Tone.PolySynth(4, Tone.Synth, {
     //   "volume" : -8,
     //   "oscillator" : {
