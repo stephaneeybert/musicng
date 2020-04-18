@@ -179,7 +179,8 @@ export class SynthService {
   }
 
   private play(track: Track, soundtrack: Soundtrack) {
-    let previousMeasure: Measure;
+    let previousScheduledMeasure: Measure;
+    let previousDrawnMeasure: Measure;
 
     // By starting at 1 instead of 0 the first measure is never skipped when playing
     let measureCounter: number = 1;
@@ -198,12 +199,11 @@ export class SynthService {
       Tone.Transport.scheduleOnce((measureStartTime: any) => {
         // The first measure is always supposed to have a new tempo and time signature
         if (measure.isFirst()) {
-          this.updateTempo(previousMeasure, measure, false);
+          this.updateTempo(previousScheduledMeasure, measure, false);
           this.updateTimeSignature(measure);
         } else {
-          this.updateTempo(previousMeasure, measure, true);
+          this.updateTempo(previousScheduledMeasure, measure, true);
           this.updateTimeSignature(measure);
-          console.log('Previous: ' + previousMeasure.index + ' current: ' + measure.index);
         }
 
         // The time of notes relative to the start of the current measure
@@ -211,7 +211,6 @@ export class SynthService {
         relativeTime += 0.01;
 
         if (measure.placedChords) {
-          let placedChordIndex: number = 0;
           measure.getSortedChords().forEach((placedChord: PlacedChord) => {
             const duration: string = placedChord.renderDuration();
             const durationInSeconds = Tone.Time(duration).toSeconds();
@@ -220,24 +219,21 @@ export class SynthService {
 
             if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
               const textNotes: Array<string> = this.restToSynthRest(placedChord.renderAbc());
-              // soundtrack.synth.triggerAttackRelease(textNotes, durationInSeconds, triggerTime, VELOCITY_TONEJS); // TODO
               soundtrack.synth.triggerAttack(textNotes, triggerTime, VELOCITY_TONEJS);
               soundtrack.synth.triggerRelease(textNotes, releaseTime);
               Tone.Draw.schedule((actualTime: any) => {
                 this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
                 this.sheetService.vexflowHighlightStaveNote(placedChord);
-                if (placedChordIndex > 0) {
+                if (placedChord.isFirst()) {
                   if (!measure.isFirst()) {
-                    // this.sheetService.removeMeasure(soundtrack.sheetContext, previousMeasure);
-                    this.sheetService.hideMeasure(measure); // TODO
+                      // this.sheetService.removeMeasure(soundtrack.sheetContext, previousDrawnMeasure);
+                      this.sheetService.hideMeasure(previousDrawnMeasure);
+                      this.sheetService.showMeasure(measure);
                   }
-                  this.sheetService.showMeasure(measure);
                 }
-                placedChordIndex++;
-              }, triggerTime);
-              Tone.Draw.schedule((actualTime: any) => {
                 this.keyboardService.unpressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
                 this.sheetService.vexflowUnhighlightStaveNote(placedChord);
+                previousDrawnMeasure = measure;
               }, releaseTime);
             } else {
               Tone.Draw.schedule((actualTime: any) => {
@@ -251,10 +247,9 @@ export class SynthService {
         } else {
           throw new Error('The measure placed chords array has not been instantiated.');
         }
-        previousMeasure = measure;
+        previousScheduledMeasure = measure;
       }, measureCounter + TempoUnit.MEASURE);
       measureCounter++;
-      console.log('Storing previousMeasure');
     });
   }
 
