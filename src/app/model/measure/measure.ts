@@ -19,6 +19,10 @@ export class Measure {
     this.placedChords = new Array(); // TODO Pass in the chords
   }
 
+  public isFirst(): boolean {
+    return this.index === 0;
+  }
+
   public hasChords(): boolean {
     if (this.placedChords != null && this.placedChords.length > 0) {
       return true;

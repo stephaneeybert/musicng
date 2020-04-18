@@ -15,6 +15,10 @@ export class Note {
     this.dotted = false;
   }
 
+  public isFirst(): boolean {
+    return this.index === 0;
+  }
+
   public renderChroma(): string {
     return this.pitch.renderChroma();
   }

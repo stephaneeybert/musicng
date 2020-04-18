@@ -16,6 +16,10 @@ export class Track {
     this.measures = new Array<Measure>();
   }
 
+  public isFirst(): boolean {
+    return this.index === 0;
+  }
+
   public hasMeasures(): boolean {
     if (this.measures != null && this.measures.length > 0) {
       return true;

@@ -23,6 +23,10 @@ export class PlacedChord {
     }
   }
 
+  public isFirst(): boolean {
+    return this.index === 0;
+  }
+
   public hasNotes(): boolean {
     if (this.notes != null && this.notes.length > 0) {
       return true;

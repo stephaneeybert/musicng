@@ -179,7 +179,6 @@ export class SynthService {
   }
 
   private play(track: Track, soundtrack: Soundtrack) {
-    let firstMeasure: boolean = true;
     let previousMeasure: Measure;
 
     // By starting at 1 instead of 0 the first measure is never skipped when playing
@@ -192,22 +191,20 @@ export class SynthService {
     this.setPlaying(soundtrack, true);
 
     track.getSortedMeasures().forEach((measure: Measure) => {
-      // The first measure is always supposed to have a new tempo and time signature
-      if (firstMeasure) {
-        this.updateTempo(previousMeasure, measure, false);
-        this.updateTimeSignature(measure);
-        firstMeasure = false;
-      }
-
       // Wait for user idleness before starting playing
       let relativeTime: number = PLAY_START_DELAY;
 
       // Schedule each measure independently
       Tone.Transport.scheduleOnce((measureStartTime: any) => {
-        console.log('Previous: ' + previousMeasure.index + ' current: ' + measure.index);
-        this.updateTempo(previousMeasure, measure, true);
-        this.updateTimeSignature(measure);
-        console.log('Starting play on measure');
+        // The first measure is always supposed to have a new tempo and time signature
+        if (measure.isFirst()) {
+          this.updateTempo(previousMeasure, measure, false);
+          this.updateTimeSignature(measure);
+        } else {
+          this.updateTempo(previousMeasure, measure, true);
+          this.updateTimeSignature(measure);
+          console.log('Previous: ' + previousMeasure.index + ' current: ' + measure.index);
+        }
 
         // The time of notes relative to the start of the current measure
         // Note that a non zero init time is needed to have the first note key press displayed
@@ -230,7 +227,7 @@ export class SynthService {
                 this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
                 this.sheetService.vexflowHighlightStaveNote(placedChord);
                 if (placedChordIndex > 0) {
-                  if (!firstMeasure) {
+                  if (!measure.isFirst()) {
                     // this.sheetService.removeMeasure(soundtrack.sheetContext, previousMeasure);
                     this.sheetService.hideMeasure(measure); // TODO
                   }
@@ -254,8 +251,8 @@ export class SynthService {
         } else {
           throw new Error('The measure placed chords array has not been instantiated.');
         }
+        previousMeasure = measure;
       }, measureCounter + TempoUnit.MEASURE);
-      previousMeasure = measure;
       measureCounter++;
       console.log('Storing previousMeasure');
     });
