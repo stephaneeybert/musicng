@@ -212,7 +212,7 @@ export class SheetService {
     }
   }
 
-  public removeMeasure(context: any, measure: Measure): void {
+  public removeMeasure(measure: Measure, context: any): void {
     if (measure.sheetStaveGroup) {
       console.log(context);
       console.log(measure.sheetStaveGroup);
@@ -224,13 +224,11 @@ export class SheetService {
   }
 
   public showMeasure(measure: Measure): void {
-    const opacity: string = VEXFLOW_SVG_OPACITY_TO_SHOW;
-    this.toggleMeasureVisibility(measure, opacity);
+    this.toggleMeasureVisibility(measure, VEXFLOW_SVG_OPACITY_TO_SHOW);
   }
 
   public hideMeasure(measure: Measure): void {
-    const opacity: string = VEXFLOW_SVG_OPACITY_TO_HIDE;
-    this.toggleMeasureVisibility(measure, opacity);
+    this.toggleMeasureVisibility(measure, VEXFLOW_SVG_OPACITY_TO_HIDE);
   }
 
   private toggleMeasureVisibility(measure: Measure, opacity: string): void {
@@ -240,17 +238,50 @@ export class SheetService {
     if (measure.sheetVoiceGroup) {
       measure.sheetVoiceGroup.style.opacity = opacity;
     }
+    if (measure.placedChords) {
+      measure.placedChords.forEach((placedChord: PlacedChord) => {
+        this.hideHighlightedPlacedChord(placedChord);
+      });
+    }
+  }
+  private hideHighlightedPlacedChord(placedChord: PlacedChord): void {
+    this.toggleChordVisibility(placedChord, VEXFLOW_SVG_OPACITY_TO_HIDE)
   }
 
-  public vexflowHighlightStaveNote(placedChord: PlacedChord): void {
-    this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR);
+  private toggleChordVisibility(placedChord: PlacedChord, opacity: string): void {
+    if (placedChord.sheetStaveNoteHighlightGroup) {
+      placedChord.sheetStaveNoteHighlightGroup.style.opacity = opacity;
+      console.log('Toggling note: ' + placedChord.sheetStaveNoteHighlightGroup.style.opacity);
+    }
+    if (placedChord.sheetStaveNoteUnhighlightGroup) {
+      placedChord.sheetStaveNoteUnhighlightGroup.style.opacity = opacity;
+      console.log('Toggling note: ' + placedChord.sheetStaveNoteUnhighlightGroup.style.opacity);
+    }
   }
 
-  public vexflowUnhighlightStaveNote(placedChord: PlacedChord): void {
-    this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_COLOR);
+  public vexflowHighlightStaveNote(placedChord: PlacedChord, context: any): void {
+    this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR, context);
+    if (placedChord.staveNote) {
+      const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
+      const sheetStaveNoteGroup: any = context.openGroup();
+      staveNote.draw();
+      context.closeGroup();
+      placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
+    }
   }
 
-  public vexflowStyleStaveNote(placedChord: PlacedChord, color: string): void {
+  public vexflowUnhighlightStaveNote(placedChord: PlacedChord, context: any): void {
+    this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_COLOR, context);
+    if (placedChord.staveNote) {
+      const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
+      const sheetStaveNoteGroup: any = context.openGroup();
+      staveNote.draw();
+      context.closeGroup();
+      placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
+    }
+  }
+
+  public vexflowStyleStaveNote(placedChord: PlacedChord, color: string, context: any): void {
     if (placedChord.hasNotes()) {
       if (placedChord.staveNote) {
         const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
@@ -258,9 +289,12 @@ export class SheetService {
           fillStyle: color,
           strokeStyle: color
         });
+        const sheetStaveNoteGroup: any = context.openGroup();
         staveNote.draw();
+        context.closeGroup();
+        placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
       } else {
-        throw new Error('The placed chord has no vexflow stave note');
+        throw new Error('The placed chord has no vexflow stave note when styling');
       }
     }
   }

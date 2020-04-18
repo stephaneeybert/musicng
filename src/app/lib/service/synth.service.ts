@@ -223,16 +223,16 @@ export class SynthService {
               soundtrack.synth.triggerRelease(textNotes, releaseTime);
               Tone.Draw.schedule((actualTime: any) => {
                 this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
-                this.sheetService.vexflowHighlightStaveNote(placedChord);
+                this.sheetService.vexflowHighlightStaveNote(placedChord, soundtrack.sheetContext);
                 if (placedChord.isFirst()) {
                   if (!measure.isFirst()) {
-                      // this.sheetService.removeMeasure(soundtrack.sheetContext, previousDrawnMeasure);
+                      // this.sheetService.removeMeasure(previousDrawnMeasure, soundtrack.sheetContext);
                       this.sheetService.hideMeasure(previousDrawnMeasure);
                       this.sheetService.showMeasure(measure);
                   }
                 }
                 this.keyboardService.unpressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
-                this.sheetService.vexflowUnhighlightStaveNote(placedChord);
+                this.sheetService.vexflowUnhighlightStaveNote(placedChord, soundtrack.sheetContext);
                 previousDrawnMeasure = measure;
               }, releaseTime);
             } else {
