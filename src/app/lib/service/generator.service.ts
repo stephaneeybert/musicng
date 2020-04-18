@@ -38,15 +38,17 @@ export class GeneratorService {
   NOTE_OCTAVE: number = 5; // TODO Offer the octave in settings
 
   public generateSoundtrack(): Soundtrack {
+    let placedChordIndex: number = 0;
     const generatedChords: Array<PlacedChord> = this.generateChords()
       .map((chord: Array<string>) => {
-        let index: number = 0;
+        let noteIndex: number = 0;
         const notes: Array<Note> = chord.map((textNote: string) => {
-          const note: Note = this.notationService.createNote(index, textNote, this.NOTE_OCTAVE);
-          index++;
+          const note: Note = this.notationService.createNote(noteIndex, textNote, this.NOTE_OCTAVE);
+          noteIndex++;
           return note;
         })
-        return this.notationService.createPlacedChord(this.CHORD_DURATION, TempoUnit.DUPLE, notes); // Maybe have a default chord unit ?
+        return this.notationService.createPlacedChord(placedChordIndex, this.CHORD_DURATION, TempoUnit.DUPLE, notes); // Maybe have a default chord unit ?
+        placedChordIndex++;
       });
 
     this.notationService.addEndOfTrackNote(generatedChords);

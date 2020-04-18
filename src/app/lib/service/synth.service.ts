@@ -211,7 +211,8 @@ export class SynthService {
         relativeTime += 0.01;
 
         if (measure.placedChords) {
-          measure.placedChords.forEach((placedChord: PlacedChord) => {
+          let placedChordIndex: number = 0;
+          measure.getSortedChords().forEach((placedChord: PlacedChord) => {
             const duration: string = placedChord.renderDuration();
             const durationInSeconds = Tone.Time(duration).toSeconds();
             let triggerTime = measureStartTime + relativeTime;
@@ -225,6 +226,11 @@ export class SynthService {
               Tone.Draw.schedule((actualTime: any) => {
                 this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
                 this.sheetService.vexflowHighlightStaveNote(placedChord);
+                if (placedChordIndex > 0) {
+                  this.sheetService.hideMeasure(previousMeasure);
+                  this.sheetService.showMeasure(measure);
+                }
+                placedChordIndex++;
               }, triggerTime);
               Tone.Draw.schedule((actualTime: any) => {
                 this.keyboardService.unpressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
@@ -294,20 +300,20 @@ export class SynthService {
 
   private textToMidiNotes(textNotes: Array<string>): Array<number> {
     return textNotes
-    .map((textNote: string) => {
-      return this.textToMidiNote(textNote);
-    });
+      .map((textNote: string) => {
+        return this.textToMidiNote(textNote);
+      });
   }
 
   private restToSynthRest(textNotes: Array<string>): Array<string> {
     return textNotes
-    .map((textNote: string) => {
-      if (!this.notationService.abcNoteIsNotRest(textNote)) {
-        return SYNTH_REST_NOTE;
-      } else {
-        return textNote;
-      }
-    });
+      .map((textNote: string) => {
+        if (!this.notationService.abcNoteIsNotRest(textNote)) {
+          return SYNTH_REST_NOTE;
+        } else {
+          return textNote;
+        }
+      });
   }
 
 }

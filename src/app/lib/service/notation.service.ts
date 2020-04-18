@@ -62,9 +62,11 @@ export class NotationService {
   }
 
   private parseTextMeasure(textMeasure: string): Array<PlacedChord> {
+    let index: number = 0;
     return textMeasure.split(CHORD_SEPARATOR)
       .map((textChord: string) => {
-        return this.parseTextChord(textChord);
+        return this.parseTextChord(index, textChord);
+        index++;
       });
   }
 
@@ -96,12 +98,12 @@ export class NotationService {
       });
   }
 
-  private parseTextChord(textChord: string): PlacedChord {
+  private parseTextChord(index: number, textChord: string): PlacedChord {
     const chordAndDuration: Array<string> = textChord.split(CHORD_DURATION_SEPARATOR);
     const chordNotes: string = chordAndDuration[0];
     const chordDuration: number = parseInt(chordAndDuration[1], 10);
     const notes: Array<Note> = this.parseTextNotes(chordNotes);
-    const placedChord: PlacedChord = this.createPlacedChord(chordDuration, TempoUnit.DUPLE, notes);
+    const placedChord: PlacedChord = this.createPlacedChord(index, chordDuration, TempoUnit.DUPLE, notes);
     return placedChord;
   }
 
@@ -137,21 +139,22 @@ export class NotationService {
             measure.placedChords = new Array();
             measure.tempo = this.createDuration(measureDuration, measureObj.tempo.unit);
             measure.timeSignature = this.createTimeSignature(measureObj.timeSignature.numerator, measureObj.timeSignature.denominator);
+            let placedChordIndex: number = 0;
             measureObj.placedChords.forEach((placedChordObj: any) => {
               if (!placedChordObj.notes || placedChordObj.notes.length === 0) {
                 this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
                 throw new Error('The notes could not be accessed from the untyped soundtrack.');
               }
               const notes: Array<Note> = new Array();
-              let index: number = 0;
+              let noteIndex: number = 0;
               placedChordObj.notes.forEach((noteObj: any) => {
                 if (noteObj.pitch) {
-                  const note: Note = this.createNote(index, noteObj.pitch.chroma.value, noteObj.pitch.octave.value);
+                  const note: Note = this.createNote(noteIndex, noteObj.pitch.chroma.value, noteObj.pitch.octave.value);
                   note.pitch.accidental = noteObj.pitch.accidental;
                   note.dotted = noteObj.dotted;
                   note.velocity = noteObj.velocity;
                   notes.push(note);
-                  index++;
+                  noteIndex++;
                 }
               });
               if (!placedChordObj.duration || !placedChordObj.duration.subdivision || !this.is(placedChordObj.duration.subdivision.left) || !this.is(placedChordObj.duration.subdivision.right) || !placedChordObj.duration.unit) {
@@ -160,13 +163,14 @@ export class NotationService {
               }
               const duration: number = parseInt(placedChordObj.duration.subdivision.left, 10) + parseInt(placedChordObj.duration.subdivision.right, 10);
               const tempoUnit: TempoUnit = placedChordObj.duration.unit as TempoUnit;
-              const placedChord: PlacedChord = this.createPlacedChord(duration, tempoUnit, notes);
+              const placedChord: PlacedChord = this.createPlacedChord(placedChordIndex, duration, tempoUnit, notes);
               placedChord.dottedAll = placedChordObj.dottedAll;
               if (!measure.placedChords) {
                 this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
                 throw new Error('The measure placed chords array could not be accessed from the untyped soundtrack.');
               }
               measure.placedChords.push(placedChord);
+              placedChordIndex++;
             });
             track.measures.push(measure);
           });
@@ -200,9 +204,9 @@ export class NotationService {
     }
   }
 
-  public createPlacedChord(chordDuration: number, tempoUnit: TempoUnit, notes: Array<Note>): PlacedChord {
+  public createPlacedChord(index: number, chordDuration: number, tempoUnit: TempoUnit, notes: Array<Note>): PlacedChord {
     const duration: Duration = this.createDuration(chordDuration, tempoUnit);
-    const placedChord: PlacedChord = this.createEmptyChord(duration);
+    const placedChord: PlacedChord = this.createEmptyChord(index, duration);
     this.addNotes(placedChord, notes);
     return placedChord;
   }
@@ -284,16 +288,15 @@ export class NotationService {
   public addEndOfTrackNote(chords: Array<PlacedChord>): void {
     if (chords.length > 0) {
       // Have a few end of track notes as a note may not be played by an unreliable synth
-      chords[chords.length] = this.createLastOfTrackPlacedChord();
-      chords[chords.length] = this.createLastOfTrackPlacedChord();
-      chords[chords.length] = this.createLastOfTrackPlacedChord();
+      chords[chords.length] = this.createLastOfTrackPlacedChord(chords.length);
+      chords[chords.length] = this.createLastOfTrackPlacedChord(chords.length);
+      chords[chords.length] = this.createLastOfTrackPlacedChord(chords.length);
     }
   }
 
-  public createLastOfTrackPlacedChord(): PlacedChord {
-    const index: number = 0;
+  public createLastOfTrackPlacedChord(index: number): PlacedChord {
     const endNote: Note = this.createNote(index, NOTE_END_OF_TRACK, NOTE_END_OF_TRACK_OCTAVE);
-    return this.createPlacedChord(NOTE_END_OF_TRACK_DURATION, TempoUnit.DUPLE, [endNote]);
+    return this.createPlacedChord(index, NOTE_END_OF_TRACK_DURATION, TempoUnit.DUPLE, [endNote]);
   }
 
   public buildEndOfTrackNote(): string {
@@ -317,10 +320,6 @@ export class NotationService {
     const note: Note = this.createNote(index, abc, octave);
     note.velocity = velocity;
     return note;
-  }
-
-  public placeEmptyChord(duration: Duration): PlacedChord {
-    return this.createEmptyChord(duration);
   }
 
   private createChroma(value: string): Chroma {
@@ -377,8 +376,8 @@ export class NotationService {
     return new Pitch(chroma, octave);
   }
 
-  private createEmptyChord(duration: Duration): PlacedChord {
-    const placedChod: PlacedChord = new PlacedChord(duration);
+  public createEmptyChord(index: number, duration: Duration): PlacedChord {
+    const placedChod: PlacedChord = new PlacedChord(index, duration);
     return placedChod;
   }
 

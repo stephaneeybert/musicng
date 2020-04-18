@@ -210,6 +210,7 @@ export class MidiService {
         const timeSignature: TimeSignature = this.notationService.createDefaultTimeSignature();
         if (midiTrack.notes != null) {
           const measures = new Array<Measure>();
+          let placedChordIndex: number = 0;
           const placedChords: Array<PlacedChord> = new Array<PlacedChord>();
           midiTrack.notes.forEach((midiNote: any) => {
             const pitchOctave: Array<string> = this.notationService.noteToChromaOctave(midiNote.name);
@@ -218,9 +219,10 @@ export class MidiService {
               parseInt(pitchOctave[1], 10),
               midiNote.velocity);
             const duration: Duration = midiNote.time; // TODO midiNote.durationTicks How to retrieve the note time and store it in the chord ?
-            const placedChord: PlacedChord = this.notationService.placeEmptyChord(duration);
+            const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration);
             placedChord.addNote(note);
             placedChords.push(placedChord);
+            placedChordIndex++;
           });
           const measure: Measure = new Measure(duration, timeSignature);
           measure.placedChords = placedChords;

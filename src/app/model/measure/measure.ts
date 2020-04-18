@@ -7,12 +7,14 @@ export class Measure {
   // The tempo is the speed usually expressed as the number of beats in a minute
   tempo: Duration;
   timeSignature: TimeSignature;
-  placedChords?: Array<PlacedChord>;
+  placedChords: Array<PlacedChord>;
+  sheetStaveGroup?: any;
+  sheetVoiceGroup?: any;
 
   constructor(tempo: Duration, timeSignature: TimeSignature) {
     this.tempo = tempo;
     this.timeSignature = timeSignature;
-    this.placedChords;
+    this.placedChords = new Array(); // TODO Pass in the chords
   }
 
   public hasChords(): boolean {
@@ -21,6 +23,12 @@ export class Measure {
     } else {
       return false;
     }
+  }
+
+  public getSortedChords(): Array<PlacedChord> {
+    return this.placedChords.sort((chordA: PlacedChord, chordB: PlacedChord) => {
+      return chordA.index - chordB.index;
+    });
   }
 
   public getTempo(): number {

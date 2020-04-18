@@ -22,6 +22,8 @@ const VEXFLOW_FONT_TYPE = 'Arial';
 const VEXFLOW_FONT_SIZE = 10;
 const VEXFLOW_FONT_WEIGHT = '';
 const VEXFLOW_FONT_WEIGHT_BOLD = 'Bold';
+const VEXFLOW_SVG_OPACITY_TO_SHOW: string = '100';
+const VEXFLOW_SVG_OPACITY_TO_HIDE: string = '0';
 
 const VEXFLOW_DOUBLE_BAR = '||';
 const VEXFLOW_REPEAT_BEGIN = '|:';
@@ -56,7 +58,7 @@ export class SheetService {
     // TODO
   }
 
-  private vexflowHeight(soundtrack: Soundtrack): number {
+  private getNbMeasures(soundtrack: Soundtrack): number {
     let nbMeasures: number = 0;
     if (soundtrack.hasTracks()) {
       for (const track of soundtrack.tracks) {
@@ -73,30 +75,7 @@ export class SheetService {
         }
       }
     }
-    return (nbMeasures + 1) * (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN);
-  }
-
-  public vexflowHighlightStaveNote(placedChord: PlacedChord): void {
-    this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR);
-  }
-
-  public vexflowUnhighlightStaveNote(placedChord: PlacedChord): void {
-    this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_COLOR);
-  }
-
-  public vexflowStyleStaveNote(placedChord: PlacedChord, color: string): void {
-    if (placedChord.hasNotes()) {
-      if (placedChord.staveNote) {
-        const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
-        staveNote.setStyle({
-          fillStyle: color,
-          strokeStyle: color
-        });
-        staveNote.draw();
-      } else {
-        throw new Error('The placed chord has no vexflow stave note');
-      }
-    }
+    return nbMeasures;
   }
 
   private addAccidentalOnNotes(placedChord: PlacedChord): void {
@@ -130,26 +109,44 @@ export class SheetService {
   }
 
   private vexflowRenderSoundtrack(name: string, screenWidth: number, soundtrack: Soundtrack): void {
-    // The sheet width must fit within the screen
-    const sheetWidth = screenWidth * SHEET_WIDTH_RATIO;
+    // The width must fit within the screen
+    const displayWidth = screenWidth * SHEET_WIDTH_RATIO;
     let previousNoteName: string = '';
 
-    const context = this.renderVexflowContext(name, sheetWidth, this.vexflowHeight(soundtrack));
+    const nbMeasures: number = this.getNbMeasures(soundtrack);
+    // const sheetWidth: number = nbMeasures * displayWidth; // TODO one long stave
+    const sheetWidth: number = displayWidth;
+    const sheetHeight: number = VEXFLOW_STAVE_HEIGHT + (VEXFLOW_STAVE_MARGIN * 2);
+    const context: any = this.renderVexflowContext(name, sheetWidth, sheetHeight);
+    soundtrack.sheetContext = context;
     const formatter = new vexflow.Flow.Formatter();
     const voices: Array<vexflow.Flow.Voice> = new Array<vexflow.Flow.Voice>();
     if (soundtrack.hasTracks()) {
-      let staveIndex: number = 0;
       for (const track of soundtrack.tracks) {
         if (track.hasMeasures()) {
+          let staveIndex: number = 0;
           for (const measure of track.measures) {
             if (measure.placedChords) {
               if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
-                const stave = new vexflow.Flow.Stave(0, staveIndex * (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN), sheetWidth);
-                staveIndex++;
+                // const staveX: number = (displayWidth * staveIndex); // TODO one long stave
+                // const staveY: number = (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN);
+                // const staveWidth: number = displayWidth;
+                const staveX: number = 0;
+                const staveY: number = 0;
+                const staveWidth: number = displayWidth;
+                // const staveX: number = 0;
+                // const staveY: number = staveIndex * (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN);
+                // const staveWidth: number = displayWidth;
+                // console.log('staveX: ' + staveX + ' staveY: ' + staveY + ' staveWidth: ' + staveWidth);
+                const stave = new vexflow.Flow.Stave(staveX, staveY, staveWidth);
                 stave.setContext(context);
-                stave.addClef(Clef.TREBLE);
+                stave.addClef(Clef.TREBLE); // TODO Should the clef be determined from the time signature of the measure ?
                 stave.addTimeSignature(this.renderTimeSignature(measure));
+                const staveGroup: any = context.openGroup();
                 stave.draw();
+                // Store the stave SVG group for later access
+                context.closeGroup();
+                measure.sheetStaveGroup = staveGroup;
 
                 const staveNotes = new Array<vexflow.Flow.StaveNote>();
 
@@ -190,17 +187,76 @@ export class SheetService {
                     staveNotes.push(staveNote);
                   }
                 }
+
                 voice.addTickables(staveNotes);
                 formatter.joinVoices([voice]);
                 formatter.formatToStave([voice], stave);
+
+                const voiceGroup: any = context.openGroup();
                 voice.draw(context);
+                // Store the voice SVG group for later access
+                context.closeGroup();
+                measure.sheetVoiceGroup = voiceGroup;
+                if (staveIndex > 0) {
+                  this.hideMeasure(measure);
+                }
+
                 voices.push(voice);
+                staveIndex++;
               }
             } else {
               throw new Error('The measure placed chords array has not been instantiated.');
             }
           }
         }
+      }
+    }
+  }
+
+  // public removeMeasure(context: , measure: Measure): void {
+  //   context.svg.removeChild(svgNoteGroups[0]);
+  // }
+
+  public showMeasure(measure: Measure): void {
+    const opacity: string = VEXFLOW_SVG_OPACITY_TO_SHOW;
+    this.toggleMeasureVisibility(measure, opacity);
+  }
+
+  public hideMeasure(measure: Measure): void {
+    const opacity: string = VEXFLOW_SVG_OPACITY_TO_HIDE;
+    this.toggleMeasureVisibility(measure, opacity);
+  }
+
+  private toggleMeasureVisibility(measure: Measure, opacity: string): void {
+    if (measure.sheetStaveGroup) {
+      measure.sheetStaveGroup.style.opacity = opacity;
+      console.log('Stave: ' + measure.sheetStaveGroup.style.opacity);
+    }
+    if (measure.sheetVoiceGroup) {
+      measure.sheetVoiceGroup.style.opacity = opacity;
+      console.log('Voice: ' + measure.sheetVoiceGroup.style.opacity);
+    }
+  }
+
+  public vexflowHighlightStaveNote(placedChord: PlacedChord): void {
+    this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR);
+  }
+
+  public vexflowUnhighlightStaveNote(placedChord: PlacedChord): void {
+    this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_COLOR);
+  }
+
+  public vexflowStyleStaveNote(placedChord: PlacedChord, color: string): void {
+    if (placedChord.hasNotes()) {
+      if (placedChord.staveNote) {
+        const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
+        staveNote.setStyle({
+          fillStyle: color,
+          strokeStyle: color
+        });
+        staveNote.draw();
+      } else {
+        throw new Error('The placed chord has no vexflow stave note');
       }
     }
   }
@@ -264,11 +320,13 @@ export class SheetService {
     return measure.timeSignature.numerator + VEXFLOW_TIME_SIGNATURE_SEPARATOR + measure.timeSignature.denominator;
   }
 
-  private renderVexflowContext(name: string, width: number, height: number): any {
+  private renderVexflowContext(name: string, width: number, height: number): vexflow.Flow.SVGContext {
     const element = document.getElementById(name);
-    const renderer = new vexflow.Flow.Renderer(element!, vexflow.Flow.Renderer.Backends.SVG);
+    const renderer: any = new vexflow.Flow.Renderer(element!, vexflow.Flow.Renderer.Backends.SVG);
     renderer.resize(width, height);
-    return renderer.getContext();
+    const context: any = renderer.getContext();
+    // context.setFont('Arial', 10, 0).setBackgroundFillStyle('#eed'); // TODO Hard coded font
+    return context;
   }
 
 }
