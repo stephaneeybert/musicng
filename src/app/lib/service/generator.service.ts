@@ -53,8 +53,9 @@ export class GeneratorService {
 
     this.notationService.addEndOfTrackNote(generatedChords);
 
+    let measureIndex: number = 0;
     const measures: Array<Measure> = new Array<Measure>();
-    let measure: Measure = this.notationService.createMeasure(DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
+    let measure: Measure = this.notationService.createMeasure(measureIndex, DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
     measure.placedChords = new Array<PlacedChord>();
     measures.push(measure);
     generatedChords
@@ -62,9 +63,10 @@ export class GeneratorService {
         if (measure.placedChords) {
           // The number of beats of the chords placed in a measure must equal the number of beats of the measure
           if (measure.getPlacedChordsNbBeats() >= measure.getNbBeats()) {
-            measure = this.notationService.createMeasure(DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
+            measure = this.notationService.createMeasure(measureIndex, DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
             measure.placedChords = new Array<PlacedChord>();
             measures.push(measure);
+            measureIndex++;
           }
           measure.placedChords.push(placedChord);
         } else {

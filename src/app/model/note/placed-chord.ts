@@ -12,7 +12,7 @@ export class PlacedChord {
 
   constructor(index: number, duration: Duration) {
     this.index = index;
-    this.notes =  new Array<Note>();
+    this.notes = new Array<Note>();
     this.duration = duration;
     this.dottedAll = false;
   }

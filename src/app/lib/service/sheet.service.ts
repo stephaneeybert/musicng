@@ -58,7 +58,7 @@ export class SheetService {
     // TODO
   }
 
-  private getNbMeasures(soundtrack: Soundtrack): number {
+  private getNbStaves(soundtrack: Soundtrack): number {
     let nbMeasures: number = 0;
     if (soundtrack.hasTracks()) {
       for (const track of soundtrack.tracks) {
@@ -113,7 +113,6 @@ export class SheetService {
     const displayWidth = screenWidth * SHEET_WIDTH_RATIO;
     let previousNoteName: string = '';
 
-    const nbMeasures: number = this.getNbMeasures(soundtrack);
     // const sheetWidth: number = nbMeasures * displayWidth; // TODO one long stave
     const sheetWidth: number = displayWidth;
     const sheetHeight: number = VEXFLOW_STAVE_HEIGHT + (VEXFLOW_STAVE_MARGIN * 2);
@@ -125,7 +124,7 @@ export class SheetService {
       for (const track of soundtrack.tracks) {
         if (track.hasMeasures()) {
           let staveIndex: number = 0;
-          for (const measure of track.measures) {
+          for (const measure of track.getSortedMeasures()) {
             if (measure.placedChords) {
               if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
                 // const staveX: number = (displayWidth * staveIndex); // TODO one long stave
@@ -213,16 +212,27 @@ export class SheetService {
     }
   }
 
-  // public removeMeasure(context: , measure: Measure): void {
-  //   context.svg.removeChild(svgNoteGroups[0]);
-  // }
+  public removeMeasure(context: any, measure: Measure): void {
+    if (measure.sheetStaveGroup) {
+      console.log(context);
+      console.log(measure.sheetStaveGroup);
+      if (context.svg.hasChildNodes()) {
+        console.log('Has child nodes');
+        context.svg.removeChild(measure.sheetStaveGroup);
+      }
+    }
+  }
 
   public showMeasure(measure: Measure): void {
+    console.log('Showing');
+    console.log(measure);
     const opacity: string = VEXFLOW_SVG_OPACITY_TO_SHOW;
     this.toggleMeasureVisibility(measure, opacity);
   }
 
   public hideMeasure(measure: Measure): void {
+    console.log('Hiding');
+    console.log(measure);
     const opacity: string = VEXFLOW_SVG_OPACITY_TO_HIDE;
     this.toggleMeasureVisibility(measure, opacity);
   }
@@ -230,11 +240,9 @@ export class SheetService {
   private toggleMeasureVisibility(measure: Measure, opacity: string): void {
     if (measure.sheetStaveGroup) {
       measure.sheetStaveGroup.style.opacity = opacity;
-      console.log('Stave: ' + measure.sheetStaveGroup.style.opacity);
     }
     if (measure.sheetVoiceGroup) {
       measure.sheetVoiceGroup.style.opacity = opacity;
-      console.log('Voice: ' + measure.sheetVoiceGroup.style.opacity);
     }
   }
 
@@ -320,7 +328,7 @@ export class SheetService {
     return measure.timeSignature.numerator + VEXFLOW_TIME_SIGNATURE_SEPARATOR + measure.timeSignature.denominator;
   }
 
-  private renderVexflowContext(name: string, width: number, height: number): vexflow.Flow.SVGContext {
+  private renderVexflowContext(name: string, width: number, height: number): any { // TODO Replace all these any types
     const element = document.getElementById(name);
     const renderer: any = new vexflow.Flow.Renderer(element!, vexflow.Flow.Renderer.Backends.SVG);
     renderer.resize(width, height);

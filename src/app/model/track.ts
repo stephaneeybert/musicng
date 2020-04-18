@@ -4,13 +4,15 @@ import { Measure } from './measure/measure';
 
 export class Track {
 
+  index: number;
   measures: Array<Measure>;
   name?: string;
   channel?: number;
   instrument?: Instrument;
   controls?: Array<Control>;
 
-  constructor() {
+  constructor(index: number) {
+    this.index = index;
     this.measures = new Array<Measure>();
   }
 
@@ -20,6 +22,12 @@ export class Track {
     } else {
       return false;
     }
+  }
+
+  public getSortedMeasures(): Array<Measure> {
+    return this.measures.sort((measureA: Measure, measureB: Measure) => {
+      return measureA.index - measureB.index;
+    });
   }
 
 }

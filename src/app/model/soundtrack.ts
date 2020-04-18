@@ -24,7 +24,7 @@ export class Soundtrack {
   }
 
   public addTrack(measures: Array<Measure>) {
-    const track: Track = new Track();
+    const track: Track = new Track(this.tracks.length);
     track.measures = measures;
     this.tracks.push(track);
   }

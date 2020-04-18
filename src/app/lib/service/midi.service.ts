@@ -195,8 +195,9 @@ export class MidiService {
     const soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
     soundtrack.name = midi.name;
     if (midi.tracks != null) {
+      let trackIndex: number = 0;
       midi.tracks.forEach((midiTrack: any) => {
-        const track: Track = new Track();
+        const track: Track = new Track(trackIndex);
         track.name = midiTrack.name;
         track.channel = midiTrack.channel;
         if (track.instrument != null) {
@@ -209,6 +210,7 @@ export class MidiService {
         const duration: Duration = this.notationService.createDefaultTempo();
         const timeSignature: TimeSignature = this.notationService.createDefaultTimeSignature();
         if (midiTrack.notes != null) {
+          let measureIndex: number = 0;
           const measures = new Array<Measure>();
           let placedChordIndex: number = 0;
           const placedChords: Array<PlacedChord> = new Array<PlacedChord>();
@@ -224,9 +226,10 @@ export class MidiService {
             placedChords.push(placedChord);
             placedChordIndex++;
           });
-          const measure: Measure = new Measure(duration, timeSignature);
+          const measure: Measure = new Measure(measureIndex, duration, timeSignature);
           measure.placedChords = placedChords;
           measures.push(measure);
+          measureIndex++
           track.measures = measures;
         }
         track.controls = new Array<Control>();
@@ -250,6 +253,7 @@ export class MidiService {
             midiTrack.instrument.name,
             midiTrack.instrument.percussion);
         }
+        trackIndex++;
         soundtrack.tracks.push(track);
       });
     }
@@ -277,13 +281,14 @@ export class MidiService {
         let currentNoteOnEvent: IMidiNoteOnEvent;
         let currentTimeSignature: TimeSignature = this.notationService.createDefaultTimeSignature();
         let pulsesPerMeasure: number;
+        let trackIndex: number = 0;
         jsonMidi.tracks.forEach((midiTrack: TMidiEvent[]) => {
-          const track: Track = new Track();
+          const track: Track = new Track(trackIndex);
           console.log('New track');
           // In MIDI the measure may also be called a bar
+          let measureIndex: number = 0;
           const measures = new Array<Measure>();
           let currentMeasure: Measure;
-          let measureCounter: number = 0;
           midiTrack.forEach((midiEvent: any) => {
             if (midiEvent.hasOwnProperty(MIDI_EVENT_TRACK_NAME)) {
               const trackNameEvent: IMidiTrackNameEvent = midiEvent;
@@ -327,12 +332,12 @@ export class MidiService {
               const controlChangeEvent: IMidiControlChangeEvent = midiEvent;
               if (currentNoteOnEvent != null) {
                 const delta: number = this.delta(controlChangeEvent.time, currentNoteOnEvent.time);
-                if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, pulsesPerMeasure, measureCounter)) {
+                if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, pulsesPerMeasure, measureIndex)) {
                   const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempo), TempoUnit.BPM);
-                  currentMeasure = new Measure(tempo, currentTimeSignature);
+                  currentMeasure = new Measure(measureIndex, tempo, currentTimeSignature);
                   currentMeasure.placedChords = new Array<PlacedChord>();
                   measures.push(currentMeasure);
-                  measureCounter++;
+                  measureIndex++;
                 }
                 if (currentMeasure.placedChords) {
                   // TODO currentMeasure.placedChords.push(this.buildAndPlaceNote(delta, pulsesPerQuarter, currentTempo, currentNoteOnEvent));
@@ -344,12 +349,12 @@ export class MidiService {
               if (currentNoteOnEvent != null) {
                 // console.log('Note off');
                 const delta: number = this.delta(noteOffEvent.time, currentNoteOnEvent.time);
-                if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, pulsesPerMeasure, measureCounter)) {
+                if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, pulsesPerMeasure, measureIndex)) {
                   const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempo), TempoUnit.BPM);
-                  currentMeasure = new Measure(tempo, currentTimeSignature);
+                  currentMeasure = new Measure(measureIndex,tempo, currentTimeSignature);
                   currentMeasure.placedChords = new Array<PlacedChord>();
                   measures.push(currentMeasure);
-                  measureCounter++;
+                  measureIndex++;
                   // console.log('New measure with counter: ' + measureCounter);
                 }
                 // console.log('Push note');
@@ -361,6 +366,7 @@ export class MidiService {
             }
           });
           track.measures = measures;
+          trackIndex++;
           soundtrack.tracks.push(track);
           isFirstTrack = false;
         });

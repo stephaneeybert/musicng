@@ -4,6 +4,7 @@ import { Duration } from '../note/duration/duration';
 
 export class Measure {
 
+  index: number;
   // The tempo is the speed usually expressed as the number of beats in a minute
   tempo: Duration;
   timeSignature: TimeSignature;
@@ -11,7 +12,8 @@ export class Measure {
   sheetStaveGroup?: any;
   sheetVoiceGroup?: any;
 
-  constructor(tempo: Duration, timeSignature: TimeSignature) {
+  constructor(index: number, tempo: Duration, timeSignature: TimeSignature) {
+    this.index = index;
     this.tempo = tempo;
     this.timeSignature = timeSignature;
     this.placedChords = new Array(); // TODO Pass in the chords
@@ -51,16 +53,16 @@ export class Measure {
     return totalNbBeats;
   }
 
-  public createWithNewTimeSignature(numerator: number, denominator: number): Measure {
-    return new Measure(new Duration(this.tempo.subdivision, this.tempo.unit), new TimeSignature(numerator, denominator));
+  public createWithNewTimeSignature(index: number, numerator: number, denominator: number): Measure {
+    return new Measure(index, new Duration(this.tempo.subdivision, this.tempo.unit), new TimeSignature(numerator, denominator));
   }
 
-  public createWithNewNumerator(numerator: number): Measure {
-    return this.createWithNewTimeSignature(numerator, this.timeSignature.denominator);
+  public createWithNewNumerator(index: number, numerator: number): Measure {
+    return this.createWithNewTimeSignature(index, numerator, this.timeSignature.denominator);
   }
 
-  public createWithNewDenominator(denominator: number): Measure {
-    return this.createWithNewTimeSignature(this.timeSignature.numerator, denominator);
+  public createWithNewDenominator(index: number, denominator: number): Measure {
+    return this.createWithNewTimeSignature(index, this.timeSignature.numerator, denominator);
   }
 
 }

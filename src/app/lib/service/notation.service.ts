@@ -46,18 +46,20 @@ export class NotationService {
 
   public parseMeasures(textMeasures: Array<string>, tempo: number, timeSignatureNumerator: number, timeSignatureDenominator: number): Array<Measure> {
     const measures: Array<Measure> = new Array<Measure>();
+    let measureIndex: number = 0;
     for (const textMeasure of textMeasures) {
       const placedChords: Array<PlacedChord> = this.parseTextMeasure(textMeasure);
-      const measure: Measure = this.createMeasure(tempo, timeSignatureNumerator, timeSignatureDenominator);
+      const measure: Measure = this.createMeasure(measureIndex, tempo, timeSignatureNumerator, timeSignatureDenominator);
       measure.placedChords = placedChords;
+      measureIndex++;
       measures.push(measure);
     }
     return measures;
   }
 
-  public createMeasure(tempo: number, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
+  public createMeasure(index: number, tempo: number, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
     const timeSignature: TimeSignature = this.createTimeSignature(timeSignatureNumerator, timeSignatureDenominator);
-    const measure: Measure = new Measure(this.createDuration(tempo, TempoUnit.BPM), timeSignature);
+    const measure: Measure = new Measure(index, this.createDuration(tempo, TempoUnit.BPM), timeSignature);
     return measure;
   }
 
@@ -119,12 +121,14 @@ export class NotationService {
     soundtrack.lyrics = soundtrackObj.lyrics;
     soundtrack.tracks = new Array();
     if (soundtrackObj.tracks && soundtrackObj.tracks.length > 0) {
+      let trackIndex: number = 0;
       soundtrackObj.tracks.forEach((trackObj: any) => {
-        const track: Track = new Track();
+        const track: Track = new Track(trackIndex);
         track.name = trackObj.name;
         track.channel = trackObj.channel;
         track.measures = new Array();
         if (trackObj.measures && trackObj.measures.length > 0) {
+          let measureIndex: number = 0;
           trackObj.measures.forEach((measureObj: any) => {
             if (!measureObj.placedChords || measureObj.placedChords.length === 0) {
               this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
@@ -135,7 +139,7 @@ export class NotationService {
                 throw new Error('The measure duration subdivision or unit could not be accessed from the untyped soundtrack.');
             }
             const measureDuration: number = parseInt(measureObj.tempo.subdivision.left, 10) + parseInt(measureObj.tempo.subdivision.right, 10);
-            const measure: Measure = this.createMeasure(measureDuration, parseInt(measureObj.timeSignature.numerator), parseInt(measureObj.timeSignature.denominator));
+            const measure: Measure = this.createMeasure(measureIndex, measureDuration, parseInt(measureObj.timeSignature.numerator), parseInt(measureObj.timeSignature.denominator));
             measure.placedChords = new Array();
             measure.tempo = this.createDuration(measureDuration, measureObj.tempo.unit);
             measure.timeSignature = this.createTimeSignature(measureObj.timeSignature.numerator, measureObj.timeSignature.denominator);
@@ -172,9 +176,11 @@ export class NotationService {
               measure.placedChords.push(placedChord);
               placedChordIndex++;
             });
+            measureIndex++;
             track.measures.push(measure);
           });
         }
+        trackIndex++;
         soundtrack.tracks.push(track);
       });
     }

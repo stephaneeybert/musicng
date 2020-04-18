@@ -181,7 +181,8 @@ export class SynthService {
   private play(track: Track, soundtrack: Soundtrack) {
     let firstMeasure: boolean = true;
     let previousMeasure: Measure;
-    // By starting at 1 instead of 0 the first measure is never skipped
+
+    // By starting at 1 instead of 0 the first measure is never skipped when playing
     let measureCounter: number = 1;
 
     if (!this.isTransportStarted()) {
@@ -190,7 +191,7 @@ export class SynthService {
 
     this.setPlaying(soundtrack, true);
 
-    track.measures.forEach((measure: Measure) => {
+    track.getSortedMeasures().forEach((measure: Measure) => {
       // The first measure is always supposed to have a new tempo and time signature
       if (firstMeasure) {
         this.updateTempo(previousMeasure, measure, false);
@@ -203,8 +204,10 @@ export class SynthService {
 
       // Schedule each measure independently
       Tone.Transport.scheduleOnce((measureStartTime: any) => {
+        console.log('Previous: ' + previousMeasure.index + ' current: ' + measure.index);
         this.updateTempo(previousMeasure, measure, true);
         this.updateTimeSignature(measure);
+        console.log('Starting play on measure');
 
         // The time of notes relative to the start of the current measure
         // Note that a non zero init time is needed to have the first note key press displayed
@@ -227,7 +230,10 @@ export class SynthService {
                 this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
                 this.sheetService.vexflowHighlightStaveNote(placedChord);
                 if (placedChordIndex > 0) {
-                  this.sheetService.hideMeasure(previousMeasure);
+                  if (!firstMeasure) {
+                    // this.sheetService.removeMeasure(soundtrack.sheetContext, previousMeasure);
+                    this.sheetService.hideMeasure(measure); // TODO
+                  }
                   this.sheetService.showMeasure(measure);
                 }
                 placedChordIndex++;
@@ -249,15 +255,16 @@ export class SynthService {
           throw new Error('The measure placed chords array has not been instantiated.');
         }
       }, measureCounter + TempoUnit.MEASURE);
-      measureCounter++;
       previousMeasure = measure;
+      measureCounter++;
+      console.log('Storing previousMeasure');
     });
   }
 
   /**
    * Apply the tempo to the transport
    * @param Measure measure
-   * @param boolean ramp If true, the tempo will ramp up or down otherwise it will change instantly.
+   * @param boolean ramp If true, the tempo will ramp up or down, otherwise it will change instantly.
    */
   private updateTempo(previousMeasure: Measure, measure: Measure, ramp: boolean) {
     if (previousMeasure == null || previousMeasure.tempo.subdivision.left !== measure.tempo.subdivision.left || previousMeasure.tempo.subdivision.right !== measure.tempo.subdivision.right) {
@@ -268,6 +275,15 @@ export class SynthService {
           Tone.Transport.bpm.value = measure.getTempo();
         }
       }
+    }
+  }
+
+  // TODO
+  private isAnotherMeasure(previousMeasure: Measure, measure: Measure): boolean {
+    if (previousMeasure == null || previousMeasure.index !== measure.index) {
+      return true;
+    } else {
+      return false;
     }
   }
 
