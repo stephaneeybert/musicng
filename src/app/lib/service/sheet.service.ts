@@ -224,15 +224,11 @@ export class SheetService {
   }
 
   public showMeasure(measure: Measure): void {
-    // console.log('Showing');
-    // console.log(measure);
     const opacity: string = VEXFLOW_SVG_OPACITY_TO_SHOW;
     this.toggleMeasureVisibility(measure, opacity);
   }
 
   public hideMeasure(measure: Measure): void {
-    // console.log('Hiding');
-    // console.log(measure);
     const opacity: string = VEXFLOW_SVG_OPACITY_TO_HIDE;
     this.toggleMeasureVisibility(measure, opacity);
   }
