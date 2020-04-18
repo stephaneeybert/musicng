@@ -4,12 +4,14 @@ import { Duration } from './duration/duration';
 
 export class PlacedChord {
 
+  index: number;
   notes: Array<Note>;
   duration: Duration;
   staveNote?: vexflow.Flow.StaveNote;
   dottedAll: boolean;
 
-  constructor(duration: Duration) {
+  constructor(index: number, duration: Duration) {
+    this.index = index;
     this.notes =  new Array<Note>();
     this.duration = duration;
     this.dottedAll = false;
@@ -29,18 +31,23 @@ export class PlacedChord {
     }
   }
 
+  public getSortedNotes(): Array<Note> {
+    return this.notes.sort((noteA: Note, noteB: Note) => {
+      return noteA.index - noteB.index;
+    });
+  }
+
   public renderFirstNoteChroma(): string {
     let abc: string = '';
     if (this.notes.length > 0) {
-      const sortedNotes: Array<Note> = this.notes.sort((a, b) => a.index - b.index);
+      const sortedNotes: Array<Note> = this.getSortedNotes();
       abc = sortedNotes[0].renderChroma();
     }
     return abc;
   }
 
   public renderAbc(): Array<string> {
-    const sortedNotes: Array<string> = this.notes
-    .sort((a, b) => a.index - b.index)
+    const sortedNotes: Array<string> = this.getSortedNotes()
     .map((note: Note) => {
       return note.renderAbc();
     });
