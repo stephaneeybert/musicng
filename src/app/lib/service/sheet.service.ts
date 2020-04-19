@@ -214,7 +214,6 @@ export class SheetService {
 
   public removeMeasure(measure: Measure, context: any): void {
     if (measure.sheetStaveGroup) {
-      console.log(context);
       console.log(measure.sheetStaveGroup);
       if (context.svg.hasChildNodes()) {
         console.log('Has child nodes');
@@ -229,6 +228,12 @@ export class SheetService {
 
   public hideMeasure(measure: Measure): void {
     this.toggleMeasureVisibility(measure, VEXFLOW_SVG_OPACITY_TO_HIDE);
+
+    if (measure.placedChords) {
+      measure.placedChords.forEach((placedChord: PlacedChord) => {
+        this.hideHighlightedPlacedChord(placedChord);
+      });
+    }
   }
 
   private toggleMeasureVisibility(measure: Measure, opacity: string): void {
@@ -238,12 +243,8 @@ export class SheetService {
     if (measure.sheetVoiceGroup) {
       measure.sheetVoiceGroup.style.opacity = opacity;
     }
-    if (measure.placedChords) {
-      measure.placedChords.forEach((placedChord: PlacedChord) => {
-        this.hideHighlightedPlacedChord(placedChord);
-      });
-    }
   }
+
   private hideHighlightedPlacedChord(placedChord: PlacedChord): void {
     this.toggleHighlightedChordVisibility(placedChord, VEXFLOW_SVG_OPACITY_TO_HIDE)
   }
