@@ -213,17 +213,50 @@ export class SheetService {
     }
   }
 
+  public removeMeasure(measure: Measure, context: any): void {
+    if (measure.sheetStaveGroup) {
+      console.log(measure.sheetStaveGroup);
+      if (context.svg.hasChildNodes()) {
+        console.log('Has child nodes');
+        context.svg.removeChild(measure.sheetStaveGroup);
+      }
+    }
+    // this.removeMeasurePlacedChords(measure); // TODO
+  }
+
   public showMeasure(measure: Measure): void {
-    this.toggleMeasureVisibility(measure, VEXFLOW_SVG_OPACITY_TO_SHOW);
+    this.toggleMeasureStaveVisibility(measure, VEXFLOW_SVG_OPACITY_TO_SHOW);
+    this.toggleMeasureVoiceVisibility(measure, VEXFLOW_SVG_OPACITY_TO_SHOW);
   }
 
   public hideMeasure(measure: Measure): void {
-    this.toggleMeasureVisibility(measure, VEXFLOW_SVG_OPACITY_TO_HIDE);
+    this.toggleMeasureStaveVisibility(measure, VEXFLOW_SVG_OPACITY_TO_HIDE);
+    this.toggleMeasureVoiceVisibility(measure, VEXFLOW_SVG_OPACITY_TO_HIDE);
+    this.hideMeasurePlacedChords(measure);
+  }
 
+  public hideSoundtrackPlacedChords(soundtrack: Soundtrack): void {
+    if (soundtrack.tracks) {
+      for (const track of soundtrack.tracks) {
+        if (track.measures) {
+          for (const measure of track.measures) {
+            this.hideMeasurePlacedChords(measure);
+          }
+        }
+      }
+    }
+  }
+
+  private hideMeasurePlacedChords(measure: Measure): void {
     if (measure.placedChords) {
       measure.placedChords.forEach((placedChord: PlacedChord) => {
         this.hideHighlightedPlacedChord(placedChord);
       });
+      if (!measure.isFirst()) {
+        measure.placedChords.forEach((placedChord: PlacedChord) => {
+          this.toggleMeasureVoiceVisibility(measure, VEXFLOW_SVG_OPACITY_TO_HIDE);
+        });
+      }
     }
   }
 
@@ -232,10 +265,13 @@ export class SheetService {
     context.fillRect(0, 0, context.width, context.height);
   }
 
-  private toggleMeasureVisibility(measure: Measure, opacity: string): void {
+  private toggleMeasureStaveVisibility(measure: Measure, opacity: string): void {
     if (measure.sheetStaveGroup) {
       measure.sheetStaveGroup.style.opacity = opacity;
     }
+  }
+
+  private toggleMeasureVoiceVisibility(measure: Measure, opacity: string): void {
     if (measure.sheetVoiceGroup) {
       measure.sheetVoiceGroup.style.opacity = opacity;
     }
@@ -255,17 +291,27 @@ export class SheetService {
   }
 
   public vexflowHighlightStaveNote(placedChord: PlacedChord, context: any): void {
+    // Hide the highlighted note before loosing its reference
+    if (placedChord.sheetStaveNoteHighlightGroup) {
+      placedChord.sheetStaveNoteHighlightGroup.style.opacity = VEXFLOW_SVG_OPACITY_TO_HIDE;
+    }
+
     const sheetStaveNoteGroup: any = context.openGroup();
     this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR)
-    .draw();
+      .draw();
     context.closeGroup();
     placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
   }
 
   public vexflowUnhighlightStaveNote(placedChord: PlacedChord, context: any): void {
+    // Hide the highlighted note before loosing its reference
+    if (placedChord.sheetStaveNoteUnhighlightGroup) {
+      placedChord.sheetStaveNoteUnhighlightGroup.style.opacity = VEXFLOW_SVG_OPACITY_TO_HIDE;
+    }
+
     const sheetStaveNoteGroup: any = context.openGroup();
     this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_COLOR)
-    .draw();
+      .draw();
     context.closeGroup();
     placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
   }

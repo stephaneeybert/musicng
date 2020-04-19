@@ -170,6 +170,7 @@ export class SynthService {
   public stopSoundtrack(soundtrack: Soundtrack) {
     this.setPlaying(soundtrack, false);
     this.clearTransport();
+    this.sheetService.hideSoundtrackPlacedChords(soundtrack);
   }
 
   private setPlaying(soundtrack: Soundtrack, playing: boolean): void {
@@ -225,6 +226,7 @@ export class SynthService {
               Tone.Draw.schedule((actualTime: any) => {
                 if (placedChord.isFirst()) {
                   if (previousDrawnMeasure != null) {
+                    // this.sheetService.removeMeasure(previousDrawnMeasure, soundtrack.sheetContext);
                     this.sheetService.hideMeasure(previousDrawnMeasure);
                     // this.sheetService.whitewashStave(soundtrack.sheetContext);
                   }
