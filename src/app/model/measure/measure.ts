@@ -1,3 +1,4 @@
+import * as vexflow from 'vexflow';
 import { TimeSignature } from './time-signature';
 import { PlacedChord } from '../note/placed-chord';
 import { Duration } from '../note/duration/duration';
@@ -9,6 +10,8 @@ export class Measure {
   tempo: Duration;
   timeSignature: TimeSignature;
   placedChords?: Array<PlacedChord>;
+  sheetStave?: vexflow.Flow.Stave;
+  sheetVoice?: vexflow.Flow.Voice;
   sheetStaveGroup?: any;
   sheetVoiceGroup?: any;
 

@@ -170,7 +170,8 @@ export class SynthService {
   public stopSoundtrack(soundtrack: Soundtrack) {
     this.setPlaying(soundtrack, false);
     this.clearTransport();
-    this.sheetService.hideSoundtrackPlacedChords(soundtrack);
+    this.sheetService.whitewashStave(soundtrack.sheetContext);
+    this.sheetService.drawFirstMeasure(soundtrack);
   }
 
   private setPlaying(soundtrack: Soundtrack, playing: boolean): void {
@@ -225,32 +226,24 @@ export class SynthService {
               soundtrack.synth.triggerRelease(textNotes, releaseTime);
               Tone.Draw.schedule((actualTime: any) => {
                 if (placedChord.isFirst()) {
-                  if (previousDrawnMeasure != null) {
-                    // this.sheetService.removeMeasure(previousDrawnMeasure, soundtrack.sheetContext);
-                    this.sheetService.hideMeasure(previousDrawnMeasure);
-                    // this.sheetService.whitewashStave(soundtrack.sheetContext);
-                  }
-                  if (!measure.isFirst()) {
-                    this.sheetService.showMeasure(measure);
-                  }
+                  this.sheetService.whitewashStave(soundtrack.sheetContext);
+                  this.sheetService.drawMeasure(measure, soundtrack.sheetContext);
                 }
-                this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
                 this.sheetService.vexflowHighlightStaveNote(placedChord, soundtrack.sheetContext);
+                this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
                 previousDrawnMeasure = measure;
               }, triggerTime);
               Tone.Draw.schedule((actualTime: any) => {
-                this.keyboardService.unpressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
                 this.sheetService.vexflowUnhighlightStaveNote(placedChord, soundtrack.sheetContext);
+                this.keyboardService.unpressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
               }, releaseTime);
             } else {
               Tone.Draw.schedule((actualTime: any) => {
-                if (previousDrawnMeasure != null) {
-                  this.sheetService.hideMeasure(previousDrawnMeasure);
-                  // this.sheetService.whitewashStave(soundtrack.sheetContext);
-                  this.sheetService.showMeasure(firstMeasure);
-                }
-                this.setPlaying(soundtrack, false);
+                this.sheetService.whitewashStave(soundtrack.sheetContext);
+                this.sheetService.drawMeasure(firstMeasure, soundtrack.sheetContext);
                 this.keyboardService.unpressAll(soundtrack.keyboard);
+
+                this.setPlaying(soundtrack, false);
                 this.commonService.releaseWakeLock();
               }, releaseTime);
             }

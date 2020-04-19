@@ -146,6 +146,7 @@ export class SheetService {
                 stave.draw();
                 // Store the stave SVG group for later access
                 context.closeGroup();
+                measure.sheetStave = stave;
                 measure.sheetStaveGroup = staveGroup;
 
                 const staveNotes = new Array<vexflow.Flow.StaveNote>();
@@ -194,6 +195,7 @@ export class SheetService {
 
                 const voiceGroup: any = context.openGroup();
                 voice.draw(context);
+                measure.sheetVoice = voice;
                 // Store the voice SVG group for later access
                 context.closeGroup();
                 measure.sheetVoiceGroup = voiceGroup;
@@ -213,6 +215,10 @@ export class SheetService {
     }
   }
 
+  public removeAll(context: any): void {
+    context.svg.parentNode.replaceChild(context.svg.cloneNode(false), context.svg);
+  }
+
   public removeMeasure(measure: Measure, context: any): void {
     if (measure.sheetStaveGroup) {
       console.log(measure.sheetStaveGroup);
@@ -222,6 +228,25 @@ export class SheetService {
       }
     }
     // this.removeMeasurePlacedChords(measure); // TODO
+  }
+
+  public drawFirstMeasure(soundtrack: Soundtrack): void {
+    if (soundtrack.tracks) {
+      for (const track of soundtrack.tracks) {
+        if (track.measures) {
+          this.drawMeasure(track.measures[0], soundtrack.sheetContext);
+        }
+      }
+    }
+  }
+
+  public drawMeasure(measure: Measure, context: any): void {
+    if (measure.sheetStave) {
+      measure.sheetStave.draw();
+    }
+    if (measure.sheetVoice) {
+      measure.sheetVoice.draw(context);
+    }
   }
 
   public showMeasure(measure: Measure): void {
@@ -261,8 +286,10 @@ export class SheetService {
   }
 
   public whitewashStave(context: any): void {
+    context.save();
     context.setFillStyle(VEXFLOW_STAVE_BACKGROUND_COLOR);
     context.fillRect(0, 0, context.width, context.height);
+    context.restore();
   }
 
   private toggleMeasureStaveVisibility(measure: Measure, opacity: string): void {
