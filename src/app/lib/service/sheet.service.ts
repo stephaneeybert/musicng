@@ -53,7 +53,6 @@ export class SheetService {
 
   public createSoundtrackSheet(name: string, screenWidth: number, soundtrack: Soundtrack): void {
     this.vexflowRenderSoundtrack(name, screenWidth, soundtrack);
-    this.drawFirstMeasure(soundtrack);
   }
 
   public vexflowRenderDevice(name: string, screenWidth: number, device: Device): void {
@@ -199,6 +198,7 @@ export class SheetService {
           }
         }
       }
+      this.drawFirstMeasure(soundtrack);
     }
   }
 
