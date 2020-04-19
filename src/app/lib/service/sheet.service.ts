@@ -17,6 +17,7 @@ const VEXFLOW_REST_NOTE = 'B/4';
 const VEXFLOW_REST_SUFFIX = 'r';
 const VEXFLOW_TIME_SIGNATURE_SEPARATOR = '/';
 const VEXFLOW_NOTE_COLOR = 'black';
+const VEXFLOW_STAVE_BACKGROUND_COLOR = 'white';
 const VEXFLOW_NOTE_HIGHLIGHT_COLOR = 'olivedrab';
 const VEXFLOW_FONT_TYPE = 'Arial';
 const VEXFLOW_FONT_SIZE = 10;
@@ -224,6 +225,20 @@ export class SheetService {
         this.hideHighlightedPlacedChord(placedChord);
       });
     }
+  }
+
+  public whitewashStave(context: any): void {
+    context.setFillStyle(VEXFLOW_STAVE_BACKGROUND_COLOR);
+    context.fillRect(0, 0, context.width, context.height);
+    // context.beginPath() TODO Remove
+    // .moveTo(0, 0)
+    // .lineTo(width, 0)
+    // .lineTo(width, height)
+    // .lineTo(0, height)
+    // .closePath()
+    // .fill({
+    //   fill: VEXFLOW_STAVE_BACKGROUND_COLOR
+    // });
   }
 
   private toggleMeasureVisibility(measure: Measure, opacity: string): void {

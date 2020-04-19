@@ -227,6 +227,7 @@ export class SynthService {
                 if (placedChord.isFirst()) {
                   if (previousDrawnMeasure != null) {
                     this.sheetService.hideMeasure(previousDrawnMeasure);
+                    // this.sheetService.whitewashStave(soundtrack.sheetContext);
                   }
                   if (!measure.isFirst()) {
                     this.sheetService.showMeasure(measure);
@@ -244,6 +245,7 @@ export class SynthService {
               Tone.Draw.schedule((actualTime: any) => {
                 if (previousDrawnMeasure != null) {
                   this.sheetService.hideMeasure(previousDrawnMeasure);
+                  // this.sheetService.whitewashStave(soundtrack.sheetContext);
                   this.sheetService.showMeasure(firstMeasure);
                 }
                 this.setPlaying(soundtrack, false);
