@@ -181,6 +181,7 @@ export class SynthService {
   private play(track: Track, soundtrack: Soundtrack) {
     let previousScheduledMeasure: Measure;
     let previousDrawnMeasure: Measure;
+    let firstMeasure: Measure;
 
     // By starting at 1 instead of 0 the first measure is never skipped when playing
     let measureCounter: number = 1;
@@ -201,6 +202,7 @@ export class SynthService {
         if (measure.isFirst()) {
           this.updateTempo(previousScheduledMeasure, measure, false);
           this.updateTimeSignature(measure);
+          firstMeasure = measure;
         } else {
           this.updateTempo(previousScheduledMeasure, measure, true);
           this.updateTimeSignature(measure);
@@ -240,6 +242,10 @@ export class SynthService {
               }, releaseTime);
             } else {
               Tone.Draw.schedule((actualTime: any) => {
+                if (previousDrawnMeasure != null) {
+                  this.sheetService.hideMeasure(previousDrawnMeasure);
+                  this.sheetService.showMeasure(firstMeasure);
+                }
                 this.setPlaying(soundtrack, false);
                 this.keyboardService.unpressAll(soundtrack.keyboard);
                 this.commonService.releaseWakeLock();
