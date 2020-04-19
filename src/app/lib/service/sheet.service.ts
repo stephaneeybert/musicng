@@ -11,7 +11,7 @@ import { PlacedChord } from '../../model/note/placed-chord';
 
 const SHEET_WIDTH_RATIO = 0.8;
 const VEXFLOW_STAVE_HEIGHT = 50;
-const VEXFLOW_STAVE_MARGIN = 30;
+const VEXFLOW_STAVE_MARGIN = 40;
 const VEXFLOW_OCTAVE_SEPARATOR = '/';
 const VEXFLOW_REST_NOTE = 'B/4';
 const VEXFLOW_REST_SUFFIX = 'r';
