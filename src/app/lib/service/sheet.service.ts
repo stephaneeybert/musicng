@@ -212,16 +212,6 @@ export class SheetService {
     }
   }
 
-  public removeMeasure(measure: Measure, context: any): void {
-    if (measure.sheetStaveGroup) {
-      console.log(measure.sheetStaveGroup);
-      if (context.svg.hasChildNodes()) {
-        console.log('Has child nodes');
-        context.svg.removeChild(measure.sheetStaveGroup);
-      }
-    }
-  }
-
   public showMeasure(measure: Measure): void {
     this.toggleMeasureVisibility(measure, VEXFLOW_SVG_OPACITY_TO_SHOW);
   }

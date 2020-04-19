@@ -224,7 +224,6 @@ export class SynthService {
               Tone.Draw.schedule((actualTime: any) => {
                 if (placedChord.isFirst()) {
                   if (previousDrawnMeasure != null) {
-                      // this.sheetService.removeMeasure(previousDrawnMeasure, soundtrack.sheetContext);
                       this.sheetService.hideMeasure(previousDrawnMeasure);
                   }
                   if (!measure.isFirst()) {
