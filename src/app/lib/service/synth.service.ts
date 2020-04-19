@@ -224,10 +224,10 @@ export class SynthService {
               Tone.Draw.schedule((actualTime: any) => {
                 if (placedChord.isFirst()) {
                   if (previousDrawnMeasure != null) {
-                      this.sheetService.hideMeasure(previousDrawnMeasure);
+                    this.sheetService.hideMeasure(previousDrawnMeasure);
                   }
                   if (!measure.isFirst()) {
-                      this.sheetService.showMeasure(measure);
+                    this.sheetService.showMeasure(measure);
                   }
                 }
                 this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
