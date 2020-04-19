@@ -31,9 +31,13 @@ export class Measure {
   }
 
   public getSortedChords(): Array<PlacedChord> {
-    return this.placedChords.sort((chordA: PlacedChord, chordB: PlacedChord) => {
-      return chordA.index - chordB.index;
-    });
+    if (this.placedChords) {
+      return this.placedChords.sort((chordA: PlacedChord, chordB: PlacedChord) => {
+        return chordA.index - chordB.index;
+      });
+    } else {
+      throw new Error('The measure contained no placed chords.');
+    }
   }
 
   public getTempo(): number {
