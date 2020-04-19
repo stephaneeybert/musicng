@@ -245,10 +245,10 @@ export class SheetService {
     }
   }
   private hideHighlightedPlacedChord(placedChord: PlacedChord): void {
-    this.toggleChordVisibility(placedChord, VEXFLOW_SVG_OPACITY_TO_HIDE)
+    this.toggleHighlightedChordVisibility(placedChord, VEXFLOW_SVG_OPACITY_TO_HIDE)
   }
 
-  private toggleChordVisibility(placedChord: PlacedChord, opacity: string): void {
+  private toggleHighlightedChordVisibility(placedChord: PlacedChord, opacity: string): void {
     if (placedChord.sheetStaveNoteHighlightGroup) {
       placedChord.sheetStaveNoteHighlightGroup.style.opacity = opacity;
       console.log('Toggling note: ' + placedChord.sheetStaveNoteHighlightGroup.style.opacity);
