@@ -251,51 +251,37 @@ export class SheetService {
   private toggleHighlightedChordVisibility(placedChord: PlacedChord, opacity: string): void {
     if (placedChord.sheetStaveNoteHighlightGroup) {
       placedChord.sheetStaveNoteHighlightGroup.style.opacity = opacity;
-      console.log('Toggling note: ' + placedChord.sheetStaveNoteHighlightGroup.style.opacity);
     }
     if (placedChord.sheetStaveNoteUnhighlightGroup) {
       placedChord.sheetStaveNoteUnhighlightGroup.style.opacity = opacity;
-      console.log('Toggling note: ' + placedChord.sheetStaveNoteUnhighlightGroup.style.opacity);
     }
   }
 
   public vexflowHighlightStaveNote(placedChord: PlacedChord, context: any): void {
-    this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR, context);
-    if (placedChord.staveNote) {
-      const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
-      const sheetStaveNoteGroup: any = context.openGroup();
-      staveNote.draw();
-      context.closeGroup();
-      placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
-    }
+    const sheetStaveNoteGroup: any = context.openGroup();
+    this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR)
+    .draw();
+    context.closeGroup();
+    placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
   }
 
   public vexflowUnhighlightStaveNote(placedChord: PlacedChord, context: any): void {
-    this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_COLOR, context);
-    if (placedChord.staveNote) {
-      const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
-      const sheetStaveNoteGroup: any = context.openGroup();
-      staveNote.draw();
-      context.closeGroup();
-      placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
-    }
+    const sheetStaveNoteGroup: any = context.openGroup();
+    this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_COLOR)
+    .draw();
+    context.closeGroup();
+    placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
   }
 
-  public vexflowStyleStaveNote(placedChord: PlacedChord, color: string, context: any): void {
-    if (placedChord.hasNotes()) {
-      if (placedChord.staveNote) {
-        const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
-        staveNote.setStyle({
-          fillStyle: color,
-          strokeStyle: color
-        });
-        const sheetStaveNoteGroup: any = context.openGroup();
-        staveNote.draw();
-        context.closeGroup();
-        placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
-      } else {
-        throw new Error('The placed chord has no vexflow stave note when styling');
-      }
+  private vexflowStyleStaveNote(placedChord: PlacedChord, color: string): vexflow.Flow.StaveNote {
+    if (placedChord.staveNote) {
+      placedChord.staveNote.setStyle({
+        fillStyle: color,
+        strokeStyle: color
+      });
+      return placedChord.staveNote;
+    } else {
+      throw new Error('The placed chord has no vexflow stave note when styling');
     }
   }
 
