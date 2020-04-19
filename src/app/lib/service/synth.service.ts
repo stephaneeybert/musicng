@@ -222,8 +222,6 @@ export class SynthService {
               soundtrack.synth.triggerAttack(textNotes, triggerTime, VELOCITY_TONEJS);
               soundtrack.synth.triggerRelease(textNotes, releaseTime);
               Tone.Draw.schedule((actualTime: any) => {
-                this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
-                this.sheetService.vexflowHighlightStaveNote(placedChord, soundtrack.sheetContext);
                 if (placedChord.isFirst()) {
                   if (previousDrawnMeasure != null) {
                       // this.sheetService.removeMeasure(previousDrawnMeasure, soundtrack.sheetContext);
@@ -233,6 +231,8 @@ export class SynthService {
                       this.sheetService.showMeasure(measure);
                   }
                 }
+                this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
+                this.sheetService.vexflowHighlightStaveNote(placedChord, soundtrack.sheetContext);
                 previousDrawnMeasure = measure;
               }, triggerTime);
               Tone.Draw.schedule((actualTime: any) => {
