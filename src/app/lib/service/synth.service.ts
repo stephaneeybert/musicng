@@ -5,7 +5,6 @@ import { Measure } from '../../model/measure/measure';
 import { Soundtrack } from '../../model/soundtrack';
 import { KeyboardService } from '../service/keyboard.service';
 import { PlacedChord } from '../../model/note/placed-chord';
-import { Note } from '../../model/note/note';
 import { NotationService } from './notation.service';
 import { TempoUnit } from '../../model/tempo-unit';
 import { SheetService } from './sheet.service';
