@@ -8,7 +8,7 @@ import { Soundtrack } from '@app/model/soundtrack';
 import { CommonService } from './common.service';
 
 const DEFAULT_TEMPO_BPM_VALUE: number = 128;
-const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
+const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 2;
 const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 
 const MIDI_NOTE_MIN = 0;
