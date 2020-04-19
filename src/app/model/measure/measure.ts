@@ -12,8 +12,6 @@ export class Measure {
   placedChords?: Array<PlacedChord>;
   sheetStave?: vexflow.Flow.Stave;
   sheetVoice?: vexflow.Flow.Voice;
-  sheetStaveGroup?: any;
-  sheetVoiceGroup?: any;
 
   constructor(index: number, tempo: Duration, timeSignature: TimeSignature) {
     this.index = index;

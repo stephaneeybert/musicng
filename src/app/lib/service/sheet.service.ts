@@ -53,6 +53,7 @@ export class SheetService {
 
   public createSoundtrackSheet(name: string, screenWidth: number, soundtrack: Soundtrack): void {
     this.vexflowRenderSoundtrack(name, screenWidth, soundtrack);
+    this.drawFirstMeasure(soundtrack);
   }
 
   public vexflowRenderDevice(name: string, screenWidth: number, device: Device): void {
@@ -142,12 +143,7 @@ export class SheetService {
                 stave.setContext(context);
                 stave.addClef(Clef.TREBLE); // TODO Should the clef be determined from the time signature of the measure ?
                 stave.addTimeSignature(this.renderTimeSignature(measure));
-                const staveGroup: any = context.openGroup();
-                stave.draw();
-                // Store the stave SVG group for later access
-                context.closeGroup();
                 measure.sheetStave = stave;
-                measure.sheetStaveGroup = staveGroup;
 
                 const staveNotes = new Array<vexflow.Flow.StaveNote>();
 
@@ -193,16 +189,7 @@ export class SheetService {
                 formatter.joinVoices([voice]);
                 formatter.formatToStave([voice], stave);
 
-                const voiceGroup: any = context.openGroup();
-                voice.draw(context);
                 measure.sheetVoice = voice;
-                // Store the voice SVG group for later access
-                context.closeGroup();
-                measure.sheetVoiceGroup = voiceGroup;
-                if (staveIndex > 0) {
-                  this.hideMeasure(measure);
-                }
-
                 voices.push(voice);
                 staveIndex++;
               }
@@ -213,21 +200,6 @@ export class SheetService {
         }
       }
     }
-  }
-
-  public removeAll(context: any): void {
-    context.svg.parentNode.replaceChild(context.svg.cloneNode(false), context.svg);
-  }
-
-  public removeMeasure(measure: Measure, context: any): void {
-    if (measure.sheetStaveGroup) {
-      console.log(measure.sheetStaveGroup);
-      if (context.svg.hasChildNodes()) {
-        console.log('Has child nodes');
-        context.svg.removeChild(measure.sheetStaveGroup);
-      }
-    }
-    // this.removeMeasurePlacedChords(measure); // TODO
   }
 
   public drawFirstMeasure(soundtrack: Soundtrack): void {
@@ -249,72 +221,11 @@ export class SheetService {
     }
   }
 
-  public showMeasure(measure: Measure): void {
-    this.toggleMeasureStaveVisibility(measure, VEXFLOW_SVG_OPACITY_TO_SHOW);
-    this.toggleMeasureVoiceVisibility(measure, VEXFLOW_SVG_OPACITY_TO_SHOW);
-  }
-
-  public hideMeasure(measure: Measure): void {
-    this.toggleMeasureStaveVisibility(measure, VEXFLOW_SVG_OPACITY_TO_HIDE);
-    this.toggleMeasureVoiceVisibility(measure, VEXFLOW_SVG_OPACITY_TO_HIDE);
-    this.hideMeasurePlacedChords(measure);
-  }
-
-  public hideSoundtrackPlacedChords(soundtrack: Soundtrack): void {
-    if (soundtrack.tracks) {
-      for (const track of soundtrack.tracks) {
-        if (track.measures) {
-          for (const measure of track.measures) {
-            this.hideMeasurePlacedChords(measure);
-          }
-        }
-      }
-    }
-  }
-
-  private hideMeasurePlacedChords(measure: Measure): void {
-    if (measure.placedChords) {
-      measure.placedChords.forEach((placedChord: PlacedChord) => {
-        this.hideHighlightedPlacedChord(placedChord);
-      });
-      if (!measure.isFirst()) {
-        measure.placedChords.forEach((placedChord: PlacedChord) => {
-          this.toggleMeasureVoiceVisibility(measure, VEXFLOW_SVG_OPACITY_TO_HIDE);
-        });
-      }
-    }
-  }
-
   public whitewashStave(context: any): void {
     context.save();
     context.setFillStyle(VEXFLOW_STAVE_BACKGROUND_COLOR);
     context.fillRect(0, 0, context.width, context.height);
     context.restore();
-  }
-
-  private toggleMeasureStaveVisibility(measure: Measure, opacity: string): void {
-    if (measure.sheetStaveGroup) {
-      measure.sheetStaveGroup.style.opacity = opacity;
-    }
-  }
-
-  private toggleMeasureVoiceVisibility(measure: Measure, opacity: string): void {
-    if (measure.sheetVoiceGroup) {
-      measure.sheetVoiceGroup.style.opacity = opacity;
-    }
-  }
-
-  private hideHighlightedPlacedChord(placedChord: PlacedChord): void {
-    this.toggleHighlightedChordVisibility(placedChord, VEXFLOW_SVG_OPACITY_TO_HIDE)
-  }
-
-  private toggleHighlightedChordVisibility(placedChord: PlacedChord, opacity: string): void {
-    if (placedChord.sheetStaveNoteHighlightGroup) {
-      placedChord.sheetStaveNoteHighlightGroup.style.opacity = opacity;
-    }
-    if (placedChord.sheetStaveNoteUnhighlightGroup) {
-      placedChord.sheetStaveNoteUnhighlightGroup.style.opacity = opacity;
-    }
   }
 
   public vexflowHighlightStaveNote(placedChord: PlacedChord, context: any): void {
