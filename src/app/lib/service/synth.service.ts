@@ -153,7 +153,7 @@ export class SynthService {
   public playSoundtrack(soundtrack: Soundtrack) {
     this.commonService.requestWakeLock();
     if (soundtrack.hasNotes()) {
-      this.stopAllSoundtracks(soundtrack);
+      this.stopAllSoundtracks();
       soundtrack.tracks.forEach((track: Track) => {
         this.play(track, soundtrack);
       });
@@ -162,7 +162,7 @@ export class SynthService {
     }
   }
 
-  public stopAllSoundtracks(soundtrack: Soundtrack) {
+  public stopAllSoundtracks() {
     this.soundtrackService.getSoundtracks().forEach((soundtrack: Soundtrack) => {
       this.stopSoundtrack(soundtrack);
     });
