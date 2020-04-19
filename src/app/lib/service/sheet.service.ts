@@ -51,11 +51,11 @@ export class SheetService {
     private notationService: NotationService
   ) { }
 
-  public createSoundtrackSheet(name: string, screenWidth: number, soundtrack: Soundtrack): void {
-    this.vexflowRenderSoundtrack(name, screenWidth, soundtrack);
+  public createSoundtrackSheet(name: string, screenWidth: number, animated: boolean, soundtrack: Soundtrack): void {
+    this.vexflowRenderSoundtrack(name, screenWidth, animated, soundtrack);
   }
 
-  public vexflowRenderDevice(name: string, screenWidth: number, device: Device): void {
+  public vexflowRenderDevice(name: string, screenWidth: number, animated: boolean, device: Device): void {
     // TODO
   }
 
@@ -109,14 +109,21 @@ export class SheetService {
     }
   }
 
-  private vexflowRenderSoundtrack(name: string, screenWidth: number, soundtrack: Soundtrack): void {
+  private vexflowRenderSoundtrack(name: string, screenWidth: number, animated: boolean, soundtrack: Soundtrack): void {
     // The width must fit within the screen
     const displayWidth = screenWidth * SHEET_WIDTH_RATIO;
     let previousNoteName: string = '';
 
+    let sheetWidth: number;
+    let sheetHeight: number;
     // const sheetWidth: number = nbMeasures * displayWidth; // TODO one long stave
-    const sheetWidth: number = displayWidth;
-    const sheetHeight: number = VEXFLOW_STAVE_HEIGHT + (VEXFLOW_STAVE_MARGIN * 2);
+    if (animated) {
+      sheetWidth = displayWidth;
+      sheetHeight = VEXFLOW_STAVE_HEIGHT + (VEXFLOW_STAVE_MARGIN * 2);
+    } else {
+      sheetWidth = displayWidth;
+      sheetHeight = this.getNbStaves(soundtrack) * (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN);
+    }
     const context: any = this.renderVexflowContext(name, sheetWidth, sheetHeight);
     soundtrack.sheetContext = context;
     const formatter = new vexflow.Flow.Formatter();
@@ -128,20 +135,28 @@ export class SheetService {
           for (const measure of track.getSortedMeasures()) {
             if (measure.placedChords) {
               if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
-                // const staveX: number = (displayWidth * staveIndex); // TODO one long stave
-                // const staveY: number = (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN);
-                // const staveWidth: number = displayWidth;
-                const staveX: number = 0;
-                const staveY: number = 0;
-                const staveWidth: number = displayWidth;
-                // const staveX: number = 0;
-                // const staveY: number = staveIndex * (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN);
-                // const staveWidth: number = displayWidth;
-                // console.log('staveX: ' + staveX + ' staveY: ' + staveY + ' staveWidth: ' + staveWidth);
+                let staveX: number;
+                let staveY: number;
+                let staveWidth: number;
+                // staveX = (displayWidth * staveIndex); // TODO one long stave
+                // staveY = (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN);
+                // staveWidth = displayWidth;
+                if (animated) {
+                  staveX = 0;
+                  staveY = 0;
+                  staveWidth = displayWidth;
+                } else {
+                  staveX = 0;
+                  staveY = staveIndex * (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN);
+                  staveWidth = displayWidth;
+                }
                 const stave = new vexflow.Flow.Stave(staveX, staveY, staveWidth);
                 stave.setContext(context);
                 stave.addClef(Clef.TREBLE); // TODO Should the clef be determined from the time signature of the measure ?
                 stave.addTimeSignature(this.renderTimeSignature(measure));
+                if (!animated) {
+                  stave.draw();
+                }
                 measure.sheetStave = stave;
 
                 const staveNotes = new Array<vexflow.Flow.StaveNote>();
@@ -187,7 +202,9 @@ export class SheetService {
                 voice.addTickables(staveNotes);
                 formatter.joinVoices([voice]);
                 formatter.formatToStave([voice], stave);
-
+                if (!animated) {
+                  voice.draw(context);
+                }
                 measure.sheetVoice = voice;
                 voices.push(voice);
                 staveIndex++;
@@ -198,7 +215,9 @@ export class SheetService {
           }
         }
       }
-      this.drawFirstMeasure(soundtrack);
+      if (animated) {
+        this.drawFirstMeasure(soundtrack);
+      }
     }
   }
 

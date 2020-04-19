@@ -170,8 +170,11 @@ export class SynthService {
   public stopSoundtrack(soundtrack: Soundtrack) {
     this.setPlaying(soundtrack, false);
     this.clearTransport();
-    this.sheetService.whitewashStave(soundtrack.sheetContext);
-    this.sheetService.drawFirstMeasure(soundtrack);
+    const animated: boolean = true;
+    if (animated) {
+      this.sheetService.whitewashStave(soundtrack.sheetContext);
+      this.sheetService.drawFirstMeasure(soundtrack);
+    }
   }
 
   private setPlaying(soundtrack: Soundtrack, playing: boolean): void {
@@ -183,6 +186,8 @@ export class SynthService {
     let previousScheduledMeasure: Measure;
     let previousDrawnMeasure: Measure;
     let firstMeasure: Measure;
+
+    const animated: boolean = true; // TODO 
 
     // By starting at 1 instead of 0 the first measure is never skipped when playing
     let measureCounter: number = 1;
@@ -226,8 +231,10 @@ export class SynthService {
               soundtrack.synth.triggerRelease(textNotes, releaseTime);
               Tone.Draw.schedule((actualTime: any) => {
                 if (placedChord.isFirst()) {
-                  this.sheetService.whitewashStave(soundtrack.sheetContext);
-                  this.sheetService.drawMeasure(measure, soundtrack.sheetContext);
+                  if (animated) {
+                    this.sheetService.whitewashStave(soundtrack.sheetContext);
+                    this.sheetService.drawMeasure(measure, soundtrack.sheetContext);
+                  }
                 }
                 this.sheetService.vexflowHighlightStaveNote(placedChord, soundtrack.sheetContext);
                 this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
@@ -239,10 +246,11 @@ export class SynthService {
               }, releaseTime);
             } else {
               Tone.Draw.schedule((actualTime: any) => {
-                this.sheetService.whitewashStave(soundtrack.sheetContext);
-                this.sheetService.drawMeasure(firstMeasure, soundtrack.sheetContext);
+                if (animated) {
+                  this.sheetService.whitewashStave(soundtrack.sheetContext);
+                  this.sheetService.drawMeasure(firstMeasure, soundtrack.sheetContext);
+                }
                 this.keyboardService.unpressAll(soundtrack.keyboard);
-
                 this.setPlaying(soundtrack, false);
                 this.commonService.releaseWakeLock();
               }, releaseTime);
