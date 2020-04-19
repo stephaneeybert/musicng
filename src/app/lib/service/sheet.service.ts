@@ -9,7 +9,7 @@ import { Measure } from '../../model/measure/measure';
 import { Clef } from '../../model/clef';
 import { PlacedChord } from '../../model/note/placed-chord';
 
-const SHEET_WIDTH_RATIO = 0.8;
+const SHEET_WIDTH_RATIO = 0.9;
 const VEXFLOW_STAVE_HEIGHT = 50;
 const VEXFLOW_STAVE_MARGIN = 40;
 const VEXFLOW_OCTAVE_SEPARATOR = '/';
