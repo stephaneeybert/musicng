@@ -230,15 +230,6 @@ export class SheetService {
   public whitewashStave(context: any): void {
     context.setFillStyle(VEXFLOW_STAVE_BACKGROUND_COLOR);
     context.fillRect(0, 0, context.width, context.height);
-    // context.beginPath() TODO Remove
-    // .moveTo(0, 0)
-    // .lineTo(width, 0)
-    // .lineTo(width, height)
-    // .lineTo(0, height)
-    // .closePath()
-    // .fill({
-    //   fill: VEXFLOW_STAVE_BACKGROUND_COLOR
-    // });
   }
 
   private toggleMeasureVisibility(measure: Measure, opacity: string): void {
