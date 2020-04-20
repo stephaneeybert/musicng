@@ -15,7 +15,9 @@ class HttpOptions {
 })
 export class HttpService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
   public get<T>(url: string, httpParams?: HttpParams, headers?: HttpHeaders): Observable<T> {
     let options = this.buildOptions(headers);

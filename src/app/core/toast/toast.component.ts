@@ -25,7 +25,7 @@ export class ToastComponent implements OnInit, OnDestroy {
     this.iconType = data.type === 'success' ? 'done' : data.type;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.intervalId = setTimeout(() => this.animationState = 'closing', 5000);
   }
 
@@ -36,11 +36,11 @@ export class ToastComponent implements OnInit, OnDestroy {
     }
   }
 
-  close() {
+  close(): void {
     this.ref.close();
   }
 
-  onFadeFinished(event: AnimationEvent) {
+  onFadeFinished(event: AnimationEvent): void {
     const { toState } = event;
     const isFadeOut = (toState as ToastAnimationState) === 'closing';
     const itFinished = this.animationState === 'closing';

@@ -86,15 +86,15 @@ export class TokenService {
     return AUTH_BEARER_HEADER + ' ' + this.getRefreshTokenFromLocalStorage();
   }
 
-  public getAccessTokenHeaderName() {
+  public getAccessTokenHeaderName(): string {
     return ACCESS_TOKEN_HEADER_NAME;
   }
 
-  public getRefreshTokenHeaderName() {
+  public getRefreshTokenHeaderName(): string {
     return REFRESH_TOKEN_HEADER_NAME;
   }
 
-  public getClientIdHeaderName() {
+  public getClientIdHeaderName(): string {
     return CLIENT_ID_HEADER_NAME;
   }
 

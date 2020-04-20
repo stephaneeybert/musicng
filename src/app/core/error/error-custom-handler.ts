@@ -8,7 +8,9 @@ import { NotificationService } from '@app/core/service/notification.service';
 @Injectable()
 export class ErrorCustomHandler implements ErrorHandler {
 
-    constructor(private injector: Injector) { }
+    constructor(
+      private injector: Injector
+    ) { }
 
     handleError(error: Error | HttpErrorResponse): void {
         const notificationService = this.injector.get(NotificationService);

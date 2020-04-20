@@ -24,7 +24,7 @@ export class AuthService {
 
   private postLoginRedirectUrl: string = '';
 
-  public setPostLoginRedirectUrl(postLoginRedirectUrl: string) {
+  public setPostLoginRedirectUrl(postLoginRedirectUrl: string): void {
     this.postLoginRedirectUrl = postLoginRedirectUrl;
   }
 

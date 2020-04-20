@@ -13,7 +13,7 @@ export class UiService {
 
   constructor(private meta: Meta, private title: Title) { }
 
-  public setMetaData(config: any) {
+  public setMetaData(config: any): void {
     const description = config.description || APP_DESCRIPTION;
     const image = config.image || APP_IMAGE;
     const title = config.title ? `${config.title}` : APP_TITLE;
