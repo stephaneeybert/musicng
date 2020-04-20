@@ -9,3 +9,7 @@
 .soundtrack {
   padding-bottom: 50px;
 }
+
+mat-icon {
+  cursor: pointer;
+}
