@@ -12,6 +12,9 @@ import { HeaderComponent } from '@app/layouts/unsecured/header.component';
 import { SecuredSidenavComponent } from '@app/layouts/secured/secured.sidenav.component';
 import { UnsecuredSidenavComponent } from '@app/layouts/unsecured/unsecured.sidenav.component';
 import { LibI18nModule } from 'lib-i18n';
+import { SettingsComponent } from '@app/views/settings/settings.component';
+import { AppUiModule } from '@app/app-ui.module';
+import { SettingsDialogComponent } from '@app/views/settings/settings-dialog.component';
 
 @NgModule({
   declarations: [
@@ -19,12 +22,15 @@ import { LibI18nModule } from 'lib-i18n';
     UnsecuredLayoutComponent,
     HeaderComponent,
     SecuredSidenavComponent,
-    UnsecuredSidenavComponent
+    UnsecuredSidenavComponent,
+    SettingsComponent,
+    SettingsDialogComponent
   ],
   imports: [
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AppRoutingModule,
     LayoutModule,
+    AppUiModule,
     LibI18nModule,
     MaterialModule,
     MDBootstrapModule
@@ -32,9 +38,13 @@ import { LibI18nModule } from 'lib-i18n';
   exports: [
     AppRoutingModule,
     LayoutModule,
+    AppUiModule,
     LibI18nModule,
     MaterialModule,
     MDBootstrapModule
-  ]
+  ],
+  // entryComponents: [ // TODO Not needed ?
+  //   SettingsDialogComponent
+  // ]
 })
 export class AppLayoutModule { }

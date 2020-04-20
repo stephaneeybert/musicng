@@ -103,8 +103,7 @@ export class SheetComponent implements OnInit {
   private createSoundtrackSheet(soundtrack: Soundtrack): void {
     if (soundtrack != null) {
       if (soundtrack.hasNotes()) {
-        const animated: boolean = true;
-        this.sheetService.createSoundtrackSheet(this.id, this.screenWidth, animated, soundtrack);
+        this.sheetService.createSoundtrackSheet(this.id, this.screenWidth, soundtrack);
       } else {
         throw new Error('No sheet was created for the soundtrack. Notes should be set to the soundtrack before adding it to the observables data store, ensuring that when the new soundtrack is observed, it has notes and can get a sheet.');
       }
@@ -113,7 +112,7 @@ export class SheetComponent implements OnInit {
 
   private createDeviceSheet(device: Device): void {
     if (device != null) {
-      this.sheetService.vexflowRenderDevice(this.id, this.screenWidth, false, device);
+      this.sheetService.vexflowRenderDevice(this.id, this.screenWidth, device);
     }
   }
 

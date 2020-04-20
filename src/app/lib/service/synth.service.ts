@@ -12,6 +12,7 @@ import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
 import { Observable, interval } from 'rxjs';
 import { map, filter, take } from 'rxjs/operators';
 import { CommonService } from './common.service';
+import { SettingsService } from '@app/views/settings/settings.service';
 
 // Observation has shown that a delay between creating the service
 // and starting the transport is required for the transport to work
@@ -35,6 +36,7 @@ export class SynthService {
     private keyboardService: KeyboardService,
     private sheetService: SheetService,
     private soundtrackService: SoundtrackService,
+    private settingsService: SettingsService,
     private commonService: CommonService
   ) {
     this.startTransport();
@@ -170,8 +172,9 @@ export class SynthService {
   public stopSoundtrack(soundtrack: Soundtrack) {
     this.setPlaying(soundtrack, false);
     this.clearTransport();
-    const animated: boolean = true;
-    if (animated) {
+
+    const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
+    if (animatedStave) {
       this.sheetService.whitewashStave(soundtrack.sheetContext);
       this.sheetService.drawFirstMeasure(soundtrack);
     }
@@ -187,8 +190,6 @@ export class SynthService {
     let previousDrawnMeasure: Measure;
     let firstMeasure: Measure;
 
-    const animated: boolean = true; // TODO 
-
     // By starting at 1 instead of 0 the first measure is never skipped when playing
     let measureCounter: number = 1;
 
@@ -197,6 +198,8 @@ export class SynthService {
     }
 
     this.setPlaying(soundtrack, true);
+
+    const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
 
     track.getSortedMeasures().forEach((measure: Measure) => {
       // Wait for user idleness before starting playing
@@ -231,7 +234,7 @@ export class SynthService {
               soundtrack.synth.triggerRelease(textNotes, releaseTime);
               Tone.Draw.schedule((actualTime: any) => {
                 if (placedChord.isFirst()) {
-                  if (animated) {
+                  if (animatedStave) {
                     this.sheetService.whitewashStave(soundtrack.sheetContext);
                     this.sheetService.drawMeasure(measure, soundtrack.sheetContext);
                   }
@@ -246,7 +249,7 @@ export class SynthService {
               }, releaseTime);
             } else {
               Tone.Draw.schedule((actualTime: any) => {
-                if (animated) {
+                if (animatedStave) {
                   this.sheetService.whitewashStave(soundtrack.sheetContext);
                   this.sheetService.drawMeasure(firstMeasure, soundtrack.sheetContext);
                 }

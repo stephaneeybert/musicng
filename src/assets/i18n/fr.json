@@ -24,7 +24,19 @@
     "logout": "Déconnexion",
     "music": "Musique",
     "soundtrack": "Musique",
-    "device": "Appareils"
+    "device": "Appareils",
+    "settings": "Paramètres"
+  },
+  "settings": {
+    "form": {
+      "title": "Paramètres",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "animatedStave": "Animated stave"
+    },
+    "message": {
+      "saved": "Les paramètres ont été enregistré."
+    }
   },
   "soundtracks": {
     "assignedName": "Morceau",

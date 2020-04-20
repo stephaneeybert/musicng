@@ -1,5 +1,6 @@
 <mat-toolbar color="primary">
   <span class="fill-remaining-space"></span>
-  <button mat-button routerLink="/soundtracks">{{ 'header.soundtrack' | translate }}</button>
-  <button mat-button routerLink="/devices">{{ 'header.device' | translate }}</button>
+  <button mat-button routerLink="/soundtracks" title="{{ 'header.soundtrack' | translate }}"><mat-icon mat-list-icon>music_note</mat-icon></button>
+  <button mat-button routerLink="/devices" title="{{ 'header.device' | translate }}"><mat-icon mat-list-icon>keyboard</mat-icon></button>
+  <app-settings></app-settings>
 </mat-toolbar>

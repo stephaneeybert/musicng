@@ -24,7 +24,19 @@
     "logout": "Logout",
     "music": "Music",
     "soundtrack": "Soundtrack",
-    "device": "Devices"
+    "device": "Devices",
+    "settings": "Settings"
+  },
+  "settings": {
+    "form": {
+      "title": "Settings",
+      "cancel": "Cancel",
+      "save": "Save",
+      "animatedStave": "Animated stave"
+    },
+    "message": {
+      "saved": "The settings have been saved."
+    }
   },
   "soundtracks": {
     "assignedName": "Soundtrack",

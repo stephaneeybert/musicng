@@ -9,11 +9,7 @@ import { PlacedChord } from '../../model/note/placed-chord';
 import { Measure } from '../../model/measure/measure';
 import { TimeSignature } from '../../model/measure/time-signature';
 import { TempoUnit } from '../../model/tempo-unit';
-import { Soundtrack } from '@app/model/soundtrack';
-import { Track } from '@app/model/track';
-import { CommonService } from './common.service';
 import { Subdivisions } from '@app/model/note/duration/subdivisions';
-import { SoundtrackStorageService } from '@app/views/soundtrack/soundtrack-storage.service';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 const CHORD_SEPARATOR: string = ' ';
@@ -40,8 +36,6 @@ const OCTAVES: Array<number> = [ 1, 2, 3, 4, 5, 6 ];
 export class NotationService {
 
   constructor(
-    private commonService: CommonService,
-    private soundtrackStorageService: SoundtrackStorageService
   ) { }
 
   public parseMeasures(textMeasures: Array<string>, tempo: number, timeSignatureNumerator: number, timeSignatureDenominator: number): Array<Measure> {

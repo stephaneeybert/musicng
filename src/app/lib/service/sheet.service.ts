@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as vexflow from 'vexflow';
+import Vex from 'vexflow';
 import * as Tone from 'tone';
 import { Soundtrack } from '../../model/soundtrack';
 import { Device } from '../../model/device';
@@ -8,10 +8,11 @@ import { Note } from '../../model/note/note';
 import { Measure } from '../../model/measure/measure';
 import { Clef } from '../../model/clef';
 import { PlacedChord } from '../../model/note/placed-chord';
+import { SettingsService } from '@app/views/settings/settings.service';
 
 const SHEET_WIDTH_RATIO = 0.9;
 const VEXFLOW_STAVE_HEIGHT = 50;
-const VEXFLOW_STAVE_MARGIN = 40;
+const VEXFLOW_STAVE_MARGIN = 50;
 const VEXFLOW_OCTAVE_SEPARATOR = '/';
 const VEXFLOW_REST_NOTE = 'B/4';
 const VEXFLOW_REST_SUFFIX = 'r';
@@ -48,14 +49,15 @@ export enum VexfloWAccidental {
 export class SheetService {
 
   constructor(
-    private notationService: NotationService
+    private notationService: NotationService,
+    private settingsService: SettingsService
   ) { }
 
-  public createSoundtrackSheet(name: string, screenWidth: number, animated: boolean, soundtrack: Soundtrack): void {
-    this.vexflowRenderSoundtrack(name, screenWidth, animated, soundtrack);
+  public createSoundtrackSheet(name: string, screenWidth: number, soundtrack: Soundtrack): void {
+    this.vexflowRenderSoundtrack(name, screenWidth, soundtrack);
   }
 
-  public vexflowRenderDevice(name: string, screenWidth: number, animated: boolean, device: Device): void {
+  public vexflowRenderDevice(name: string, screenWidth: number, device: Device): void {
     // TODO
   }
 
@@ -81,11 +83,11 @@ export class SheetService {
 
   private addAccidentalOnNotes(placedChord: PlacedChord): void {
     if (placedChord.staveNote) {
-      const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
+      const staveNote: Vex.Flow.StaveNote = placedChord.staveNote;
       let i: number = 0;
       placedChord.notes.forEach((note: Note) => {
         if (note.pitch.accidental) {
-          staveNote.addAccidental(i, new vexflow.Flow.Accidental(note.pitch.accidental));
+          staveNote.addAccidental(i, new Vex.Flow.Accidental(note.pitch.accidental));
         }
         i++;
       })
@@ -94,7 +96,7 @@ export class SheetService {
 
   private addDotOnNotes(placedChord: PlacedChord): void {
     if (placedChord.staveNote) {
-      const staveNote: vexflow.Flow.StaveNote = placedChord.staveNote;
+      const staveNote: Vex.Flow.StaveNote = placedChord.staveNote;
       if (placedChord.dottedAll) {
         staveNote.addDotToAll();
       } else {
@@ -109,15 +111,16 @@ export class SheetService {
     }
   }
 
-  private vexflowRenderSoundtrack(name: string, screenWidth: number, animated: boolean, soundtrack: Soundtrack): void {
+  private vexflowRenderSoundtrack(name: string, screenWidth: number, soundtrack: Soundtrack): void {
     // The width must fit within the screen
     const displayWidth = screenWidth * SHEET_WIDTH_RATIO;
     let previousNoteName: string = '';
 
     let sheetWidth: number;
     let sheetHeight: number;
+    const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
     // const sheetWidth: number = nbMeasures * displayWidth; // TODO one long stave
-    if (animated) {
+    if (animatedStave) {
       sheetWidth = displayWidth;
       sheetHeight = VEXFLOW_STAVE_HEIGHT + (VEXFLOW_STAVE_MARGIN * 2);
     } else {
@@ -126,8 +129,8 @@ export class SheetService {
     }
     const context: any = this.renderVexflowContext(name, sheetWidth, sheetHeight);
     soundtrack.sheetContext = context;
-    const formatter = new vexflow.Flow.Formatter();
-    const voices: Array<vexflow.Flow.Voice> = new Array<vexflow.Flow.Voice>();
+    const formatter = new Vex.Flow.Formatter();
+    const voices: Array<Vex.Flow.Voice> = new Array<Vex.Flow.Voice>();
     if (soundtrack.hasTracks()) {
       for (const track of soundtrack.tracks) {
         if (track.hasMeasures()) {
@@ -141,7 +144,7 @@ export class SheetService {
                 // staveX = (displayWidth * staveIndex); // TODO one long stave
                 // staveY = (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN);
                 // staveWidth = displayWidth;
-                if (animated) {
+                if (animatedStave) {
                   staveX = 0;
                   staveY = 0;
                   staveWidth = displayWidth;
@@ -150,28 +153,28 @@ export class SheetService {
                   staveY = staveIndex * (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN);
                   staveWidth = displayWidth;
                 }
-                const stave = new vexflow.Flow.Stave(staveX, staveY, staveWidth);
+                const stave = new Vex.Flow.Stave(staveX, staveY, staveWidth);
                 stave.setContext(context);
                 stave.addClef(Clef.TREBLE); // TODO Should the clef be determined from the time signature of the measure ?
                 stave.addTimeSignature(this.renderTimeSignature(measure));
-                if (!animated) {
+                if (!animatedStave) {
                   stave.draw();
                 }
                 measure.sheetStave = stave;
 
-                const staveNotes = new Array<vexflow.Flow.StaveNote>();
+                const staveNotes = new Array<Vex.Flow.StaveNote>();
 
-                const voice: vexflow.Flow.Voice = new vexflow.Flow.Voice({
+                const voice: Vex.Flow.Voice = new Vex.Flow.Voice({
                   num_beats: measure.timeSignature.numerator,
                   beat_value: measure.timeSignature.denominator,
-                  resolution: vexflow.Flow.RESOLUTION
+                  resolution: Vex.Flow.RESOLUTION
                 });
                 voice.setStrict(false);
                 voice.setStave(stave);
                 for (const placedChord of measure.placedChords) {
                   if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
                     const chordDuration: string = this.renderDuration(placedChord);
-                    const staveNote: vexflow.Flow.StaveNote = new vexflow.Flow.StaveNote({
+                    const staveNote: Vex.Flow.StaveNote = new Vex.Flow.StaveNote({
                       keys: this.renderNotesSortedByFrequency(placedChord.notes),
                       duration: chordDuration,
                       auto_stem: true,
@@ -202,7 +205,7 @@ export class SheetService {
                 voice.addTickables(staveNotes);
                 formatter.joinVoices([voice]);
                 formatter.formatToStave([voice], stave);
-                if (!animated) {
+                if (!animatedStave) {
                   voice.draw(context);
                 }
                 measure.sheetVoice = voice;
@@ -215,7 +218,7 @@ export class SheetService {
           }
         }
       }
-      if (animated) {
+      if (animatedStave) {
         this.drawFirstMeasure(soundtrack);
       }
     }
@@ -273,7 +276,7 @@ export class SheetService {
     placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
   }
 
-  private vexflowStyleStaveNote(placedChord: PlacedChord, color: string): vexflow.Flow.StaveNote {
+  private vexflowStyleStaveNote(placedChord: PlacedChord, color: string): Vex.Flow.StaveNote {
     if (placedChord.staveNote) {
       placedChord.staveNote.setStyle({
         fillStyle: color,
@@ -311,12 +314,12 @@ export class SheetService {
     return vexflowNotes;
   }
 
-  private renderAnnotation(textNote: string): vexflow.Flow.Annotation {
+  private renderAnnotation(textNote: string): Vex.Flow.Annotation {
     return (
-      new vexflow.Flow.Annotation(textNote))
+      new Vex.Flow.Annotation(textNote))
       .setFont(VEXFLOW_FONT_TYPE, VEXFLOW_FONT_SIZE, VEXFLOW_FONT_WEIGHT)
-      .setJustification(vexflow.Flow.Annotation.Justify.CENTER_STEM)
-      .setVerticalJustification(vexflow.Flow.Annotation.VerticalJustify.BOTTOM);
+      .setJustification(Vex.Flow.Annotation.Justify.CENTER_STEM)
+      .setVerticalJustification(Vex.Flow.Annotation.VerticalJustify.BOTTOM);
   }
 
   private renderNote(note: Note): string {
@@ -346,7 +349,7 @@ export class SheetService {
 
   private renderVexflowContext(name: string, width: number, height: number): any { // TODO Replace all these any types
     const element = document.getElementById(name);
-    const renderer: any = new vexflow.Flow.Renderer(element!, vexflow.Flow.Renderer.Backends.SVG);
+    const renderer: any = new Vex.Flow.Renderer(element!, Vex.Flow.Renderer.Backends.SVG);
     renderer.resize(width, height);
     const context: any = renderer.getContext();
     // context.setFont('Arial', 10, 0).setBackgroundFillStyle('#eed'); // TODO Hard coded font
