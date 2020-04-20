@@ -1,0 +1,51 @@
+// dateOfPublication: new FormControl(new Date()), TODO add a field
+
+  <mat-dialog-content>
+    <mat-form-field>
+      <input formControlName="dateOfPublication" matInput [matDatepicker]="picker" placeholder="TODO Choose a date of publication"
+        readonly (click)="picker.open()">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </mat-dialog-content>
+
+Questions
+possibilité de renversement de l'accord
+
+Maybe notes could be stored using...
+tonal https://github.com/tonaljs/tonal
+npm install tonal
+
+Have animated staves
+
+Avoir une sortie MIDI
+Export de fichier MIDI
+Live streaming MIDI
+
+Avoir deux portées au lieu d'une
+Afficher sur la première les premières notes de chaque accord de la deuxième
+La deuxième a un son moins fort que la première
+
+Make sure all constants are typed.
+
+All methods should have a return type, possibly void.
+
+Detect the browser language and use it to select the one of the app.
+
+When the playing is stopped, the notes are un highlighted too late
+How to cancel these transport events ?
+
+When playing the dummy demo, the tempo changes if it is replayed again
+
+Have an assistant to showcase a tour of the app for newbies
+
+Search
+.has
+
+How come my vexflow version is so behind the one of npm ?
+
+Do a slider
+https://material.angular.io/guide/getting-started
+<mat-slider min="1" max="100" step="1" value="1"></mat-slider>
+
+How come there is a common ui and utils service ?
