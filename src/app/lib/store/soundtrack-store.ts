@@ -4,7 +4,6 @@ import { CommonService } from '../service/common.service';
 import { Soundtrack } from '../../model/soundtrack';
 import { Observable } from 'rxjs';
 import { SoundtrackStorageService } from '@app/views/soundtrack/soundtrack-storage.service';
-import { NotationService } from '../service/notation.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,18 +12,17 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
 
   constructor(
     private commonService: CommonService,
-    private notationService: NotationService,
     private soundtrackStorageService: SoundtrackStorageService
   ) {
     super(new Array<Soundtrack>());
   }
 
   public loadAllFromStorage(): void {
-    const soundtrackObjs: Array<any> = this.soundtrackStorageService.getAllSoundtracks();
-    if (soundtrackObjs && soundtrackObjs.length > 0) {
+    const soundtrackJsons: Array<any> = this.soundtrackStorageService.getAllSoundtracks();
+    if (soundtrackJsons && soundtrackJsons.length > 0) {
       const soundtracks: Array<Soundtrack> = new Array();
-      soundtrackObjs.forEach((soundtrackObj: any) => {
-        const soundtrack: Soundtrack = this.notationService.objectToNewSoundtrack(soundtrackObj);
+      soundtrackJsons.forEach((soundtrackJson: any) => {
+        const soundtrack: Soundtrack = this.soundtrackStorageService.cleanUpInstance(soundtrackJson);
         soundtracks.push(soundtrack);
       });
       this.setState(soundtracks);
@@ -73,14 +71,14 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     soundtrack.synth = synth;
     this.setSoundtrack(soundtrack);
   }
+
   public setAndStoreSoundtrack(soundtrack: Soundtrack) {
     this.setSoundtrack(soundtrack);
     this.storeSoundtrack(soundtrack);
   }
 
   private storeSoundtrack(soundtrack: Soundtrack): void {
-    // Create a clean soundtrack before storing it
-    const cleanSoundtrack: Soundtrack = this.notationService.objectToNewSoundtrack(soundtrack);
+    const cleanSoundtrack: Soundtrack = this.soundtrackStorageService.cleanUpInstance(soundtrack);
     this.soundtrackStorageService.setSoundtrack(cleanSoundtrack);
   }
 
