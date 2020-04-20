@@ -16,7 +16,7 @@ export class SettingsComponent implements OnInit {
 
   settings$?: Observable<Settings>;
   settings!: Settings;
-  private settingssSubscription?: Subscription;
+  private settingsSubscription?: Subscription;
 
   dialogRef!: MatDialogRef<SettingsDialogComponent>;
   @Output()
@@ -41,8 +41,8 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.settingssSubscription != null) {
-      this.settingssSubscription.unsubscribe();
+    if (this.settingsSubscription != null) {
+      this.settingsSubscription.unsubscribe();
     }
     if (this.dialogSubscription) {
       this.dialogSubscription.unsubscribe();
@@ -73,7 +73,7 @@ export class SettingsComponent implements OnInit {
             existingSettings.animatedStave = settingsEdition.animatedStave;
             this.settingsStore.setAndStoreSettings(existingSettings);
 
-            const message: string = this.translateService.instant('settingss.message.saved');
+            const message: string = this.translateService.instant('settings.message.saved');
             this.utilsService.showSnackBar(message);
           }
         }
@@ -86,7 +86,7 @@ export class SettingsComponent implements OnInit {
   }
 
   private observeSettingss(): void {
-    this.settingssSubscription = this.settingsStore.getSettings$()
+    this.settingsSubscription = this.settingsStore.getSettings$()
       .subscribe((settings: Settings) => {
         this.settings = settings;
         this.detectChanges();
