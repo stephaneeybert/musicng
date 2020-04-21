@@ -102,20 +102,20 @@ export class SynthService {
   }
 
   // Start the transport
-  public startTransport() {
+  public startTransport(): void {
     Tone.Transport.start(TRANSPORT_START_DELAY);
     console.log('Started the transport');
   }
 
   // Rewind a the position and clear all events if any
-  private clearTransport() {
+  private clearTransport(): void {
     Tone.Transport.position = 0;
     Tone.Transport.cancel();
     console.log('Cleared the transport');
   }
 
   // Stop the transport
-  private stopTransport() {
+  private stopTransport(): void {
     Tone.Transport.stop();
     console.log('Stopped the transport');
   }
@@ -164,13 +164,13 @@ export class SynthService {
     }
   }
 
-  public stopAllSoundtracks() {
+  public stopAllSoundtracks(): void {
     this.soundtrackService.getSoundtracks().forEach((soundtrack: Soundtrack) => {
       this.stopSoundtrack(soundtrack);
     });
   }
 
-  public stopSoundtrack(soundtrack: Soundtrack) {
+  public stopSoundtrack(soundtrack: Soundtrack): void {
     this.setPlaying(soundtrack, false);
     this.clearTransport();
 
@@ -188,7 +188,7 @@ export class SynthService {
     this.soundtrackService.setSoundtrack(soundtrack);
   }
 
-  private play(track: Track, soundtrack: Soundtrack) {
+  private play(track: Track, soundtrack: Soundtrack): void {
     let previousScheduledMeasure: Measure;
     let previousDrawnMeasure: Measure;
     let firstMeasure: Measure;
@@ -228,6 +228,8 @@ export class SynthService {
           measure.getSortedChords().forEach((placedChord: PlacedChord) => {
             const duration: string = placedChord.renderDuration();
             const durationInSeconds = Tone.Time(duration).toSeconds();
+            // console.log('duration: ' + duration + ' durationInSeconds: ' + durationInSeconds);
+            console.log('measureStartTime: ' + measureStartTime);
             let triggerTime = measureStartTime + relativeTime;
             const releaseTime = triggerTime + durationInSeconds;
 
@@ -277,12 +279,14 @@ export class SynthService {
    * @param Measure measure
    * @param boolean ramp If true, the tempo will ramp up or down, otherwise it will change instantly.
    */
-  private updateTempo(previousMeasure: Measure, measure: Measure, ramp: boolean) {
+  private updateTempo(previousMeasure: Measure, measure: Measure, ramp: boolean): void {
     if (previousMeasure == null || previousMeasure.tempo.subdivision.left !== measure.tempo.subdivision.left || previousMeasure.tempo.subdivision.right !== measure.tempo.subdivision.right) {
       if (this.notationService.isBpmTempoUnit(measure.tempo)) {
         if (ramp) {
+          // console.log('Ramp up tempo ' + measure.getTempo());
           Tone.Transport.bpm.rampTo(measure.getTempo(), 1);
         } else {
+          // console.log('Change tempo to ' + measure.getTempo());
           Tone.Transport.bpm.value = measure.getTempo();
         }
       }
@@ -298,8 +302,9 @@ export class SynthService {
     }
   }
 
-  private updateTimeSignature(measure: Measure) {
+  private updateTimeSignature(measure: Measure): void {
     if (measure.timeSignature != null) {
+      // console.log('Updated time signature to ' + measure.timeSignature.numerator + ' / ' + measure.timeSignature.denominator);
       Tone.Transport.timeSignature = [
         measure.timeSignature.numerator,
         measure.timeSignature.denominator
@@ -307,12 +312,12 @@ export class SynthService {
     }
   }
 
-  public noteOn(midiNote: number, velocity: number, synth: any) {
+  public noteOn(midiNote: number, velocity: number, synth: any): void {
     const textNote: string = this.midiToTextNote(midiNote);
     synth.triggerAttack(textNote, Tone.Context.currentTime, this.notationService.velocityMidiToTonejs(velocity));
   }
 
-  public noteOff(midiNote: number, synth: any) {
+  public noteOff(midiNote: number, synth: any): void {
     const textNote: string = this.midiToTextNote(midiNote);
     synth.triggerRelease(textNote, Tone.Context.currentTime);
   }

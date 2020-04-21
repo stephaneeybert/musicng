@@ -291,7 +291,7 @@ export class NotationService {
     }
   }
 
-  public createDuration(duration: number, tempoUnit: TempoUnit) {
+  public createDuration(duration: number, tempoUnit: TempoUnit): Duration {
     return new Duration(this.createSubdivision(duration), tempoUnit);
   }
 

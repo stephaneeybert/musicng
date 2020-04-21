@@ -117,7 +117,7 @@ export class MidiService {
     return source.asObservable();
   }
 
-  private handleMessagesFromInputDevice(device: Device) {
+  private handleMessagesFromInputDevice(device: Device): void {
     const subscription = this.getInputDevices$()
     .pipe(
       filter((midiInput: WebMidi.MIDIInput) => {
@@ -131,7 +131,7 @@ export class MidiService {
   }
 
   // Processing the message received from an input device
-  private onMIDIMessage(device: Device, message: WebMidi.MIDIMessageEvent) {
+  private onMIDIMessage(device: Device, message: WebMidi.MIDIMessageEvent): void {
     const deviceName = this.commonService.normalizeName(device.id);
 
     const status = message.data[0];
@@ -177,13 +177,13 @@ export class MidiService {
     }
   }
 
-  private logInputDevice(inputDevice: WebMidi.MIDIInput) {
+  private logInputDevice(inputDevice: WebMidi.MIDIInput): void {
     console.log('Input port: [ type: ' + inputDevice.type + ' id: ' + inputDevice.id +
       ' manufacturer: ' + inputDevice.manufacturer + ' name: ' + inputDevice.name +
       ' version: ' + inputDevice.version + ']');
   }
 
-  private logOutputDevice(outputDevice: WebMidi.MIDIOutput) {
+  private logOutputDevice(outputDevice: WebMidi.MIDIOutput): void {
     console.log('Output port : [ type: ' + outputDevice.type + ' id: ' + outputDevice.id +
       ' manufacturer: ' + outputDevice.manufacturer + ' name: ' + outputDevice.name +
       ' version: ' + outputDevice.version + ']');
@@ -509,11 +509,11 @@ export class MidiService {
     return bpm;
   }
 
-  private ticksToQuarters(ticks: number, ticksPerQuarter: number) {
+  private ticksToQuarters(ticks: number, ticksPerQuarter: number): number {
     return Math.round((ticks / ticksPerQuarter) * 1000000) / 1000000;
   }
 
-  private subdivision(deltaInQuarters: number) {
+  private subdivision(deltaInQuarters: number): number {
     const subdivisionSlice: number = 1 / 64;
     const deltaInSubdivisionSlices: number = Math.round(deltaInQuarters / subdivisionSlice);
     return deltaInSubdivisionSlices;
