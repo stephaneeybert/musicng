@@ -22,6 +22,8 @@ Avoir une sortie MIDI
 Export de fichier MIDI
 Live streaming MIDI
 
+Have an observable so that I don't need to reload the appto see the change of type of stavesfrom fixed to animated
+
 Avoir deux portées au lieu d'une
 Afficher sur la première les premières notes de chaque accord de la deuxième
 La deuxième a un son moins fort que la première
