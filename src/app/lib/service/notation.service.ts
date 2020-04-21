@@ -300,8 +300,7 @@ export class NotationService {
   }
 
   public createEmptyChord(index: number, duration: Duration): PlacedChord {
-    const placedChod: PlacedChord = new PlacedChord(index, duration);
-    return placedChod;
+    return new PlacedChord(index, duration);
   }
 
   public createTimeSignature(numerator: number, denominator: number): TimeSignature {
