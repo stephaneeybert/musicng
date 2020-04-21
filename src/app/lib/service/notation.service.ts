@@ -19,6 +19,7 @@ const NOTE_REST: string = 'rest';
 const NOTE_END_OF_TRACK: string = 'end';
 const NOTE_END_OF_TRACK_OCTAVE: number = 0;
 const NOTE_END_OF_TRACK_DURATION: number = 8;
+const CHROMA_OCTAVE_PATTERN: RegExp = /[a-z#]+|[^a-z#]+/gi;
 
 const DEFAULT_TEMPO_BPM_VALUE: number = 128;
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
@@ -151,7 +152,7 @@ export class NotationService {
   }
 
   public noteToChromaOctave(note: string): Array<string> {
-    const chromaOctave: Array<string> | null = note.match(/[a-z#]+|[^a-z#]+/gi);
+    const chromaOctave: Array<string> | null = note.match(CHROMA_OCTAVE_PATTERN);
     if (chromaOctave != null) {
       return chromaOctave;
     } else {
