@@ -9,7 +9,7 @@ import { NotationService } from './notation.service';
 import { TempoUnit } from '../../model/tempo-unit';
 import { SheetService } from './sheet.service';
 import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
-import { Observable, interval } from 'rxjs';
+import { Observable, interval, timer } from 'rxjs';
 import { map, filter, take } from 'rxjs/operators';
 import { CommonService } from './common.service';
 import { SettingsService } from '@app/views/settings/settings.service';
@@ -22,6 +22,7 @@ const AUDIO_CONTEXT_RUNNING: string = 'running';
 const PLAY_START_DELAY = 0;
 const CHORD_WIDTH: number = 3;
 const VELOCITY_TONEJS: number = 0.5;
+const WHITEWASH_DELAY: number = 1500;
 
 // The rest note for the synth is the empty string
 const SYNTH_REST_NOTE: string = '';
@@ -175,8 +176,10 @@ export class SynthService {
 
     const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
     if (animatedStave) {
-      this.sheetService.whitewashStave(soundtrack.sheetContext);
-      this.sheetService.drawFirstMeasure(soundtrack);
+      timer(WHITEWASH_DELAY).subscribe((time: number) => {
+        this.sheetService.whitewashStave(soundtrack.sheetContext);
+        this.sheetService.drawFirstMeasure(soundtrack);
+      });
     }
   }
 

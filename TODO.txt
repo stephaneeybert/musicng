@@ -32,9 +32,6 @@ All methods should have a return type, possibly void.
 
 Detect the browser language and use it to select the one of the app.
 
-When the playing is stopped, the notes are un highlighted too late
-How to cancel these transport events ?
-
 When playing the dummy demo, the tempo changes if it is replayed again
 
 Have an assistant to showcase a tour of the app for newbies
