@@ -172,6 +172,7 @@ export class SynthService {
 
   public stopSoundtrack(soundtrack: Soundtrack): void {
     this.setPlaying(soundtrack, false);
+    this.releaseAllSoundtrackNotes(soundtrack);
     this.clearTransport();
 
     const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
@@ -181,6 +182,12 @@ export class SynthService {
         this.sheetService.drawFirstMeasure(soundtrack);
       });
     }
+  }
+
+  // Some release events may not be processed when stopping the play
+  // resulting in notes that keep playing for ever
+  private releaseAllSoundtrackNotes(soundtrack: Soundtrack): void {
+    soundtrack.synth.releaseAll();
   }
 
   private setPlaying(soundtrack: Soundtrack, playing: boolean): void {
