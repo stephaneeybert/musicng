@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import Tone from 'tone';
+import * as Tone from 'tone';
 import { Track } from '../../model/track';
 import { Measure } from '../../model/measure/measure';
 import { Soundtrack } from '../../model/soundtrack';
