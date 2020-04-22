@@ -29,9 +29,13 @@ export class Track {
   }
 
   public getSortedMeasures(): Array<Measure> {
-    return this.measures.sort((measureA: Measure, measureB: Measure) => {
-      return measureA.index - measureB.index;
-    });
+    if (this.hasMeasures()) {
+      return this.measures.sort((measureA: Measure, measureB: Measure) => {
+        return measureA.index - measureB.index;
+      });
+    } else {
+      throw new Error('The track has no measures');
+    }
   }
 
 }
