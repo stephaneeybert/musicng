@@ -83,8 +83,8 @@ export class GeneratorService {
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.assignNewName());
     const symphonyChords: Array<Array<string>> = this.generateChords();
     const melodyChords: Array<Array<string>> = this.generateMasterNoteChords(symphonyChords);
-    soundtrack.addTrack(this.createMeasures(this.createPlacedChords(symphonyChords)));
     soundtrack.addTrack(this.createMeasures(this.createPlacedChords(melodyChords)));
+    soundtrack.addTrack(this.createMeasures(this.createPlacedChords(symphonyChords)));
     this.soundtrackService.storeSoundtrack(soundtrack);
     return soundtrack;
   }
