@@ -10,7 +10,7 @@ npm install @tonejs/midi
 npm install midi-json-parser
 npm install midi-file-slicer
 npm install nexusui
-npm install vexflow
+npm install vexflow@latest
 npm install @types/vexflow
 npm install ../lib-i18n/dist/lib-i18n/lib-i18n-0.0.1.tgz
 npm install @ngx-translate/core --save-dev
