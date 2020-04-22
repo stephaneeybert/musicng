@@ -37,9 +37,9 @@ export class GeneratorService {
   CHORD_DURATION = 4; // TODO Offer the duration in settings or have a random one
   NOTE_OCTAVE: number = 5; // TODO Offer the octave in settings
 
-  public generateSoundtrack(): Soundtrack {
+  private createPlacedChords(generatedChords: Array<Array<string>>): Array<PlacedChord> {
     let placedChordIndex: number = 0;
-    const generatedChords: Array<PlacedChord> = this.generateChords()
+    const createdPlacedChords: Array<PlacedChord> = generatedChords
       .map((chord: Array<string>) => {
         let noteIndex: number = 0;
         const notes: Array<Note> = chord.map((textNote: string) => {
@@ -47,12 +47,15 @@ export class GeneratorService {
           noteIndex++;
           return note;
         })
-        return this.notationService.createPlacedChord(placedChordIndex, this.CHORD_DURATION, TempoUnit.DUPLE, notes); // Maybe have a default chord unit ?
+        const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, this.CHORD_DURATION, TempoUnit.DUPLE, notes); // Maybe have a default chord unit ?
         placedChordIndex++;
+        return placedChord;
       });
+    this.notationService.addEndOfTrackNote(createdPlacedChords);
+    return createdPlacedChords;
+  }
 
-    this.notationService.addEndOfTrackNote(generatedChords);
-
+  private createMeasures(generatedChords: Array<PlacedChord>): Array<Measure> {
     let measureIndex: number = 0;
     const measures: Array<Measure> = new Array<Measure>();
     let measure: Measure = this.notationService.createMeasure(measureIndex, DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
@@ -73,8 +76,16 @@ export class GeneratorService {
           throw new Error('The measure placed chords array has not been instantiated.');
         }
       });
+    return measures;
+  }
 
-    const soundtrack: Soundtrack = this.soundtrackService.createSoundtrackFromMeasures(this.assignNewName(), measures);
+  public generateSoundtrack(): Soundtrack {
+    const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.assignNewName());
+    const symphonyChords: Array<Array<string>> = this.generateChords();
+    const melodyChords: Array<Array<string>> = this.generateMasterNoteChords(symphonyChords);
+    soundtrack.addTrack(this.createMeasures(this.createPlacedChords(symphonyChords)));
+    soundtrack.addTrack(this.createMeasures(this.createPlacedChords(melodyChords)));
+    this.soundtrackService.storeSoundtrack(soundtrack);
     return soundtrack;
   }
 
@@ -128,6 +139,11 @@ export class GeneratorService {
 
   private createShiftedChord(chord: Array<string>): Array<string> {
     return this.createArrayShiftOnceRight(chord);
+  }
+
+  private generateMasterNoteChords(symphonieChords: Array<Array<string>>): Array<Array<string>> {
+
+    return [];
   }
 
   private generateChords(): Array<Array<string>> {

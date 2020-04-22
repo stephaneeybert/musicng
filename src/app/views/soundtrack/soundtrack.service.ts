@@ -16,10 +16,22 @@ export class SoundtrackService {
     private soundtrackStore: SoundtrackStore
   ) { }
 
+  public createSoundtrack(name: string): Soundtrack {
+    return new Soundtrack(this.commonService.normalizeName(name), name);
+  }
+
+  public storeSoundtrack(soundtrack: Soundtrack): void {
+    if (soundtrack.hasTracks()) {
+      this.soundtrackStore.add(soundtrack);
+    } else {
+      throw new Error('The soundtrack has no track. Add a track before storing the soundtrack.');
+    }
+  }
+
   public createSoundtrackFromMeasures(name: string, measures: Array<Measure>): Soundtrack {
-    const soundtrack: Soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
+    const soundtrack: Soundtrack = this.createSoundtrack(name);
     soundtrack.addTrack(measures);
-    this.soundtrackStore.add(soundtrack);
+    this.storeSoundtrack(soundtrack);
     return soundtrack;
   }
 
