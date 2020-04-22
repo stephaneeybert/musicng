@@ -215,6 +215,7 @@ export class SynthService {
       // Wait for user idleness before starting playing
       let relativeTime: number = PLAY_START_DELAY;
 
+      console.log(Tone.Transport);
       // Schedule each measure independently
       Tone.Transport.scheduleOnce((measureStartTime: any) => {
         // The first measure is always supposed to have a new tempo and time signature
