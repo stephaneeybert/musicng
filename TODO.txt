@@ -43,3 +43,12 @@ https://material.angular.io/guide/getting-started
 <mat-slider min="1" max="100" step="1" value="1"></mat-slider>
 
 How come there is a common ui and utils service ?
+
+The statement
+Tone.Transport.bpm.rampTo
+does not accept the tempo of 128
+but the 120 is fine
+Change the measure tempo to be a number of beats
+Ask Norbert: Can the measure tempo be anything other than a number of beats ?
+
+Est-ce que 2 pistes ont le même nombre de mesures et d'accords ?
