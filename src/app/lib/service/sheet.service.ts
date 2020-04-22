@@ -227,7 +227,7 @@ export class SheetService {
   public drawFirstMeasure(soundtrack: Soundtrack): void {
     if (soundtrack.tracks) {
       for (const track of soundtrack.tracks) {
-        if (track.measures) {
+        if (track.hasMeasures()) {
           this.drawMeasure(track.measures[0], soundtrack.sheetContext);
         }
       }
