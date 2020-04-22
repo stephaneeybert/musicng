@@ -36,6 +36,10 @@ export class Soundtrack {
     return false;
   }
 
+  public getNgTracks(): number {
+    return this.hasTracks() ? this.tracks.length : 0;
+  }
+
   public hasNotes(): boolean {
     if (this.tracks != null && this.tracks.length > 0) {
       for (const track of this.tracks) {

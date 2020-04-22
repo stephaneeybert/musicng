@@ -22,7 +22,8 @@ const AUDIO_CONTEXT_RUNNING: string = 'running';
 const PLAY_START_DELAY = 0;
 const CHORD_WIDTH: number = 3;
 const VELOCITY_TONEJS: number = 0.5;
-const WHITEWASH_DELAY: number = 1500;
+const WHITEWASH_DELAY: number = 3000;
+const TEMPO_RAMP_TO_IN_SECONDS: number = 2;
 
 // The rest note for the synth is the empty string
 const SYNTH_REST_NOTE: string = '';
@@ -177,8 +178,8 @@ export class SynthService {
 
     const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
     if (animatedStave) {
-      timer(WHITEWASH_DELAY).subscribe((time: number) => {
-        this.sheetService.whitewashStave(soundtrack.sheetContext);
+      timer(WHITEWASH_DELAY).subscribe((time: number) => { // TODO Maybe this is not needed
+        this.sheetService.clearSheet(soundtrack.sheetContext);
         this.sheetService.drawFirstMeasure(soundtrack);
       });
     }
@@ -215,19 +216,18 @@ export class SynthService {
       // Wait for user idleness before starting playing
       let relativeTime: number = PLAY_START_DELAY;
 
-      console.log(Tone.Transport);
+      // The first measure is always supposed to have a new tempo and time signature
+      if (measure.isFirst()) {
+        this.updateTempo(previousScheduledMeasure, measure, false);
+        this.updateTimeSignature(measure);
+        firstMeasure = measure;
+      } else {
+        this.updateTempo(previousScheduledMeasure, measure, true);
+        this.updateTimeSignature(measure);
+      }
+
       // Schedule each measure independently
       Tone.Transport.scheduleOnce((measureStartTime: any) => {
-        // The first measure is always supposed to have a new tempo and time signature
-        if (measure.isFirst()) {
-          this.updateTempo(previousScheduledMeasure, measure, false);
-          this.updateTimeSignature(measure);
-          firstMeasure = measure;
-        } else {
-          this.updateTempo(previousScheduledMeasure, measure, true);
-          this.updateTimeSignature(measure);
-        }
-
         // The time of notes relative to the start of the current measure
         // Note that a non zero init time is needed to have the first note key press displayed
         relativeTime += 0.01;
@@ -237,7 +237,7 @@ export class SynthService {
             const duration: string = placedChord.renderDuration();
             const durationInSeconds = Tone.Time(duration).toSeconds();
             // console.log('duration: ' + duration + ' durationInSeconds: ' + durationInSeconds);
-            console.log('measureStartTime: ' + measureStartTime);
+            // console.log('measureStartTime: ' + measureStartTime);
             let triggerTime = measureStartTime + relativeTime;
             const releaseTime = triggerTime + durationInSeconds;
 
@@ -248,7 +248,7 @@ export class SynthService {
               Tone.Draw.schedule((actualTime: any) => {
                 if (placedChord.isFirst()) {
                   if (animatedStave) {
-                    this.sheetService.whitewashStave(soundtrack.sheetContext);
+                    this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNgTracks(), track.index, measure.index);
                     this.sheetService.drawMeasure(measure, soundtrack.sheetContext);
                   }
                 }
@@ -263,7 +263,7 @@ export class SynthService {
             } else {
               Tone.Draw.schedule((actualTime: any) => {
                 if (animatedStave) {
-                  this.sheetService.whitewashStave(soundtrack.sheetContext);
+                  this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNgTracks(), track.index, measure.index);
                   this.sheetService.drawMeasure(firstMeasure, soundtrack.sheetContext);
                 }
                 this.keyboardService.unpressAll(soundtrack.keyboard);
@@ -292,7 +292,8 @@ export class SynthService {
       if (this.notationService.isBpmTempoUnit(measure.tempo)) {
         if (ramp) {
           // console.log('Ramp up tempo ' + measure.getTempo());
-          Tone.Transport.bpm.rampTo(measure.getTempo(), 1);
+          Tone.Transport.bpm.value = measure.getTempo(); // TODO
+          // Tone.Transport.bpm.rampTo(measure.getTempo(), 1);
         } else {
           // console.log('Change tempo to ' + measure.getTempo());
           Tone.Transport.bpm.value = measure.getTempo();
