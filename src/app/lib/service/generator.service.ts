@@ -142,8 +142,14 @@ export class GeneratorService {
   }
 
   private generateMasterNoteChords(symphonieChords: Array<Array<string>>): Array<Array<string>> {
-
-    return [];
+    const melodyChords: Array<Array<string>> = new Array();
+    symphonieChords.forEach((chords: Array<string>) => {
+      const masterNote: string = chords[0];
+      const melodyChord: Array<string> = new Array();
+      melodyChord.push(masterNote);
+      melodyChords.push(melodyChord);
+    });
+    return melodyChords;
   }
 
   private generateChords(): Array<Array<string>> {
