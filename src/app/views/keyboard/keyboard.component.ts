@@ -1,7 +1,6 @@
 import { Component, AfterViewInit, Input, ChangeDetectorRef, HostListener } from '@angular/core';
 import { KeyboardService } from '../../lib/service/keyboard.service';
 import { SynthService } from '../../lib/service/synth.service';
-import { MidiService } from '../../lib/service/midi.service';
 import { SoundtrackStore } from '../../lib/store/soundtrack-store';
 import { DeviceStore } from '../../lib/store/device-store';
 import { Subscription, ReplaySubject, Subject } from 'rxjs';
@@ -47,7 +46,6 @@ export class KeyboardComponent implements AfterViewInit {
     private deviceStore: DeviceStore,
     private keyboardService: KeyboardService,
     private synthService: SynthService,
-    private midiService: MidiService,
     private commonService: CommonService
   ) { }
 
