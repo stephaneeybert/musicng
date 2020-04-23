@@ -175,14 +175,6 @@ export class SynthService {
     this.setPlaying(soundtrack, false);
     this.releaseAllSoundtrackNotes(soundtrack);
     this.clearTransport();
-
-    const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
-    if (animatedStave) {
-      timer(WHITEWASH_DELAY).subscribe((time: number) => { // TODO Maybe this is not needed
-        this.sheetService.clearSheet(soundtrack.sheetContext);
-        this.sheetService.drawFirstMeasure(soundtrack);
-      });
-    }
   }
 
   // Some release events may not be processed when stopping the play
