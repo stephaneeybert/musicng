@@ -27,9 +27,11 @@ export class KeyboardService {
   }
 
   public unpressAll(keyboard: any): void {
-    if (keyboard.range && keyboard.range.low && keyboard.range.high) {
-      for (let keyIndex: number = 0; keyIndex <= (keyboard.range.high - keyboard.range.low); keyIndex++) {
-        keyboard.toggleIndex(keyIndex, false);
+    if (keyboard != null) {
+      if (keyboard.range && keyboard.range.low && keyboard.range.high) {
+        for (let keyIndex: number = 0; keyIndex <= (keyboard.range.high - keyboard.range.low); keyIndex++) {
+          keyboard.toggleIndex(keyIndex, false);
+        }
       }
     }
   }
