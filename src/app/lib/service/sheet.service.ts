@@ -173,22 +173,6 @@ export class SheetService {
     }
   }
 
-  private getStaveMeasures(soundtrack: Soundtrack): Array<Measure> {
-    const staveMeasures: Array<Measure> = new Array();
-    for (const track of soundtrack.tracks) {
-      if (track.hasMeasures()) {
-        for (const measure of track.getSortedMeasures()) {
-          if (measure.placedChords) {
-            if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
-              staveMeasures.push(measure);
-            }
-          }
-        }
-      }
-    }
-    return staveMeasures;
-  }
-
   private getStaveX(animatedStave: boolean, trackIndex: number, measureIndex: number): number {
     let staveX: number;
     if (animatedStave) {
