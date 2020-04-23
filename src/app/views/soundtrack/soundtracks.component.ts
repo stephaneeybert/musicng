@@ -11,6 +11,7 @@ import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dial
 import { SoundtrackDialogComponent } from './soundtrack-dialog.component';
 import { SoundtrackEdition } from './soundtrack-edition';
 import { TranslateService } from '@ngx-translate/core';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-soundtracks',
@@ -156,7 +157,9 @@ export class SoundtracksComponent implements OnInit {
 
   private observeSoundtracks(): void {
     this.soundtracksSubscription = this.soundtrackStore.getSoundtracks$()
-      .subscribe((soundtracks: Array<Soundtrack>) => {
+      .pipe(
+        delay(500)
+      ).subscribe((soundtracks: Array<Soundtrack>) => {
         this.soundtracks = soundtracks;
         this.detectChanges();
       });

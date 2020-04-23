@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Device } from '../../model/device';
 import { MidiService } from '../../lib/service/midi.service';
 import { DeviceStore } from '../../lib/store/device-store';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-devices',
@@ -56,7 +57,9 @@ export class DevicesComponent implements OnInit, OnDestroy {
 
   private observeDevices(): void {
     this.devicesSubscription = this.deviceStore.getDevices$()
-    .subscribe((devices: Array<Device>) => {
+    .pipe(
+      delay(500)
+    ).subscribe((devices: Array<Device>) => {
       this.devices = devices;
       this.detectChanges();
     });
