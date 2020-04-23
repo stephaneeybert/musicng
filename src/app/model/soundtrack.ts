@@ -40,6 +40,16 @@ export class Soundtrack {
     return this.hasTracks() ? this.tracks.length : 0;
   }
 
+  public getSortedTracks(): Array<Track> {
+    if (this.hasTracks()) {
+      return this.tracks.sort((trackA: Track, trackB: Track) => {
+        return trackA.index - trackB.index;
+      });
+    } else {
+      throw new Error('The soundtrack has no tracks');
+    }
+  }
+
   public hasNotes(): boolean {
     if (this.tracks != null && this.tracks.length > 0) {
       for (const track of this.tracks) {
