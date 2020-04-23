@@ -69,7 +69,6 @@ export class SheetService {
     let sheetWidth: number;
     let sheetHeight: number;
     const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
-    // const sheetWidth: number = nbMeasures * displayWidth; // TODO one long stave
     sheetWidth = displayWidth;
     sheetHeight = this.getNbStaves(animatedStave, soundtrack) * VEXFLOW_STAVE_HEIGHT;
     console.log('sheetHeight: ' + sheetHeight);
@@ -194,7 +193,6 @@ export class SheetService {
 
   private getStaveX(animatedStave: boolean, trackIndex: number, measureIndex: number): number {
     let staveX: number;
-    // staveX = (displayWidth * staveIndex); // TODO one long stave
     if (animatedStave) {
       staveX = 0;
     } else {
@@ -205,7 +203,6 @@ export class SheetService {
 
   private getStaveY(animatedStave: boolean, nbTracks: number,  trackIndex: number, measureIndex: number): number {
     let staveY: number;
-    // staveY = (VEXFLOW_STAVE_HEIGHT + VEXFLOW_STAVE_MARGIN); // TODO one long stave
     if (animatedStave) {
       staveY = trackIndex * VEXFLOW_STAVE_HEIGHT;
     } else {
