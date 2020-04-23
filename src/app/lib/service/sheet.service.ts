@@ -226,8 +226,6 @@ export class SheetService {
     context.setFillStyle(VEXFLOW_STAVE_BACKGROUND_COLOR);
     context.setLineWidth(0);
     context.fillRect(x, y, width, height);
-    // context.setBackgroundFillStyle(VEXFLOW_STAVE_BACKGROUND_COLOR);
-    // context.clearRect(x, y, width, height);
     context.restore();
   }
 
