@@ -2,9 +2,11 @@ import { Component, Input, ChangeDetectorRef, HostListener, OnInit } from '@angu
 import { Device } from '../../model/device';
 import { SheetService } from '../service/sheet.service';
 import { Soundtrack } from '../../model/soundtrack';
-import { Subscription, Subject, ReplaySubject } from 'rxjs';
+import { Subscription, Subject, ReplaySubject, Observable, combineLatest } from 'rxjs';
 import { CommonService } from '../service/common.service';
 import { delay } from 'rxjs/operators';
+import { Settings } from '@app/model/settings';
+import { SettingsStore } from '../store/settings-store';
 
 const NAME_PREFIX_SOUNDTRACK = 'sheet-soundtrack-';
 const NAME_PREFIX_DEVICE = 'sheet-device-';
@@ -37,19 +39,28 @@ export class SheetComponent implements OnInit {
 
   screenWidth!: number;
 
+  settings$?: Observable<Settings>;
+  private settingsSubscription?: Subscription;
+
   constructor(
     private changeDetector: ChangeDetectorRef,
     private sheetService: SheetService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private settingsStore: SettingsStore
   ) { }
 
   ngOnInit() {
     this.initScreenWidth();
 
-    this.soundtrackSubscription = this.soundtrack$
-      .pipe(delay(0))
-      .subscribe((soundtrack: Soundtrack) => {
-        this.initializeWithSoundtrackId(soundtrack);
+    const soundtrackAndSettings$: Observable<[Soundtrack, Settings]> = combineLatest(
+      this.soundtrack$.pipe(delay(0)),
+      this.settingsStore.getSettings$()
+    );
+
+    this.soundtrackSubscription = soundtrackAndSettings$
+      .subscribe(([soundtrack, settings]: [Soundtrack, Settings]) => {
+        // The soundtrack sheet is redrawn when the animated stave setting is changed
+        this.initializeWithSoundtrackId(soundtrack, settings.animatedStave);
       });
 
     this.deviceSubscription = this.device$
@@ -75,6 +86,9 @@ export class SheetComponent implements OnInit {
     if (this.deviceSubscription != null) {
       this.deviceSubscription.unsubscribe();
     }
+    if (this.settingsSubscription != null) {
+      this.settingsSubscription.unsubscribe();
+    }
   }
 
   // Updating a view model in a subscribe() block requires an explicit call to the change detection
@@ -84,11 +98,11 @@ export class SheetComponent implements OnInit {
     this.changeDetector.detectChanges();
   }
 
-  private initializeWithSoundtrackId(soundtrack: Soundtrack): void {
+  private initializeWithSoundtrackId(soundtrack: Soundtrack, animatedStave: boolean): void {
     if (soundtrack != null) {
       // Refresh the view with its id before creating the sheet
       this.detectChanges(NAME_PREFIX_SOUNDTRACK + soundtrack.id);
-      this.createSoundtrackSheet(soundtrack);
+      this.createSoundtrackSheet(soundtrack, animatedStave);
     }
   }
 
@@ -100,10 +114,10 @@ export class SheetComponent implements OnInit {
     }
   }
 
-  private createSoundtrackSheet(soundtrack: Soundtrack): void {
+  private createSoundtrackSheet(soundtrack: Soundtrack, animatedStave: boolean): void {
     if (soundtrack != null) {
       if (soundtrack.hasNotes()) {
-        this.sheetService.createSoundtrackSheet(this.id, this.screenWidth, soundtrack);
+        this.sheetService.createSoundtrackSheet(this.id, animatedStave, this.screenWidth, soundtrack);
       } else {
         throw new Error('No sheet was created for the soundtrack. Notes should be set to the soundtrack before adding it to the observables data store, ensuring that when the new soundtrack is observed, it has notes and can get a sheet.');
       }

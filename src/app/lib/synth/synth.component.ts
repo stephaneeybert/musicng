@@ -4,7 +4,10 @@ import { Device } from '../../model/device';
 import { Soundtrack } from '../../model/soundtrack';
 import { SoundtrackStore } from '../store/soundtrack-store';
 import { DeviceStore } from '../store/device-store';
-import { Subscription, ReplaySubject, Subject } from 'rxjs';
+import { Subscription, ReplaySubject, Subject, Observable } from 'rxjs';
+import { SettingsStore } from '../store/settings-store';
+import { Settings } from '@app/model/settings';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-midi-synth',
@@ -30,15 +33,24 @@ export class SynthComponent implements AfterViewInit {
   private soundtrackSubscription?: Subscription;
   private deviceSubscription?: Subscription;
 
+  settings$?: Observable<Settings>;
+  private settingsSubscription?: Subscription;
+
   constructor(
     private soundtrackStore: SoundtrackStore,
     private deviceStore: DeviceStore,
-    private synthService: SynthService
+    private synthService: SynthService,
+    private settingsStore: SettingsStore
   ) { }
 
   ngAfterViewInit() {
-    this.soundtrackSubscription = this.soundtrack$
-    .subscribe((soundtrack: Soundtrack) => {
+    const soundtrackAndSettings$: Observable<[Soundtrack, Settings]> = combineLatest(
+      this.soundtrack$,
+      this.settingsStore.getSettings$()
+    );
+
+    this.soundtrackSubscription = soundtrackAndSettings$
+    .subscribe(([soundtrack, settings]: [Soundtrack, Settings]) => {
       this.createSoundtrackSynth(soundtrack);
     });
 
@@ -55,13 +67,21 @@ export class SynthComponent implements AfterViewInit {
     if (this.deviceSubscription != null) {
       this.deviceSubscription.unsubscribe();
     }
+    if (this.settingsSubscription != null) {
+      this.settingsSubscription.unsubscribe();
+    }
   }
 
   private createSoundtrackSynth(soundtrack: Soundtrack) {
     if (soundtrack != null) {
       if (soundtrack.hasNotes()) {
-        const synth = this.synthService.createSoundtrackSynth();
-        this.soundtrackStore.setSoundtrackSynth(soundtrack, synth);
+        if (soundtrack.synth != null) {
+          // The soundtrack play is stopped when the animated stave setting is changed
+          this.synthService.stopSoundtrack(soundtrack);
+        } else {
+          const synth = this.synthService.createSoundtrackSynth();
+          this.soundtrackStore.setSoundtrackSynth(soundtrack, synth);
+        }
       } else {
         throw new Error('No synth was created for the soundtrack. Notes should be set to the soundtrack before adding it to the observables data store, ensuring that when the new soundtrack is observed, it has notes and can get a synth.');
       }

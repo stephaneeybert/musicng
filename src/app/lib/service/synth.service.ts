@@ -173,14 +173,26 @@ export class SynthService {
 
   public stopSoundtrack(soundtrack: Soundtrack): void {
     this.setPlaying(soundtrack, false);
+    // this.sheetService.clearAllSVGGroupds(soundtrack); // TODO Remove
     this.releaseAllSoundtrackNotes(soundtrack);
+    this.keyboardService.unpressAll(soundtrack.keyboard);
     this.clearTransport();
+
+    const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
+    if (animatedStave) {
+      timer(WHITEWASH_DELAY).subscribe((time: number) => {
+        this.sheetService.clearSVGContext(soundtrack.sheetContext);
+        this.sheetService.drawFirstMeasure(soundtrack);
+      });
+    }
   }
 
   // Some release events may not be processed when stopping the play
   // resulting in notes that keep playing for ever
   private releaseAllSoundtrackNotes(soundtrack: Soundtrack): void {
-    soundtrack.synth.releaseAll();
+    if (soundtrack.synth != null) {
+      soundtrack.synth.releaseAll();
+    }
   }
 
   private setPlaying(soundtrack: Soundtrack, playing: boolean): void {
@@ -244,12 +256,12 @@ export class SynthService {
                     this.sheetService.drawMeasure(measure, soundtrack.sheetContext);
                   }
                 }
-                this.sheetService.vexflowHighlightStaveNote(placedChord, soundtrack.sheetContext);
+                this.sheetService.highlightStaveNote(placedChord, soundtrack);
                 this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
                 previousDrawnMeasure = measure;
               }, triggerTime);
               Tone.Draw.schedule((actualTime: any) => {
-                this.sheetService.vexflowUnhighlightStaveNote(placedChord, soundtrack.sheetContext);
+                this.sheetService.unhighlightStaveNote(placedChord, soundtrack);
                 this.keyboardService.unpressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
               }, releaseTime);
             } else {

@@ -8,7 +8,6 @@ import { Note } from '../../model/note/note';
 import { Measure } from '../../model/measure/measure';
 import { Clef } from '../../model/clef';
 import { PlacedChord } from '../../model/note/placed-chord';
-import { SettingsService } from '@app/views/settings/settings.service';
 import { Track } from '@app/model/track';
 
 const SHEET_WIDTH_RATIO = 0.9;
@@ -49,30 +48,35 @@ export enum VexfloWAccidental {
 export class SheetService {
 
   constructor(
-    private notationService: NotationService,
-    private settingsService: SettingsService
+    private notationService: NotationService
   ) { }
 
-  public createSoundtrackSheet(name: string, screenWidth: number, soundtrack: Soundtrack): void {
-    this.vexflowRenderSoundtrack(name, screenWidth, soundtrack);
+  public createSoundtrackSheet(id: string, animatedStave: boolean, screenWidth: number, soundtrack: Soundtrack): void {
+    this.renderSoundtrack(id, animatedStave, screenWidth, soundtrack);
   }
 
-  public vexflowRenderDevice(name: string, screenWidth: number, device: Device): void {
+  public vexflowRenderDevice(id: string, screenWidth: number, device: Device): void {
     // TODO
   }
 
-  private vexflowRenderSoundtrack(name: string, screenWidth: number, soundtrack: Soundtrack): void {
+  private renderSoundtrack(id: string, animatedStave: boolean, screenWidth: number, soundtrack: Soundtrack): void {
     // The width must fit within the screen
     const displayWidth = screenWidth * SHEET_WIDTH_RATIO;
     let previousNoteName: string = '';
 
     let sheetWidth: number;
     let sheetHeight: number;
-    const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
     sheetWidth = displayWidth;
     sheetHeight = this.getNbStaves(animatedStave, soundtrack) * VEXFLOW_STAVE_HEIGHT;
-    const context: any = this.renderVexflowContext(name, sheetWidth, sheetHeight);
-    soundtrack.sheetContext = context;
+
+    // The sheet may be redrawn
+    let sheetContext: any;
+    if (soundtrack.sheetContext != null) {
+      sheetContext = this.resetSVGContext(soundtrack.sheetContext, sheetWidth, sheetHeight);
+    } else {
+      sheetContext = this.renderVexflowContext(id, sheetWidth, sheetHeight);
+    }
+    soundtrack.sheetContext = sheetContext;
     const formatter = new Vex.Flow.Formatter();
     const voices: Array<Vex.Flow.Voice> = new Array<Vex.Flow.Voice>();
     const nbTracks: number = soundtrack.getNgTracks();
@@ -84,7 +88,7 @@ export class SheetService {
             if (measure.placedChords) {
               if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
                 const stave = new Vex.Flow.Stave(this.getStaveX(animatedStave, track.index, measureWithVisibleNotesIndex), this.getStaveY(animatedStave, nbTracks, track.index, measureWithVisibleNotesIndex), displayWidth);
-                stave.setContext(context);
+                stave.setContext(sheetContext);
                 stave.addClef(Clef.TREBLE); // TODO Should the clef be determined from the time signature of the measure ?
                 stave.addTimeSignature(this.renderTimeSignature(measure));
                 if (!animatedStave) {
@@ -136,7 +140,7 @@ export class SheetService {
                 formatter.joinVoices([voice]);
                 formatter.formatToStave([voice], stave);
                 if (!animatedStave) {
-                  voice.draw(context);
+                  voice.draw(sheetContext);
                 }
                 measure.sheetVoice = voice;
                 voices.push(voice);
@@ -154,6 +158,20 @@ export class SheetService {
     }
   }
 
+  private resetSVGContext(sheetContext: any, width: number, height: number): any {
+    this.clearSVGContext(sheetContext);
+    this.resizeSVGContext(sheetContext, width, height);
+    return sheetContext;
+  }
+
+  public clearSVGContext(sheetContext: any): void {
+    sheetContext.clear();
+  }
+
+  private resizeSVGContext(sheetContext: any, width: number, height: number): void {
+    sheetContext.resize(width, height);
+  }
+
   public drawFirstMeasure(soundtrack: Soundtrack): void {
     if (soundtrack.tracks) {
       for (const track of soundtrack.tracks) {
@@ -164,12 +182,12 @@ export class SheetService {
     }
   }
 
-  public drawMeasure(measure: Measure, context: any): void {
-    if (measure.sheetStave) {
+  public drawMeasure(measure: Measure, sheetContext: any): void {
+    if (measure.sheetStave && sheetContext != null) {
       measure.sheetStave.draw();
     }
-    if (measure.sheetVoice) {
-      measure.sheetVoice.draw(context);
+    if (measure.sheetVoice && sheetContext != null) {
+      measure.sheetVoice.draw(sheetContext);
     }
   }
 
@@ -183,7 +201,7 @@ export class SheetService {
     return staveX;
   }
 
-  private getStaveY(animatedStave: boolean, nbTracks: number,  trackIndex: number, measureIndex: number): number {
+  private getStaveY(animatedStave: boolean, nbTracks: number, trackIndex: number, measureIndex: number): number {
     let staveY: number;
     if (animatedStave) {
       staveY = trackIndex * VEXFLOW_STAVE_HEIGHT;
@@ -193,49 +211,62 @@ export class SheetService {
     return staveY;
   }
 
-  public clearSheet(context: any): void {
-    context.clear();
+  public whitewashStave(sheetContext: any, nbTracks: number, trackIndex: number, measureIndex: number): void {
+    this.whitewash(sheetContext, this.getStaveX(true, trackIndex, measureIndex), this.getStaveY(true, nbTracks, trackIndex, measureIndex), sheetContext.width, VEXFLOW_STAVE_HEIGHT);
   }
 
-  public whitewashStave(context: any, nbTracks: number, trackIndex: number, measureIndex: number): void {
-    this.whitewash(context, this.getStaveX(true, trackIndex, measureIndex), this.getStaveY(true, nbTracks, trackIndex, measureIndex), context.width, VEXFLOW_STAVE_HEIGHT);
+  private whitewash(sheetContext: any, x: number, y: number, width: number, height: number): void {
+    sheetContext.save();
+    sheetContext.setFillStyle(VEXFLOW_STAVE_BACKGROUND_COLOR);
+    sheetContext.setLineWidth(0);
+    sheetContext.fillRect(x, y, width, height);
+    sheetContext.restore();
   }
 
-  private whitewash(context: any, x: number, y: number, width: number, height: number): void {
-    context.save();
-    context.setFillStyle(VEXFLOW_STAVE_BACKGROUND_COLOR);
-    context.setLineWidth(0);
-    context.fillRect(x, y, width, height);
-    context.restore();
-  }
+  // public clearAllSVGGroupds(soundtrack: Soundtrack): void {
+  //   soundtrack.tracks.forEach((track: Track) => {
+  //     track.getSortedMeasures().forEach((measure: Measure) => {
+  //       measure.getSortedChords().forEach((placedChord: PlacedChord) => {
+  //         placedChord.sheetStaveNoteHighlightGroup = null;
+  //         placedChord.sheetStaveNoteUnhighlightGroup = null;
+  //       });
+  //     });
+  //   });
+  // }
 
-  public vexflowHighlightStaveNote(placedChord: PlacedChord, context: any): void {
-    // Hide the highlighted note before loosing its reference
-    if (placedChord.sheetStaveNoteHighlightGroup) {
-      placedChord.sheetStaveNoteHighlightGroup.style.opacity = VEXFLOW_SVG_OPACITY_TO_HIDE;
-    }
+  public highlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack): void {
+    if (soundtrack.nowPlaying && soundtrack.sheetContext != null) {
+      const sheetContext: any = soundtrack.sheetContext;
+      // Hide the highlighted note before loosing its reference
+      if (placedChord.sheetStaveNoteHighlightGroup != null) {
+        placedChord.sheetStaveNoteHighlightGroup.style.opacity = VEXFLOW_SVG_OPACITY_TO_HIDE;
+      }
 
-    const sheetStaveNoteGroup: any = context.openGroup();
-    this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR)
+      const sheetStaveNoteGroup: any = sheetContext.openGroup();
+      this.styleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR)
       .draw();
-    context.closeGroup();
-    placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
-  }
-
-  public vexflowUnhighlightStaveNote(placedChord: PlacedChord, context: any): void {
-    // Hide the highlighted note before loosing its reference
-    if (placedChord.sheetStaveNoteUnhighlightGroup) {
-      placedChord.sheetStaveNoteUnhighlightGroup.style.opacity = VEXFLOW_SVG_OPACITY_TO_HIDE;
+      sheetContext.closeGroup();
+      placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
     }
-
-    const sheetStaveNoteGroup: any = context.openGroup();
-    this.vexflowStyleStaveNote(placedChord, VEXFLOW_NOTE_COLOR)
-      .draw();
-    context.closeGroup();
-    placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
   }
 
-  private vexflowStyleStaveNote(placedChord: PlacedChord, color: string): Vex.Flow.StaveNote {
+  public unhighlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack): void {
+    if (soundtrack.nowPlaying && soundtrack.sheetContext != null) {
+      const sheetContext: any = soundtrack.sheetContext;
+      // Hide the highlighted note before loosing its reference
+      if (placedChord.sheetStaveNoteUnhighlightGroup != null) {
+        placedChord.sheetStaveNoteUnhighlightGroup.style.opacity = VEXFLOW_SVG_OPACITY_TO_HIDE;
+      }
+
+      const sheetStaveNoteGroup: any = sheetContext.openGroup();
+      this.styleStaveNote(placedChord, VEXFLOW_NOTE_COLOR)
+      .draw();
+      sheetContext.closeGroup();
+      placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
+    }
+  }
+
+  private styleStaveNote(placedChord: PlacedChord, color: string): Vex.Flow.StaveNote {
     if (placedChord.staveNote) {
       placedChord.staveNote.setStyle({
         fillStyle: color,
@@ -360,13 +391,17 @@ export class SheetService {
     }
   }
 
-  private renderVexflowContext(name: string, width: number, height: number): any { // TODO Replace all these any types
-    const element = document.getElementById(name);
-    const renderer: any = new Vex.Flow.Renderer(element!, Vex.Flow.Renderer.Backends.SVG);
-    renderer.resize(width, height);
-    const context: any = renderer.getContext();
-    // context.setFont('Arial', 10, 0).setBackgroundFillStyle('#eed'); // TODO Hard coded font
-    return context;
+  private renderVexflowContext(id: string, width: number, height: number): any { // TODO Replace all these any types
+    const domElement = document.getElementById(id);
+    if (domElement != null) {
+      const renderer: any = new Vex.Flow.Renderer(domElement, Vex.Flow.Renderer.Backends.SVG);
+      renderer.resize(width, height);
+      const sheetContext: any = renderer.getContext();
+      // sheetContext.setFont('Arial', 10, 0).setBackgroundFillStyle('#eed'); // TODO Hard coded font
+      return sheetContext;
+    } else {
+      throw new Error('The sheet context could not be created');
+    }
   }
 
 }
