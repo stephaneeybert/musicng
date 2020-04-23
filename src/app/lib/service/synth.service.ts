@@ -282,7 +282,8 @@ export class SynthService {
   private updateTempo(previousMeasure: Measure, measure: Measure): void {
     if (previousMeasure == null || previousMeasure.tempo.subdivision.left !== measure.tempo.subdivision.left || previousMeasure.tempo.subdivision.right !== measure.tempo.subdivision.right && this.notationService.isBpmTempoUnit(measure.tempo)) {
       // console.log('Ramp up tempo ' + measure.getTempo());
-      Tone.Transport.bpm.rampTo(measure.getTempo(), TEMPO_RAMP_TO_IN_SECONDS);
+      Tone.Transport.bpm.value = measure.getTempo();
+      // Tone.Transport.bpm.rampTo(measure.getTempo(), TEMPO_RAMP_TO_IN_SECONDS);
     } else {
       // console.log('Change tempo to ' + measure.getTempo());
       Tone.Transport.bpm.value = measure.getTempo();
