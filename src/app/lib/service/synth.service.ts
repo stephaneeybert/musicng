@@ -294,15 +294,6 @@ export class SynthService {
     }
   }
 
-  // TODO
-  private isAnotherMeasure(previousMeasure: Measure, measure: Measure): boolean {
-    if (previousMeasure == null || previousMeasure.index !== measure.index) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   private updateTimeSignature(measure: Measure): void {
     if (measure.timeSignature != null) {
       // console.log('Updated time signature to ' + measure.timeSignature.numerator + ' / ' + measure.timeSignature.denominator);
