@@ -101,6 +101,10 @@ export class SoundtracksComponent implements OnInit {
     return soundtrack.nowPlaying;
   }
 
+  getNbSoundtracks(): number {
+    return this.soundtracks != null ? this.soundtracks.length : 0;
+  }
+
   deleteSoundtrack(soundtrack: Soundtrack): void {
     this.stopSoundtrack(soundtrack);
     if (this.soundtrackStore.delete(soundtrack)) {

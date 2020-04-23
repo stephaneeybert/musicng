@@ -2,7 +2,7 @@
   <span class="fill-remaining-space"></span>
   <mat-icon mat-icon (click)="generateSoundtrack()">add_circle_outline</mat-icon>
 </mat-toolbar>
-<div *ngIf="soundtracks.length > 0">
+<div *ngIf="getNbSoundtracks() > 0">
   <mat-card>
     <mat-card-header>
       <mat-card-title></mat-card-title>
