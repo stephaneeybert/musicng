@@ -194,12 +194,10 @@ export class SheetService {
   }
 
   public clearSheet(context: any): void {
-    console.log('Clear all');
     context.clear();
   }
 
   public whitewashStave(context: any, nbTracks: number, trackIndex: number, measureIndex: number): void {
-    console.log('Washing track: ' + trackIndex + ' measure: ' + measureIndex + ' x: ' + this.getStaveX(true, trackIndex, measureIndex) + ' y: ' + this.getStaveY(true, nbTracks, trackIndex, measureIndex) + ' height: ' + VEXFLOW_STAVE_HEIGHT);
     this.whitewash(context, this.getStaveX(true, trackIndex, measureIndex), this.getStaveY(true, nbTracks, trackIndex, measureIndex), context.width, VEXFLOW_STAVE_HEIGHT);
   }
 
