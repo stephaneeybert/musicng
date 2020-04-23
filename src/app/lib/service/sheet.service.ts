@@ -223,8 +223,7 @@ export class SheetService {
 
   private whitewash(context: any, x: number, y: number, width: number, height: number): void {
     context.save();
-    context.setFillStyle(VEXFLOW_STAVE_BACKGROUND_COLOR); // TODO
-    context.setShadowColor(VEXFLOW_STAVE_BACKGROUND_COLOR);
+    context.setFillStyle(VEXFLOW_STAVE_BACKGROUND_COLOR);
     context.setLineWidth(0);
     context.fillRect(x, y, width, height);
     // context.setBackgroundFillStyle(VEXFLOW_STAVE_BACKGROUND_COLOR);
