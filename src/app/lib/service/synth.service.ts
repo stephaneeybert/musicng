@@ -285,7 +285,7 @@ export class SynthService {
         if (ramp) {
           // console.log('Ramp up tempo ' + measure.getTempo());
           Tone.Transport.bpm.value = measure.getTempo(); // TODO
-          // Tone.Transport.bpm.rampTo(measure.getTempo(), 1);
+          // Tone.Transport.bpm.rampTo(measure.getTempo(), TEMPO_RAMP_TO_IN_SECONDS);
         } else {
           // console.log('Change tempo to ' + measure.getTempo());
           Tone.Transport.bpm.value = measure.getTempo();
