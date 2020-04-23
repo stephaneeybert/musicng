@@ -279,18 +279,13 @@ export class SynthService {
    * @param Measure measure
    * @param boolean ramp If true, the tempo will ramp up or down, otherwise it will change instantly.
    */
-  private updateTempo(previousMeasure: Measure, measure: Measure, ramp: boolean): void {
-    if (previousMeasure == null || previousMeasure.tempo.subdivision.left !== measure.tempo.subdivision.left || previousMeasure.tempo.subdivision.right !== measure.tempo.subdivision.right) {
-      if (this.notationService.isBpmTempoUnit(measure.tempo)) {
-        if (ramp) {
-          // console.log('Ramp up tempo ' + measure.getTempo());
-          Tone.Transport.bpm.value = measure.getTempo(); // TODO
-          // Tone.Transport.bpm.rampTo(measure.getTempo(), TEMPO_RAMP_TO_IN_SECONDS);
-        } else {
-          // console.log('Change tempo to ' + measure.getTempo());
-          Tone.Transport.bpm.value = measure.getTempo();
-        }
-      }
+  private updateTempo(previousMeasure: Measure, measure: Measure): void {
+    if (previousMeasure == null || previousMeasure.tempo.subdivision.left !== measure.tempo.subdivision.left || previousMeasure.tempo.subdivision.right !== measure.tempo.subdivision.right && this.notationService.isBpmTempoUnit(measure.tempo)) {
+      // console.log('Ramp up tempo ' + measure.getTempo());
+      Tone.Transport.bpm.rampTo(measure.getTempo(), TEMPO_RAMP_TO_IN_SECONDS);
+    } else {
+      // console.log('Change tempo to ' + measure.getTempo());
+      Tone.Transport.bpm.value = measure.getTempo();
     }
   }
 
