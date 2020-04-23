@@ -210,11 +210,11 @@ export class SynthService {
 
       // The first measure is always supposed to have a new tempo and time signature
       if (measure.isFirst()) {
-        this.updateTempo(previousScheduledMeasure, measure, false);
+        this.updateTempo(previousScheduledMeasure, measure);
         this.updateTimeSignature(measure);
         firstMeasure = measure;
       } else {
-        this.updateTempo(previousScheduledMeasure, measure, true);
+        this.updateTempo(previousScheduledMeasure, measure);
         this.updateTimeSignature(measure);
       }
 
