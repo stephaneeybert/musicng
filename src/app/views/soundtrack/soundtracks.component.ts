@@ -140,7 +140,7 @@ export class SoundtracksComponent implements OnInit {
         }
       });
 
-      this.dialogEmitterSubscription = this.soundtrackEditedEvent
+    this.dialogEmitterSubscription = this.soundtrackEditedEvent
       .subscribe((soundtrack: Soundtrack) => {
         this.refreshSoundtrack(soundtrack);
       });
