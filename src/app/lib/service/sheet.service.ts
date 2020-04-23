@@ -71,7 +71,6 @@ export class SheetService {
     const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
     sheetWidth = displayWidth;
     sheetHeight = this.getNbStaves(animatedStave, soundtrack) * VEXFLOW_STAVE_HEIGHT;
-    console.log('sheetHeight: ' + sheetHeight);
     const context: any = this.renderVexflowContext(name, sheetWidth, sheetHeight);
     soundtrack.sheetContext = context;
     const formatter = new Vex.Flow.Formatter();
@@ -85,7 +84,6 @@ export class SheetService {
             if (measure.placedChords) {
               if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
                 const stave = new Vex.Flow.Stave(this.getStaveX(animatedStave, track.index, measureWithVisibleNotesIndex), this.getStaveY(animatedStave, nbTracks, track.index, measureWithVisibleNotesIndex), displayWidth);
-                console.log('Stave Y: ' + this.getStaveY(animatedStave, nbTracks, track.index, measureWithVisibleNotesIndex));
                 stave.setContext(context);
                 stave.addClef(Clef.TREBLE); // TODO Should the clef be determined from the time signature of the measure ?
                 stave.addTimeSignature(this.renderTimeSignature(measure));
