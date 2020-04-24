@@ -235,9 +235,7 @@ export class SheetService {
   // }
 
   public highlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack, animatedStave: boolean): void {
-    // For an animated stave, prevent the (un)highlighting as a work around an undefined context exception
-    // For an fixed stave, allow the (un)highlighting
-    if ((!animatedStave && soundtrack.nowPlaying) && soundtrack.sheetContext != null) {
+    if (soundtrack.nowPlaying && soundtrack.sheetContext != null) {
       const sheetContext: any = soundtrack.sheetContext;
       // Hide the highlighted note before loosing its reference
       if (placedChord.sheetStaveNoteHighlightGroup != null) {
@@ -254,9 +252,7 @@ export class SheetService {
   }
 
   public unhighlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack, animatedStave: boolean): void {
-    // For an animated stave, prevent the (un)highlighting as a work around an undefined context exception
-    // For an fixed stave, allow the (un)highlighting
-    if ((!animatedStave && soundtrack.nowPlaying) && soundtrack.sheetContext != null) {
+    if (soundtrack.nowPlaying && soundtrack.sheetContext != null) {
       const sheetContext: any = soundtrack.sheetContext;
       // Hide the highlighted note before loosing its reference
       if (placedChord.sheetStaveNoteUnhighlightGroup != null) {
