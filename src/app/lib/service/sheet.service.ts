@@ -55,7 +55,7 @@ export class SheetService {
     this.renderSoundtrack(id, animatedStave, screenWidth, soundtrack);
   }
 
-  public vexflowRenderDevice(id: string, screenWidth: number, device: Device): void {
+  public createDeviceSheet(id: string, screenWidth: number, device: Device): void {
     // TODO
   }
 
@@ -74,7 +74,7 @@ export class SheetService {
     if (soundtrack.sheetContext != null) {
       sheetContext = this.resetSVGContext(soundtrack.sheetContext, sheetWidth, sheetHeight);
     } else {
-      sheetContext = this.renderVexflowContext(id, sheetWidth, sheetHeight);
+      sheetContext = this.renderSVGContext(id, sheetWidth, sheetHeight);
     }
     soundtrack.sheetContext = sheetContext;
     const formatter = new Vex.Flow.Formatter();
@@ -393,7 +393,7 @@ export class SheetService {
     }
   }
 
-  private renderVexflowContext(id: string, width: number, height: number): any { // TODO Replace all these any types
+  private renderSVGContext(id: string, width: number, height: number): any { // TODO Replace all these any types
     const domElement = document.getElementById(id);
     if (domElement != null) {
       const renderer: any = new Vex.Flow.Renderer(domElement, Vex.Flow.Renderer.Backends.SVG);
