@@ -234,12 +234,9 @@ export class SheetService {
   //   });
   // }
 
-  public highlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack, animatedStave: boolean): void {
+  public highlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack): void {
     if (soundtrack.sheetContext != null) {
-      // For an animated stave, prevent the (un)highlighting after the play has stopped
-      // as a workaround against an undefined context exception
-      // For an fixed stave, allow the (un)highlighting after the play has stopped
-      if (soundtrack.nowPlaying || !animatedStave) {
+      if (soundtrack.nowPlaying) {
         const sheetContext: any = soundtrack.sheetContext;
         // Hide the highlighted note before loosing its reference
         if (placedChord.sheetStaveNoteHighlightGroup != null) {
@@ -255,12 +252,10 @@ export class SheetService {
     }
   }
 
-  public unhighlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack, animatedStave: boolean): void {
+  public unhighlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack): void {
     if (soundtrack.sheetContext != null) {
-      // For an animated stave, prevent the (un)highlighting after the play has stopped
-      // as a workaround against an undefined context exception
-      // For an fixed stave, allow the (un)highlighting after the play has stopped
-      if (soundtrack.nowPlaying || !animatedStave) {
+      if (soundtrack.nowPlaying) {
+        console.log('unhighlighting');
         const sheetContext: any = soundtrack.sheetContext;
         // Hide the highlighted note before loosing its reference
         if (placedChord.sheetStaveNoteUnhighlightGroup != null) {
