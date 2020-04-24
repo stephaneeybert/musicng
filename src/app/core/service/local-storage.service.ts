@@ -25,12 +25,14 @@ export abstract class LocalStorageService<T> {
 
   protected getAll(prefix: string): Array<T> {
     const items: Array<T> = new Array();
-    for (let i: number = 0; i < localStorage.length; i++) {
-      const key: string | null = localStorage.key(i);
-      if (key && key.includes(prefix)) {
-        const value: T | null = this.get(key);
-        if (value) {
-          items.push(value);
+    if (localStorage) {
+      for (let i: number = 0; i < localStorage.length; i++) {
+        const key: string | null = localStorage.key(i);
+        if (key && key.includes(prefix)) {
+          const value: T | null = this.get(key);
+          if (value) {
+            items.push(value);
+          }
         }
       }
     }
@@ -50,7 +52,7 @@ export abstract class LocalStorageService<T> {
   }
 
   public isEmpty(): boolean {
-    return localStorage.length === 0;
+    return localStorage ? localStorage.length === 0 : true;
   }
 
 }

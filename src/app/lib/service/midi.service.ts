@@ -147,7 +147,7 @@ export class MidiService {
     // The velocity is in a range of 0 to 127, from softest to loudest
     // Since a velocity of 0 is a "note off", the softest possible "note on" velocity is 1
     // The velocity might not be included with a "note off"
-    const velocity = (message.data.length > 2) ? message.data[2] : 0;
+    const velocity = (message.data && message.data.length > 2) ? message.data[2] : 0;
 
     const midiNote = message.data[1];
     const octave = Math.trunc(midiNote / 12);

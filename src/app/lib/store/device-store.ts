@@ -29,7 +29,7 @@ export class DeviceStore extends Store<Array<Device>> {
   }
 
   public getNumberOfDevices(): number {
-    return this.getState().length;
+    return this.getState() ? this.getState().length : 0;
   }
 
   public add(device: Device) {

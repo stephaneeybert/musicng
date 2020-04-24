@@ -45,7 +45,7 @@ export class PlacedChord {
 
   public renderFirstNoteChroma(): string {
     let abc: string = '';
-    if (this.notes.length > 0) {
+    if (this.notes != null && this.notes.length > 0) {
       const sortedNotes: Array<Note> = this.getSortedNotes();
       abc = sortedNotes[0].renderChroma();
     }

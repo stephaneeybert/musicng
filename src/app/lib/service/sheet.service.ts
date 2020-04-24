@@ -235,6 +235,7 @@ export class SheetService {
   // }
 
   public highlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack): void {
+    console.log(soundtrack.nowPlaying);
     if (soundtrack.nowPlaying && soundtrack.sheetContext != null) {
       const sheetContext: any = soundtrack.sheetContext;
       // Hide the highlighted note before loosing its reference
@@ -247,6 +248,7 @@ export class SheetService {
       .draw();
       sheetContext.closeGroup();
       placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
+      console.log('Highlighted');
     }
   }
 
@@ -340,7 +342,7 @@ export class SheetService {
   private getNbStaves(animatedStave: boolean, soundtrack: Soundtrack): number {
     let nbStaves: number = 0;
     if (animatedStave) {
-      nbStaves = soundtrack.tracks.length;
+      nbStaves = soundtrack.tracks ? soundtrack.tracks.length : 0;
     } else {
       if (soundtrack.hasTracks()) {
         for (const track of soundtrack.tracks) {
