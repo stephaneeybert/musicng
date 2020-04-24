@@ -223,16 +223,15 @@ export class SheetService {
     sheetContext.restore();
   }
 
-  // public clearAllSVGGroupds(soundtrack: Soundtrack): void {
-  //   soundtrack.tracks.forEach((track: Track) => {
-  //     track.getSortedMeasures().forEach((measure: Measure) => {
-  //       measure.getSortedChords().forEach((placedChord: PlacedChord) => {
-  //         placedChord.sheetStaveNoteHighlightGroup = null;
-  //         placedChord.sheetStaveNoteUnhighlightGroup = null;
-  //       });
-  //     });
-  //   });
-  // }
+  public unhighlightAllStaveChords(soundtrack: Soundtrack): void {
+    soundtrack.tracks.forEach((track: Track) => {
+      track.getSortedMeasures().forEach((measure: Measure) => {
+        measure.getSortedChords().forEach((placedChord: PlacedChord) => {
+          this.unhighlightStaveNote(placedChord, soundtrack);
+        });
+      });
+    });
+  }
 
   public highlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack): void {
     if (soundtrack.sheetContext != null) {

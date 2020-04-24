@@ -173,7 +173,6 @@ export class SynthService {
 
   public stopSoundtrack(soundtrack: Soundtrack): void {
     this.setPlaying(soundtrack, false);
-    // this.sheetService.clearAllSVGGroupds(soundtrack); // TODO Remove
     this.releaseAllSoundtrackNotes(soundtrack);
     this.keyboardService.unpressAll(soundtrack.keyboard);
     this.clearTransport();
