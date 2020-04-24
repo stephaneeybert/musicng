@@ -256,12 +256,12 @@ export class SynthService {
                     this.sheetService.drawMeasure(measure, soundtrack.sheetContext);
                   }
                 }
-                this.sheetService.highlightStaveNote(placedChord, soundtrack);
+                this.sheetService.highlightStaveNote(placedChord, soundtrack, animatedStave);
                 this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
                 previousDrawnMeasure = measure;
               }, triggerTime);
               Tone.Draw.schedule((actualTime: any) => {
-                this.sheetService.unhighlightStaveNote(placedChord, soundtrack);
+                this.sheetService.unhighlightStaveNote(placedChord, soundtrack, animatedStave);
                 this.keyboardService.unpressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
               }, releaseTime);
             } else {
