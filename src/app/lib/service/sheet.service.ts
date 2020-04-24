@@ -235,35 +235,45 @@ export class SheetService {
   // }
 
   public highlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack, animatedStave: boolean): void {
-    if (soundtrack.nowPlaying && soundtrack.sheetContext != null) {
-      const sheetContext: any = soundtrack.sheetContext;
-      // Hide the highlighted note before loosing its reference
-      if (placedChord.sheetStaveNoteHighlightGroup != null) {
-        placedChord.sheetStaveNoteHighlightGroup.style.opacity = VEXFLOW_SVG_OPACITY_TO_HIDE;
-      }
+    if (soundtrack.sheetContext != null) {
+      // For an animated stave, prevent the (un)highlighting after the play has stopped
+      // as a workaround against an undefined context exception
+      // For an fixed stave, allow the (un)highlighting after the play has stopped
+      if (soundtrack.nowPlaying || !animatedStave) {
+        const sheetContext: any = soundtrack.sheetContext;
+        // Hide the highlighted note before loosing its reference
+        if (placedChord.sheetStaveNoteHighlightGroup != null) {
+          placedChord.sheetStaveNoteHighlightGroup.style.opacity = VEXFLOW_SVG_OPACITY_TO_HIDE;
+        }
 
-      const sheetStaveNoteGroup: any = sheetContext.openGroup();
-      this.styleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR)
-      .draw();
-      sheetContext.closeGroup();
-      placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
-      console.log('Highlighted');
+        const sheetStaveNoteGroup: any = sheetContext.openGroup();
+        this.styleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR)
+        .draw();
+        sheetContext.closeGroup();
+        placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
+        console.log('Highlighted');
+      }
     }
   }
 
   public unhighlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack, animatedStave: boolean): void {
-    if (soundtrack.nowPlaying && soundtrack.sheetContext != null) {
-      const sheetContext: any = soundtrack.sheetContext;
-      // Hide the highlighted note before loosing its reference
-      if (placedChord.sheetStaveNoteUnhighlightGroup != null) {
-        placedChord.sheetStaveNoteUnhighlightGroup.style.opacity = VEXFLOW_SVG_OPACITY_TO_HIDE;
-      }
+    if (soundtrack.sheetContext != null) {
+      // For an animated stave, prevent the (un)highlighting after the play has stopped
+      // as a workaround against an undefined context exception
+      // For an fixed stave, allow the (un)highlighting after the play has stopped
+      if (soundtrack.nowPlaying || !animatedStave) {
+        const sheetContext: any = soundtrack.sheetContext;
+        // Hide the highlighted note before loosing its reference
+        if (placedChord.sheetStaveNoteUnhighlightGroup != null) {
+          placedChord.sheetStaveNoteUnhighlightGroup.style.opacity = VEXFLOW_SVG_OPACITY_TO_HIDE;
+        }
 
-      const sheetStaveNoteGroup: any = sheetContext.openGroup();
-      this.styleStaveNote(placedChord, VEXFLOW_NOTE_COLOR)
-      .draw();
-      sheetContext.closeGroup();
-      placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
+        const sheetStaveNoteGroup: any = sheetContext.openGroup();
+        this.styleStaveNote(placedChord, VEXFLOW_NOTE_COLOR)
+        .draw();
+        sheetContext.closeGroup();
+        placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
+      }
     }
   }
 
