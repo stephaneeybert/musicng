@@ -254,7 +254,6 @@ export class SheetService {
   public unhighlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack): void {
     if (soundtrack.sheetContext != null) {
       if (soundtrack.nowPlaying) {
-        console.log('unhighlighting');
         const sheetContext: any = soundtrack.sheetContext;
         // Hide the highlighted note before loosing its reference
         if (placedChord.sheetStaveNoteUnhighlightGroup != null) {
