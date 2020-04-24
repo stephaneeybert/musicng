@@ -251,7 +251,6 @@ export class SheetService {
         .draw();
         sheetContext.closeGroup();
         placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
-        console.log('Highlighted');
       }
     }
   }
