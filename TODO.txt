@@ -9,34 +9,17 @@
     </mat-form-field>
   </mat-dialog-content>
 
-Questions
-possibilité de renversement de l'accord
-
-Maybe notes could be stored using...
-tonal https://github.com/tonaljs/tonal
-npm install tonal
-
-Have animated staves
-
 Avoir une sortie MIDI
 Export de fichier MIDI
 Live streaming MIDI
 
-Have an observable so that I don't need to reload the appto see the change of type of stavesfrom fixed to animated
-
-Avoir deux portées au lieu d'une
-Afficher sur la première les premières notes de chaque accord de la deuxième
-La deuxième a un son moins fort que la première
+La deuxième portée de la symphonie a un son moins fort que la première
 
 Make sure all constants are typed.
 
 All methods should have a return type, possibly void.
 
-When playing the dummy demo, the tempo changes if it is replayed again
-
 Have an assistant to showcase a tour of the app for newbies
-
-How come my vexflow version is so behind the one of npm ?
 
 Do a slider
 https://material.angular.io/guide/getting-started
@@ -44,11 +27,12 @@ https://material.angular.io/guide/getting-started
 
 How come there is a common ui and utils service ?
 
+Have an installable to home screen app
+
 The statement
 Tone.Transport.bpm.rampTo
 does not accept the tempo of 128
 but the 120 is fine
 Change the measure tempo to be a number of beats
-Ask Norbert: Can the measure tempo be anything other than a number of beats ?
 
-Est-ce que 2 pistes ont le même nombre de mesures et d'accords ?
+Ask Norbert:
