@@ -17,7 +17,7 @@
               <mat-toolbar>
                 {{soundtrack.name}}
                 <span class="fill-remaining-space"></span>
-                <mat-icon *ngIf="(audioRunning$ | async) && !(synthStarted$ | async)" (click)="startTransport()" title="{{ 'synth.sound.switchOn' | translate }}" class="soundtrack-action">volume_up</mat-icon>
+                <mat-icon *ngIf="!(audioRunning$ | async) || !(synthStarted$ | async)" (click)="startTransport()" title="{{ 'synth.sound.switchOn' | translate }}" class="soundtrack-action">volume_up</mat-icon>
                 <mat-icon *ngIf="(synthStarted$ | async) && !isNowPlaying(soundtrack)" (click)="playSoundtrack(soundtrack)" title="{{ 'soundtracks.play' | translate }}" class="soundtrack-action">play_circle_outline</mat-icon>
                 <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="stopSoundtrack(soundtrack)" title="{{ 'soundtracks.stop' | translate }}" class="soundtrack-action">stop</mat-icon>
                 <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="replaySoundtrack(soundtrack)" title="{{ 'soundtracks.replay' | translate }}" class="soundtrack-action">replay</mat-icon>
