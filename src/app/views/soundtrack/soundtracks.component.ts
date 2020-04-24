@@ -25,7 +25,7 @@ export class SoundtracksComponent implements OnInit {
   private soundtracksSubscription?: Subscription;
 
   audioRunning$?: Observable<boolean>;
-  synthStarted$?: Observable<boolean>;
+  audioTransportStarted$?: Observable<boolean>;
 
   dialogRef!: MatDialogRef<SoundtrackDialogComponent>;
   @Output()
@@ -51,7 +51,7 @@ export class SoundtracksComponent implements OnInit {
     this.observeSoundtracks();
 
     this.audioRunning$ = this.synthService.audioIsRunning$();
-    this.synthStarted$ = this.synthService.synthTransportIsStarted$();
+    this.audioTransportStarted$ = this.synthService.audioTransportIsStarted$();
 
     this.soundtrackStore.loadAllFromStorage();
   }

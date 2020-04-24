@@ -121,7 +121,7 @@ export class SynthService {
     console.log('Stopped the transport');
   }
 
-  public synthTransportIsStarted$(): Observable<boolean> {
+  public audioTransportIsStarted$(): Observable<boolean> {
     return interval(1000)
       .pipe(
         map((value: number) => {
