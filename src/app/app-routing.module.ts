@@ -30,6 +30,11 @@ const routes: Routes = [
         path: 'error',
         component: ErrorComponent
       },
+      {
+        path: '',
+        redirectTo: 'soundtracks',
+        pathMatch: 'full'
+      }
     ]
   },
   {
