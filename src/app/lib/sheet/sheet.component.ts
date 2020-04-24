@@ -126,7 +126,7 @@ export class SheetComponent implements OnInit {
 
   private createDeviceSheet(device: Device): void {
     if (device != null) {
-      this.sheetService.vexflowRenderDevice(this.id, this.screenWidth, device);
+      this.sheetService.createDeviceSheet(this.id, this.screenWidth, device);
     }
   }
 
