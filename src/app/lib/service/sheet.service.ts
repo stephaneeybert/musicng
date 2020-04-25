@@ -26,6 +26,8 @@ const VEXFLOW_FONT_WEIGHT_BOLD = 'Bold';
 const VEXFLOW_SVG_OPACITY_TO_SHOW: string = '100';
 const VEXFLOW_SVG_OPACITY_TO_HIDE: string = '0';
 
+const MESSAGE_VEXFLOW_NO_CANVAS_CONTEXT: string = 'The Vexflow SVG Context was missing and a draw operation skipped.';
+
 const VEXFLOW_DOUBLE_BAR = '||';
 const VEXFLOW_REPEAT_BEGIN = '|:';
 const VEXFLOW_REPEAT_END = ':|';
@@ -92,7 +94,11 @@ export class SheetService {
                 stave.addClef(Clef.TREBLE); // TODO Should the clef be determined from the time signature of the measure ?
                 stave.addTimeSignature(this.renderTimeSignature(measure));
                 if (!animatedStave) {
-                  stave.draw();
+                  try {
+                    stave.draw();
+                  } catch (error) {
+                    this.logNoCanvasContextError(error);
+                  }
                 }
                 measure.sheetStave = stave;
 
@@ -186,10 +192,20 @@ export class SheetService {
 
   public drawMeasure(measure: Measure, sheetContext: any): void {
     if (measure.sheetStave && sheetContext != null) {
-      measure.sheetStave.draw();
+      try {
+        measure.sheetStave.draw();
+      } catch (error) {
+        console.log('From drawMeasure stave');
+        this.logNoCanvasContextError(error);
+      }
     }
     if (measure.sheetVoice && sheetContext != null) {
-      measure.sheetVoice.draw(sheetContext);
+      try {
+        measure.sheetVoice.draw(sheetContext);
+      } catch (error) {
+        console.log('From drawMeasure voice');
+        this.logNoCanvasContextError(error);
+      }
     }
   }
 
@@ -244,11 +260,16 @@ export class SheetService {
           placedChord.sheetStaveNoteHighlightGroup.style.opacity = VEXFLOW_SVG_OPACITY_TO_HIDE;
         }
 
-        const sheetStaveNoteGroup: any = sheetContext.openGroup();
-        this.styleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR)
-        .draw();
-        sheetContext.closeGroup();
-        placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
+        try {
+          const sheetStaveNoteGroup: any = sheetContext.openGroup();
+          this.styleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR)
+          .draw();
+          sheetContext.closeGroup();
+          placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
+        } catch (error) {
+          console.log('From highlightStaveNote');
+          this.logNoCanvasContextError(error);
+        }
       }
     }
   }
@@ -262,13 +283,28 @@ export class SheetService {
           placedChord.sheetStaveNoteUnhighlightGroup.style.opacity = VEXFLOW_SVG_OPACITY_TO_HIDE;
         }
 
-        const sheetStaveNoteGroup: any = sheetContext.openGroup();
-        this.styleStaveNote(placedChord, VEXFLOW_NOTE_COLOR)
-        .draw();
-        sheetContext.closeGroup();
-        placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
+        try {
+          const sheetStaveNoteGroup: any = sheetContext.openGroup();
+          this.styleStaveNote(placedChord, VEXFLOW_NOTE_COLOR)
+          .draw();
+          sheetContext.closeGroup();
+          placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
+        } catch (error) {
+          console.log('From unhighlightStaveNote');
+          this.logNoCanvasContextError(error);
+        }
       }
     }
+  }
+
+  private logNoCanvasContextError(error: Error): void {
+    this.logMessageError(MESSAGE_VEXFLOW_NO_CANVAS_CONTEXT, error);
+  }
+
+  private logMessageError(message: string, error: Error): void {
+    console.log(message);
+    console.log(error.message);
+    console.log(error.stack);
   }
 
   private styleStaveNote(placedChord: PlacedChord, color: string): Vex.Flow.StaveNote {
