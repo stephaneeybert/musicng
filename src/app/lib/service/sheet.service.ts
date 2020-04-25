@@ -9,6 +9,8 @@ import { Measure } from '../../model/measure/measure';
 import { Clef } from '../../model/clef';
 import { PlacedChord } from '../../model/note/placed-chord';
 import { Track } from '@app/model/track';
+import { TranslateService } from '@ngx-translate/core';
+import { UtilsService } from '@app/core/service/utils.service';
 
 const SHEET_WIDTH_RATIO = 0.9;
 const VEXFLOW_STAVE_HEIGHT = 120;
@@ -25,8 +27,6 @@ const VEXFLOW_FONT_WEIGHT = '';
 const VEXFLOW_FONT_WEIGHT_BOLD = 'Bold';
 const VEXFLOW_SVG_OPACITY_TO_SHOW: string = '100';
 const VEXFLOW_SVG_OPACITY_TO_HIDE: string = '0';
-
-const MESSAGE_VEXFLOW_NO_CANVAS_CONTEXT: string = 'The Vexflow SVG Context was missing and a draw operation skipped.';
 
 const VEXFLOW_DOUBLE_BAR = '||';
 const VEXFLOW_REPEAT_BEGIN = '|:';
@@ -50,7 +50,9 @@ export enum VexfloWAccidental {
 export class SheetService {
 
   constructor(
-    private notationService: NotationService
+    private notationService: NotationService,
+    private translateService: TranslateService,
+    private utilsService: UtilsService
   ) { }
 
   public createSoundtrackSheet(id: string, animatedStave: boolean, screenWidth: number, soundtrack: Soundtrack): void {
@@ -97,6 +99,7 @@ export class SheetService {
                   try {
                     stave.draw();
                   } catch (error) {
+                    this.showCanvasContextErrorMessage();
                     this.logNoCanvasContextError(error);
                   }
                 }
@@ -196,6 +199,7 @@ export class SheetService {
         measure.sheetStave.draw();
       } catch (error) {
         console.log('From drawMeasure stave');
+        this.showCanvasContextErrorMessage();
         this.logNoCanvasContextError(error);
       }
     }
@@ -204,6 +208,7 @@ export class SheetService {
         measure.sheetVoice.draw(sheetContext);
       } catch (error) {
         console.log('From drawMeasure voice');
+        this.showCanvasContextErrorMessage();
         this.logNoCanvasContextError(error);
       }
     }
@@ -268,6 +273,7 @@ export class SheetService {
           placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
         } catch (error) {
           console.log('From highlightStaveNote');
+          this.showCanvasContextErrorMessage();
           this.logNoCanvasContextError(error);
         }
       }
@@ -291,14 +297,24 @@ export class SheetService {
           placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
         } catch (error) {
           console.log('From unhighlightStaveNote');
+          this.showCanvasContextErrorMessage();
           this.logNoCanvasContextError(error);
         }
       }
     }
   }
 
+  private showCanvasContextErrorMessage(): void {
+    this.utilsService.showSnackBar(this.renderCanvasContextErrorMessage());
+  }
+
+  private renderCanvasContextErrorMessage(): string {
+    return this.translateService.instant('sheet.error.noSheetDrawing')
+    ' ' + this.translateService.instant('message.error.reloadApp');
+  }
+
   private logNoCanvasContextError(error: Error): void {
-    this.logMessageError(MESSAGE_VEXFLOW_NO_CANVAS_CONTEXT, error);
+    this.logMessageError(this.renderCanvasContextErrorMessage(), error);
   }
 
   private logMessageError(message: string, error: Error): void {

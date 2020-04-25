@@ -82,6 +82,11 @@
       "switchOn": "Allumer le son"
     }
   },
+  "sheet": {
+    "error": {
+      "noSheetDrawing": "Le dessin des partitions n'est plus possible."
+    }
+  },
   "user": {
     "form": {
       "title": "Créer ou mettre à jour un utilisateur",
@@ -90,6 +95,11 @@
       "lastname": "Nom",
       "save": "Enregistrer",
       "cancel": "Annuler"
+    }
+  },
+  "message": {
+    "error": {
+      "reloadApp": "Veuillez recharger l'application."
     }
   },
   "toast": {
