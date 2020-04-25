@@ -77,7 +77,6 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                       const note: Note = this.notationService.createNote(noteIndex, noteJson.pitch.chroma.value, noteJson.pitch.octave.value);
                       note.pitch.accidental = noteJson.pitch.accidental;
                       note.dotted = noteJson.dotted;
-                      note.velocity = noteJson.velocity;
                       notes.push(note);
                       noteIndex++;
                     }
@@ -88,7 +87,8 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                   }
                   const duration: number = parseInt(placedChordJson.duration.subdivision.left, 10) + parseInt(placedChordJson.duration.subdivision.right, 10);
                   const tempoUnit: TempoUnit = placedChordJson.duration.unit as TempoUnit;
-                  const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, duration, tempoUnit, notes);
+                  const velocity: number = parseFloat(placedChordJson.velocity);
+                  const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, duration, tempoUnit, velocity, notes);
                   placedChord.dottedAll = placedChordJson.dottedAll;
                   if (!measure.placedChords) {
                     this.deleteSoundtrack(soundtrack.id);

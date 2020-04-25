@@ -18,6 +18,8 @@ enum RANDOM_METHOD {
 const DEFAULT_TEMPO_BPM_VALUE: number = 128;
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
 const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
+const DEFAULT_VELOCITY_SOFTER: number = 0.3;
+const DEFAULT_VELOCITY_LOUDER: number = 1;
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +40,7 @@ export class GeneratorService {
   CHORD_DURATION = 4; // TODO Offer the duration in settings or have a random one
   NOTE_OCTAVE: number = 5; // TODO Offer the octave in settings
 
-  private createPlacedChords(generatedChords: Array<Array<string>>): Array<PlacedChord> {
+  private createPlacedChords(velocity: number, generatedChords: Array<Array<string>>): Array<PlacedChord> {
     let placedChordIndex: number = 0;
     const createdPlacedChords: Array<PlacedChord> = generatedChords
       .map((chord: Array<string>) => {
@@ -48,7 +50,7 @@ export class GeneratorService {
           noteIndex++;
           return note;
         })
-        const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, this.CHORD_DURATION, TempoUnit.DUPLE, notes); // Maybe have a default chord unit ?
+        const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, this.CHORD_DURATION, TempoUnit.DUPLE, velocity, notes); // TODO Maybe have a default chord unit ?
         placedChordIndex++;
         return placedChord;
       });
@@ -84,8 +86,8 @@ export class GeneratorService {
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.assignNewName());
     const symphonyChords: Array<Array<string>> = this.generateChords();
     const melodyChords: Array<Array<string>> = this.generateMasterNoteChords(symphonyChords);
-    const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(melodyChords)));
-    const symphonyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(symphonyChords)));
+    const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_LOUDER, melodyChords)));
+    const symphonyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, symphonyChords)));
     symphonyTrack.displayChordNames = true;
     this.soundtrackService.storeSoundtrack(soundtrack);
     return soundtrack;

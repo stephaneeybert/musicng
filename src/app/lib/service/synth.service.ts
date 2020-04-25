@@ -21,7 +21,6 @@ const TRANSPORT_STATE_STARTED = 'started';
 const AUDIO_CONTEXT_RUNNING: string = 'running';
 const PLAY_START_DELAY = 0;
 const CHORD_WIDTH: number = 3;
-const VELOCITY_TONEJS: number = 0.5;
 const WHITEWASH_DELAY: number = 3000;
 const TEMPO_RAMP_TO_IN_SECONDS: number = 2;
 
@@ -246,7 +245,7 @@ export class SynthService {
 
             if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
               const textNotes: Array<string> = this.restToSynthRest(placedChord.renderAbc());
-              soundtrack.synth.triggerAttack(textNotes, triggerTime, VELOCITY_TONEJS);
+              soundtrack.synth.triggerAttack(textNotes, triggerTime, placedChord.velocity);
               soundtrack.synth.triggerRelease(textNotes, releaseTime);
               Tone.Draw.schedule((actualTime: any) => {
                 if (placedChord.isFirst()) {
@@ -311,9 +310,9 @@ export class SynthService {
     }
   }
 
-  public noteOn(midiNote: number, velocity: number, synth: any): void {
+  public noteOn(midiNote: number, midiVelocity: number, synth: any): void {
     const textNote: string = this.midiToTextNote(midiNote);
-    synth.triggerAttack(textNote, Tone.Context.currentTime, this.notationService.velocityMidiToTonejs(velocity));
+    synth.triggerAttack(textNote, Tone.Context.currentTime, this.notationService.velocityMidiToTonejs(midiVelocity));
   }
 
   public noteOff(midiNote: number, synth: any): void {

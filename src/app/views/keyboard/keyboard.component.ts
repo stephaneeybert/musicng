@@ -11,7 +11,7 @@ import { delay } from 'rxjs/operators';
 
 const NAME_PREFIX_SOUNDTRACK: string = 'keyboard-soundtrack-';
 const NAME_PREFIX_DEVICE: string = 'keyboard-device-';
-const LIVE_KEYBOARD_VELOCITY: number = 127;
+const LIVE_KEYBOARD_MIDI_VELOCITY: number = 127;
 
 @Component({
   selector: 'app-midi-keyboard',
@@ -122,7 +122,7 @@ export class KeyboardComponent implements AfterViewInit {
   private playSoundFromKeyboard(keyboard: any, synth: any) {
     keyboard.on('change', (note: any) => {
       if (note.state) {
-        this.synthService.noteOn(note.note, LIVE_KEYBOARD_VELOCITY, synth);
+        this.synthService.noteOn(note.note, LIVE_KEYBOARD_MIDI_VELOCITY, synth);
       } else {
         this.synthService.noteOff(note.note, synth);
       }

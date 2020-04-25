@@ -6,7 +6,6 @@ export class Note {
   // TODO note.humanize = "32n"; // "Humanization" let's you adjust how rigid the callback timing is. If humanize is set to true, the passed-in time parameter will drift back and forth slightly to make the part feel a little more "human". You can also set humanize to a Time value, which will make it drift by that amount.
   index: number;
   pitch: Pitch;
-  velocity?: number; // TODO
   dotted: boolean;
 
   constructor(index: number, pitch: Pitch) {

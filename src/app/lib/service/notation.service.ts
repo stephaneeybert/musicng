@@ -19,6 +19,7 @@ const NOTE_REST: string = 'rest';
 const NOTE_END_OF_TRACK: string = 'end';
 const NOTE_END_OF_TRACK_OCTAVE: number = 0;
 const NOTE_END_OF_TRACK_DURATION: number = 8;
+const NOTE_END_OF_TRACK_VELOCITY: number = 0;
 const CHROMA_OCTAVE_PATTERN: RegExp = /[a-z#]+|[^a-z#]+/gi;
 
 const DEFAULT_TEMPO_BPM_VALUE: number = 128;
@@ -39,11 +40,11 @@ export class NotationService {
   constructor(
   ) { }
 
-  public parseMeasures(textMeasures: Array<string>, tempo: number, timeSignatureNumerator: number, timeSignatureDenominator: number): Array<Measure> {
+  public parseMeasures(textMeasures: Array<string>, tempo: number, timeSignatureNumerator: number, timeSignatureDenominator: number, velocity: number): Array<Measure> {
     const measures: Array<Measure> = new Array<Measure>();
     let measureIndex: number = 0;
     for (const textMeasure of textMeasures) {
-      const placedChords: Array<PlacedChord> = this.parseTextMeasure(textMeasure);
+      const placedChords: Array<PlacedChord> = this.parseTextMeasure(textMeasure, velocity);
       const measure: Measure = this.createMeasure(measureIndex, tempo, timeSignatureNumerator, timeSignatureDenominator);
       measure.placedChords = placedChords;
       measureIndex++;
@@ -58,11 +59,11 @@ export class NotationService {
     return measure;
   }
 
-  private parseTextMeasure(textMeasure: string): Array<PlacedChord> {
+  private parseTextMeasure(textMeasure: string, velocity: number): Array<PlacedChord> {
     let index: number = 0;
     return textMeasure.split(CHORD_SEPARATOR)
       .map((textChord: string) => {
-        return this.parseTextChord(index, textChord);
+        return this.parseTextChord(index, textChord, velocity);
         index++;
       });
   }
@@ -95,12 +96,12 @@ export class NotationService {
       });
   }
 
-  private parseTextChord(index: number, textChord: string): PlacedChord {
+  private parseTextChord(index: number, textChord: string, velocity: number): PlacedChord {
     const chordAndDuration: Array<string> = textChord.split(CHORD_DURATION_SEPARATOR);
     const chordNotes: string = chordAndDuration[0];
     const chordDuration: number = parseInt(chordAndDuration[1], 10);
     const notes: Array<Note> = this.parseTextNotes(chordNotes);
-    const placedChord: PlacedChord = this.createPlacedChord(index, chordDuration, TempoUnit.DUPLE, notes);
+    const placedChord: PlacedChord = this.createPlacedChord(index, chordDuration, TempoUnit.DUPLE, velocity, notes);
     return placedChord;
   }
 
@@ -127,9 +128,9 @@ export class NotationService {
     }
   }
 
-  public createPlacedChord(index: number, chordDuration: number, tempoUnit: TempoUnit, notes: Array<Note>): PlacedChord {
+  public createPlacedChord(index: number, chordDuration: number, tempoUnit: TempoUnit, velocity: number, notes: Array<Note>): PlacedChord {
     const duration: Duration = this.createDuration(chordDuration, tempoUnit);
-    const placedChord: PlacedChord = this.createEmptyChord(index, duration);
+    const placedChord: PlacedChord = this.createEmptyChord(index, duration, velocity);
     this.addNotes(placedChord, notes);
     return placedChord;
   }
@@ -219,7 +220,7 @@ export class NotationService {
 
   public createLastOfTrackPlacedChord(index: number): PlacedChord {
     const endNote: Note = this.createNote(index, NOTE_END_OF_TRACK, NOTE_END_OF_TRACK_OCTAVE);
-    return this.createPlacedChord(index, NOTE_END_OF_TRACK_DURATION, TempoUnit.DUPLE, [endNote]);
+    return this.createPlacedChord(index, NOTE_END_OF_TRACK_DURATION, TempoUnit.DUPLE, NOTE_END_OF_TRACK_VELOCITY, [endNote]);
   }
 
   public buildEndOfTrackNote(): string {
@@ -238,10 +239,9 @@ export class NotationService {
     return duration && duration.unit === TempoUnit.BPM;
   }
 
-  public buildNoteWithTicks(abc: string, octave: number, velocity: number): Note {
+  public buildNoteWithTicks(abc: string, octave: number): Note {
     const index: number = 0;
     const note: Note = this.createNote(index, abc, octave);
-    note.velocity = velocity;
     return note;
   }
 
@@ -299,8 +299,8 @@ export class NotationService {
     return new Pitch(chroma, octave);
   }
 
-  public createEmptyChord(index: number, duration: Duration): PlacedChord {
-    return new PlacedChord(index, duration);
+  public createEmptyChord(index: number, duration: Duration, velocity: number): PlacedChord {
+    return new PlacedChord(index, duration, velocity);
   }
 
   public createTimeSignature(numerator: number, denominator: number): TimeSignature {

@@ -12,7 +12,7 @@ export class Track {
   instrument?: Instrument; // TODO Used ?
   controls?: Array<Control>; // TODO Used ?
 
-  constructor(index: number) {
+  constructor(index: number) { // TODO Do like this for the other indexes
     this.index = index;
     this.measures = new Array<Measure>();
     this.displayChordNames = false;
