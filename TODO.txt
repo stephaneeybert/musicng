@@ -36,4 +36,6 @@ Change the measure tempo to be a number of beats
 Could I catch this vexflow no svg context exception ?
 RuntimeError {code: "NoCanvasContext", message: "Can't draw without a canvas context."}
 
+Should the clef be determined from the time signature of the measure ?
+
 Ask Norbert:
