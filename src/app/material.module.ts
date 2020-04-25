@@ -18,7 +18,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { LocalizedPaginator } from './core/service/localized-paginator';
+
 @NgModule({
   exports: [
     MatProgressSpinnerModule,
@@ -38,7 +40,8 @@ import { LocalizedPaginator } from './core/service/localized-paginator';
     MatFormFieldModule,
     MatInputModule,
     MatSlideToggleModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatBottomSheetModule
   ],
   providers: [
     {
