@@ -218,8 +218,7 @@ export class MidiService {
             const pitchOctave: Array<string> = this.notationService.noteToChromaOctave(midiNote.name);
             const note: Note = this.notationService.buildNoteWithTicks(
               pitchOctave[0],
-              parseInt(pitchOctave[1], 10),
-              midiNote.velocity);
+              parseInt(pitchOctave[1], 10));
             const duration: Duration = midiNote.time; // TODO midiNote.durationTicks How to retrieve the note time and store it in the chord ?
             const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, midiNote.velocity);
             placedChord.addNote(note);
