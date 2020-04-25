@@ -13,8 +13,6 @@ Avoir une sortie MIDI
 Export de fichier MIDI
 Live streaming MIDI
 
-La deuxième portée de la symphonie a un son moins fort que la première
-
 Make sure all constants are typed.
 
 All methods should have a return type, possibly void.
@@ -37,7 +35,5 @@ Change the measure tempo to be a number of beats
 
 Could I catch this vexflow no svg context exception ?
 RuntimeError {code: "NoCanvasContext", message: "Can't draw without a canvas context."}
-
-In all add... methods return the added object, like for the addTrack method
 
 Ask Norbert:
