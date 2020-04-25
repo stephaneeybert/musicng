@@ -8,6 +8,7 @@ import { CommonService } from './common.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Soundtrack } from '@app/model/soundtrack';
 import { TempoUnit } from '@app/model/tempo-unit';
+import { Track } from '@app/model/track';
 
 enum RANDOM_METHOD {
   BASE = 0,
@@ -83,8 +84,9 @@ export class GeneratorService {
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.assignNewName());
     const symphonyChords: Array<Array<string>> = this.generateChords();
     const melodyChords: Array<Array<string>> = this.generateMasterNoteChords(symphonyChords);
-    soundtrack.addTrack(this.createMeasures(this.createPlacedChords(melodyChords)));
-    soundtrack.addTrack(this.createMeasures(this.createPlacedChords(symphonyChords)));
+    const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(melodyChords)));
+    const symphonyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(symphonyChords)));
+    symphonyTrack.displayChordNames = true;
     this.soundtrackService.storeSoundtrack(soundtrack);
     return soundtrack;
   }

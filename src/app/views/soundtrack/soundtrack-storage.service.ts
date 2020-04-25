@@ -51,6 +51,7 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
       soundtrackJson.tracks.forEach((trackJson: any) => {
         const track: Track = new Track(trackIndex);
         track.name = trackJson.name;
+        track.displayChordNames = trackJson.displayChordNames;
         track.channel = trackJson.channel;
         track.measures = new Array();
         if (trackJson.measures && trackJson.measures.length > 0) {

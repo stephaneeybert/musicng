@@ -7,13 +7,15 @@ export class Track {
   index: number;
   measures: Array<Measure>;
   name?: string;
-  channel?: number;
-  instrument?: Instrument;
-  controls?: Array<Control>;
+  displayChordNames: boolean;
+  channel?: number; // TODO Used ?
+  instrument?: Instrument; // TODO Used ?
+  controls?: Array<Control>; // TODO Used ?
 
   constructor(index: number) {
     this.index = index;
     this.measures = new Array<Measure>();
+    this.displayChordNames = false;
   }
 
   public isFirst(): boolean {

@@ -23,10 +23,11 @@ export class Soundtrack {
     this.nowPlaying = false;
   }
 
-  public addTrack(measures: Array<Measure>) {
+  public addTrack(measures: Array<Measure>): Track {
     const track: Track = new Track(this.tracks.length);
     track.measures = measures;
     this.tracks.push(track);
+    return track;
   }
 
   public hasTracks(): boolean {

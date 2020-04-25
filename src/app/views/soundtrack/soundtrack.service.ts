@@ -3,6 +3,7 @@ import { Measure } from '../../model/measure/measure';
 import { SoundtrackStore } from '../../lib/store/soundtrack-store';
 import { Soundtrack } from '../../model/soundtrack';
 import { CommonService } from '../../lib/service/common.service';
+import { Track } from '@app/model/track';
 
 const NB_SOUNDTRACKS_MAX: number = 10;
 
@@ -26,13 +27,6 @@ export class SoundtrackService {
     } else {
       throw new Error('The soundtrack has no track. Add a track before storing the soundtrack.');
     }
-  }
-
-  public createSoundtrackFromMeasures(name: string, measures: Array<Measure>): Soundtrack {
-    const soundtrack: Soundtrack = this.createSoundtrack(name);
-    soundtrack.addTrack(measures);
-    this.storeSoundtrack(soundtrack);
-    return soundtrack;
   }
 
   public maximumNotYetReached(): boolean {

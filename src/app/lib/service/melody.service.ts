@@ -6,6 +6,7 @@ import { NotationService } from './notation.service';
 import { SoundtrackService } from '../../views/soundtrack/soundtrack.service';
 import { Soundtrack } from '@app/model/soundtrack';
 import { CommonService } from './common.service';
+import { Track } from '@app/model/track';
 
 const DEFAULT_TEMPO_BPM_VALUE: number = 128;
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 2;
@@ -46,7 +47,10 @@ export class MelodyService {
 
     const soundtrackName = 'Demo soundtrack';
     const measures: Array<Measure> = this.notationService.parseMeasures(textMeasures, DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
-    const soundtrack: Soundtrack = this.soundtrackService.createSoundtrackFromMeasures(soundtrackName, measures);
+    const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(soundtrackName);
+    const melodyTrack: Track = soundtrack.addTrack(measures);
+    melodyTrack.displayChordNames = true;
+    this.soundtrackService.storeSoundtrack(soundtrack);
     return soundtrack;
   }
 
