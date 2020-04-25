@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './unsecured.sidenav.component.html'
 })
 export class UnsecuredSidenavComponent implements OnInit {
+
   constructor(
     private translateService: TranslateService
   ) { }
