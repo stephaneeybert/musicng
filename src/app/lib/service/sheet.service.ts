@@ -168,6 +168,7 @@ export class SheetService {
 
   public clearSVGContext(soundtrack: Soundtrack): void {
     if (soundtrack.sheetContext != null) {
+      this.unhighlightAllStaveChords(soundtrack);
       soundtrack.sheetContext.clear();
       soundtrack.sheetContext = undefined;
     }
