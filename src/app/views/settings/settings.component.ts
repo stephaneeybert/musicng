@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output } from '@ang
 import { Observable, Subscription } from 'rxjs';
 import { Settings } from '../../model/settings';
 import { SettingsStore } from '../../lib/store/settings-store';
-import { UtilsService } from '@app/core/service/utils.service';
+import { UIService } from '@app/core/service/ui.service';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingsDialogComponent } from './settings-dialog.component';
@@ -28,7 +28,7 @@ export class SettingsComponent implements OnInit {
   constructor(
     private changeDetector: ChangeDetectorRef,
     private settingsStore: SettingsStore,
-    private utilsService: UtilsService,
+    private uiService: UIService,
     private translateService: TranslateService,
     private matDialog: MatDialog
   ) { }
@@ -74,7 +74,7 @@ export class SettingsComponent implements OnInit {
             this.settingsStore.setAndStoreSettings(existingSettings);
 
             const message: string = this.translateService.instant('settings.message.saved');
-            this.utilsService.showSnackBar(message);
+            this.uiService.showSnackBar(message);
           }
         }
       });

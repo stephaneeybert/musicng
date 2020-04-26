@@ -10,7 +10,7 @@ import { Clef } from '../../model/clef';
 import { PlacedChord } from '../../model/note/placed-chord';
 import { Track } from '@app/model/track';
 import { TranslateService } from '@ngx-translate/core';
-import { UtilsService } from '@app/core/service/utils.service';
+import { UIService } from '@app/core/service/ui.service';
 
 const SHEET_WIDTH_RATIO = 0.9;
 const VEXFLOW_STAVE_HEIGHT = 120;
@@ -52,7 +52,7 @@ export class SheetService {
   constructor(
     private notationService: NotationService,
     private translateService: TranslateService,
-    private utilsService: UtilsService
+    private uiService: UIService
   ) { }
 
   public createSoundtrackSheet(id: string, animatedStave: boolean, screenWidth: number, soundtrack: Soundtrack): void {
@@ -300,7 +300,7 @@ export class SheetService {
   }
 
   private showCanvasContextErrorMessage(): void {
-    this.utilsService.showSnackBar(this.renderCanvasContextErrorMessage());
+    this.uiService.showSnackBar(this.renderCanvasContextErrorMessage());
   }
 
   private renderCanvasContextErrorMessage(): string {

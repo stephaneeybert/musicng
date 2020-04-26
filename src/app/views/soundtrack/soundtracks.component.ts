@@ -6,7 +6,7 @@ import { GeneratorService } from '../../lib/service/generator.service';
 import { SynthService } from '../../lib/service/synth.service';
 import { MelodyService } from '../../lib/service/melody.service';
 import { SoundtrackService } from './soundtrack.service';
-import { UtilsService } from '@app/core/service/utils.service';
+import { UIService } from '@app/core/service/ui.service';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { SoundtrackDialogComponent } from './soundtrack-dialog.component';
 import { SoundtrackEdition } from './soundtrack-edition';
@@ -41,7 +41,7 @@ export class SoundtracksComponent implements OnInit {
     private melodyService: MelodyService,
     private synthService: SynthService,
     private soundtrackService: SoundtrackService,
-    private utilsService: UtilsService,
+    private uiService: UIService,
     private translateService: TranslateService,
     private matDialog: MatDialog
   ) { }
@@ -73,10 +73,10 @@ export class SoundtracksComponent implements OnInit {
       // const soundtrack2: Soundtrack = this.melodyService.addDummyMelody();
       const soundtrack: Soundtrack = this.generatorService.generateSoundtrack();
       const message: string = this.translateService.instant('soundtracks.message.added', { name: soundtrack.name });
-      this.utilsService.showSnackBar(message);
+      this.uiService.showSnackBar(message);
     } else {
       const message: string = this.translateService.instant('soundtracks.message.maxNbReached');
-      this.utilsService.showSnackBar(message);
+      this.uiService.showSnackBar(message);
     }
   }
 
@@ -109,10 +109,10 @@ export class SoundtracksComponent implements OnInit {
     this.stopSoundtrack(soundtrack);
     if (this.soundtrackStore.delete(soundtrack)) {
       const message: string = this.translateService.instant('soundtracks.message.deleted', { name: soundtrack.name });
-      this.utilsService.showSnackBar(message);
+      this.uiService.showSnackBar(message);
     } else {
       const message: string = this.translateService.instant('soundtracks.message.notFound', { name: soundtrack.name });
-      this.utilsService.showSnackBar(message);
+      this.uiService.showSnackBar(message);
     }
   }
 
@@ -139,7 +139,7 @@ export class SoundtracksComponent implements OnInit {
 
             this.soundtrackEditedEvent.emit(existingSoundtrack);
             const message: string = this.translateService.instant('soundtracks.message.updated', { name: existingSoundtrack.name });
-            this.utilsService.showSnackBar(message);
+            this.uiService.showSnackBar(message);
           }
         }
       });

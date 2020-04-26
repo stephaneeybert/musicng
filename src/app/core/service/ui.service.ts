@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 const APP_COLOR = '#343a40';
 const APP_IMAGE = 'assets/icons/icon-72x72.png';
@@ -11,7 +12,11 @@ const APP_DESCRIPTION = 'Le jeu de pierre papier ciseaux';
 })
 export class UIService {
 
-  constructor(private meta: Meta, private title: Title) { }
+  constructor(
+    private meta: Meta,
+    private title: Title,
+    private matSnackBar: MatSnackBar
+    ) { }
 
   public setMetaData(config: any): void {
     const description = config.description || APP_DESCRIPTION;
@@ -35,6 +40,12 @@ export class UIService {
       { name: 'og:image', content: image },
     ];
     tags.forEach(tag => this.meta.updateTag(tag));
+  }
+
+  public showSnackBar(message: string, action?: string): void {
+    this.matSnackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
 }

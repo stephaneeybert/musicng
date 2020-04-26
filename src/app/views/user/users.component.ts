@@ -10,7 +10,7 @@ import { User } from './user';
 import { UsersApi } from './users-api';
 import { UserService } from '@app/views/user/user.service';
 import { PaginationService } from '@app/core/service/pagination.service';
-import { UtilsService } from '@app/core/service/utils.service';
+import { UIService } from '@app/core/service/ui.service';
 import { ToastService } from '@app/core/toast/toast.service';
 import { HateoasPageable } from './hateoas-pageable';
 
@@ -45,7 +45,7 @@ export class UsersComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private paginationService: PaginationService,
-    private utilsService: UtilsService,
+    private uiService: UIService,
     private toastService: ToastService
   ) {
     this.dataSource = new MatTableDataSource();
@@ -116,14 +116,14 @@ export class UsersComponent implements OnInit {
     this.userService.delete(user).subscribe((users: User) => {
       this.goToFirstPage();
       this.refreshListForUser(user);
-      this.utilsService.showSnackBar('The user ' + user.firstname + ' ' + user.lastname + ' has been deleted.');
+      this.uiService.showSnackBar('The user ' + user.firstname + ' ' + user.lastname + ' has been deleted.');
     });
   }
 
   displayConfirmed(user: User) {
     const message = 'Toggled the mail confirmed status for ' + user.firstname + ' ' + user.lastname; // TODO Have a language resource
     this.showToast(message);
-    this.utilsService.showSnackBar(message);
+    this.uiService.showSnackBar(message);
   }
 
   view(user: User) {
