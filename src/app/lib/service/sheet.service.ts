@@ -316,7 +316,7 @@ export class SheetService {
   }
 
   private styleStaveNote(placedChord: PlacedChord, color: string): Vex.Flow.StaveNote {
-    if (placedChord.staveNote) {
+    if (placedChord.staveNote != null) {
       placedChord.staveNote.setStyle({
         fillStyle: color,
         strokeStyle: color
