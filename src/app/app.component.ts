@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { TranslateService } from '@ngx-translate/core';
 
-import { UiService } from '@app/core/service/ui.service';
+import { UIService } from '@app/core/service/ui.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -17,7 +17,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private swUpdate: SwUpdate,
     private translateService: TranslateService,
-    private uiService: UiService
+    private uiService: UIService
   ) {}
 
   public ngOnInit() {

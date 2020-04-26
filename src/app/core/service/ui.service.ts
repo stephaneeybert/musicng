@@ -9,7 +9,7 @@ const APP_DESCRIPTION = 'Le jeu de pierre papier ciseaux';
 @Injectable({
   providedIn: 'root'
 })
-export class UiService {
+export class UIService {
 
   constructor(private meta: Meta, private title: Title) { }
 
