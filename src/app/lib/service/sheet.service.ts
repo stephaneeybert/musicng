@@ -161,11 +161,6 @@ export class SheetService {
     }
   }
 
-  private resetSVGContext(soundtrack: Soundtrack, width: number, height: number) {
-    this.clearSVGContext(soundtrack);
-    this.resizeSVGContext(soundtrack, width, height);
-  }
-
   public clearSVGContext(soundtrack: Soundtrack): void {
     if (soundtrack.sheetContext != null) {
       this.unhighlightAllStaveChords(soundtrack);
