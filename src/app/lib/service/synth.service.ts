@@ -179,7 +179,7 @@ export class SynthService {
     const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
     if (animatedStave) {
       timer(WHITEWASH_DELAY).subscribe((time: number) => {
-        this.sheetService.clearSVGContext(soundtrack.sheetContext);
+        this.sheetService.clearSVGContext(soundtrack);
         this.sheetService.drawFirstMeasure(soundtrack);
       });
     }

@@ -73,17 +73,14 @@ export class SheetService {
     sheetWidth = displayWidth;
     sheetHeight = this.getNbStaves(animatedStave, soundtrack) * VEXFLOW_STAVE_HEIGHT;
 
-    // The sheet may be redrawn
-    let sheetContext: any;
     if (soundtrack.sheetContext != null) {
-      sheetContext = this.resetSVGContext(soundtrack.sheetContext, sheetWidth, sheetHeight);
-    } else {
-      sheetContext = this.renderSVGContext(id, sheetWidth, sheetHeight);
+      this.clearSVGContext(soundtrack);
     }
-    soundtrack.sheetContext = sheetContext;
+    soundtrack.sheetContext = this.renderSVGContext(id, sheetWidth, sheetHeight);
+    const sheetContext: any = soundtrack.sheetContext;
     const formatter = new Vex.Flow.Formatter();
     const voices: Array<Vex.Flow.Voice> = new Array<Vex.Flow.Voice>();
-    const nbTracks: number = soundtrack.getNgTracks();
+    const nbTracks: number = soundtrack.getNbTracks();
     if (soundtrack.hasTracks()) {
       for (const track of soundtrack.tracks) {
         if (track.hasMeasures()) {
@@ -164,18 +161,22 @@ export class SheetService {
     }
   }
 
-  private resetSVGContext(sheetContext: any, width: number, height: number): any {
-    this.clearSVGContext(sheetContext);
-    this.resizeSVGContext(sheetContext, width, height);
-    return sheetContext;
+  private resetSVGContext(soundtrack: Soundtrack, width: number, height: number) {
+    this.clearSVGContext(soundtrack);
+    this.resizeSVGContext(soundtrack, width, height);
   }
 
-  public clearSVGContext(sheetContext: any): void {
-    sheetContext.clear();
+  public clearSVGContext(soundtrack: Soundtrack): void {
+    if (soundtrack.sheetContext != null) {
+      soundtrack.sheetContext.clear();
+      soundtrack.sheetContext = undefined;
+    }
   }
 
-  private resizeSVGContext(sheetContext: any, width: number, height: number): void {
-    sheetContext.resize(width, height);
+  private resizeSVGContext(soundtrack: Soundtrack, width: number, height: number): void {
+    if (soundtrack.sheetContext != null) {
+      soundtrack.sheetContext.resize(width, height);
+    }
   }
 
   public drawFirstMeasure(soundtrack: Soundtrack): void {
@@ -229,6 +230,10 @@ export class SheetService {
 
   public whitewashStave(sheetContext: any, nbTracks: number, trackIndex: number, measureIndex: number): void {
     this.whitewash(sheetContext, this.getStaveX(true, trackIndex, measureIndex), this.getStaveY(true, nbTracks, trackIndex, measureIndex), sheetContext.width, VEXFLOW_STAVE_HEIGHT);
+  }
+
+  public whitewashAll(sheetContext: any): void {
+    this.whitewash(sheetContext, 0, 0, sheetContext.width, sheetContext.height);
   }
 
   private whitewash(sheetContext: any, x: number, y: number, width: number, height: number): void {
