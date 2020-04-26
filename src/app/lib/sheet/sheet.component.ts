@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectorRef, HostListener, OnInit } from '@angular/core';
+import { Component, Input, ChangeDetectorRef, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { Device } from '@app/model/device';
 import { SheetService } from '@app/lib/service/sheet.service';
 import { Soundtrack } from '@app/model/soundtrack';
@@ -18,11 +18,13 @@ const NAME_PREFIX_DEVICE = 'sheet-device-';
 })
 export class SheetComponent implements OnInit, OnDestroy {
 
+  inputSoundtrack?: Soundtrack;
   private soundtrack$: Subject<Soundtrack> = new ReplaySubject<Soundtrack>();
   // KNOW A setter with the very same name as the variable can be used in place of the variable
   @Input()
   set soundtrack(soundtrack: Soundtrack) {
     this.soundtrack$.next(soundtrack);
+    this.inputSoundtrack = soundtrack;
   };
 
   private device$: Subject<Device> = new ReplaySubject<Device>();
@@ -80,6 +82,9 @@ export class SheetComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.inputSoundtrack != null) {
+      this.sheetService.clearSVGContext(this.inputSoundtrack);
+    }
     if (this.soundtrackSubscription != null) {
       this.soundtrackSubscription.unsubscribe();
     }
