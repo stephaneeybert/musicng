@@ -16,7 +16,7 @@ const NAME_PREFIX_DEVICE = 'sheet-device-';
   templateUrl: './sheet.component.html',
   styleUrls: ['./sheet.component.css']
 })
-export class SheetComponent implements OnInit {
+export class SheetComponent implements OnInit, OnDestroy {
 
   private soundtrack$: Subject<Soundtrack> = new ReplaySubject<Soundtrack>();
   // KNOW A setter with the very same name as the variable can be used in place of the variable
