@@ -37,7 +37,7 @@ export class Soundtrack {
     return false;
   }
 
-  public getNgTracks(): number {
+  public getNbTracks(): number {
     return this.hasTracks() ? this.tracks.length : 0;
   }
 

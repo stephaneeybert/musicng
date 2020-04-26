@@ -250,7 +250,7 @@ export class SynthService {
               Tone.Draw.schedule((actualTime: any) => {
                 if (placedChord.isFirst()) {
                   if (animatedStave) {
-                    this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNgTracks(), track.index, measure.index);
+                    this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, measure.index);
                     this.sheetService.drawMeasure(measure, soundtrack.sheetContext);
                   }
                 }
@@ -265,7 +265,7 @@ export class SynthService {
             } else {
               Tone.Draw.schedule((actualTime: any) => {
                 if (animatedStave) {
-                  this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNgTracks(), track.index, measure.index);
+                  this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, measure.index);
                   this.sheetService.drawMeasure(firstMeasure, soundtrack.sheetContext);
                 }
                 this.keyboardService.unpressAll(soundtrack.keyboard);
