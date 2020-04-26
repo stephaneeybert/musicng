@@ -228,7 +228,7 @@ export class SheetService {
     this.whitewash(sheetContext, this.getStaveX(true, trackIndex, measureIndex), this.getStaveY(true, nbTracks, trackIndex, measureIndex), sheetContext.width, VEXFLOW_STAVE_HEIGHT);
   }
 
-  public whitewashAll(sheetContext: any): void {
+  public whitewashSheetContext(sheetContext: any): void {
     this.whitewash(sheetContext, 0, 0, sheetContext.width, sheetContext.height);
   }
 

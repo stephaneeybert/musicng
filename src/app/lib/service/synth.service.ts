@@ -155,7 +155,7 @@ export class SynthService {
   public playSoundtrack(soundtrack: Soundtrack) {
     this.commonService.requestWakeLock();
     if (soundtrack.hasNotes()) {
-      this.stopAllSoundtracks();
+      this.stopOtherSoundtracks(soundtrack);
       soundtrack.tracks.forEach((track: Track) => {
         this.play(track, soundtrack);
       });
@@ -164,8 +164,10 @@ export class SynthService {
     }
   }
 
-  public stopAllSoundtracks(): void {
-    this.soundtrackService.getSoundtracks().forEach((soundtrack: Soundtrack) => {
+  private stopOtherSoundtracks(playSoundtrack: Soundtrack): void {
+    this.soundtrackService.getSoundtracks()
+    .filter((soundtrack: Soundtrack) => soundtrack.id != playSoundtrack.id)
+    .forEach((soundtrack: Soundtrack) => {
       this.stopSoundtrack(soundtrack);
     });
   }
@@ -179,7 +181,7 @@ export class SynthService {
     const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
     if (animatedStave) {
       timer(WHITEWASH_DELAY).subscribe((time: number) => {
-        this.sheetService.clearSVGContext(soundtrack);
+        this.sheetService.whitewashSheetContext(soundtrack.sheetContext);
         this.sheetService.drawFirstMeasure(soundtrack);
       });
     }

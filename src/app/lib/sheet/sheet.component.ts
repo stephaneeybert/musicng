@@ -7,6 +7,7 @@ import { CommonService } from '@app/core/service/common.service';
 import { delay } from 'rxjs/operators';
 import { Settings } from '@app/model/settings';
 import { SettingsStore } from '@app/lib/store/settings-store';
+import { SoundtrackStore } from '../store/soundtrack-store';
 
 const NAME_PREFIX_SOUNDTRACK = 'sheet-soundtrack-';
 const NAME_PREFIX_DEVICE = 'sheet-device-';
@@ -48,6 +49,7 @@ export class SheetComponent implements OnInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private sheetService: SheetService,
     private commonService: CommonService,
+    private soundtrackStore: SoundtrackStore,
     private settingsStore: SettingsStore
   ) { }
 
@@ -123,6 +125,7 @@ export class SheetComponent implements OnInit, OnDestroy {
     if (soundtrack != null) {
       if (soundtrack.hasNotes()) {
         this.sheetService.createSoundtrackSheet(this.id, animatedStave, this.screenWidth, soundtrack);
+        this.soundtrackStore.setSoundtrackSheetSVGContext(soundtrack, soundtrack.sheetContext);
       } else {
         throw new Error('No sheet was created for the soundtrack. Notes should be set to the soundtrack before adding it to the observables data store, ensuring that when the new soundtrack is observed, it has notes and can get a sheet.');
       }

@@ -72,6 +72,11 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     this.setSoundtrack(soundtrack);
   }
 
+  public setSoundtrackSheetSVGContext(soundtrack: Soundtrack, context: any) {
+    soundtrack.sheetContext = context;
+    this.setSoundtrack(soundtrack);
+  }
+
   public setAndStoreSoundtrack(soundtrack: Soundtrack) {
     this.setSoundtrack(soundtrack);
     this.storeSoundtrack(soundtrack);
