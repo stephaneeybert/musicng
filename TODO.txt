@@ -23,8 +23,6 @@ Do a slider
 https://material.angular.io/guide/getting-started
 <mat-slider min="1" max="100" step="1" value="1"></mat-slider>
 
-How come there is a common ui and utils service ?
-
 Have an installable to home screen app
 
 The statement
