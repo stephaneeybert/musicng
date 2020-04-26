@@ -48,4 +48,7 @@ export class UIService {
     });
   }
 
+  public reloadPage(): void {
+    window.location.reload();
+  }
 }

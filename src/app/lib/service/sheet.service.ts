@@ -194,7 +194,7 @@ export class SheetService {
         measure.sheetStave.draw();
       } catch (error) {
         this.logNoCanvasContextError(error);
-        this.reloadPage();
+        this.uiService.reloadPage();
       }
     }
     if (measure.sheetVoice && sheetContext != null) {
@@ -202,7 +202,7 @@ export class SheetService {
         measure.sheetVoice.draw(sheetContext);
       } catch (error) {
         this.logNoCanvasContextError(error);
-        this.reloadPage();
+        this.uiService.reloadPage();
       }
     }
   }
@@ -266,7 +266,7 @@ export class SheetService {
           placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
         } catch (error) {
           this.logNoCanvasContextError(error);
-          this.reloadPage();
+          this.uiService.reloadPage();
         }
       }
     }
@@ -289,14 +289,10 @@ export class SheetService {
           placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
         } catch (error) {
           this.logNoCanvasContextError(error);
-          this.reloadPage();
+          this.uiService.reloadPage();
         }
       }
     }
-  }
-
-  private reloadPage(): void {
-    window.location.reload();
   }
 
   private showCanvasContextErrorMessage(): void {
