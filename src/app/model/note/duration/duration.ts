@@ -1,5 +1,5 @@
 import { Subdivision } from './subdivision';
-import { TempoUnit } from '../../tempo-unit';
+import { TempoUnit } from '@app/model/tempo-unit';
 
 export class Duration {
 

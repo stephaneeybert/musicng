@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 // import { WebMidi } from 'webmidi';
-import { Device } from '../../model/device';
-import { MidiService } from '../../lib/service/midi.service';
-import { DeviceStore } from '../../lib/store/device-store';
+import { Device } from '@app/model/device';
+import { MidiService } from '@app/lib/service/midi.service';
+import { DeviceStore } from '@app/lib/store/device-store';
 import { delay } from 'rxjs/operators';
 
 @Component({

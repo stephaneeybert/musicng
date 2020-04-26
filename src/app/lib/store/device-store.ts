@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from './store';
-import { CommonService } from '../../core/service/common.service';
-import { Device } from '../../model/device';
+import { CommonService } from '@app/core/service/common.service';
+import { Device } from '@app/model/device';
 import { map } from 'rxjs/operators';
 
 @Injectable({

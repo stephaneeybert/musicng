@@ -1,11 +1,11 @@
 import { Component, Input, AfterViewInit } from '@angular/core';
-import { SynthService } from '../service/synth.service';
-import { Device } from '../../model/device';
-import { Soundtrack } from '../../model/soundtrack';
-import { SoundtrackStore } from '../store/soundtrack-store';
-import { DeviceStore } from '../store/device-store';
+import { SynthService } from '@app/lib/service/synth.service';
+import { Device } from '@app/model/device';
+import { Soundtrack } from '@app/model/soundtrack';
+import { SoundtrackStore } from '@app/lib/store/soundtrack-store';
+import { DeviceStore } from '@app/lib/store/device-store';
 import { Subscription, ReplaySubject, Subject, Observable } from 'rxjs';
-import { SettingsStore } from '../store/settings-store';
+import { SettingsStore } from '@app/lib/store/settings-store';
 import { Settings } from '@app/model/settings';
 import { combineLatest } from 'rxjs';
 

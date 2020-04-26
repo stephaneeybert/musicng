@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from './store';
-import { CommonService } from '../../core/service/common.service';
-import { Soundtrack } from '../../model/soundtrack';
+import { CommonService } from '@app/core/service/common.service';
+import { Soundtrack } from '@app/model/soundtrack';
 import { Observable } from 'rxjs';
 import { SoundtrackStorageService } from '@app/views/soundtrack/soundtrack-storage.service';
 

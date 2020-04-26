@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Measure } from '../../model/measure/measure';
+import { Measure } from '@app/model/measure/measure';
 import { NotationService } from './notation.service';
-import { SoundtrackService } from '../../views/soundtrack/soundtrack.service';
+import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
 import { Soundtrack } from '@app/model/soundtrack';
-import { CommonService } from '../../core/service/common.service';
+import { CommonService } from '@app/core/service/common.service';
 import { Track } from '@app/model/track';
 
 const DEFAULT_TEMPO_BPM_VALUE: number = 128;

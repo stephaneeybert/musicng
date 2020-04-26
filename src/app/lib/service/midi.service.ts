@@ -10,22 +10,21 @@ import { IMidiFile, TMidiEvent, IMidiNoteOnEvent,
 import { Midi } from '@tonejs/midi';
 import { TValue } from 'worker-factory';
 // import { WebMidi } from 'webmidi';
-import { Device } from '../../model/device';
-import { KeyboardService } from '../service/keyboard.service';
-import { Soundtrack } from '../../model/soundtrack';
-import { Track } from '../../model/track';
-import { Control } from '../../model/control';
-import { Instrument } from '../../model/instrument';
-import { CommonService } from '../../core/service/common.service';
-import { TempoUnit } from '../../model/tempo-unit';
-import { DeviceStore } from '../store/device-store';
-import { Measure } from '../../model/measure/measure';
-import { TimeSignature } from '../../model/measure/time-signature';
+import { Device } from '@app/model/device';
+import { KeyboardService } from '@app/lib/service/keyboard.service';
+import { Soundtrack } from '@app/model/soundtrack';
+import { Track } from '@app/model/track';
+import { Control } from '@app/model/control';
+import { Instrument } from '@app/model/instrument';
+import { CommonService } from '@app/core/service/common.service';
+import { TempoUnit } from '@app/model/tempo-unit';
+import { DeviceStore } from '@app/lib/store/device-store';
+import { Measure } from '@app/model/measure/measure';
+import { TimeSignature } from '@app/model/measure/time-signature';
 import { NotationService } from './notation.service';
-import { Note } from '../../model/note/note';
-import { PlacedChord } from '../../model/note/placed-chord';
-import { Chroma } from '../../model/note/pitch/chroma';
-import { Duration } from '../../model/note/duration/duration';
+import { Note } from '@app/model/note/note';
+import { PlacedChord } from '@app/model/note/placed-chord';
+import { Duration } from '@app/model/note/duration/duration';
 import { SynthService } from './synth.service';
 
 const NOTE_ON = 144; // A command value of 144 is a "note on"

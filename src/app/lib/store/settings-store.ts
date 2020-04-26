@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from './store';
-import { Settings } from '../../model/settings';
+import { Settings } from '@app/model/settings';
 import { Observable } from 'rxjs';
 import { SettingsStorageService } from '@app/views/settings/settings-storage.service';
 

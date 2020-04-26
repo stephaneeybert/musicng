@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Chroma } from '../../model/note/pitch/chroma';
-import { Octave } from '../../model/note/pitch/octave';
-import { Subdivision } from '../../model/note/duration/subdivision';
-import { Duration } from '../../model/note/duration/duration';
-import { Note } from '../../model/note/note';
-import { Pitch } from '../../model/note/pitch/pitch';
-import { PlacedChord } from '../../model/note/placed-chord';
-import { Measure } from '../../model/measure/measure';
-import { TimeSignature } from '../../model/measure/time-signature';
-import { TempoUnit } from '../../model/tempo-unit';
+import { Chroma } from '@app/model/note/pitch/chroma';
+import { Octave } from '@app/model/note/pitch/octave';
+import { Subdivision } from '@app/model/note/duration/subdivision';
+import { Duration } from '@app/model/note/duration/duration';
+import { Note } from '@app/model/note/note';
+import { Pitch } from '@app/model/note/pitch/pitch';
+import { PlacedChord } from '@app/model/note/placed-chord';
+import { Measure } from '@app/model/measure/measure';
+import { TimeSignature } from '@app/model/measure/time-signature';
+import { TempoUnit } from '@app/model/tempo-unit';
 import { Subdivisions } from '@app/model/note/duration/subdivisions';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 const CHORD_SEPARATOR: string = ' ';
 const CHORD_DURATION_SEPARATOR: string = '/';

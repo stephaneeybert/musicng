@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SettingsStore } from '../../lib/store/settings-store';
-import { Settings } from '../../model/settings';
+import { SettingsStore } from '@app/lib/store/settings-store';
+import { Settings } from '@app/model/settings';
 
 @Injectable({
   providedIn: 'root'

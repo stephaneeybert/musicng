@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import * as Tone from 'tone';
-import { Track } from '../../model/track';
-import { Measure } from '../../model/measure/measure';
-import { Soundtrack } from '../../model/soundtrack';
-import { KeyboardService } from '../service/keyboard.service';
-import { PlacedChord } from '../../model/note/placed-chord';
+import { Track } from '@app/model/track';
+import { Measure } from '@app/model/measure/measure';
+import { Soundtrack } from '@app/model/soundtrack';
+import { KeyboardService } from '@app/lib/service/keyboard.service';
+import { PlacedChord } from '@app/model/note/placed-chord';
 import { NotationService } from './notation.service';
-import { TempoUnit } from '../../model/tempo-unit';
+import { TempoUnit } from '@app/model/tempo-unit';
 import { SheetService } from './sheet.service';
 import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
 import { Observable, interval, timer } from 'rxjs';
 import { map, filter, take } from 'rxjs/operators';
-import { CommonService } from '../../core/service/common.service';
+import { CommonService } from '@app/core/service/common.service';
 import { SettingsService } from '@app/views/settings/settings.service';
 
 // Observation has shown that a delay between creating the service

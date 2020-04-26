@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Measure } from '../../model/measure/measure';
-import { SoundtrackStore } from '../../lib/store/soundtrack-store';
-import { Soundtrack } from '../../model/soundtrack';
-import { CommonService } from '../../core/service/common.service';
-import { Track } from '@app/model/track';
+import { SoundtrackStore } from '@app/lib/store/soundtrack-store';
+import { Soundtrack } from '@app/model/soundtrack';
+import { CommonService } from '@app/core/service/common.service';
 
 const NB_SOUNDTRACKS_MAX: number = 10;
 
