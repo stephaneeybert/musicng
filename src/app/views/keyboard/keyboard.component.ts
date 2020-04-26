@@ -4,7 +4,7 @@ import { SynthService } from '../../lib/service/synth.service';
 import { SoundtrackStore } from '../../lib/store/soundtrack-store';
 import { DeviceStore } from '../../lib/store/device-store';
 import { Subscription, ReplaySubject, Subject } from 'rxjs';
-import { CommonService } from '../../lib/service/common.service';
+import { CommonService } from '../../core/service/common.service';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Device } from '@app/model/device';
 import { delay } from 'rxjs/operators';

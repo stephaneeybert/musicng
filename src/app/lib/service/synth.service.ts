@@ -11,7 +11,7 @@ import { SheetService } from './sheet.service';
 import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
 import { Observable, interval, timer } from 'rxjs';
 import { map, filter, take } from 'rxjs/operators';
-import { CommonService } from './common.service';
+import { CommonService } from '../../core/service/common.service';
 import { SettingsService } from '@app/views/settings/settings.service';
 
 // Observation has shown that a delay between creating the service

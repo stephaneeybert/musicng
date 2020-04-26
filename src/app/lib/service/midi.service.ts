@@ -16,7 +16,7 @@ import { Soundtrack } from '../../model/soundtrack';
 import { Track } from '../../model/track';
 import { Control } from '../../model/control';
 import { Instrument } from '../../model/instrument';
-import { CommonService } from './common.service';
+import { CommonService } from '../../core/service/common.service';
 import { TempoUnit } from '../../model/tempo-unit';
 import { DeviceStore } from '../store/device-store';
 import { Measure } from '../../model/measure/measure';

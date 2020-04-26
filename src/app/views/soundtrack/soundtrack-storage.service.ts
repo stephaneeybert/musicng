@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '@app/core/service/local-storage.service';
 import { Soundtrack } from '@app/model/soundtrack';
-import { CommonService } from '@app/lib/service/common.service';
+import { CommonService } from '@app/core/service/common.service';
 import { NotationService } from '@app/lib/service/notation.service';
 import { Track } from '@app/model/track';
 import { Measure } from '@app/model/measure/measure';

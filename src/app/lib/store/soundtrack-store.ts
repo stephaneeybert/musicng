@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from './store';
-import { CommonService } from '../service/common.service';
+import { CommonService } from '../../core/service/common.service';
 import { Soundtrack } from '../../model/soundtrack';
 import { Observable } from 'rxjs';
 import { SoundtrackStorageService } from '@app/views/soundtrack/soundtrack-storage.service';

@@ -4,7 +4,7 @@ import { NotationService } from './notation.service';
 import { PlacedChord } from '../../model/note/placed-chord';
 import { Note } from '../../model/note/note';
 import { SoundtrackService } from '../../views/soundtrack/soundtrack.service';
-import { CommonService } from './common.service';
+import { CommonService } from '../../core/service/common.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Soundtrack } from '@app/model/soundtrack';
 import { TempoUnit } from '@app/model/tempo-unit';

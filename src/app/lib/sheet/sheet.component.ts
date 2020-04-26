@@ -3,7 +3,7 @@ import { Device } from '../../model/device';
 import { SheetService } from '../service/sheet.service';
 import { Soundtrack } from '../../model/soundtrack';
 import { Subscription, Subject, ReplaySubject, Observable, combineLatest } from 'rxjs';
-import { CommonService } from '../service/common.service';
+import { CommonService } from '../../core/service/common.service';
 import { delay } from 'rxjs/operators';
 import { Settings } from '@app/model/settings';
 import { SettingsStore } from '../store/settings-store';

@@ -5,7 +5,7 @@ import { Measure } from '../../model/measure/measure';
 import { NotationService } from './notation.service';
 import { SoundtrackService } from '../../views/soundtrack/soundtrack.service';
 import { Soundtrack } from '@app/model/soundtrack';
-import { CommonService } from './common.service';
+import { CommonService } from '../../core/service/common.service';
 import { Track } from '@app/model/track';
 
 const DEFAULT_TEMPO_BPM_VALUE: number = 128;
