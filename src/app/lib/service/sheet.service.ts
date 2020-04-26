@@ -96,12 +96,7 @@ export class SheetService {
                 stave.addClef(Clef.TREBLE); // TODO Should the clef be determined from the time signature of the measure ?
                 stave.addTimeSignature(this.renderTimeSignature(measure));
                 if (!animatedStave) {
-                  try {
-                    stave.draw();
-                  } catch (error) {
-                    this.showCanvasContextErrorMessage();
-                    this.logNoCanvasContextError(error);
-                  }
+                  stave.draw();
                 }
                 measure.sheetStave = stave;
 
@@ -198,18 +193,16 @@ export class SheetService {
       try {
         measure.sheetStave.draw();
       } catch (error) {
-        console.log('From drawMeasure stave');
-        this.showCanvasContextErrorMessage();
         this.logNoCanvasContextError(error);
+        this.reloadPage();
       }
     }
     if (measure.sheetVoice && sheetContext != null) {
       try {
         measure.sheetVoice.draw(sheetContext);
       } catch (error) {
-        console.log('From drawMeasure voice');
-        this.showCanvasContextErrorMessage();
         this.logNoCanvasContextError(error);
+        this.reloadPage();
       }
     }
   }
@@ -272,9 +265,8 @@ export class SheetService {
           sheetContext.closeGroup();
           placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
         } catch (error) {
-          console.log('From highlightStaveNote');
-          this.showCanvasContextErrorMessage();
           this.logNoCanvasContextError(error);
+          this.reloadPage();
         }
       }
     }
@@ -296,12 +288,15 @@ export class SheetService {
           sheetContext.closeGroup();
           placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
         } catch (error) {
-          console.log('From unhighlightStaveNote');
-          this.showCanvasContextErrorMessage();
           this.logNoCanvasContextError(error);
+          this.reloadPage();
         }
       }
     }
+  }
+
+  private reloadPage(): void {
+    window.location.reload();
   }
 
   private showCanvasContextErrorMessage(): void {
