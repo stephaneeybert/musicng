@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable, from, Subscription, empty } from 'rxjs';
-import { map, filter, switchMap, catchError } from 'rxjs/operators';
+import { map, filter, switchMap, catchError, delay } from 'rxjs/operators';
 import { parseArrayBuffer } from 'midi-json-parser';
 import { IMidiFile, TMidiEvent, IMidiNoteOnEvent,
   IMidiNoteOffEvent, IMidiSetTempoEvent,
@@ -42,6 +42,7 @@ const MIDI_EVENT_NOTE_ON = 'noteOn';
 const MIDI_EVENT_NOTE_OFF = 'noteOff';
 const MIDI_EVENT_CONTROL_CHANGE = 'controlChange';
 const MIDI_EVENT_TRACK_NAME = 'trackName';
+const MIDI_DEVICE_OBSERVE_DELAY: number = 1000;
 
 declare const navigator: any;
 
@@ -64,6 +65,7 @@ export class MidiService {
   public getInputDevices$(): Observable<WebMidi.MIDIInput> {
     return this.requestMIDIAccess$()
       .pipe(
+        delay(MIDI_DEVICE_OBSERVE_DELAY),
         switchMap((midiAccess: WebMidi.MIDIAccess) => {
           return midiAccess.inputs;
         }),
