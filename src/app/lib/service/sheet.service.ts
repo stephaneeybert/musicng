@@ -77,11 +77,10 @@ export class SheetService {
       this.clearSVGContext(soundtrack);
     }
     soundtrack.sheetContext = this.renderSVGContext(id, sheetWidth, sheetHeight);
-    const sheetContext: any = soundtrack.sheetContext;
     const formatter = new Vex.Flow.Formatter();
     const voices: Array<Vex.Flow.Voice> = new Array<Vex.Flow.Voice>();
     const nbTracks: number = soundtrack.getNbTracks();
-    if (soundtrack.hasTracks()) {
+    if (soundtrack.sheetContext != null && soundtrack.hasTracks()) {
       for (const track of soundtrack.tracks) {
         if (track.hasMeasures()) {
           let measureWithVisibleNotesIndex: number = 0;
@@ -89,7 +88,7 @@ export class SheetService {
             if (measure.placedChords) {
               if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
                 const stave = new Vex.Flow.Stave(this.getStaveX(animatedStave, track.index, measureWithVisibleNotesIndex), this.getStaveY(animatedStave, nbTracks, track.index, measureWithVisibleNotesIndex), displayWidth);
-                stave.setContext(sheetContext);
+                stave.setContext(soundtrack.sheetContext);
                 stave.addClef(Clef.TREBLE); // TODO Should the clef be determined from the time signature of the measure ?
                 stave.addTimeSignature(this.renderTimeSignature(measure));
                 if (!animatedStave) {
@@ -142,9 +141,7 @@ export class SheetService {
                 voice.addTickables(staveNotes);
                 formatter.joinVoices([voice]);
                 formatter.formatToStave([voice], stave);
-                if (!animatedStave) {
-                  voice.draw(sheetContext);
-                }
+                voice.draw(soundtrack.sheetContext);
                 measure.sheetVoice = voice;
                 voices.push(voice);
                 measureWithVisibleNotesIndex++;
@@ -156,6 +153,7 @@ export class SheetService {
         }
       }
       if (animatedStave) {
+        this.whitewashSheetContext(soundtrack.sheetContext);
         this.drawFirstMeasure(soundtrack);
       }
     }
@@ -163,7 +161,6 @@ export class SheetService {
 
   public clearSVGContext(soundtrack: Soundtrack): void {
     if (soundtrack.sheetContext != null) {
-      this.unhighlightAllStaveChords(soundtrack);
       soundtrack.sheetContext.clear();
       soundtrack.sheetContext = undefined;
     }
@@ -177,9 +174,10 @@ export class SheetService {
 
   public drawFirstMeasure(soundtrack: Soundtrack): void {
     if (soundtrack.tracks) {
-      for (const track of soundtrack.tracks) {
+      for (const track of soundtrack.getSortedTracks()) {
         if (track.hasMeasures()) {
-          this.drawMeasure(track.measures[0], soundtrack.sheetContext);
+          const sortedMeasures: Array<Measure> = track.getSortedMeasures();
+          this.drawMeasure(sortedMeasures[0], soundtrack.sheetContext);
         }
       }
     }
@@ -257,18 +255,9 @@ export class SheetService {
   public highlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack): void {
     if (soundtrack.sheetContext != null) {
       if (soundtrack.nowPlaying) {
-        const sheetContext: any = soundtrack.sheetContext;
-        // Hide the highlighted note before loosing its reference
-        if (placedChord.sheetStaveNoteHighlightGroup != null) {
-          placedChord.sheetStaveNoteHighlightGroup.style.opacity = VEXFLOW_SVG_OPACITY_TO_HIDE;
-        }
-
         try {
-          const sheetStaveNoteGroup: any = sheetContext.openGroup();
-          this.styleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR)
-          .draw();
-          sheetContext.closeGroup();
-          placedChord.sheetStaveNoteHighlightGroup = sheetStaveNoteGroup;
+          const staveNote: Vex.Flow.StaveNote = this.styleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR);
+          staveNote.draw();
         } catch (error) {
           this.logNoCanvasContextError(error);
           this.uiService.reloadPage();
@@ -280,18 +269,9 @@ export class SheetService {
   public unhighlightStaveNote(placedChord: PlacedChord, soundtrack: Soundtrack): void {
     if (soundtrack.sheetContext != null) {
       if (soundtrack.nowPlaying) {
-        const sheetContext: any = soundtrack.sheetContext;
-        // Hide the highlighted note before loosing its reference
-        if (placedChord.sheetStaveNoteUnhighlightGroup != null) {
-          placedChord.sheetStaveNoteUnhighlightGroup.style.opacity = VEXFLOW_SVG_OPACITY_TO_HIDE;
-        }
-
         try {
-          const sheetStaveNoteGroup: any = sheetContext.openGroup();
-          this.styleStaveNote(placedChord, VEXFLOW_NOTE_COLOR)
-          .draw();
-          sheetContext.closeGroup();
-          placedChord.sheetStaveNoteUnhighlightGroup = sheetStaveNoteGroup;
+          const staveNote: Vex.Flow.StaveNote = this.styleStaveNote(placedChord, VEXFLOW_NOTE_COLOR);
+          staveNote.draw();
         } catch (error) {
           this.logNoCanvasContextError(error);
           this.uiService.reloadPage();

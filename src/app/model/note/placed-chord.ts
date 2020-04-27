@@ -10,8 +10,6 @@ export class PlacedChord {
   velocity: number;
   dottedAll: boolean;
   staveNote?: vexflow.Flow.StaveNote;
-  sheetStaveNoteHighlightGroup?: any;
-  sheetStaveNoteUnhighlightGroup?: any;
 
   constructor(index: number, duration: Duration, velocity: number) {
     this.index = index;
