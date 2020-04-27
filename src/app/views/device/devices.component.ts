@@ -12,7 +12,6 @@ import { delay } from 'rxjs/operators';
 })
 export class DevicesComponent implements OnInit, OnDestroy {
 
-  devices$!: Observable<Array<Device>>;
   devices!: Array<Device>;
 
   constructor(
@@ -27,7 +26,6 @@ export class DevicesComponent implements OnInit, OnDestroy {
   private midiInputSubscription?: Subscription;
 
   ngOnInit() {
-    this.devices$ = this.deviceStore.getDevices$();
     this.observeDevices();
 
     this.getConnectedDevices();

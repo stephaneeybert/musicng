@@ -20,7 +20,6 @@ import { delay } from 'rxjs/operators';
 })
 export class SoundtracksComponent implements OnInit {
 
-  soundtracks$?: Observable<Array<Soundtrack>>;
   soundtracks!: Array<Soundtrack>;
   private soundtracksSubscription?: Subscription;
 
@@ -47,7 +46,6 @@ export class SoundtracksComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.soundtracks$ = this.soundtrackStore.getSoundtracks$();
     this.observeSoundtracks();
 
     this.audioRunning$ = this.synthService.audioIsRunning$();
