@@ -17,8 +17,6 @@ Make sure all constants are typed.
 
 All methods should have a return type, possibly void.
 
-Have an assistant to showcase a tour of the app for newbies
-
 Do a slider
 https://material.angular.io/guide/getting-started
 <mat-slider min="1" max="100" step="1" value="1"></mat-slider>
@@ -31,9 +29,4 @@ does not accept the tempo of 128
 but the 120 is fine
 Change the measure tempo to be a number of beats
 
-Could I catch this vexflow no svg context exception ?
-RuntimeError {code: "NoCanvasContext", message: "Can't draw without a canvas context."}
-
 Should the clef be determined from the time signature of the measure ?
-
-Ask Norbert:
