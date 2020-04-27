@@ -60,20 +60,23 @@ export class GeneratorService {
 
   private createMeasures(generatedChords: Array<PlacedChord>): Array<Measure> {
     let measureIndex: number = 0;
+    let chordIndex: number = 0;
     const measures: Array<Measure> = new Array<Measure>();
     let measure: Measure = this.notationService.createMeasure(measureIndex, DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
     measure.placedChords = new Array<PlacedChord>();
-    measures.push(measure);
     generatedChords
       .map((placedChord: PlacedChord) => {
         if (measure.placedChords) {
           // The number of beats of the chords placed in a measure must equal the number of beats of the measure
           if (measure.getPlacedChordsNbBeats() >= measure.getNbBeats()) {
+            measures.push(measure);
             measure = this.notationService.createMeasure(measureIndex, DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
             measure.placedChords = new Array<PlacedChord>();
-            measures.push(measure);
             measureIndex++;
+            chordIndex = 0;
           }
+          placedChord.index = chordIndex;
+          chordIndex++;
           measure.placedChords.push(placedChord);
         } else {
           throw new Error('The measure placed chords array has not been instantiated.');
