@@ -18,7 +18,7 @@ enum RANDOM_METHOD {
 const DEFAULT_TEMPO_BPM_VALUE: number = 128;
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
 const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
-const DEFAULT_VELOCITY_SOFTER: number = 0.3;
+const DEFAULT_VELOCITY_SOFTER: number = 0.1;
 const DEFAULT_VELOCITY_LOUDER: number = 1;
 
 @Injectable({
