@@ -22,7 +22,7 @@
                 <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="stopSoundtrack(soundtrack)" title="{{ 'soundtracks.stop' | translate }}" class="soundtrack-action">stop</mat-icon>
                 <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="replaySoundtrack(soundtrack)" title="{{ 'soundtracks.replay' | translate }}" class="soundtrack-action">replay</mat-icon>
                 <mat-icon *ngIf="!isNowPlaying(soundtrack)" (click)="openSoundtrackDialog(soundtrack)" title="{{ 'soundtracks.edit' | translate }}" class="soundtrack-action">edit</mat-icon>
-                <mat-icon *ngIf="!isNowPlaying(soundtrack)" (click)="deleteSoundtrack(soundtrack)" title="{{ 'soundtracks.delete' | translate }}" class="soundtrack-action">delete</mat-icon>
+                <mat-icon (click)="deleteSoundtrack(soundtrack)" title="{{ 'soundtracks.delete' | translate }}" class="soundtrack-action">delete</mat-icon>
               </mat-toolbar>
               <app-midi-synth [soundtrack]="soundtrack"></app-midi-synth>
               <app-midi-keyboard [soundtrack]="soundtrack"></app-midi-keyboard>
