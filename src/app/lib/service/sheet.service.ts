@@ -306,7 +306,7 @@ export class SheetService {
 
   private renderCanvasContextErrorMessage(): string {
     return this.translateService.instant('sheet.error.noSheetDrawing')
-    ' ' + this.translateService.instant('message.error.reloadApp');
+    + ' ' + this.translateService.instant('message.error.reloadApp');
   }
 
   private logNoCanvasContextError(error: Error): void {
