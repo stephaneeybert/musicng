@@ -240,8 +240,6 @@ export class SynthService {
           measure.getSortedChords().forEach((placedChord: PlacedChord) => {
             const duration: string = placedChord.renderDuration();
             const durationInSeconds = Tone.Time(duration).toSeconds();
-            // console.log('duration: ' + duration + ' durationInSeconds: ' + durationInSeconds);
-            // console.log('measureStartTime: ' + measureStartTime);
             let triggerTime = measureStartTime + relativeTime;
             const releaseTime = triggerTime + durationInSeconds;
 
