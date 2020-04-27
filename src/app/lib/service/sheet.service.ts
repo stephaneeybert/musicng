@@ -56,14 +56,14 @@ export class SheetService {
   ) { }
 
   public createSoundtrackSheet(id: string, animatedStave: boolean, screenWidth: number, soundtrack: Soundtrack): void {
-    this.renderSoundtrack(id, animatedStave, screenWidth, soundtrack);
+    this.renderSoundtrackSheet(id, animatedStave, screenWidth, soundtrack);
   }
 
   public createDeviceSheet(id: string, screenWidth: number, device: Device): void {
     // TODO
   }
 
-  private renderSoundtrack(id: string, animatedStave: boolean, screenWidth: number, soundtrack: Soundtrack): void {
+  private renderSoundtrackSheet(id: string, animatedStave: boolean, screenWidth: number, soundtrack: Soundtrack): void {
     // The width must fit within the screen
     const displayWidth = screenWidth * SHEET_WIDTH_RATIO;
     let previousNoteName: string = '';
