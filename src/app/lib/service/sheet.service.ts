@@ -225,11 +225,15 @@ export class SheetService {
   }
 
   public whitewashStave(sheetContext: any, nbTracks: number, trackIndex: number, measureIndex: number): void {
-    this.whitewash(sheetContext, this.getStaveX(true, trackIndex, measureIndex), this.getStaveY(true, nbTracks, trackIndex, measureIndex), sheetContext.width, VEXFLOW_STAVE_HEIGHT);
+    if (sheetContext != null) {
+      this.whitewash(sheetContext, this.getStaveX(true, trackIndex, measureIndex), this.getStaveY(true, nbTracks, trackIndex, measureIndex), sheetContext.width, VEXFLOW_STAVE_HEIGHT);
+    }
   }
 
   public whitewashSheetContext(sheetContext: any): void {
-    this.whitewash(sheetContext, 0, 0, sheetContext.width, sheetContext.height);
+    if (sheetContext != null) {
+      this.whitewash(sheetContext, 0, 0, sheetContext.width, sheetContext.height);
+    }
   }
 
   private whitewash(sheetContext: any, x: number, y: number, width: number, height: number): void {
