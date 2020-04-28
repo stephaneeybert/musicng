@@ -153,9 +153,13 @@ export class SynthService {
   }
 
   public playSoundtrack(soundtrack: Soundtrack) {
-    this.commonService.requestWakeLock();
     if (soundtrack.hasNotes()) {
+      this.commonService.requestWakeLock();
+      // On Android the transport needs to be reset right before playing
+      // otherwise the playing starts at a later measure than the measure 0
+      this.clearTransport();
       this.stopOtherSoundtracks(soundtrack);
+
       soundtrack.tracks.forEach((track: Track) => {
         this.play(track, soundtrack);
       });
