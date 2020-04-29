@@ -91,7 +91,7 @@ export class MidiService {
     );
   }
 
-  public addMidiDevice(inputDevice: WebMidi.MIDIInput) {
+  public addMidiDevice(inputDevice: WebMidi.MIDIInput): void {
     if (inputDevice.name) {
       const device: Device = new Device(this.commonService.normalizeName(inputDevice.name), inputDevice.name);
       this.handleMessagesFromInputDevice(device);
