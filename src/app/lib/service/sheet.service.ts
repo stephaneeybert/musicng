@@ -297,6 +297,7 @@ export class SheetService {
     console.log(message);
     console.log(error.message);
     console.log(error.stack);
+    console.trace();
   }
 
   private styleStaveNote(placedChord: PlacedChord, color: string): Vex.Flow.StaveNote {
