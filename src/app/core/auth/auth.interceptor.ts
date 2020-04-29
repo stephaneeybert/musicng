@@ -10,7 +10,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { tap, catchError, switchMap } from 'rxjs/operators';
-import { throwError, Subject } from 'rxjs';
+import { throwError, Subject, Subscription } from 'rxjs';
 
 import { TokenService } from './token.service';
 import { AuthService } from '@app/core/auth/auth.service';
@@ -99,9 +99,10 @@ export class AuthInterceptor implements HttpInterceptor {
   private refreshToken() {
     if (this.refreshTokenInProgress) {
       return new Observable(observer => {
-        this.tokenRefreshed$.subscribe(() => {
+        const subscription: Subscription = this.tokenRefreshed$.subscribe(() => {
           observer.next();
           observer.complete();
+          subscription.unsubscribe();
         });
       });
     } else {

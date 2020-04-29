@@ -1,6 +1,7 @@
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 const ITEMS_PER_PAGE = 'PAGINATOR.ITEMS_PER_PAGE';
 const NEXT_PAGE = 'PAGINATOR.NEXT_PAGE';
@@ -15,8 +16,9 @@ export class LocalizedPaginator extends MatPaginatorIntl {
   constructor(private translateService: TranslateService) {
     super();
 
-    this.translateService.onLangChange.subscribe((e: Event) => {
+    const subscription: Subscription = this.translateService.onLangChange.subscribe((event: Event) => {
       this.getAndInitTranslations();
+      subscription.unsubscribe();
     });
 
     this.getAndInitTranslations();

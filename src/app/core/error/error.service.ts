@@ -4,7 +4,7 @@ import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http
 import { Router, Event, NavigationError } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 
 import * as StackTraceParser from 'error-stack-parser';
 
@@ -17,15 +17,17 @@ export class ErrorService {
     private httpClient: HttpClient,
   ) {
     // Subscribe to the navigation errors
-    this.router
+    const routerSubscription: Subscription = this.router
       .events
       .subscribe((event: Event) => {
         if (event instanceof NavigationError) {
-          this.log(event.error)
+          const subscription: Subscription = this.log(event.error)
             .subscribe((errorWithContext) => {
               this.router.navigate(['error'], { queryParams: errorWithContext });
+              subscription.unsubscribe();
             });
         }
+        routerSubscription.unsubscribe();
       });
   }
 
@@ -61,7 +63,7 @@ export class ErrorService {
   fireFakeServerError() {
     this.httpClient
       .get('https://jsonplaceholder.typicode.com/1')
-      .subscribe();
+      .subscribe(); // TODO Missing unsubscribe
   }
 }
 
