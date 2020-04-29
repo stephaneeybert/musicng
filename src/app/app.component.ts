@@ -21,7 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit() {
-    const subscription: Subscription = this.translateService.get('app.title').subscribe((text: string) => {  // TODO Missing unsubscribe
+    const subscription: Subscription = this.translateService.get('app.title').subscribe((text: string) => {
       this.afterLanguageResourcesLoaded();
       subscription.unsubscribe();
     });

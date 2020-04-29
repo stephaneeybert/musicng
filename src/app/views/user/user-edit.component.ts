@@ -76,16 +76,18 @@ export class UserEditComponent implements OnChanges {
         if (user) {
           if (this.existingUser) {
             user.id = this.existingUser.id;
-            this.userService.fullUpdate(user)
+            const subscription: Subscription = this.userService.fullUpdate(user)
               .subscribe(updatedUser => {
                 this.userEditedEvent.emit(updatedUser);
                 this.uiService.showSnackBar('The user ' + updatedUser.firstname + ' ' + updatedUser.lastname + ' has been updated.');
+                subscription.unsubscribe();
               });
           } else {
-            this.userService.add(user)
+            const subscription: Subscription = this.userService.add(user)
               .subscribe(addedUser => {
                 this.userEditedEvent.emit(addedUser);
                 this.uiService.showSnackBar('The user ' + addedUser.firstname + ' ' + addedUser.lastname + ' has been added.');
+                subscription.unsubscribe();
               });
           }
         }

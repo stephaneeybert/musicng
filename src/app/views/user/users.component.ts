@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, Input, EventEmitter, Output }
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { merge, Observable, of as observableOf, of } from 'rxjs';
+import { merge, Observable, of as observableOf, of, Subscription } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -56,8 +56,9 @@ export class UsersComponent implements OnInit {
     this.pageSizeOptions = this.paginationService.pageSizeOptions;
 
     // Select the first page when the sort order changes
-    this.sort.sortChange.subscribe((sort: Sort) => {
+    const subscription: Subscription = this.sort.sortChange.subscribe((sort: Sort) => {
       this.goToFirstPage();
+      subscription.unsubscribe();
     });
 
     merge(this.updateEvent, this.searchTermEvent, this.sort.sortChange, this.paginator.page)

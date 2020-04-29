@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '@app/views/user/user.service';
 import { User } from '@app/views/user/user';
 import { last } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -32,13 +33,14 @@ export class UserComponent implements OnInit {
   getUser(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.userService.get(id)
+      const subscription: Subscription = this.userService.get(id)
       .subscribe(user => {
         this.user = user;
         this.form = this.formBuilder.group({
           firstname: [this.user.firstname, Validators.required],
           lastname: [this.user.lastname, Validators.required]
         });
+        subscription.unsubscribe();
       });
     }
   }
@@ -62,9 +64,10 @@ export class UserComponent implements OnInit {
       if (firstnameField && lastnameField) {
         this.user.firstname = firstnameField.value;
         this.user.lastname = lastnameField.value;
-        this.userService.partialUpdate(this.user)
+        const subscription: Subscription = this.userService.partialUpdate(this.user)
         .subscribe((user: User) => {
           this.router.navigate(['users']);
+          subscription.unsubscribe();
         });
       }
     }

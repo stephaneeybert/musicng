@@ -1,5 +1,5 @@
 import { Component, Input, EventEmitter, Output, OnChanges } from '@angular/core';
-import { of as observableOf } from 'rxjs';
+import { of as observableOf, Subscription } from 'rxjs';
 import { catchError, switchMap, map } from 'rxjs/operators';
 
 import { User } from './user';
@@ -49,9 +49,10 @@ export class UserConfirmedComponent implements OnChanges {
   // This method is called after the input bindings attempt
   // and only if there was actual input provided to the bindings
   ngOnChanges() {
-    this.userService.get(this.userId)
+    const subscription: Subscription = this.userService.get(this.userId)
       .subscribe(user => {
         this.update(user.confirmedEmail);
+        subscription.unsubscribe();
       });
   }
 
