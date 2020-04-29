@@ -9,7 +9,7 @@ import { NotationService } from './notation.service';
 import { TempoUnit } from '@app/model/tempo-unit';
 import { SheetService } from './sheet.service';
 import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
-import { Observable, interval, timer } from 'rxjs';
+import { Observable, interval, timer, Subscription } from 'rxjs';
 import { map, filter, take } from 'rxjs/operators';
 import { CommonService } from '@app/core/service/common.service';
 import { SettingsService } from '@app/views/settings/settings.service';
@@ -184,9 +184,10 @@ export class SynthService {
 
     const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
     if (animatedStave) {
-      timer(WHITEWASH_DELAY).subscribe((time: number) => {
+      const subscription: Subscription = timer(WHITEWASH_DELAY).subscribe((time: number) => { // TODO Missing unsubscribe
         this.sheetService.whitewashSheetContext(soundtrack.sheetContext);
         this.sheetService.drawFirstMeasure(soundtrack);
+        subscription.unsubscribe();
       });
     }
   }
