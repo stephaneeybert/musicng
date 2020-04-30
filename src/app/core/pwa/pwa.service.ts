@@ -47,29 +47,29 @@ export class PwaService implements OnDestroy {
   }
 
   public displayPwaInstallPrompt() {
-    console.log('Is not standalone app yet');
+    console.log('PWA - Is not standalone app yet');
     if (this.platform.ANDROID) {
       if (!this.isInStandaloneModeAndroid()) {
-        console.log('Opening the propt install on Android');
+        console.log('PWA - Opening the propt install on Android');
         this.openBottomSheet(PLATFORM_ANDROID);
       }
     } else if (this.platform.IOS) {
       if (!this.isInStandaloneModeIOS()) {
         // Prevent the installation prompt when the app is already installed
-        console.log('Opening the propt install on iOS');
+        console.log('PWA - Opening the propt install on iOS');
         this.openBottomSheet(PLATFORM_IOS);
       }
     } else {
-      console.log('The platform is not supporting PWA installation');
+      console.log('PWA - The platform is not supporting PWA installation');
     }
   }
 
   public checkForBeforeInstallEvents(): void {
-    console.log('In checkForBeforeInstallEvents');
+    console.log('PWA - In checkForBeforeInstallEvents');
     if (this.platform.ANDROID) {
-      console.log('Is on Android and is not standalone: ' + !this.isInStandaloneModeAndroid());
+      console.log('PWA - Is on Android and is not standalone: ' + !this.isInStandaloneModeAndroid());
       if (!this.isInStandaloneModeAndroid()) {
-        console.log('Listening on the install prompt event on Android');
+        console.log('PWA - Listening on the install prompt event on Android');
         window.addEventListener('beforeinstallprompt', this.handleBbeforeInstallAndroid);
         window.addEventListener('appinstalled', this.handleAlreadyInstalledAndroid);
         self.addEventListener('install', this.handleServiceWorkerInstallEvent);
@@ -86,14 +86,13 @@ export class PwaService implements OnDestroy {
     event.preventDefault();
     // Keep the install prompt event for latter use
     this.installPromptEvent = event;
-    console.log('Saved the install prompt event on Android');
+    console.log('PWA - Saved the install prompt event on Android');
   }
 
   private openPwaPromptComponent(mobileType: 'ios' | 'android'): void {
     this.pwaPromptForInstallSubscription = timer(PROMPT_DELAY)
       .pipe(take(1))
       .subscribe(() => {
-        console.log('... now opening');
         this.openBottomSheet(mobileType);
       });
   }
@@ -101,7 +100,7 @@ export class PwaService implements OnDestroy {
   // Called if the application if already installed
   private handleAlreadyInstalledAndroid(event: Event): void {
     this.alreadyInstalledEvent = event;
-    console.log('The application is already installed');
+    console.log('PWA - The application is already installed');
     console.log(this.alreadyInstalledEvent);
   }
 
@@ -109,7 +108,7 @@ export class PwaService implements OnDestroy {
   private handleServiceWorkerInstallEvent(event: any): void {
     event.waitUntil(
       caches.open('v1').then(function(cache) {
-        console.log('Caching custom resources for the service worker');
+        console.log('PWA - Caching custom resources for the service worker');
         return cache.addAll([
           './index.html', // Caching the resource specified in the start_url in the manifest file
           // is a prerequisite to receiving the beforeinstallprompt event from the browser
@@ -124,15 +123,15 @@ export class PwaService implements OnDestroy {
     event.respondWith(
       caches.match(event.request).then(function(response) {
         if (response) {
-          console.log('Found response in cache:', response);
+          console.log('PWA - Found response in cache:', response);
           return response;
         }
-        console.log('No response found in cache. About to fetch from network...');
+        console.log('PWA - No response found in cache. About to fetch from network...');
         return fetch(event.request).then(function(response) {
-          console.log('Response from network is:', response);
+          console.log('PWA - Response from network is:', response);
           return response;
         }, function(error) {
-          console.error('Fetching failed:', error);
+          console.error('PWA - Fetching failed:', error);
           throw error;
         });
       })
@@ -148,7 +147,7 @@ export class PwaService implements OnDestroy {
       }
     });
     this.bottomSheetRef.afterDismissed().subscribe(() => {
-      console.log('The bottom sheet has been dismissed.');
+      console.log('PWA - The bottom sheet has been dismissed.');
     });
   }
 
@@ -175,12 +174,12 @@ export class PwaService implements OnDestroy {
   }
 
   public checkForAppUpdate(): void {
-    console.log('In checkForAppUpdate');
+    console.log('PWA - In checkForAppUpdate');
     if (this.swUpdate.isEnabled) {
-      console.log('Update is enabled');
+      console.log('PWA - Update is enabled');
       this.pwaCheckForUpdateSubscription = this.swUpdate.available
         .subscribe(() => {
-          console.log('Offering a new version');
+          console.log('PWA - Offering a new version');
           const appNewVersion = this.translateService.instant('app.pwa.new_version_available');
           if (confirm(appNewVersion)) {
             this.uiService.reloadPage();

@@ -22,9 +22,9 @@ export class PwaPromptComponent {
     this.data.promptEvent.userChoice
       .then((choiceResult: any) => {
         if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the prompt and installed the app');
+          console.log('PWA - User accepted the prompt and installed the app');
         } else {
-          console.log('User dismissed the prompt and did not install the app');
+          console.log('PWA - User dismissed the prompt and did not install the app');
         }
         this.data.promptEvent = null;
       });
