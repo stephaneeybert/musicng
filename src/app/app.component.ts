@@ -1,7 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SwUpdate } from '@angular/service-worker';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-
 import { UIService } from '@app/core/service/ui.service';
 import { Subscription } from 'rxjs';
 
@@ -10,12 +8,9 @@ import { Subscription } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnDestroy {
-
-  private swUpdateSubscription?: Subscription;
+export class AppComponent implements OnInit {
 
   constructor(
-    private swUpdate: SwUpdate,
     private translateService: TranslateService,
     private uiService: UIService
   ) {}
@@ -28,19 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private afterLanguageResourcesLoaded(): void {
-    this.checkForAppUpdate();
     this.setAppMetaData();
-  }
-
-  private checkForAppUpdate(): void {
-    if (this.swUpdate.isEnabled) {
-      this.swUpdateSubscription = this.swUpdate.available.subscribe(() => {
-        const appNewVersion = this.translateService.instant('app.new_version_available');
-        if (confirm(appNewVersion)) {
-          window.location.reload();
-        }
-      });
-    }
   }
 
   private setAppMetaData(): void {
@@ -48,12 +31,6 @@ export class AppComponent implements OnInit, OnDestroy {
       title: this.translateService.instant('app.title'),
       description: this.translateService.instant('app.description')
     });
-  }
-
-  public ngOnDestroy(): void {
-    if (this.swUpdateSubscription != null) {
-      this.swUpdateSubscription.unsubscribe();
-    }
   }
 
 }

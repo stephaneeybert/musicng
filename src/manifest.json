@@ -1,12 +1,13 @@
 {
-  "name": "musicng",
+  "name": "Music Note Generation",
   "short_name": "MusicNG",
   "description": "A simple music note generator to see if it's possible to generate a melodious soundtrack.",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
-  "display": "standalone",
   "scope": "/",
-  "start_url": "/?utm_source=itnext_pwa_a2hs",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "/favicon.ico",

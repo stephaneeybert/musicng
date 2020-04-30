@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ServiceWorkerModule } from '@angular/service-worker';
 
-import { environment } from '@env/environment';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MaterialModule } from '@app/material.module';
@@ -15,6 +13,7 @@ import { LibI18nModule } from 'lib-i18n';
 import { SettingsComponent } from '@app/views/settings/settings.component';
 import { AppUiModule } from '@app/app-ui.module';
 import { SettingsDialogComponent } from '@app/views/settings/settings-dialog.component';
+import { PwaModule } from '@app/core/pwa/pwa.module';
 
 @NgModule({
   declarations: [
@@ -27,8 +26,8 @@ import { SettingsDialogComponent } from '@app/views/settings/settings-dialog.com
     SettingsDialogComponent
   ],
   imports: [
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AppRoutingModule,
+    PwaModule,
     LayoutModule,
     AppUiModule,
     LibI18nModule,
@@ -37,6 +36,7 @@ import { SettingsDialogComponent } from '@app/views/settings/settings-dialog.com
   ],
   exports: [
     AppRoutingModule,
+    PwaModule,
     LayoutModule,
     AppUiModule,
     LibI18nModule,
