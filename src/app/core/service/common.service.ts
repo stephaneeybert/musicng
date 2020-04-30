@@ -1,13 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CommonService {
+export class CommonService implements OnDestroy {
 
   constructor() { }
+
+  ngOnDestroy() {
+    let wakeLock: any = null;
+    let navigator: any = window.navigator;
+    if ('wakeLock' in navigator && 'request' in navigator.wakeLock) {
+      wakeLock.removeEventListener('release', this.releasedLockListener);
+    }
+  }
 
   public is(value: any): boolean {
     return coerceBooleanProperty(value);
@@ -86,9 +94,7 @@ export class CommonService {
       const requestWakeLock = async () => {
         try {
           wakeLock = await navigator.wakeLock.request('screen');
-          wakeLock.addEventListener('release', () => {
-            console.log('The Wake Lock has been released');
-          });
+          wakeLock.addEventListener('release', this.releasedLockListener);
           console.log('The Wake Lock is active');
           return wakeLock;
         } catch (error) {
@@ -103,6 +109,10 @@ export class CommonService {
     } else {
       console.warn('The Wake Lock API is not supported by the browser.');
     }
+  }
+
+  private releasedLockListener(event: Event): void {
+    console.log('The Wake Lock has been released');
   }
 
   public releaseWakeLock(): void {
