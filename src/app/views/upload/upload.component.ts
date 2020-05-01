@@ -21,7 +21,7 @@ export class UploadComponent implements OnInit {
   }
 
   public onUpload(fileList: FileList) {
-    const file = fileList[0];
+    const file: any = fileList[0];
     const fileReader: FileReader = new FileReader();
     fileReader.onloadend = (event: Event) => {
       this.rawMidiData = fileReader.result as ArrayBuffer;

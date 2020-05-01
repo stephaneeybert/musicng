@@ -15,7 +15,7 @@ export class KeycloakClientService {
   public init$(): Observable<any> {
     KeycloakClientService.auth.loggedIn = false;
     return new Observable((observer) => {
-      const keycloakConfig = {
+      const keycloakConfig: any = {
         'url': environment.KEYCLOAK_URI,
         'realm': environment.KEYCLOAK_REALM,
         'clientId': environment.KEYCLOAK_CLIENTID,
@@ -104,7 +104,7 @@ export class KeycloakClientService {
   }
 
   public getConfiguration(): object {
-    const notAvailable = 'N/A';
+    const notAvailable: string = 'N/A';
     return {
       'authServerUrl': KeycloakClientService.auth.authz.authServerUrl ? KeycloakClientService.auth.authz.authServerUrl : notAvailable,
       'openIdFlow': KeycloakClientService.auth.authz.flow ? KeycloakClientService.auth.authz.flow : notAvailable,

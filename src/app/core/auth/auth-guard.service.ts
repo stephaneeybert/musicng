@@ -46,9 +46,9 @@ export class AuthGuardService implements CanActivate, CanActivateChild, CanLoad 
           this.router.navigate(['login']);
           return false;
         } else {
-          const expectedRole = route.data.expectedRole ? (environment.ROLE_PREFIX + route.data.expectedRole).toUpperCase() : null;
-          const tokenPayload = this.tokenService.getDecodedAccessToken();
-          const actualRoles = tokenPayload.scopes ? tokenPayload.scopes : null;
+          const expectedRole: string = route.data.expectedRole ? (environment.ROLE_PREFIX + route.data.expectedRole).toUpperCase() : '';
+          const tokenPayload: any = this.tokenService.getDecodedAccessToken();
+          const actualRoles: Array<string> = tokenPayload.scopes ? tokenPayload.scopes : '';
           // Check the role only if the route expects one
           if (expectedRole != null && (actualRoles == null || !actualRoles.includes(expectedRole))) {
             this.router.navigate(['home']);

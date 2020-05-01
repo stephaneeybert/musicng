@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { Meta, Title, MetaDefinition } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
@@ -20,7 +20,7 @@ export class UIService {
     const title: string = config.title;
     this.title.setTitle(title);
 
-    const tags: any = [
+    const tags: Array<MetaDefinition> = [
       { name: 'description', content: description },
       { name: 'theme-color', content: color },
       { name: 'twitter:card', content: 'summary' },
@@ -35,7 +35,7 @@ export class UIService {
       { name: 'og:description', content: description },
       { name: 'og:image', content: image },
     ];
-    tags.forEach(tag => this.meta.updateTag(tag));
+    tags.forEach((tag: MetaDefinition) => this.meta.updateTag(tag));
   }
 
   public showSnackBar(message: string, action?: string): void {

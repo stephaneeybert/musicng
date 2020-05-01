@@ -38,10 +38,10 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
   }
 
   public add(soundtrack: Soundtrack) {
-    const index = this.getSoundtrackIndex(soundtrack.id);
+    const index: number = this.getSoundtrackIndex(soundtrack.id);
     if (index === -1) {
       soundtrack.id = this.commonService.normalizeName(soundtrack.id);
-      const soundtracks = this.getState();
+      const soundtracks: Array<Soundtrack> = this.getState();
       soundtracks.push(soundtrack);
       this.setState(soundtracks);
       this.storeSoundtrack(soundtrack);
@@ -49,9 +49,9 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
   }
 
   public delete(soundtrack: Soundtrack): boolean {
-    const index = this.getSoundtrackIndex(soundtrack.id);
+    const index: number = this.getSoundtrackIndex(soundtrack.id);
     if (index !== -1) {
-      const soundtracks = this.getState();
+      const soundtracks: Array<Soundtrack> = this.getState();
       soundtracks.splice(index, 1);
       this.setState(soundtracks);
 
@@ -88,9 +88,9 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
   }
 
   public setSoundtrack(soundtrack: Soundtrack) {
-    const index = this.getSoundtrackIndex(soundtrack.id);
+    const index: number = this.getSoundtrackIndex(soundtrack.id);
     if (index !== -1) {
-      const soundtracks = this.getState();
+      const soundtracks: Array<Soundtrack> = this.getState();
       soundtracks[index] = soundtrack;
       this.setState(soundtracks);
     }

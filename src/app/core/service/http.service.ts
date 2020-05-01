@@ -48,7 +48,7 @@ export class HttpService {
   }
 
   private buildOptions(headers?: HttpHeaders): HttpOptions {
-    const options = {
+    const options: any = {
       headers: this.buildHeader(headers),
       responseType: 'json' as 'json'
     };

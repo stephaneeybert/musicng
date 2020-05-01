@@ -3,12 +3,12 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 
 // See https://github.com/auth0/angular2-jwt
 
-const ACCESS_TOKEN_NAME = 'accessToken';
-const REFRESH_TOKEN_NAME = 'refreshToken';
-const ACCESS_TOKEN_HEADER_NAME = 'Authorization';
-const AUTH_BEARER_HEADER = 'Bearer';
-const REFRESH_TOKEN_HEADER_NAME = 'TokenRefresh';
-const CLIENT_ID_HEADER_NAME = 'ClientId';
+const ACCESS_TOKEN_NAME: string = 'accessToken';
+const REFRESH_TOKEN_NAME: string = 'refreshToken';
+const ACCESS_TOKEN_HEADER_NAME: string = 'Authorization';
+const AUTH_BEARER_HEADER: string = 'Bearer';
+const REFRESH_TOKEN_HEADER_NAME: string = 'TokenRefresh';
+const CLIENT_ID_HEADER_NAME: string = 'ClientId';
 
 @Injectable({
   providedIn: 'root'
@@ -25,22 +25,22 @@ export class TokenService {
   // constructor(private jwtHelperService: JwtHelperService) {}
 
   public accessTokenExpired(): boolean {
-    const token = this.getAccessTokenFromLocalStorage();
+    const token: string = this.getAccessTokenFromLocalStorage();
     return (!token || this.jwtHelperService.isTokenExpired(token));
   }
 
   public refreshTokenExpired(): boolean {
-    const token = this.getRefreshTokenFromLocalStorage();
+    const token: string = this.getRefreshTokenFromLocalStorage();
     return (!token || this.jwtHelperService.isTokenExpired(token));
   }
 
-  public getAccessTokenExpirationDate() {
-    const token = this.getAccessTokenFromLocalStorage();
+  public getAccessTokenExpirationDate(): Date | null {
+    const token: string = this.getAccessTokenFromLocalStorage();
     return this.jwtHelperService.getTokenExpirationDate(token);
   }
 
   public getDecodedAccessToken() {
-    const token = this.getAccessTokenFromLocalStorage();
+    const token: string = this.getAccessTokenFromLocalStorage();
     return this.jwtHelperService.decodeToken(token);
   }
 

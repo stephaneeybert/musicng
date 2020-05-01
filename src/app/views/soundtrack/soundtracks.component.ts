@@ -115,7 +115,7 @@ export class SoundtracksComponent implements OnInit {
   }
 
   openSoundtrackDialog(existingSoundtrack: Soundtrack) {
-    const dialogConfig = new MatDialogConfig();
+    const dialogConfig: MatDialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.hasBackdrop = true;

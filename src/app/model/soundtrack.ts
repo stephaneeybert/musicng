@@ -1,6 +1,7 @@
 import * as vexflow from 'vexflow';
 import { Track } from './track';
 import { Measure } from './measure/measure';
+import { PlacedChord } from './note/placed-chord';
 
 export class Soundtrack {
 

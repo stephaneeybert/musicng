@@ -108,7 +108,7 @@ export class GeneratorService {
     })
 
     // Shift the copy and not the original
-    const item: string |undefined = shiftedItems.shift();
+    const item: string | undefined = shiftedItems.shift();
     shiftedItems.push(item!);
     return shiftedItems;
   }
@@ -121,7 +121,7 @@ export class GeneratorService {
     })
 
     // Shift the copy and not the original
-    const item: string |undefined = shiftedItems.pop();
+    const item: string | undefined = shiftedItems.pop();
     shiftedItems.unshift(item!);
     return shiftedItems;
   }
@@ -183,7 +183,7 @@ export class GeneratorService {
 
       // Start on the Do chord and then randomly pick a chord
       // TODO Change all == by ===
-      const chromaNoteIndex = (nbAddedChord === 0) ? 0 : this.randomlyPickChroma(previousChromaNoteIndex);
+      const chromaNoteIndex: number = (nbAddedChord === 0) ? 0 : this.randomlyPickChroma(previousChromaNoteIndex);
       for (let noteIndex = 0; noteIndex < this.CHORD_WIDTH; noteIndex++) {
         chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);
       }

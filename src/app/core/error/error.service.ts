@@ -32,25 +32,25 @@ export class ErrorService {
   }
 
   public log(error: any) {
-    const errorWithContext = this.addContextInfo(error);
+    const errorWithContext: any = this.addContextInfo(error);
     return MockHttpService.post(errorWithContext); // TODO Implement a server side error inbox
   }
 
   private addContextInfo(error: any) {
-    const appId = 'My API id'; // TODO get an env variable
-    const location = this.injector.get(LocationStrategy);
-    const url = location instanceof PathLocationStrategy ? location.path() : '';
-    const time = new Date().getTime();
+    const appId: string = 'My API id'; // TODO get an env variable
+    const location: any = this.injector.get(LocationStrategy);
+    const url: string = location instanceof PathLocationStrategy ? location.path() : '';
+    const time: number = new Date().getTime();
 
-    const name = error.name || null;
-    const user = ''; // TODO get the logged in user
-    const id = `${appId}-${user}-${time}`;
-    const status = error.status || null;
-    const message = (error && error.body) ? error.body : error;
-    const stack = error instanceof HttpErrorResponse ? null : error; // TODO StackTraceParser.parse(error);
-    const method = (stack && stack[0]) ? stack[0].functionName : null;
+    const name: string = error.name || null;
+    const user: string = ''; // TODO get the logged in user
+    const id: string = `${appId}-${user}-${time}`;
+    const status: string = error.status || null;
+    const message: string = (error && error.body) ? error.body : error;
+    const stack: any = error instanceof HttpErrorResponse ? null : error; // TODO StackTraceParser.parse(error);
+    const method: any = (stack && stack[0]) ? stack[0].functionName : null;
 
-    const errorWithContext = { message, error, method, name, appId, user, time, id, url, status, stack };
+    const errorWithContext: any = { message, error, method, name, appId, user, time, id, url, status, stack };
     return errorWithContext;
   }
 
@@ -61,10 +61,13 @@ export class ErrorService {
   }
 
   fireFakeServerError() {
-    this.httpClient
-      .get('https://jsonplaceholder.typicode.com/1')
-      .subscribe(); // TODO Missing unsubscribe
+    const subscription: Subscription = this.httpClient
+      .get('https://jsonplaceholder.typicode.com/1') // TODO Hard coded url
+      .subscribe(() => {
+        subscription.unsubscribe();
+      });
   }
+
 }
 
 class MockHttpService {

@@ -70,9 +70,9 @@ export class CommonService implements OnDestroy {
     if ('WakeLock' in pageWindow && 'request' in pageWindow.WakeLock) {
 
       console.warn('The Wake Lock API is supported by the browser window object.');
-      const requestWakeLock = () => {
-        const controller = new AbortController();
-        const signal = controller.signal;
+      const requestWakeLock: Function = () => {
+        const controller: AbortController = new AbortController();
+        const signal: AbortSignal = controller.signal;
         pageWindow.WakeLock.request('screen', { signal })
           .catch((error: Error) => {
             if (error.name === 'AbortError') {
@@ -91,7 +91,7 @@ export class CommonService implements OnDestroy {
     } else if ('wakeLock' in navigator && 'request' in navigator.wakeLock) {
 
       console.warn('The Wake Lock API is supported by the browser navigator object.');
-      const requestWakeLock = async () => {
+      const requestWakeLock: Function = async () => {
         try {
           wakeLock = await navigator.wakeLock.request('screen');
           wakeLock.addEventListener('release', this.releasedLockListener);

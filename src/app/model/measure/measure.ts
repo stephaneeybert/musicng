@@ -52,11 +52,11 @@ export class Measure {
   public getPlacedChordsNbBeats(): number {
     let totalNbBeats: number = 0;
     if (this.placedChords) {
-      for (const placedChord of this.placedChords) {
+      this.placedChords.forEach((placedChord: PlacedChord) => {
         // The beat value for a chord
-        const placedChordNbBeats = (this.timeSignature.denominator / placedChord.getDuration());
+        const placedChordNbBeats: number = (this.timeSignature.denominator / placedChord.getDuration());
         totalNbBeats += placedChordNbBeats;
-      }
+      });
     }
     return totalNbBeats;
   }

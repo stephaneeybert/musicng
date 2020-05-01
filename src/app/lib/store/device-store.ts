@@ -33,10 +33,10 @@ export class DeviceStore extends Store<Array<Device>> {
   }
 
   public add(device: Device) {
-    const index = this.getDeviceIndex(device.id);
+    const index: number = this.getDeviceIndex(device.id);
     if (index === -1) {
       device.id = this.commonService.normalizeName(device.id);
-      const devices = this.getState();
+      const devices: Array<Device> = this.getState();
       devices.push(device);
       this.setState(devices);
     }
@@ -51,9 +51,9 @@ export class DeviceStore extends Store<Array<Device>> {
   }
 
   public delete(deviceId: string) {
-    const index = this.getDeviceIndex(deviceId);
+    const index: number = this.getDeviceIndex(deviceId);
     if (index !== -1) {
-      const devices = this.getState();
+      const devices: Array<Device> = this.getState();
       const itemDevice: Device = devices[index];
       if (itemDevice.midiMessageSubscription != null) {
         itemDevice.midiMessageSubscription.unsubscribe();
@@ -90,9 +90,9 @@ export class DeviceStore extends Store<Array<Device>> {
   }
 
   public setDevice(device: Device) {
-    const index = this.getDeviceIndex(device.id);
+    const index: number = this.getDeviceIndex(device.id);
     if (index !== -1) {
-      const devices = this.getState();
+      const devices: Array<Device> = this.getState();
       devices[index] = device;
       this.setState(devices);
     }

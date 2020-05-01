@@ -42,13 +42,13 @@ export class NotationService {
   public parseMeasures(textMeasures: Array<string>, tempo: number, timeSignatureNumerator: number, timeSignatureDenominator: number, velocity: number): Array<Measure> {
     const measures: Array<Measure> = new Array<Measure>();
     let measureIndex: number = 0;
-    for (const textMeasure of textMeasures) {
+    textMeasures.forEach((textMeasure: string) => {
       const placedChords: Array<PlacedChord> = this.parseTextMeasure(textMeasure, velocity);
       const measure: Measure = this.createMeasure(measureIndex, tempo, timeSignatureNumerator, timeSignatureDenominator);
       measure.placedChords = placedChords;
       measureIndex++;
       measures.push(measure);
-    }
+    });
     return measures;
   }
 

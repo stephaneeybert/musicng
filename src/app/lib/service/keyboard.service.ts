@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import Nexus from 'nexusui';
 
-const KEYBOARD_WIDTH_RATIO = 0.9;
-const KEYBOARD_HEIGHT = 125;
-const RANGE_MIN = 36;
-const RANGE_MAX = 95;
+const KEYBOARD_WIDTH_RATIO: number = 0.9;
+const KEYBOARD_HEIGHT: number = 125;
+const RANGE_MIN: number = 36;
+const RANGE_MAX: number = 95;
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +15,10 @@ export class KeyboardService {
 
   public createKeyboard(name: string, screenWidth: number): any {
     // The keyboard width must fit within the screen
-    const keeyboardWidth = screenWidth * KEYBOARD_WIDTH_RATIO;
+    const keeyboardWidth: number = screenWidth * KEYBOARD_WIDTH_RATIO;
 
     const elementName: string = '#' + name;
-    const piano = new Nexus.Piano(elementName, {
+    const piano: any = new Nexus.Piano(elementName, {
       size: [ keeyboardWidth, KEYBOARD_HEIGHT ],
       lowNote: RANGE_MIN,
       highNote: RANGE_MAX

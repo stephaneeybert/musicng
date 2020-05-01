@@ -180,7 +180,7 @@ export class PwaService implements OnDestroy {
       this.pwaCheckForUpdateSubscription = this.swUpdate.available
         .subscribe(() => {
           console.log('PWA - Offering a new version');
-          const appNewVersion = this.translateService.instant('app.pwa.new_version_available');
+          const appNewVersion: string = this.translateService.instant('app.pwa.new_version_available');
           if (confirm(appNewVersion)) {
             this.uiService.reloadPage();
           }

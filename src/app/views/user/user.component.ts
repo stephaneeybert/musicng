@@ -31,7 +31,7 @@ export class UserComponent implements OnInit {
   }
 
   getUser(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id: string | null = this.route.snapshot.paramMap.get('id');
     if (id) {
       const subscription: Subscription = this.userService.get(id)
       .subscribe(user => {

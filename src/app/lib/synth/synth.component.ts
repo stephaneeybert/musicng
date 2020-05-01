@@ -79,7 +79,7 @@ export class SynthComponent implements AfterViewInit {
           // The soundtrack play is stopped when the animated stave setting is changed
           this.synthService.stopSoundtrack(soundtrack);
         } else {
-          const synth = this.synthService.createSoundtrackSynth();
+          const synth: any = this.synthService.createSoundtrackSynth();
           this.soundtrackStore.setSoundtrackSynth(soundtrack, synth);
         }
       } else {
@@ -90,7 +90,7 @@ export class SynthComponent implements AfterViewInit {
 
   private createDeviceSynth(device: Device) {
     if (device != null) {
-      const synth = this.synthService.createDeviceSynth();
+      const synth: any = this.synthService.createDeviceSynth();
       this.deviceStore.setDeviceSynth(device, synth);
     }
   }

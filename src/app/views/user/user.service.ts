@@ -8,7 +8,7 @@ import { HttpService } from '@app/core/service/http.service';
 import { User } from './user';
 import { HateoasPageable } from './hateoas-pageable';
 
-const DOMAIN_URI = 'users';
+const DOMAIN_URI: string = 'users';
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +45,7 @@ export class UserService {
   }
 
   public get(id: string): Observable<User> {
-    const url = this.usersUrl + '/' + String(id);
+    const url: string = this.usersUrl + '/' + String(id);
     return this.httpService.get<User>(url);
   }
 
@@ -54,22 +54,22 @@ export class UserService {
   }
 
   public fullUpdate(user: User): Observable<User> {
-    const url = this.usersUrl + '/' + user.id;
+    const url: string = this.usersUrl + '/' + user.id;
     return this.httpService.put<User>(url, user);
   }
 
   public partialUpdate(user: User): Observable<User> {
-    const url = this.usersUrl + '/' + user.id;
+    const url: string = this.usersUrl + '/' + user.id;
     return this.httpService.patch<User>(url, user);
   }
 
   public delete(user: User): Observable<User> {
-    const url = this.usersUrl + '/' + user.id;
+    const url: string = this.usersUrl + '/' + user.id;
     return this.httpService.delete<User>(url);
   }
 
   public deleteById(userId: number): Observable<User> {
-    const url = this.usersUrl + '/' + userId;
+    const url: string = this.usersUrl + '/' + userId;
     return this.httpService.delete<User>(url);
   }
 

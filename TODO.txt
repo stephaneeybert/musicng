@@ -13,8 +13,6 @@ Avoir une sortie MIDI
 Export de fichier MIDI
 Live streaming MIDI
 
-Make sure all constants are typed.
-
 All methods should have a return type, possibly void.
 
 Do a slider for the volume of a track
@@ -30,3 +28,8 @@ but the 120 is fine
 Change the measure tempo to be a number of beats
 
 Should the clef be determined from the time signature of the measure ?
+
+Replace all the mat-raised-button attributes by mat-button
+<button mat-raised-button type="button" (click)="cancel()">Cancel</button>
+
+When changing the animated setting the sheet is lost

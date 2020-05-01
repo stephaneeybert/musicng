@@ -19,7 +19,7 @@ export class PwaPromptComponent {
     console.log(this.data);
     console.log(event);
     this.data.promptEvent.prompt();
-    this.data.promptEvent.userChoice
+    this.data.promptEvent.userChoice // TODO Do I need this ?
       .then((choiceResult: any) => {
         if (choiceResult.outcome === 'accepted') {
           console.log('PWA - User accepted the prompt and installed the app');

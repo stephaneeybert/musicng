@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
   }
 
   openLoginDialog(username: string): void {
-    const dialogConfig = new MatDialogConfig();
+    const dialogConfig: MatDialogConfig = new MatDialogConfig();
     dialogConfig.hasBackdrop = false;
     dialogConfig.data = {
       login: username ? username : ''

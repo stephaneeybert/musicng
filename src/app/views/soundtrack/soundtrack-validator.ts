@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { SoundtrackValidatorService } from './soundtrack-validator.service';
 
-const REGEX_ALLOWED_CHARS: any = /^[a-z0-9_-]+$/i;
+const REGEX_ALLOWED_CHARS: RegExp = /^[a-z0-9_-]+$/i;
 
 @Injectable({
   providedIn: 'root',

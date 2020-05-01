@@ -1,4 +1,4 @@
-export const environment = {
+export const environment: any = {
   wakeLock: null,
   production: true,
   CLIENT_ID: 'NG-ZERO',

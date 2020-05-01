@@ -13,7 +13,7 @@ import { map, tap, catchError } from 'rxjs/operators';
 import { KeycloakClientService } from './keycloak-client.service';
 import { throwError } from 'rxjs';
 
-const AUTH_HEADER_PREFIX = 'Bearer';
+const AUTH_HEADER_PREFIX: string = 'Bearer';
 
 @Injectable()
 export class KeycloakInterceptor implements HttpInterceptor {

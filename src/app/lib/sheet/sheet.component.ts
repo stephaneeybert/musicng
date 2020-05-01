@@ -9,8 +9,8 @@ import { Settings } from '@app/model/settings';
 import { SettingsStore } from '@app/lib/store/settings-store';
 import { SoundtrackStore } from '../store/soundtrack-store';
 
-const NAME_PREFIX_SOUNDTRACK = 'sheet-soundtrack-';
-const NAME_PREFIX_DEVICE = 'sheet-device-';
+const NAME_PREFIX_SOUNDTRACK: string = 'sheet-soundtrack-';
+const NAME_PREFIX_DEVICE: string = 'sheet-device-';
 
 @Component({
   selector: 'app-midi-sheet',

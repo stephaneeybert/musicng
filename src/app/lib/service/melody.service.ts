@@ -13,9 +13,9 @@ const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 2;
 const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 const DEFAULT_VELOCITY: number = 1;
 
-const MIDI_NOTE_MIN = 0;
-const MIDI_NOTE_MAX = 128;
-const MIDI_NOTE_DURATION = 300;
+const MIDI_NOTE_MIN: number = 0;
+const MIDI_NOTE_MAX: number = 128;
+const MIDI_NOTE_DURATION: number = 300;
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +30,7 @@ export class MelodyService {
 
   public addDummyMelody(): Soundtrack {
     const endOfTrackNote: string = this.notationService.buildEndOfTrackNote();
-    const textMeasures = [
+    const textMeasures: Array<string> = [
       'C5/8 rest/8 D5/16 C5/16 B4/16 C5/16',
       'E5/8 rest/8 F5/16 E5/16 D#5/16 E5/16',
       'B5/16 A5/16 G#5/16 A5/16 B5/16 A5/16 G#5/16 A5/16',
@@ -40,7 +40,7 @@ export class MelodyService {
       'B5/8 A5/8 G5/8 F#5/8',
       'E5/4' + ' ' + endOfTrackNote];
 
-    const soundtrackName = 'Demo soundtrack';
+    const soundtrackName: string = 'Demo soundtrack';
     const measures: Array<Measure> = this.notationService.parseMeasures(textMeasures, DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_VELOCITY);
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(soundtrackName);
     const melodyTrack: Track = soundtrack.addTrack(measures);

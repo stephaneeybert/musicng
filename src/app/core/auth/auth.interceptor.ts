@@ -15,7 +15,7 @@ import { throwError, Subject, Subscription } from 'rxjs';
 import { TokenService } from './token.service';
 import { AuthService } from '@app/core/auth/auth.service';
 
-const PATH_LOGIN = 'login';
+const PATH_LOGIN: string = 'login';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

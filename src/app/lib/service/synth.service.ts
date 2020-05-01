@@ -16,10 +16,10 @@ import { SettingsService } from '@app/views/settings/settings.service';
 
 // Observation has shown that a delay between creating the service
 // and starting the transport is required for the transport to work
-const TRANSPORT_START_DELAY = 5;
-const TRANSPORT_STATE_STARTED = 'started';
+const TRANSPORT_START_DELAY: number = 5;
+const TRANSPORT_STATE_STARTED: string = 'started';
 const AUDIO_CONTEXT_RUNNING: string = 'running';
-const PLAY_START_DELAY = 0;
+const PLAY_START_DELAY: number = 0;
 const CHORD_WIDTH: number = 3;
 const WHITEWASH_DELAY: number = 3000;
 const TEMPO_RAMP_TO_IN_SECONDS: number = 2;
@@ -246,7 +246,7 @@ export class SynthService {
         if (measure.placedChords) {
           measure.getSortedChords().forEach((placedChord: PlacedChord) => {
             const duration: string = placedChord.renderDuration();
-            const durationInSeconds = Tone.Time(duration).toSeconds();
+            const durationInSeconds: number = Tone.Time(duration).toSeconds();
             let triggerTime = measureStartTime + relativeTime;
             const releaseTime = triggerTime + durationInSeconds;
 

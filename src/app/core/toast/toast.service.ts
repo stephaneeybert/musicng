@@ -20,12 +20,12 @@ export class ToastService {
   ) { }
 
   show(data: ToastData) {
-    const positionStrategy = this.getPositionStrategy();
-    const overlayRef = this.overlay.create({ positionStrategy });
-    const toastRef = new ToastRef(overlayRef);
+    const positionStrategy: any = this.getPositionStrategy();
+    const overlayRef: any = this.overlay.create({ positionStrategy });
+    const toastRef: any = new ToastRef(overlayRef);
     this.lastToast = toastRef;
-    const injector = this.getInjector(data, toastRef, this.parentInjector);
-    const toastPortal = new ComponentPortal(ToastComponent, null, injector);
+    const injector: any = this.getInjector(data, toastRef, this.parentInjector);
+    const toastPortal: any = new ComponentPortal(ToastComponent, null, injector);
     overlayRef.attach(toastPortal);
     return toastRef;
   }
@@ -38,13 +38,13 @@ export class ToastService {
   }
 
   getPosition() {
-    const lastToastIsVisible = this.lastToast && this.lastToast.isVisible();
-    const position = lastToastIsVisible ? this.lastToast.getPosition().bottom : this.toastConfig.position.top;
+    const lastToastIsVisible: any = this.lastToast && this.lastToast.isVisible();
+    const position: any = lastToastIsVisible ? this.lastToast.getPosition().bottom : this.toastConfig.position.top;
     return position + 'px';
   }
 
   getInjector(data: ToastData, toastRef: ToastRef, parentInjector: Injector) {
-    const tokens = new WeakMap();
+    const tokens: any = new WeakMap();
     tokens.set(ToastData, data);
     tokens.set(ToastRef, toastRef);
     return new PortalInjector(parentInjector, tokens);

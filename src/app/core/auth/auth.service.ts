@@ -9,13 +9,13 @@ import { HttpService } from '@app/core/service/http.service';
 import { TokenService } from '@app/core/auth/token.service';
 import { User } from '@app/views/user/user';
 
-const PATH_AUTH = 'auth';
-const PATH_LOGIN = 'login';
-const URI_LOGIN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_LOGIN;
-const PATH_LOGOUT = 'logout';
-const URI_LOGOUT = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_LOGOUT;
-const PATH_TOKEN_REFRESH = 'token-refresh';
-const URI_REFRESH_TOKEN = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_TOKEN_REFRESH;
+const PATH_AUTH: string = 'auth';
+const PATH_LOGIN: string = 'login';
+const URI_LOGIN: string = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_LOGIN;
+const PATH_LOGOUT: string = 'logout';
+const URI_LOGOUT: string = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_LOGOUT;
+const PATH_TOKEN_REFRESH: string = 'token-refresh';
+const URI_REFRESH_TOKEN: string = environment.BASE_REST_URI + '/' + PATH_AUTH + '/' + PATH_TOKEN_REFRESH;
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +38,7 @@ export class AuthService {
 
   public login(username: string, password: string): Observable<HttpResponse<User>> {
     console.log('Sending the login credentials to obtain a token');
-    const credentials = { 'email': username, 'password': password };
+    const credentials: any = { 'email': username, 'password': password };
     let httpHeaders: HttpHeaders = this.httpService.buildHeader();
     httpHeaders = this.addClientIdHeader(httpHeaders);
     return this.httpService.postWithHeadersInResponse<HttpResponse<User>>(URI_LOGIN, credentials, httpHeaders)
@@ -95,9 +95,9 @@ export class AuthService {
   }
 
   private storeAccessTokenInLocalStorage(response: HttpResponse<User>): void {
-    const accessTokenHeader = response.headers.get(this.tokenService.getAccessTokenHeaderName());
+    const accessTokenHeader: any = response.headers.get(this.tokenService.getAccessTokenHeaderName());
     if (null != accessTokenHeader) {
-      const accessToken = this.tokenService.extractTokenFromHeaderValue(accessTokenHeader);
+      const accessToken: any = this.tokenService.extractTokenFromHeaderValue(accessTokenHeader);
       if (null != accessToken) {
         console.log('Storing the access token from the response header: ' + accessToken);
         this.tokenService.setAccessTokenToLocalStorage(accessToken);
@@ -106,10 +106,10 @@ export class AuthService {
   }
 
   private storeRefreshTokenInLocalStorage(response: HttpResponse<User>): void {
-    const name = this.tokenService.getRefreshTokenHeaderName();
-    const refreshTokenHeader = response.headers.get(this.tokenService.getRefreshTokenHeaderName());
+    const name: string = this.tokenService.getRefreshTokenHeaderName();
+    const refreshTokenHeader: any = response.headers.get(this.tokenService.getRefreshTokenHeaderName());
     if (null != refreshTokenHeader) {
-      const refreshToken = this.tokenService.extractTokenFromHeaderValue(refreshTokenHeader);
+      const refreshToken: any = this.tokenService.extractTokenFromHeaderValue(refreshTokenHeader);
       if (null != refreshToken) {
         console.log('Storing the refresh token from the response header: ' + refreshToken);
         this.tokenService.setRefreshTokenToLocalStorage(refreshToken);

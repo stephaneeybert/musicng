@@ -3,12 +3,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-const ITEMS_PER_PAGE = 'PAGINATOR.ITEMS_PER_PAGE';
-const NEXT_PAGE = 'PAGINATOR.NEXT_PAGE';
-const PREVIOUS_PAGE = 'PAGINATOR.PREVIOUS_PAGE';
-const FIRST_PAGE = 'PAGINATOR.FIRST_PAGE';
-const LAST_PAGE = 'PAGINATOR.LAST_PAGE';
-const OUT_OF = 'PAGINATOR.OUT_OF';
+const ITEMS_PER_PAGE: string = 'PAGINATOR.ITEMS_PER_PAGE';
+const NEXT_PAGE: string = 'PAGINATOR.NEXT_PAGE';
+const PREVIOUS_PAGE: string = 'PAGINATOR.PREVIOUS_PAGE';
+const FIRST_PAGE: string = 'PAGINATOR.FIRST_PAGE';
+const LAST_PAGE: string = 'PAGINATOR.LAST_PAGE';
+const OUT_OF: string = 'PAGINATOR.OUT_OF';
 
 @Injectable()
 export class LocalizedPaginator extends MatPaginatorIntl {
@@ -25,15 +25,15 @@ export class LocalizedPaginator extends MatPaginatorIntl {
   }
 
   getRangeLabel = (page: number, pageSize: number, length: number) => {
-    const out_of = this.translateService.instant(OUT_OF);
+    const outOf: string = this.translateService.instant(OUT_OF);
     if (length === 0 || pageSize === 0) {
-      return '0 ' + out_of + ' ' + length;
+      return '0 ' + outOf + ' ' + length;
     }
     length = Math.max(length, 0);
-    const startIndex = page * pageSize;
+    const startIndex: number = page * pageSize;
     // If the start index exceeds the list length, do not try and fix the end index to the end
-    const endIndex = startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
-    return startIndex + 1 + ' - ' + endIndex + ' ' + out_of + ' ' + length;
+    const endIndex: number = startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
+    return startIndex + 1 + ' - ' + endIndex + ' ' + outOf + ' ' + length;
   };
 
   public getAndInitTranslations(): void {

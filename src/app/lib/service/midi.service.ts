@@ -27,21 +27,21 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Duration } from '@app/model/note/duration/duration';
 import { SynthService } from './synth.service';
 
-const NOTE_ON = 144; // A command value of 144 is a "note on"
-const NOTE_OFF = 128; // A command value of 128 is a "note off"
-const DEFAULT_MIDI_TEMPO = 120;
-const DEFAULT_MIDI_PPQ = 480;
-const DEFAULT_MIDI_TIME_SIGNATURE = '4/4';
+const NOTE_ON: number = 144; // A command value of 144 is a "note on"
+const NOTE_OFF: number = 128; // A command value of 128 is a "note off"
+const DEFAULT_MIDI_TEMPO: number = 120;
+const DEFAULT_MIDI_PPQ: number = 480;
+const DEFAULT_MIDI_TIME_SIGNATURE: string = '4/4';
 
-const MIDI_EVENT_CHANNEL_PREFIX = 'channelPrefix';
-const MIDI_EVENT_COPYRIGHT_NOTICE = 'copyrightNotice';
-const MIDI_EVENT_TEXT = 'text';
-const MIDI_EVENT_TIME_SIGNATURE = 'timeSignature';
-const MIDI_EVENT_SET_TEMPO = 'setTempo';
-const MIDI_EVENT_NOTE_ON = 'noteOn';
-const MIDI_EVENT_NOTE_OFF = 'noteOff';
-const MIDI_EVENT_CONTROL_CHANGE = 'controlChange';
-const MIDI_EVENT_TRACK_NAME = 'trackName';
+const MIDI_EVENT_CHANNEL_PREFIX: string = 'channelPrefix';
+const MIDI_EVENT_COPYRIGHT_NOTICE: string = 'copyrightNotice';
+const MIDI_EVENT_TEXT: string = 'text';
+const MIDI_EVENT_TIME_SIGNATURE: string = 'timeSignature';
+const MIDI_EVENT_SET_TEMPO: string = 'setTempo';
+const MIDI_EVENT_NOTE_ON: string = 'noteOn';
+const MIDI_EVENT_NOTE_OFF: string = 'noteOff';
+const MIDI_EVENT_CONTROL_CHANGE: string = 'controlChange';
+const MIDI_EVENT_TRACK_NAME: string = 'trackName';
 const MIDI_DEVICE_OBSERVE_DELAY: number = 1000;
 
 declare const navigator: any;
@@ -119,7 +119,7 @@ export class MidiService {
   }
 
   private handleMessagesFromInputDevice(device: Device): void {
-    const subscription = this.getInputDevices$()
+    const subscription: Subscription = this.getInputDevices$()
     .pipe(
       filter((midiInput: WebMidi.MIDIInput) => {
         return (midiInput.name != undefined) && this.commonService.normalizeName(midiInput.name) === this.commonService.normalizeName(device.id);
@@ -133,26 +133,26 @@ export class MidiService {
 
   // Processing the message received from an input device
   private onMIDIMessage(device: Device, message: WebMidi.MIDIMessageEvent): void {
-    const deviceName = this.commonService.normalizeName(device.id);
+    const deviceName: string = this.commonService.normalizeName(device.id);
 
-    const status = message.data[0];
+    const status: number = message.data[0];
 
     // The command is the higher four bits of the status byte
-    const command = status >>> 4;
-    const commandName = command === 0x9 ? 'Note On' : 'Note Off';
+    const command: number = status >>> 4;
+    const commandName: string = command === 0x9 ? 'Note On' : 'Note Off';
 
     // The channel (0-15) is the lower four bits of the status byte
     // A device can thus control 16 voices
-    const channel = status & 0xF;
+    const channel: number = status & 0xF;
 
     // The velocity is in a range of 0 to 127, from softest to loudest
     // Since a velocity of 0 is a "note off", the softest possible "note on" velocity is 1
     // The velocity might not be included with a "note off"
-    const velocity = (message.data && message.data.length > 2) ? message.data[2] : 0;
+    const velocity: number = (message.data && message.data.length > 2) ? message.data[2] : 0;
 
-    const midiNote = message.data[1];
-    const octave = Math.trunc(midiNote / 12);
-    const musicNote = this.synthService.midiToTextNote(midiNote);
+    const midiNote: number = message.data[1];
+    const octave: number = Math.trunc(midiNote / 12);
+    const musicNote: string = this.synthService.midiToTextNote(midiNote);
 
     // console.log('Device: ' + deviceName + ' Command: ' + command.toString(16) + ' ' + commandName
     //   + ' Channel: ' + channel.toString(16)
@@ -191,9 +191,9 @@ export class MidiService {
   }
 
   public async parseRawMidiTonejs(name: string, rawMidiData: ArrayBuffer): Promise<Soundtrack> {
-    const midi = new Midi(rawMidiData);
+    const midi: Midi = new Midi(rawMidiData);
     console.log(midi);
-    const soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
+    const soundtrack: Soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
     soundtrack.name = midi.name;
     if (midi.tracks != null) {
       let trackIndex: number = 0;
@@ -212,7 +212,7 @@ export class MidiService {
         const timeSignature: TimeSignature = this.notationService.createDefaultTimeSignature();
         if (midiTrack.notes != null) {
           let measureIndex: number = 0;
-          const measures = new Array<Measure>();
+          const measures: Array<Measure> = new Array<Measure>();
           let placedChordIndex: number = 0;
           const placedChords: Array<PlacedChord> = new Array<PlacedChord>();
           midiTrack.notes.forEach((midiNote: any) => {
@@ -237,7 +237,7 @@ export class MidiService {
           Object.keys(midiTrack.controlChanges).map(key => {
             // TODO The control is not yet retrieved
             const midiControl: any = midiTrack.controlChanges[key];
-            const control = new Control(midiControl.number, midiControl.time, midiControl.ticks, midiControl.value);
+            const control: Control = new Control(midiControl.number, midiControl.time, midiControl.ticks, midiControl.value);
             console.log(control);
             if (track.controls) {
               track.controls.push(control);
@@ -267,7 +267,7 @@ export class MidiService {
     .then((jsonMidi: IMidiFile) => {
       if (jsonMidi.format === 1) {
         jsonMidi = this.addEventTime(jsonMidi);
-        const assumedTempoTrackIndex = 0;
+        const assumedTempoTrackIndex: number = 0;
         if (this.isTempoTrack(jsonMidi.tracks[assumedTempoTrackIndex])) {
           jsonMidi = this.copyTempoTrackEventsAndSortByTime(assumedTempoTrackIndex, jsonMidi);
         }
@@ -275,7 +275,7 @@ export class MidiService {
         let isFirstTrack = true;
         // The number of pulses per quarter note is expressed in ticks
         // In MIDI it may also be called PPQ, PPQN, time resolution, time division
-        const pulsesPerQuarter = jsonMidi.division ? jsonMidi.division : DEFAULT_MIDI_PPQ;
+        const pulsesPerQuarter: number = jsonMidi.division ? jsonMidi.division : DEFAULT_MIDI_PPQ;
         console.log('PPQ: ' + jsonMidi.division + ' pulsesPerQuarter: ' + pulsesPerQuarter);
         let currentTempo: number = this.bpmToMicroSeconds(DEFAULT_MIDI_TEMPO);
         let currentNoteOnEvent: IMidiNoteOnEvent;
@@ -287,7 +287,7 @@ export class MidiService {
           console.log('New track');
           // In MIDI the measure may also be called a bar
           let measureIndex: number = 0;
-          const measures = new Array<Measure>();
+          const measures: Array<Measure> = new Array<Measure>();
           let currentMeasure: Measure;
           midiTrack.forEach((midiEvent: any) => {
             if (midiEvent.hasOwnProperty(MIDI_EVENT_TRACK_NAME)) {
@@ -423,7 +423,7 @@ export class MidiService {
     if (tempoChangeEvents.length > 0) {
       jsonMidi.tracks.forEach((midiTrack: TMidiEvent[], trackIndex: number) => {
         if (trackIndex !== tempoTrackIndex) {
-          const track = midiTrack.concat(tempoChangeEvents);
+          const track: Array<TMidiEvent> = midiTrack.concat(tempoChangeEvents);
           track.sort((a: TMidiEvent, b: TMidiEvent) => {
             if (a.time! < b.time!) {
               return -1;
@@ -499,10 +499,10 @@ export class MidiService {
   // }
 
   private ticksToBpm(deltaInTicks: number, ticksPerQuarter: number, tempoInMicroSecondsPerBeat: number): number {
-    const deltaInQuarters = this.ticksToQuarters(deltaInTicks, ticksPerQuarter);
-    const deltaInMicroSeconds = deltaInQuarters * tempoInMicroSecondsPerBeat;
-    const bpm = this.microSecondsToBpm(deltaInMicroSeconds);
-    const deltaInSubdivisions = this.subdivision(deltaInQuarters);
+    const deltaInQuarters: number = this.ticksToQuarters(deltaInTicks, ticksPerQuarter);
+    const deltaInMicroSeconds: number = deltaInQuarters * tempoInMicroSecondsPerBeat;
+    const bpm: number = this.microSecondsToBpm(deltaInMicroSeconds);
+    const deltaInSubdivisions: number = this.subdivision(deltaInQuarters);
     console.log('delta: ' + deltaInTicks + ' ' + deltaInQuarters + ' ' + deltaInSubdivisions
     + ' tempo: ' + tempoInMicroSecondsPerBeat
     + ' bpm: ' + bpm);
@@ -519,38 +519,6 @@ export class MidiService {
     return deltaInSubdivisionSlices;
   }
 
-  // private findSubdivision(subdivisionSlices: number): Subdivision {
-  //   let left: number = 0;
-  //   let leftUnit: number = 0;
-  //   let right: number = 0;
-  //   let rightUnit: number = 0;
-  //   let remain = subdivisionSlices;
-  //   while (remain > 0) {
-  //     if (remain - 64 >= 0) {
-  //       left += 1;
-  //       leftUnit = Subdivisions.WHOLE;
-  //       remain -= 64;
-  //     } else if (remain >= 32) {
-
-  //     }
-  //   }
-  //   return null;
-    // if ()
-    // if (intValue === Subdivision.EIGHTH.left) {
-    //   return Subdivision.EIGHTH;
-    // } else if (intValue === Subdivision.QUARTER.left) {
-    //   return Subdivision.QUARTER;
-    // } else if (intValue === Subdivision.SIXTEENTH.left) {
-    //   return Subdivision.SIXTEENTH;
-    // } else if (intValue === Subdivision.HALF.left) {
-    //   return Subdivision.HALF;
-    // } else if (intValue === Subdivision.THIRTY_SECOND.left) {
-    //   return Subdivision.THIRTY_SECOND;
-    // } else {
-    //   throw new Error('Unknown subdivision for duration: ' + subdivisionSlices);
-    // }
-  // }
-
   private microSecondsToBpm(microSeconds: number): number {
     return Math.round(60000 / (microSeconds / 1000));
   }
@@ -560,10 +528,10 @@ export class MidiService {
   }
 
   // TODO public createRawMidiFile(soundtrack: Soundtrack, filename: string): ToneMidi.Midi {
-  //   const midi = new ToneMidi.Midi();
+  //   const midi: Midi = new ToneMidi.Midi();
   //   midi.name = soundtrack.name;
   //   soundtrack.tracks.forEach((track: Track) => {
-  //     const midiTrack = midi.addTrack();
+  //     const midiTrack: any = midi.addTrack();
   //     midiTrack.name = track.name;
   //     midiTrack.channel = track.channel;
   //     track.notes.forEach((note: Note) => {

@@ -14,8 +14,8 @@ export class ErrorCustomHandler implements ErrorHandler {
     ) { }
 
     handleError(error: Error | HttpErrorResponse): void {
-        const notificationService = this.injector.get(NotificationService);
-        const errorService = this.injector.get(ErrorService);
+        const notificationService: any = this.injector.get(NotificationService);
+        const errorService: any = this.injector.get(ErrorService);
 
         if (error instanceof HttpErrorResponse) {
             // Handle server or connection errors

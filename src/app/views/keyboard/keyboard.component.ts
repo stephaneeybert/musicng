@@ -109,12 +109,12 @@ export class KeyboardComponent implements AfterViewInit {
   }
 
   private createSoundtrackKeyboard(soundtrack: Soundtrack): void {
-    const keyboard = this.keyboardService.createKeyboard(this.id, this.screenWidth);
+    const keyboard: any = this.keyboardService.createKeyboard(this.id, this.screenWidth);
     this.soundtrackStore.setSoundtrackKeyboard(soundtrack, keyboard);
   }
 
   private createDeviceKeyboard(device: Device): void {
-    const keyboard = this.keyboardService.createKeyboard(this.id, this.screenWidth);
+    const keyboard: any = this.keyboardService.createKeyboard(this.id, this.screenWidth);
     this.deviceStore.setDeviceKeyboard(device, keyboard);
     this.playSoundFromKeyboard(keyboard, device.synth);
   }

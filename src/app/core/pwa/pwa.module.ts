@@ -10,8 +10,8 @@ import { PwaPromptIconComponent } from './pwa-prompt-icon.component';
 import { LibI18nModule } from 'lib-i18n';
 import { BrowserModule } from '@angular/platform-browser';
 
-const checkForBeforeInstallEvents = (pwaService: PwaService) => () => pwaService.checkForBeforeInstallEvents();
-const pwaCheckForUpdateFactory = (pwaService: PwaService) => () => pwaService.checkForAppUpdate();
+const checkForBeforeInstallEvents: Function = (pwaService: PwaService) => () => pwaService.checkForBeforeInstallEvents();
+const pwaCheckForUpdateFactory: Function = (pwaService: PwaService) => () => pwaService.checkForAppUpdate();
 
 @NgModule({
   declarations: [

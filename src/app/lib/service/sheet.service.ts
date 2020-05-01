@@ -12,27 +12,27 @@ import { Track } from '@app/model/track';
 import { TranslateService } from '@ngx-translate/core';
 import { UIService } from '@app/core/service/ui.service';
 
-const SHEET_WIDTH_RATIO = 0.9;
-const VEXFLOW_STAVE_HEIGHT = 120;
-const VEXFLOW_OCTAVE_SEPARATOR = '/';
-const VEXFLOW_REST_NOTE = 'B/4';
-const VEXFLOW_REST_SUFFIX = 'r';
-const VEXFLOW_TIME_SIGNATURE_SEPARATOR = '/';
-const VEXFLOW_NOTE_COLOR = 'black';
-const VEXFLOW_STAVE_BACKGROUND_COLOR = 'white';
-const VEXFLOW_NOTE_HIGHLIGHT_COLOR = 'olivedrab';
-const VEXFLOW_FONT_TYPE = 'Arial';
-const VEXFLOW_FONT_SIZE = 10;
-const VEXFLOW_FONT_WEIGHT = '';
-const VEXFLOW_FONT_WEIGHT_BOLD = 'Bold';
+const SHEET_WIDTH_RATIO: number = 0.9;
+const VEXFLOW_STAVE_HEIGHT: number = 120;
+const VEXFLOW_OCTAVE_SEPARATOR: string = '/';
+const VEXFLOW_REST_NOTE: string = 'B/4';
+const VEXFLOW_REST_SUFFIX: string = 'r';
+const VEXFLOW_TIME_SIGNATURE_SEPARATOR: string = '/';
+const VEXFLOW_NOTE_COLOR: string = 'black';
+const VEXFLOW_STAVE_BACKGROUND_COLOR: string = 'white';
+const VEXFLOW_NOTE_HIGHLIGHT_COLOR: string = 'olivedrab';
+const VEXFLOW_FONT_TYPE: string = 'Arial';
+const VEXFLOW_FONT_SIZE: number = 10;
+const VEXFLOW_FONT_WEIGHT: string = '';
+const VEXFLOW_FONT_WEIGHT_BOLD: string = 'Bold';
 const VEXFLOW_SVG_OPACITY_TO_SHOW: string = '100';
 const VEXFLOW_SVG_OPACITY_TO_HIDE: string = '0';
 
-const VEXFLOW_DOUBLE_BAR = '||';
-const VEXFLOW_REPEAT_BEGIN = '|:';
-const VEXFLOW_REPEAT_END = ':|';
-const VEXFLOW_DOUBLE_REPEAT = '::';
-const VEXFLOW_END_BAR = '|=';
+const VEXFLOW_DOUBLE_BAR: string = '||';
+const VEXFLOW_REPEAT_BEGIN: string = '|:';
+const VEXFLOW_REPEAT_END: string = ':|';
+const VEXFLOW_DOUBLE_REPEAT: string = '::';
+const VEXFLOW_END_BAR: string = '|=';
 
 export enum VexfloWAccidental {
   sharp = '#',
@@ -65,7 +65,7 @@ export class SheetService {
 
   private renderSoundtrackSheet(id: string, animatedStave: boolean, screenWidth: number, soundtrack: Soundtrack): void {
     // The width must fit within the screen
-    const displayWidth = screenWidth * SHEET_WIDTH_RATIO;
+    const displayWidth: number = screenWidth * SHEET_WIDTH_RATIO;
     let previousNoteName: string = '';
 
     let sheetWidth: number;
@@ -77,18 +77,20 @@ export class SheetService {
       this.clearSVGContext(soundtrack);
     }
     soundtrack.sheetContext = this.renderSVGContext(id, sheetWidth, sheetHeight);
-    const formatter = new Vex.Flow.Formatter();
+    const formatter: Vex.Flow.Formatter = new Vex.Flow.Formatter();
     const voices: Array<Vex.Flow.Voice> = new Array<Vex.Flow.Voice>();
     const nbTracks: number = soundtrack.getNbTracks();
-    if (soundtrack.sheetContext != null && soundtrack.hasTracks()) {
-      for (const track of soundtrack.tracks) {
+    if (soundtrack.hasTracks()) {
+      soundtrack.tracks.forEach((track: Track) => {
         if (track.hasMeasures()) {
           let measureWithVisibleNotesIndex: number = 0;
           for (const measure of track.getSortedMeasures()) {
             if (measure.placedChords) {
               if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
                 const stave = new Vex.Flow.Stave(this.getStaveX(animatedStave, track.index, measureWithVisibleNotesIndex), this.getStaveY(animatedStave, nbTracks, track.index, measureWithVisibleNotesIndex), displayWidth);
-                stave.setContext(soundtrack.sheetContext);
+                if (soundtrack.sheetContext != null) {
+                  stave.setContext(soundtrack.sheetContext);
+                }
                 stave.addClef(Clef.TREBLE); // TODO Should the clef be determined from the time signature of the measure ?
                 stave.addTimeSignature(this.renderTimeSignature(measure));
                 if (!animatedStave) {
@@ -96,7 +98,7 @@ export class SheetService {
                 }
                 measure.sheetStave = stave;
 
-                const staveNotes = new Array<Vex.Flow.StaveNote>();
+                const staveNotes: Array<Vex.Flow.StaveNote> = new Array<Vex.Flow.StaveNote>();
 
                 const voice: Vex.Flow.Voice = new Vex.Flow.Voice({
                   num_beats: measure.timeSignature.numerator,
@@ -141,7 +143,9 @@ export class SheetService {
                 voice.addTickables(staveNotes);
                 formatter.joinVoices([voice]);
                 formatter.formatToStave([voice], stave);
-                voice.draw(soundtrack.sheetContext);
+                if (soundtrack.sheetContext != null) {
+                  voice.draw(soundtrack.sheetContext);
+                }
                 measure.sheetVoice = voice;
                 voices.push(voice);
                 measureWithVisibleNotesIndex++;
@@ -151,7 +155,7 @@ export class SheetService {
             }
           }
         }
-      }
+      });
       if (animatedStave) {
         this.whitewashSheetContext(soundtrack.sheetContext);
         this.drawFirstMeasure(soundtrack);
@@ -174,12 +178,12 @@ export class SheetService {
 
   public drawFirstMeasure(soundtrack: Soundtrack): void {
     if (soundtrack.tracks) {
-      for (const track of soundtrack.getSortedTracks()) {
+      soundtrack.getSortedTracks().forEach((track: Track) => {
         if (track.hasMeasures()) {
           const sortedMeasures: Array<Measure> = track.getSortedMeasures();
           this.drawMeasure(sortedMeasures[0], soundtrack.sheetContext);
         }
-      }
+      });
     }
   }
 
@@ -377,9 +381,9 @@ export class SheetService {
       nbStaves = soundtrack.tracks ? soundtrack.tracks.length : 0;
     } else {
       if (soundtrack.hasTracks()) {
-        for (const track of soundtrack.tracks) {
+        soundtrack.tracks.forEach((track: Track) => {
           if (track.hasMeasures()) {
-            for (const measure of track.measures) {
+            track.measures.forEach((measure: Measure) => {
               if (measure.placedChords) {
                 if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
                   nbStaves++;;
@@ -387,9 +391,9 @@ export class SheetService {
               } else {
                 throw new Error('The measure placed chords array has not been instantiated.');
               }
-            }
+            });
           }
-        }
+        });
       }
     }
     return nbStaves;
@@ -426,9 +430,9 @@ export class SheetService {
   }
 
   private renderSVGContext(id: string, width: number, height: number): any { // TODO Replace all these any types
-    const domElement = document.getElementById(id);
+    const domElement: HTMLElement | null = document.getElementById(id);
     if (domElement != null) {
-      const renderer: any = new Vex.Flow.Renderer(domElement, Vex.Flow.Renderer.Backends.SVG);
+      const renderer: Vex.Flow.Renderer = new Vex.Flow.Renderer(domElement, Vex.Flow.Renderer.Backends.SVG);
       renderer.resize(width, height);
       const sheetContext: any = renderer.getContext();
       // sheetContext.setFont('Arial', 10, 0).setBackgroundFillStyle('#eed'); // TODO Hard coded font
