@@ -2,11 +2,6 @@ import { Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-const APP_COLOR = '#343a40';
-const APP_IMAGE = 'assets/icons/icon-72x72.png';
-const APP_TITLE = 'PierrePapierCiseaux';
-const APP_DESCRIPTION = 'Le jeu de pierre papier ciseaux';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -19,14 +14,15 @@ export class UIService {
     ) { }
 
   public setMetaData(config: any): void {
-    const description = config.description || APP_DESCRIPTION;
-    const image = config.image || APP_IMAGE;
-    const title = config.title ? `${config.title}` : APP_TITLE;
+    const description: string = config.description;
+    const color: string = config.color;
+    const image: string = config.image;
+    const title: string = config.title;
     this.title.setTitle(title);
 
-    const tags = [
+    const tags: any = [
       { name: 'description', content: description },
-      { name: 'theme-color', content: APP_COLOR },
+      { name: 'theme-color', content: color },
       { name: 'twitter:card', content: 'summary' },
       { name: 'twitter:image', content: image },
       { name: 'twitter:title', content: title },
