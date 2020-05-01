@@ -155,8 +155,10 @@ export class SynthService {
   public playSoundtrack(soundtrack: Soundtrack) {
     if (soundtrack.hasNotes()) {
       this.commonService.requestWakeLock();
-      // On Android the transport needs to be reset right before playing
-      // otherwise the playing starts at a later measure than the measure 0
+      // The transport needs to be reset right before playing
+      // otherwise the transport time has aready run away
+      // and by the time the playing starts some notes scheduled times
+      // may have already passed
       this.clearTransport();
       this.stopOtherSoundtracks(soundtrack);
 
