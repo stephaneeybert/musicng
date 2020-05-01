@@ -86,7 +86,7 @@ export class PwaService implements OnDestroy {
     event.preventDefault();
     // Keep the install prompt event for latter use
     this.installPromptEvent = event;
-    console.log('PWA - Saved the install prompt event on Android');
+    console.log('PWA - Received and saved the install prompt event on Android');
   }
 
   private openPwaPromptComponent(mobileType: 'ios' | 'android'): void {
