@@ -140,7 +140,7 @@ export class PwaService implements OnDestroy {
 
   private openBottomSheet(mobilePlatform: 'ios' | 'android'): void {
     this.bottomSheetRef = this.matBottomSheet.open(PwaPromptComponent, {
-      ariaLabel: this.translateService.instant('app.pwa.install.installOnMyPhone'),
+      ariaLabel: this.translateService.instant('app.pwa.install.installOnDevice'),
       data: {
         mobileType: mobilePlatform,
         promptEvent: this.installPromptEvent
