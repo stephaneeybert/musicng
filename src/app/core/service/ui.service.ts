@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ElementRef } from '@angular/core';
 import { Meta, Title, MetaDefinition } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -46,6 +46,10 @@ export class UIService {
 
   public reloadPage(): void {
     window.location.reload();
+  }
+
+  public hideElement(elementRef: ElementRef): void {
+    elementRef.nativeElement.style.display = 'none';
   }
 
 }

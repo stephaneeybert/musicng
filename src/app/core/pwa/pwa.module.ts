@@ -9,12 +9,14 @@ import { MAT_BOTTOM_SHEET_DEFAULT_OPTIONS } from '@angular/material/bottom-sheet
 import { PwaPromptIconComponent } from './pwa-prompt-icon.component';
 import { LibI18nModule } from 'lib-i18n';
 import { BrowserModule } from '@angular/platform-browser';
+import { PwaPromptDirective } from './pwa-prompt.directive';
 
 const checkForBeforeInstallEvents: Function = (pwaService: PwaService) => () => pwaService.checkForBeforeInstallEvents();
 const pwaCheckForUpdateFactory: Function = (pwaService: PwaService) => () => pwaService.checkForAppUpdate();
 
 @NgModule({
   declarations: [
+    PwaPromptDirective,
     PwaPromptIconComponent,
     PwaPromptComponent
   ],
@@ -27,6 +29,7 @@ const pwaCheckForUpdateFactory: Function = (pwaService: PwaService) => () => pwa
   exports: [
     BrowserModule,
     MaterialModule,
+    PwaPromptDirective,
     PwaPromptIconComponent,
     PwaPromptComponent
   ],
