@@ -8,8 +8,6 @@ import { PwaService } from './pwa.service';
 })
 export class PwaPromptIconComponent {
 
-  // TODO Turn this component into a directive
-
   constructor(
     private pwaService: PwaService
   ) { }
