@@ -9,9 +9,6 @@ import { Settings } from '@app/model/settings';
 import { SettingsStore } from '@app/lib/store/settings-store';
 import { SoundtrackStore } from '../store/soundtrack-store';
 
-const NAME_PREFIX_SOUNDTRACK: string = 'sheet-soundtrack-';
-const NAME_PREFIX_DEVICE: string = 'sheet-device-';
-
 @Component({
   selector: 'app-midi-sheet',
   templateUrl: './sheet.component.html',
@@ -108,7 +105,7 @@ export class SheetComponent implements OnInit, OnDestroy {
   private initializeWithSoundtrackId(soundtrack: Soundtrack, animatedStave: boolean): void {
     if (soundtrack != null) {
       // Refresh the view with its id before creating the sheet
-      this.detectChanges(NAME_PREFIX_SOUNDTRACK + soundtrack.id);
+      this.detectChanges(this.sheetService.buildSoundtrackSheetId(soundtrack));
       this.createSoundtrackSheet(soundtrack, animatedStave);
     }
   }
@@ -116,7 +113,7 @@ export class SheetComponent implements OnInit, OnDestroy {
   private initializeWithDeviceId(device: Device): void {
     if (device != null) {
       // Refresh the view with its id before creating the sheet
-      this.detectChanges(NAME_PREFIX_DEVICE + device.id);
+      this.detectChanges(this.sheetService.buildDeviceSheetId(device));
       this.createDeviceSheet(device);
     }
   }

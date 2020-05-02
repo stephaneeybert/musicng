@@ -12,6 +12,9 @@ import { Track } from '@app/model/track';
 import { TranslateService } from '@ngx-translate/core';
 import { UIService } from '@app/core/service/ui.service';
 
+const NAME_PREFIX_SOUNDTRACK: string = 'sheet-soundtrack-';
+const NAME_PREFIX_DEVICE: string = 'sheet-device-';
+
 const SHEET_WIDTH_RATIO: number = 0.9;
 const VEXFLOW_STAVE_HEIGHT: number = 120;
 const VEXFLOW_OCTAVE_SEPARATOR: string = '/';
@@ -167,6 +170,19 @@ export class SheetService {
     if (soundtrack.sheetContext != null) {
       soundtrack.sheetContext.clear();
       soundtrack.sheetContext = undefined;
+      this.removeSheetDomElement(soundtrack);
+    }
+  }
+
+  private removeSheetDomElement(soundtrack: Soundtrack): void {
+    const sheetElement = document.getElementById(this.buildSoundtrackSheetId(soundtrack));
+    if (sheetElement != null) {
+      while (sheetElement.hasChildNodes()) {
+        if (sheetElement.lastChild != null) {
+          const childNode: Node = sheetElement.lastChild;
+          sheetElement.removeChild(childNode);
+        }
+      }
     }
   }
 
@@ -440,6 +456,14 @@ export class SheetService {
     } else {
       throw new Error('The sheet context could not be created');
     }
+  }
+
+  public buildSoundtrackSheetId(soundtrack: Soundtrack): string {
+    return NAME_PREFIX_SOUNDTRACK + soundtrack.id;
+  }
+
+  public buildDeviceSheetId(device: Device): string {
+    return NAME_PREFIX_DEVICE + device.id;
   }
 
 }
