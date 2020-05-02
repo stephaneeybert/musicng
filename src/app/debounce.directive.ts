@@ -12,7 +12,7 @@ export class DebounceDirective implements OnInit, OnDestroy {
 
   @Input() public debounceTime = 300;
 
-  @Output() public appOnDebounce: EventEmitter<string>;
+  @Output() public debounceEventEmitter: EventEmitter<string>;
 
   private isFirstChange = true;
   private subscription?: Subscription;
@@ -20,7 +20,7 @@ export class DebounceDirective implements OnInit, OnDestroy {
 
   constructor(model: NgControl) {
     this.model = model;
-    this.appOnDebounce = new EventEmitter<string>();
+    this.debounceEventEmitter = new EventEmitter<string>();
   }
 
   ngOnInit() {
@@ -33,7 +33,7 @@ export class DebounceDirective implements OnInit, OnDestroy {
           this.isFirstChange = false;
         } else {
           console.log(modelValue);
-          this.appOnDebounce.emit(modelValue);
+          this.debounceEventEmitter.emit(modelValue);
         }
       });
     }
