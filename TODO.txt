@@ -31,5 +31,3 @@ Should the clef be determined from the time signature of the measure ?
 
 Replace all the mat-raised-button attributes by mat-button
 <button mat-raised-button type="button" (click)="cancel()">Cancel</button>
-
-When changing the animated setting the sheet is lost
