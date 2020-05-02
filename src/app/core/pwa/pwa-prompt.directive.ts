@@ -4,7 +4,7 @@ import { Subject, Subscription } from 'rxjs';
 import { UIService } from '../service/ui.service';
 
 @Directive({
-  selector: '[app-pwa-prompt]'
+  selector: '[appPwaPrompt]'
 })
 export class PwaPromptDirective implements OnInit, OnDestroy {
 
