@@ -1,6 +1,8 @@
 <mat-toolbar>
   <span class="fill-remaining-space"></span>
-  <mat-icon mat-icon (click)="generateSoundtrack()">add_circle_outline</mat-icon>
+  <button mat-fab color="primary" (click)="generateSoundtrack()">
+    <mat-icon mat-icon>add</mat-icon>
+  </button>
 </mat-toolbar>
 <div *ngIf="getNbSoundtracks() > 0">
   <mat-card>
