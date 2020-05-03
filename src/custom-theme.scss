@@ -8,4 +8,9 @@ $custom-theme-warn: mat-palette($mat-red);
 
 $custom-theme: mat-light-theme($custom-theme-primary, $custom-theme-accent, $custom-theme-warn);
 
+$custom-background-color: map_get($mat-grey, 0);
+$background: map-get($custom-theme, 'background');
+$background: map_merge($background, ('background': $custom-background-color));
+$custom-theme: map_merge($custom-theme, ('background': $background));
+
 @include angular-material-theme($custom-theme);
