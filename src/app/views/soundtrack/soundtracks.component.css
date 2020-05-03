@@ -13,3 +13,7 @@
 mat-icon {
   cursor: pointer;
 }
+
+mat-toolbar {
+  padding-top: 30px;
+}
