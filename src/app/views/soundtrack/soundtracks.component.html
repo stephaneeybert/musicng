@@ -1,40 +1,51 @@
-<div class="soundtracks">
-  <mat-toolbar>
-    <span class="fill-remaining-space"></span>
-    <button mat-fab color="primary" (click)="generateSoundtrack()">
-      <mat-icon mat-icon>add</mat-icon>
-    </button>
-  </mat-toolbar>
-  <div *ngIf="getNbSoundtracks() > 0">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title></mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <table>
-          <thead>
-          </thead>
-          <tbody>
-            <tr *ngFor="let soundtrack of soundtracks">
-              <td class='soundtrack'>
-                <mat-toolbar>
-                  {{soundtrack.name}}
-                  <span class="fill-remaining-space"></span>
-                  <mat-icon *ngIf="!(audioRunning$ | async) || !(audioTransportStarted$ | async)" (click)="startTransport()" title="{{ 'synth.sound.switchOn' | translate }}" class="soundtrack-action">volume_up</mat-icon>
-                  <mat-icon *ngIf="(audioRunning$ | async) && (audioTransportStarted$ | async) && !isNowPlaying(soundtrack)" (click)="playSoundtrack(soundtrack)" title="{{ 'soundtracks.play' | translate }}" class="soundtrack-action">play_circle_outline</mat-icon>
-                  <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="stopSoundtrack(soundtrack)" title="{{ 'soundtracks.stop' | translate }}" class="soundtrack-action">stop</mat-icon>
-                  <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="replaySoundtrack(soundtrack)" title="{{ 'soundtracks.replay' | translate }}" class="soundtrack-action">replay</mat-icon>
-                  <mat-icon *ngIf="!isNowPlaying(soundtrack)" (click)="openSoundtrackDialog(soundtrack)" title="{{ 'soundtracks.edit' | translate }}" class="soundtrack-action">edit</mat-icon>
-                  <mat-icon (click)="deleteSoundtrack(soundtrack)" title="{{ 'soundtracks.delete' | translate }}" class="soundtrack-action">delete</mat-icon>
-                </mat-toolbar>
-                <app-midi-synth [soundtrack]="soundtrack"></app-midi-synth>
-                <app-midi-keyboard [soundtrack]="soundtrack"></app-midi-keyboard>
-                <app-midi-sheet [soundtrack]="soundtrack"></app-midi-sheet>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </mat-card-content>
-    </mat-card>
-  </div>
+<mat-card>
+  <mat-card-content>
+    <mat-toolbar color="background">
+      <span class="fill-remaining-space"></span>
+      <button mat-fab color="accent" (click)="generateSoundtrack()">
+        <mat-icon mat-icon>add</mat-icon>
+      </button>
+    </mat-toolbar>
+  </mat-card-content>
+</mat-card>
+<div *ngIf="getNbSoundtracks() > 0">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <thead>
+        </thead>
+        <tbody>
+          <tr *ngFor="let soundtrack of soundtracks">
+            <td class='soundtrack'>
+              <mat-toolbar>
+                {{soundtrack.name}}
+                <span class="fill-remaining-space"></span>
+                <mat-icon *ngIf="!(audioRunning$ | async) || !(audioTransportStarted$ | async)"
+                  (click)="startTransport()" title="{{ 'synth.sound.switchOn' | translate }}" class="soundtrack-action">
+                  volume_up</mat-icon>
+                <mat-icon
+                  *ngIf="(audioRunning$ | async) && (audioTransportStarted$ | async) && !isNowPlaying(soundtrack)"
+                  (click)="playSoundtrack(soundtrack)" title="{{ 'soundtracks.play' | translate }}"
+                  class="soundtrack-action">play_circle_outline</mat-icon>
+                <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="stopSoundtrack(soundtrack)"
+                  title="{{ 'soundtracks.stop' | translate }}" class="soundtrack-action">stop</mat-icon>
+                <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="replaySoundtrack(soundtrack)"
+                  title="{{ 'soundtracks.replay' | translate }}" class="soundtrack-action">replay</mat-icon>
+                <mat-icon *ngIf="!isNowPlaying(soundtrack)" (click)="openSoundtrackDialog(soundtrack)"
+                  title="{{ 'soundtracks.edit' | translate }}" class="soundtrack-action">edit</mat-icon>
+                <mat-icon (click)="deleteSoundtrack(soundtrack)" title="{{ 'soundtracks.delete' | translate }}"
+                  class="soundtrack-action">delete</mat-icon>
+              </mat-toolbar>
+              <app-midi-synth [soundtrack]="soundtrack"></app-midi-synth>
+              <app-midi-keyboard [soundtrack]="soundtrack"></app-midi-keyboard>
+              <app-midi-sheet [soundtrack]="soundtrack"></app-midi-sheet>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
 </div>
