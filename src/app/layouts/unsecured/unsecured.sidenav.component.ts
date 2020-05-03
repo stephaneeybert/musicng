@@ -4,7 +4,8 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-unsecured-sidenav',
-  templateUrl: './unsecured.sidenav.component.html'
+  templateUrl: './unsecured.sidenav.component.html',
+  styleUrls: ['../sidenav.component.css']
 })
 export class UnsecuredSidenavComponent implements OnInit, OnDestroy {
 

@@ -3,7 +3,8 @@ import { LoginService } from '@app/core/service/login.service';
 
 @Component({
   selector: 'app-secured-sidenav',
-  templateUrl: './secured.sidenav.component.html'
+  templateUrl: './secured.sidenav.component.html',
+  styleUrls: ['../sidenav.component.css']
 })
 export class SecuredSidenavComponent {
 
