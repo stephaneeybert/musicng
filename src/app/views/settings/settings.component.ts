@@ -56,7 +56,7 @@ export class SettingsComponent implements OnInit {
     const existingSettings: Settings = this.settingsStore.getSettings();
 
     const dialogConfig: MatDialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
+    dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.hasBackdrop = true;
     dialogConfig.data = {
