@@ -4,13 +4,22 @@
 
 $custom-theme-primary: mat-palette($mat-lime);
 $custom-theme-accent: mat-palette($mat-orange, A200, A100, A400);
-$custom-theme-warn: mat-palette($mat-red);
 
-$custom-theme: mat-light-theme($custom-theme-primary, $custom-theme-accent, $custom-theme-warn);
+$custom-light-theme: (
+  background: map_get($mat-grey, 0)
+);
 
-$custom-background-color: map_get($mat-grey, 0);
-$background: map-get($custom-theme, 'background');
-$background: map_merge($background, ('background': $custom-background-color));
-$custom-theme: map_merge($custom-theme, ('background': $background));
+@function create-a-light-theme($primary, $accent, $warn: mat-palette($mat-red)) {
+  @return (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+    is-dark: false,
+    foreground: $custom-light-theme,
+    background: $custom-light-theme
+  );
+}
 
-@include angular-material-theme($custom-theme);
+$custom-light-theme: create-a-light-theme($custom-theme-primary, $custom-theme-accent);
+
+@include angular-material-theme($custom-light-theme);
