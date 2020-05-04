@@ -13,6 +13,7 @@ import { Observable, interval, timer, Subscription } from 'rxjs';
 import { map, filter, take } from 'rxjs/operators';
 import { CommonService } from '@app/core/service/common.service';
 import { SettingsService } from '@app/views/settings/settings.service';
+import { WakelockService } from '@app/core/service/wakelock.service';
 
 // Observation has shown that a delay between creating the service
 // and starting the transport is required for the transport to work
@@ -38,7 +39,8 @@ export class SynthService {
     private sheetService: SheetService,
     private soundtrackService: SoundtrackService,
     private settingsService: SettingsService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private wakelockService: WakelockService
   ) {
     this.startTransport();
   }
@@ -154,7 +156,7 @@ export class SynthService {
 
   public playSoundtrack(soundtrack: Soundtrack) {
     if (soundtrack.hasNotes()) {
-      this.commonService.requestWakeLock();
+      this.wakelockService.requestWakeLock();
       // The transport needs to be reset right before playing
       // otherwise the transport time has aready run away
       // and by the time the playing starts some notes scheduled times
@@ -277,7 +279,7 @@ export class SynthService {
                 }
                 this.keyboardService.unpressAll(soundtrack.keyboard);
                 this.setPlaying(soundtrack, false);
-                this.commonService.releaseWakeLock();
+                this.wakelockService.releaseWakeLock();
               }, releaseTime);
             }
             relativeTime += durationInSeconds;
