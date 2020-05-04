@@ -20,6 +20,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { LocalizedPaginator } from './core/service/localized-paginator';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   exports: [
@@ -41,6 +42,7 @@ import { LocalizedPaginator } from './core/service/localized-paginator';
     MatInputModule,
     MatSlideToggleModule,
     MatSnackBarModule,
+    MatTooltipModule,
     MatBottomSheetModule
   ],
   providers: [

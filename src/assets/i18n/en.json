@@ -49,7 +49,9 @@
   },
   "soundtracks": {
     "assignedName": "Soundtrack",
-    "add": "Add",
+    "add": {
+      "tooltip": "Add a new soundtrack"
+    },
     "edit": "Edit",
     "delete": "Delete",
     "play": "Play",

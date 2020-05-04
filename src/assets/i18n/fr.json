@@ -49,7 +49,9 @@
   },
   "soundtracks": {
     "assignedName": "Morceau",
-    "add": "Ajouter",
+    "add": {
+      "tooltip": "Ajouter un nouveau morceau"
+    },
     "edit": "Modifier",
     "delete": "Supprimer",
     "play": "Jouer",
