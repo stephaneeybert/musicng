@@ -2,24 +2,66 @@
 
 @include mat-core();
 
-$custom-theme-primary: mat-palette($mat-lime);
-$custom-theme-accent: mat-palette($mat-orange, A200, A100, A400);
+// Applying a custom theme
+$palette-primary: mat-palette($mat-lime);
+$palette-accent: mat-palette($mat-orange);
+$palette-warn: mat-palette($mat-red);
+$standard-light-theme: mat-light-theme($palette-primary, $palette-accent, $palette-warn);
+@include angular-material-theme($standard-light-theme);
 
-$custom-light-theme: (
-  background: map_get($mat-grey, 0)
-);
+// Applying a theme to a component
+// $palette-primary: mat-palette($mat-grey);
+// $custom-light-theme: mat-light-theme($palette-primary, $palette-accent, $palette-warn);
+// @include mat-toolbar-theme($custom-light-theme);
 
-@function create-a-light-theme($primary, $accent, $warn: mat-palette($mat-red)) {
-  @return (
-    primary: $primary,
-    accent: $accent,
-    warn: $warn,
-    is-dark: false,
-    foreground: $custom-light-theme,
-    background: $custom-light-theme
-  );
-}
+// Changing some palette properties of a theme and applying it to a component
+$background: map-get($standard-light-theme, background);
+$bg-color: #FFFFFF;
+$background: map_merge($background, (background: $bg-color, app-bar: $bg-color));
+$custom-light-theme: map_merge($standard-light-theme, (background: $background));
+@include mat-toolbar-theme($custom-light-theme);
 
-$custom-light-theme: create-a-light-theme($custom-theme-primary, $custom-theme-accent);
+// Changing some palette properties of a theme and applying it to a component
+// $background: map-get($standard-light-theme, background);
+// $bg-color: #FFFFFF;
+// $bar-bg-color: #FF4466;
+// $card-bg-color: #AA3366;
+// $background: map_merge($background, (background: $bg-color, app-bar: $bar-bg-color, card: $card-bg-color));
+// $custom-light-theme: map_merge($standard-light-theme, (background: $background));
+// @include mat-toolbar-theme($custom-light-theme);
 
-@include angular-material-theme($custom-light-theme);
+// The function to create custom background theme
+// $my-dark-theme-background: (
+//   status-bar: green,
+//   app-bar:    map_get($mat-blue, 900),
+//   background: orange,
+//   hover:      rgba(white, 0.04), 
+//   card:       map_get($mat-red, 800),
+//   dialog:     map_get($mat-grey, 800),
+//   disabled-button: $white-12-opacity,
+//   raised-button: map-get($mat-grey, 800),
+//   focused-button: $white-6-opacity,
+//   selected-button: map_get($mat-grey, 900),
+//   selected-disabled-button: map_get($mat-grey, 800),
+//   disabled-button-toggle: black,
+//   unselected-chip: map_get($mat-grey, 700),
+//   disabled-list-option: black,
+// );
+
+// The function to create custom foreground theme
+// $my-dark-theme-foreground: (
+//   base:              yellow,
+//   divider:           $white-12-opacity,
+//   dividers:          $white-12-opacity,
+//   disabled:          rgba(white, 0.3),
+//   disabled-button:   rgba(white, 0.3),
+//   disabled-text:     rgba(white, 0.3),
+//   hint-text:         rgba(white, 0.3),
+//   secondary-text:    rgba(white, 0.7),
+//   icon:              white,
+//   icons:             white,
+//   text:              yellow,
+//   slider-min:        white,
+//   slider-off:        rgba(white, 0.3),
+//   slider-off-active: rgba(white, 0.3),
+// );
