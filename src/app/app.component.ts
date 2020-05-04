@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { UIService } from '@app/core/service/ui.service';
+import { ScreenDeviceService } from '@app/core/service/screen-device.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private translateService: TranslateService,
-    private uiService: UIService
+    private screenDeviceService: ScreenDeviceService
   ) {}
 
   public ngOnInit() {
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   }
 
   private setAppMetaData(): void {
-    this.uiService.setMetaData({
+    this.screenDeviceService.setMetaData({
       title: this.translateService.instant('app.title'),
       description: this.translateService.instant('app.description')
     });

@@ -1,7 +1,7 @@
 import { Directive, HostListener, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { PwaService } from './pwa.service';
 import { Subject, Subscription } from 'rxjs';
-import { UIService } from '../service/ui.service';
+import { ScreenDeviceService } from '../service/screen-device.service';
 
 @Directive({
   selector: '[appPwaPrompt]'
@@ -14,12 +14,12 @@ export class PwaPromptDirective implements OnInit, OnDestroy {
   constructor(
     private elementRef: ElementRef,
     private pwaService: PwaService,
-    private uiService: UIService
+    private screenDeviceService: ScreenDeviceService
   ) { }
 
   ngOnInit() {
     if (!this.pwaService.isInstallable()) {
-      this.uiService.hideElement(this.elementRef);
+      this.screenDeviceService.hideElement(this.elementRef);
     }
 
     this.subscription = this.clicks

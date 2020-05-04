@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { User } from './user';
 import { UserService } from './user.service';
 import { UserDialogComponent } from './user-dialog.component';
-import { UIService } from '@app/core/service/ui.service';
+import { ScreenDeviceService } from '@app/core/service/screen-device.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -23,7 +23,7 @@ export class UserEditComponent implements OnChanges {
 
   constructor(
     private matDialog: MatDialog,
-    private uiService: UIService,
+    private screenDeviceService: ScreenDeviceService,
     private userService: UserService
   ) { }
 
@@ -79,14 +79,14 @@ export class UserEditComponent implements OnChanges {
             const subscription: Subscription = this.userService.fullUpdate(user)
               .subscribe(updatedUser => {
                 this.userEditedEvent.emit(updatedUser);
-                this.uiService.showSnackBar('The user ' + updatedUser.firstname + ' ' + updatedUser.lastname + ' has been updated.');
+                this.screenDeviceService.showSnackBar('The user ' + updatedUser.firstname + ' ' + updatedUser.lastname + ' has been updated.');
                 subscription.unsubscribe();
               });
           } else {
             const subscription: Subscription = this.userService.add(user)
               .subscribe(addedUser => {
                 this.userEditedEvent.emit(addedUser);
-                this.uiService.showSnackBar('The user ' + addedUser.firstname + ' ' + addedUser.lastname + ' has been added.');
+                this.screenDeviceService.showSnackBar('The user ' + addedUser.firstname + ' ' + addedUser.lastname + ' has been added.');
                 subscription.unsubscribe();
               });
           }

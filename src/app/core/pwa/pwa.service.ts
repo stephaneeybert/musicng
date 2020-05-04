@@ -6,7 +6,7 @@ import { take } from 'rxjs/operators';
 import { SwUpdate } from '@angular/service-worker';
 import { TranslateService } from '@ngx-translate/core';
 import { PwaPromptComponent } from './pwa-prompt.component';
-import { UIService } from '../service/ui.service';
+import { ScreenDeviceService } from '../service/screen-device.service';
 
 const PROMPT_DELAY: number = 3000;
 const PLATFORM_ANDROID: 'android' = 'android';
@@ -28,7 +28,7 @@ export class PwaService implements OnDestroy {
     private matBottomSheet: MatBottomSheet,
     private platform: Platform,
     private swUpdate: SwUpdate,
-    private uiService: UIService,
+    private screenDeviceService: ScreenDeviceService,
     private translateService: TranslateService
   ) { }
 
@@ -182,7 +182,7 @@ export class PwaService implements OnDestroy {
           console.log('PWA - Offering a new version');
           const appNewVersion: string = this.translateService.instant('app.pwa.new_version_available');
           if (confirm(appNewVersion)) {
-            this.uiService.reloadPage();
+            this.screenDeviceService.reloadPage();
           }
         });
     }

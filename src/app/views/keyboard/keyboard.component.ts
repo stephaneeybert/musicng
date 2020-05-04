@@ -8,7 +8,7 @@ import { CommonService } from '@app/core/service/common.service';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Device } from '@app/model/device';
 import { delay } from 'rxjs/operators';
-import { UIService } from '@app/core/service/ui.service';
+import { ScreenDeviceService } from '@app/core/service/screen-device.service';
 
 const NAME_PREFIX_SOUNDTRACK: string = 'keyboard-soundtrack-';
 const NAME_PREFIX_DEVICE: string = 'keyboard-device-';
@@ -47,8 +47,7 @@ export class KeyboardComponent implements AfterViewInit {
     private deviceStore: DeviceStore,
     private keyboardService: KeyboardService,
     private synthService: SynthService,
-    private uiService: UIService,
-    private commonService: CommonService
+    private screenDeviceService: ScreenDeviceService
   ) { }
 
   ngAfterViewInit() {
@@ -70,7 +69,7 @@ export class KeyboardComponent implements AfterViewInit {
   }
 
   private initScreenWidth(): void {
-    this.screenWidth = this.uiService.getScreenInnerWidth();
+    this.screenWidth = this.screenDeviceService.getScreenInnerWidth();
   }
 
   @HostListener("window:resize", [])

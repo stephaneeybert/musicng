@@ -10,7 +10,7 @@ import { Clef } from '@app/model/clef';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { Track } from '@app/model/track';
 import { TranslateService } from '@ngx-translate/core';
-import { UIService } from '@app/core/service/ui.service';
+import { ScreenDeviceService } from '@app/core/service/screen-device.service';
 
 const NAME_PREFIX_SOUNDTRACK: string = 'sheet-soundtrack-';
 const NAME_PREFIX_DEVICE: string = 'sheet-device-';
@@ -55,7 +55,7 @@ export class SheetService {
   constructor(
     private notationService: NotationService,
     private translateService: TranslateService,
-    private uiService: UIService
+    private screenDeviceService: ScreenDeviceService
   ) { }
 
   public createSoundtrackSheet(id: string, animatedStave: boolean, screenWidth: number, soundtrack: Soundtrack): void {
@@ -209,7 +209,7 @@ export class SheetService {
         measure.sheetStave.draw();
       } catch (error) {
         this.logNoCanvasContextError(error);
-        this.uiService.reloadPage();
+        this.screenDeviceService.reloadPage();
       }
     }
     if (measure.sheetVoice && sheetContext != null) {
@@ -217,7 +217,7 @@ export class SheetService {
         measure.sheetVoice.draw(sheetContext);
       } catch (error) {
         this.logNoCanvasContextError(error);
-        this.uiService.reloadPage();
+        this.screenDeviceService.reloadPage();
       }
     }
   }
@@ -280,7 +280,7 @@ export class SheetService {
           staveNote.draw();
         } catch (error) {
           this.logNoCanvasContextError(error);
-          this.uiService.reloadPage();
+          this.screenDeviceService.reloadPage();
         }
       }
     }
@@ -294,14 +294,14 @@ export class SheetService {
           staveNote.draw();
         } catch (error) {
           this.logNoCanvasContextError(error);
-          this.uiService.reloadPage();
+          this.screenDeviceService.reloadPage();
         }
       }
     }
   }
 
   private showCanvasContextErrorMessage(): void {
-    this.uiService.showSnackBar(this.renderCanvasContextErrorMessage());
+    this.screenDeviceService.showSnackBar(this.renderCanvasContextErrorMessage());
   }
 
   private renderCanvasContextErrorMessage(): string {
