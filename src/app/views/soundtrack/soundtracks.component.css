@@ -2,6 +2,11 @@
   flex: 1 1 auto;
 }
 
+.soundtracks {
+  display: flex;
+  justify-content: center;
+}
+
 .soundtrack-action {
   padding-left: 30px;
 }
