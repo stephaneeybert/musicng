@@ -8,6 +8,7 @@ import { delay } from 'rxjs/operators';
 import { Settings } from '@app/model/settings';
 import { SettingsStore } from '@app/lib/store/settings-store';
 import { SoundtrackStore } from '../store/soundtrack-store';
+import { UIService } from '@app/core/service/ui.service';
 
 @Component({
   selector: 'app-midi-sheet',
@@ -46,6 +47,7 @@ export class SheetComponent implements OnInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private sheetService: SheetService,
     private commonService: CommonService,
+    private uiService: UIService,
     private soundtrackStore: SoundtrackStore,
     private settingsStore: SettingsStore
   ) { }
@@ -72,7 +74,7 @@ export class SheetComponent implements OnInit, OnDestroy {
   }
 
   private initScreenWidth(): void {
-    this.screenWidth = this.commonService.getScreenInnerWidth();
+    this.screenWidth = this.uiService.getScreenInnerWidth();
   }
 
   @HostListener("window:resize", [])

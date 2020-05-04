@@ -31,24 +31,4 @@ export class CommonService {
     return Math.random().toString(36).substring(start, start + length);
   }
 
-  private getDeviceWindowRef(): any {
-    return window;
-  }
-
-  public getScreenInnerWidth(): number {
-    return this.getDeviceWindowRef().innerWidth;
-  }
-
-  public getScreenOuterWidth(): number {
-    return this.getDeviceWindowRef().outerWidth;
-  }
-
-  public getScreenWidth(): number {
-    return this.getDeviceWindowRef().width;
-  }
-
-  public getScreenHeight(): number {
-    return this.getDeviceWindowRef().innerWidth;
-  }
-
 }

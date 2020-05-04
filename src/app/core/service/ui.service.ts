@@ -11,7 +11,27 @@ export class UIService {
     private meta: Meta,
     private title: Title,
     private matSnackBar: MatSnackBar
-    ) { }
+  ) { }
+
+  private getDeviceWindowRef(): any {
+    return window;
+  }
+
+  public getScreenInnerWidth(): number {
+    return this.getDeviceWindowRef().innerWidth;
+  }
+
+  public getScreenOuterWidth(): number {
+    return this.getDeviceWindowRef().outerWidth;
+  }
+
+  public getScreenWidth(): number {
+    return this.getDeviceWindowRef().width;
+  }
+
+  public getScreenHeight(): number {
+    return this.getDeviceWindowRef().innerWidth;
+  }
 
   public setMetaData(config: any): void {
     const description: string = config.description;
