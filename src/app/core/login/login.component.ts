@@ -4,7 +4,7 @@ import { MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material/dial
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { TokenService } from '@app/core/auth/token.service';
-import { LoginService } from '@app/core/service/login.service';
+import { LoginService } from '@app/views/user/login.service';
 import { LoginDialogComponent } from './login-dialog.component';
 import { Subscription } from 'rxjs';
 
