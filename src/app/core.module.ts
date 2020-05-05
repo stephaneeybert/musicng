@@ -1,17 +1,17 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { ToastModule } from '@app/core/toast/toast.module';
 import { LibI18nModule } from 'lib-i18n';
 import { LibCoreModule } from 'lib-core';
 import { LibPwaModule } from 'lib-pwa';
+import { LibToastModule } from 'lib-toast';
 
 @NgModule({
   imports: [
     HttpClientModule,
-    ToastModule.forRoot(),
     LibI18nModule,
     LibCoreModule,
-    LibPwaModule
+    LibPwaModule,
+    LibToastModule.forRoot()
   ],
   exports: [
     LibI18nModule,
