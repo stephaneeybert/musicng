@@ -12,26 +12,26 @@ import { ErrorRequestInterceptor } from './error-request-interceptor';
 // See https://medium.com/@aleixsuau/error-handling-angular-859d529fa53a
 
 @NgModule({
-    declarations: [
-        ErrorComponent
-    ],
-    imports: [
-        CommonModule,
-        RouterModule,
-        ErrorRoutingModule,
-    ],
-    providers: [
-        ErrorService,
-        {
-            provide: ErrorHandler,
-            useClass: ErrorCustomHandler
-        },
-        ErrorCustomHandler,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: ErrorRequestInterceptor,
-            multi: true,
-        }
-    ]
+  declarations: [
+    ErrorComponent
+  ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ErrorRoutingModule,
+  ],
+  providers: [
+    ErrorService,
+    {
+      provide: ErrorHandler,
+      useClass: ErrorCustomHandler
+    },
+    ErrorCustomHandler,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorRequestInterceptor,
+      multi: true,
+    }
+  ]
 })
 export class ErrorModule { }
