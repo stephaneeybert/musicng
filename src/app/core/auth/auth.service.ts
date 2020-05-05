@@ -24,6 +24,10 @@ export class AuthService {
 
   private postLoginRedirectUrl: string = '';
 
+  constructor(
+    private httpService: HttpService,
+    private tokenService: TokenService) { }
+
   public setPostLoginRedirectUrl(postLoginRedirectUrl: string): void {
     this.postLoginRedirectUrl = postLoginRedirectUrl;
   }
@@ -31,10 +35,6 @@ export class AuthService {
   public getPostLoginRedirectUrl() {
     return this.postLoginRedirectUrl;
   }
-
-  constructor(
-    private httpService: HttpService,
-    private tokenService: TokenService) { }
 
   public login(username: string, password: string): Observable<HttpResponse<User>> {
     console.log('Sending the login credentials to obtain a token');
