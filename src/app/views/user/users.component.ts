@@ -12,7 +12,6 @@ import { UserService } from '@app/views/user/user.service';
 import { PaginationService } from '@app/core/service/pagination.service';
 import { ToastService } from '@app/core/toast/toast.service';
 import { HateoasPageable } from './hateoas-pageable';
-import { ScreenDeviceService } from 'lib-core';
 import { MaterialService } from '@app/core/service/material.service';
 
 @Component({
