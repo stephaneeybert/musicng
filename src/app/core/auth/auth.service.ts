@@ -50,6 +50,10 @@ export class AuthService {
       );
   }
 
+  public logOut(): void {
+    // TODO Implement a log out
+  }
+
   public logout$(): Observable<HttpResponse<User>> {
     return this.httpService.postWithHeadersInResponse<HttpResponse<User>>(URI_LOGOUT, {})
       .pipe(
