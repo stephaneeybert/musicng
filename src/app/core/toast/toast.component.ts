@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, HostListener, Inject } from '@angular/core';
 import { AnimationEvent } from '@angular/animations';
-
 import { ToastData, TOAST_CONFIG_TOKEN, ToastConfig } from './toast-config';
 import { ToastRef } from './toast-ref';
 import { toastAnimations, ToastAnimationState } from './toast-animation';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-toast',
@@ -13,19 +13,19 @@ import { toastAnimations, ToastAnimationState } from './toast-animation';
 })
 export class ToastComponent implements OnInit, OnDestroy {
   animationState: ToastAnimationState = 'default';
-  iconType?: string;
 
   private intervalId: any;
 
   constructor(
+    private translateService: TranslateService,
     readonly data: ToastData,
     readonly ref: ToastRef,
     @Inject(TOAST_CONFIG_TOKEN) public toastConfig: ToastConfig
-  ) {
-    this.iconType = data.type === 'success' ? 'done' : data.type;
-  }
+  ) { }
 
   ngOnInit(): void {
+    const message: string = this.translateService.instant('soundtracks.message.maxNbReached');
+console.log(message);
     this.intervalId = setTimeout(() => this.animationState = 'closing', 5000);
   }
 

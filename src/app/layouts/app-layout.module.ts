@@ -11,9 +11,6 @@ import { UnsecuredSidenavComponent } from '@app/layouts/unsecured/unsecured.side
 import { SettingsComponent } from '@app/views/settings/settings.component';
 import { AppUiModule } from '@app/app-ui.module';
 import { SettingsDialogComponent } from '@app/views/settings/settings-dialog.component';
-import { LibI18nModule } from 'lib-i18n';
-import { LibCoreModule } from 'lib-core';
-import { LibPwaModule } from 'lib-pwa';
 
 @NgModule({
   declarations: [
@@ -30,20 +27,14 @@ import { LibPwaModule } from 'lib-pwa';
     LayoutModule,
     AppUiModule,
     MaterialModule,
-    MDBootstrapModule,
-    LibI18nModule,
-    LibCoreModule,
-    LibPwaModule
+    MDBootstrapModule
   ],
   exports: [
     AppRoutingModule,
     LayoutModule,
     AppUiModule,
     MaterialModule,
-    MDBootstrapModule,
-    LibI18nModule,
-    LibCoreModule,
-    LibPwaModule
+    MDBootstrapModule
   ]
 })
 export class AppLayoutModule { }

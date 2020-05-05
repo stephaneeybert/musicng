@@ -1,11 +1,22 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { ToastModule } from '@app/core/toast';
+import { ToastModule } from '@app/core/toast/toast.module';
+import { LibI18nModule } from 'lib-i18n';
+import { LibCoreModule } from 'lib-core';
+import { LibPwaModule } from 'lib-pwa';
 
 @NgModule({
   imports: [
     HttpClientModule,
-    ToastModule.forRoot()
+    ToastModule.forRoot(),
+    LibI18nModule,
+    LibCoreModule,
+    LibPwaModule
+  ],
+  exports: [
+    LibI18nModule,
+    LibCoreModule,
+    LibPwaModule
   ]
 })
 export class CoreModule {

@@ -1,7 +1,6 @@
 import { Injectable, Injector, Inject } from '@angular/core';
 import { Overlay, OverlayRef, GlobalPositionStrategy } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
-
 import { ToastComponent } from './toast.component';
 import { ToastData, TOAST_CONFIG_TOKEN, ToastConfig } from './toast-config';
 import { ToastRef } from './toast-ref';

@@ -1,14 +1,20 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { MatIconModule } from '@angular/material/icon';
-
 import { ToastComponent } from './toast.component';
 import { defaultToastConfig, TOAST_CONFIG_TOKEN } from './toast-config';
+import { LibI18nModule } from 'lib-i18n';
 
 @NgModule({
-  imports: [OverlayModule, MatIconModule],
-  declarations: [ToastComponent],
-  entryComponents: [ToastComponent]
+  declarations: [
+    ToastComponent
+  ],
+  imports: [
+    OverlayModule,
+    LibI18nModule
+  ],
+  exports: [
+    LibI18nModule
+  ]
 })
 export class ToastModule {
 

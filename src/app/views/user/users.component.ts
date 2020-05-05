@@ -143,8 +143,7 @@ export class UsersComponent implements OnInit {
 
   showToast(message: string) {
     this.toastService.show({
-      text: message,
-      type: 'success'
+      text: message
     });
   }
 
