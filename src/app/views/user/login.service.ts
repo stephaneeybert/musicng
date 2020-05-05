@@ -33,7 +33,7 @@ export class LoginService {
     );
   }
 
-  logout() {
+  logout() { // TODO This subscription should be done at service load time and it should not be necessary to call it from the components
     this.authService.logout$().subscribe( // TODO Missing unsubscribe
       (response: HttpResponse<User>) => {
         this.router.navigate(['login']);
