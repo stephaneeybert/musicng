@@ -51,10 +51,6 @@ import { SoundtrackDialogComponent } from './views/soundtrack/soundtrack-dialog.
     CoreModule,
     AuthModule
   ],
-  // entryComponents: [ // TODO Not needed ?
-  //   SoundtrackDialogComponent,
-  //   UserDialogComponent
-  // ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
