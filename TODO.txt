@@ -28,3 +28,5 @@ but the 120 is fine
 Change the measure tempo to be a number of beats
 
 Should the clef be determined from the time signature of the measure ?
+
+When clicking on the settings icon, it stays highlighted after closing the dialog
