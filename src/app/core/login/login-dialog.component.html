@@ -1,16 +1,16 @@
 <h1 mat-dialog-title>Login</h1>
 <form [formGroup]="loginForm" (ngSubmit)="submit(loginForm)">
-	<h1 mat-dialog-title>Add file</h1>
-	<mat-dialog-content>
-		<mat-form-field>
-			<input matInput formControlName="username" placeholder="Enter your login name">
-			<mat-hint align="start"><strong>Some hint</strong></mat-hint>
-			<mat-hint align="end">Some other hint</mat-hint>
-			<mat-error>This field is required</mat-error>
-		</mat-form-field>
-	</mat-dialog-content>
-	<mat-dialog-actions>
-		<button mat-button type="submit">Add</button>
-		<button mat-button type="button" mat-dialog-close>Cancel</button>
-	</mat-dialog-actions>
+  <h1 mat-dialog-title>Add file</h1>
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput formControlName="username" placeholder="Enter your login name">
+      <mat-hint align="start"><strong>Some hint</strong></mat-hint>
+      <mat-hint align="end">Some other hint</mat-hint>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button type="submit">Add</button>
+    <button mat-button type="button" mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
 </form>
