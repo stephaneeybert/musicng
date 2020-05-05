@@ -5,8 +5,8 @@ import { Measure } from '@app/model/measure/measure';
 import { NotationService } from './notation.service';
 import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
 import { Soundtrack } from '@app/model/soundtrack';
-import { CommonService } from '@app/core/service/common.service';
 import { Track } from '@app/model/track';
+import { CommonService } from 'lib-core';
 
 const DEFAULT_TEMPO_BPM_VALUE: number = 128;
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 2;

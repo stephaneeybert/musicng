@@ -4,11 +4,11 @@ import { NotationService } from './notation.service';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { Note } from '@app/model/note/note';
 import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
-import { CommonService } from '@app/core/service/common.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Soundtrack } from '@app/model/soundtrack';
 import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
+import { CommonService } from 'lib-core';
 
 enum RANDOM_METHOD {
   BASE = 0,

@@ -2,11 +2,12 @@ import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output } from '@ang
 import { Observable, Subscription } from 'rxjs';
 import { Settings } from '@app/model/settings';
 import { SettingsStore } from '@app/lib/store/settings-store';
-import { ScreenDeviceService } from '@app/core/service/screen-device.service';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingsDialogComponent } from './settings-dialog.component';
 import { SettingsEdition } from './settings-edition';
+import { ScreenDeviceService } from 'lib-core';
+import { MaterialService } from '@app/core/service/material.service';
 
 @Component({
   selector: 'app-settings',
@@ -28,7 +29,7 @@ export class SettingsComponent implements OnInit {
   constructor(
     private changeDetector: ChangeDetectorRef,
     private settingsStore: SettingsStore,
-    private screenDeviceService: ScreenDeviceService,
+    private materialService: MaterialService,
     private translateService: TranslateService,
     private matDialog: MatDialog
   ) { }
@@ -74,7 +75,7 @@ export class SettingsComponent implements OnInit {
             this.settingsStore.setAndStoreSettings(existingSettings);
 
             const message: string = this.translateService.instant('settings.message.saved');
-            this.screenDeviceService.showSnackBar(message);
+            this.materialService.showSnackBar(message);
           }
         }
       });

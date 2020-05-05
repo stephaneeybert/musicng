@@ -4,9 +4,9 @@ import { map } from 'rxjs/operators';
 import { HttpParams } from '@angular/common/http';
 
 import { environment } from '@env/environment';
-import { HttpService } from '@app/core/service/http.service';
 import { User } from './user';
 import { HateoasPageable } from './hateoas-pageable';
+import { HttpService } from 'lib-core';
 
 const DOMAIN_URI: string = 'users';
 

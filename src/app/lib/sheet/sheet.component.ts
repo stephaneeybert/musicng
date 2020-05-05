@@ -3,12 +3,11 @@ import { Device } from '@app/model/device';
 import { SheetService } from '@app/lib/service/sheet.service';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Subscription, Subject, ReplaySubject, Observable, combineLatest } from 'rxjs';
-import { CommonService } from '@app/core/service/common.service';
 import { delay } from 'rxjs/operators';
 import { Settings } from '@app/model/settings';
 import { SettingsStore } from '@app/lib/store/settings-store';
 import { SoundtrackStore } from '../store/soundtrack-store';
-import { ScreenDeviceService } from '@app/core/service/screen-device.service';
+import { ScreenDeviceService } from 'lib-core';
 
 @Component({
   selector: 'app-midi-sheet',

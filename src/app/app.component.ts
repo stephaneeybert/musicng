@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ScreenDeviceService } from '@app/core/service/screen-device.service';
 import { Subscription } from 'rxjs';
+import { ScreenDeviceService } from 'lib-core';
 
 @Component({
   selector: 'app-root',

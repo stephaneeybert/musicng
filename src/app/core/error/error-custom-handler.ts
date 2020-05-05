@@ -3,8 +3,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler } from '@angular/core';
 
 import { ErrorService } from './error.service';
-import { NotificationService } from '@app/core/service/notification.service';
 import { Subscription } from 'rxjs';
+import { NotificationService } from 'lib-core';
 
 @Injectable()
 export class ErrorCustomHandler implements ErrorHandler {

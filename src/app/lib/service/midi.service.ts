@@ -16,7 +16,6 @@ import { Soundtrack } from '@app/model/soundtrack';
 import { Track } from '@app/model/track';
 import { Control } from '@app/model/control';
 import { Instrument } from '@app/model/instrument';
-import { CommonService } from '@app/core/service/common.service';
 import { TempoUnit } from '@app/model/tempo-unit';
 import { DeviceStore } from '@app/lib/store/device-store';
 import { Measure } from '@app/model/measure/measure';
@@ -26,6 +25,7 @@ import { Note } from '@app/model/note/note';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { Duration } from '@app/model/note/duration/duration';
 import { SynthService } from './synth.service';
+import { CommonService } from 'lib-core';
 
 const NOTE_ON: number = 144; // A command value of 144 is a "note on"
 const NOTE_OFF: number = 128; // A command value of 128 is a "note off"

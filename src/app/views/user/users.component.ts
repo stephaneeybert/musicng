@@ -10,9 +10,10 @@ import { User } from './user';
 import { UsersApi } from './users-api';
 import { UserService } from '@app/views/user/user.service';
 import { PaginationService } from '@app/core/service/pagination.service';
-import { ScreenDeviceService } from '@app/core/service/screen-device.service';
 import { ToastService } from '@app/core/toast/toast.service';
 import { HateoasPageable } from './hateoas-pageable';
+import { ScreenDeviceService } from 'lib-core';
+import { MaterialService } from '@app/core/service/material.service';
 
 @Component({
   selector: 'app-users',
@@ -45,7 +46,7 @@ export class UsersComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private paginationService: PaginationService,
-    private screenDeviceService: ScreenDeviceService,
+    private materialService: MaterialService,
     private toastService: ToastService
   ) {
     this.dataSource = new MatTableDataSource();
@@ -117,14 +118,14 @@ export class UsersComponent implements OnInit {
     this.userService.delete(user).subscribe((users: User) => {
       this.goToFirstPage();
       this.refreshListForUser(user);
-      this.screenDeviceService.showSnackBar('The user ' + user.firstname + ' ' + user.lastname + ' has been deleted.');
+      this.materialService.showSnackBar('The user ' + user.firstname + ' ' + user.lastname + ' has been deleted.');
     });
   }
 
   displayConfirmed(user: User) {
     const message: string = 'Toggled the mail confirmed status for ' + user.firstname + ' ' + user.lastname; // TODO Have a language resource
     this.showToast(message);
-    this.screenDeviceService.showSnackBar(message);
+    this.materialService.showSnackBar(message);
   }
 
   view(user: User) {

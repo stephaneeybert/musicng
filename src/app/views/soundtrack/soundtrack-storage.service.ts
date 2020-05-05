@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { LocalStorageService } from '@app/core/service/local-storage.service';
 import { Soundtrack } from '@app/model/soundtrack';
-import { CommonService } from '@app/core/service/common.service';
 import { NotationService } from '@app/lib/service/notation.service';
 import { Track } from '@app/model/track';
 import { Measure } from '@app/model/measure/measure';
 import { Note } from '@app/model/note/note';
 import { TempoUnit } from '@app/model/tempo-unit';
 import { PlacedChord } from '@app/model/note/placed-chord';
+import { CommonService, LocalStorageService } from 'lib-core';
 
 const PREFIX: string = 'musicng-soundtrack-';
 

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store } from './store';
-import { CommonService } from '@app/core/service/common.service';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Observable } from 'rxjs';
 import { SoundtrackStorageService } from '@app/views/soundtrack/soundtrack-storage.service';
+import { CommonService } from 'lib-core';
 
 @Injectable({
   providedIn: 'root'

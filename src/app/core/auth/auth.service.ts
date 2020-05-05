@@ -5,9 +5,9 @@ import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import { environment } from '@env/environment';
-import { HttpService } from '@app/core/service/http.service';
 import { TokenService } from '@app/core/auth/token.service';
 import { User } from '@app/views/user/user';
+import { HttpService } from 'lib-core';
 
 const PATH_AUTH: string = 'auth';
 const PATH_LOGIN: string = 'login';

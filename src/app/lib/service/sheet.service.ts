@@ -10,7 +10,8 @@ import { Clef } from '@app/model/clef';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { Track } from '@app/model/track';
 import { TranslateService } from '@ngx-translate/core';
-import { ScreenDeviceService } from '@app/core/service/screen-device.service';
+import { ScreenDeviceService } from 'lib-core';
+import { MaterialService } from '@app/core/service/material.service';
 
 const NAME_PREFIX_SOUNDTRACK: string = 'sheet-soundtrack-';
 const NAME_PREFIX_DEVICE: string = 'sheet-device-';
@@ -55,7 +56,8 @@ export class SheetService {
   constructor(
     private notationService: NotationService,
     private translateService: TranslateService,
-    private screenDeviceService: ScreenDeviceService
+    private screenDeviceService: ScreenDeviceService,
+    private materialService: MaterialService
   ) { }
 
   public createSoundtrackSheet(id: string, animatedStave: boolean, screenWidth: number, soundtrack: Soundtrack): void {
@@ -301,7 +303,7 @@ export class SheetService {
   }
 
   private showCanvasContextErrorMessage(): void {
-    this.screenDeviceService.showSnackBar(this.renderCanvasContextErrorMessage());
+    this.materialService.showSnackBar(this.renderCanvasContextErrorMessage());
   }
 
   private renderCanvasContextErrorMessage(): string {
