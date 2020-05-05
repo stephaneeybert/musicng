@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { AppLayoutModule } from '@app/layouts/app-layout.module';
 import { AppUiModule } from './app-ui.module';
-import { ErrorModule } from './core/error';
+import { ErrorModule } from './core/error/error.module';
 import { CoreModule } from './core.module';
 import { AuthModule } from './core/auth/auth.module';
 
@@ -45,10 +45,10 @@ import { SoundtrackDialogComponent } from './views/soundtrack/soundtrack-dialog.
     UploadComponent
   ],
   imports: [
+    CoreModule,
     AppLayoutModule,
     AppUiModule,
     ErrorModule,
-    CoreModule,
     AuthModule
   ],
   bootstrap: [ AppComponent ]
