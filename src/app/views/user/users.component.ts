@@ -10,9 +10,9 @@ import { User } from './user';
 import { UsersApi } from './users-api';
 import { UserService } from '@app/views/user/user.service';
 import { PaginationService } from '@app/core/service/pagination.service';
-import { ToastService } from '@app/core/toast/toast.service';
 import { HateoasPageable } from './hateoas-pageable';
 import { MaterialService } from '@app/core/service/material.service';
+import { ToastService } from 'lib-toast';
 
 @Component({
   selector: 'app-users',

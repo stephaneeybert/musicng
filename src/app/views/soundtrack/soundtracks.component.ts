@@ -13,7 +13,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { delay } from 'rxjs/operators';
 import { ScreenDeviceService } from 'lib-core';
 import { MaterialService } from '@app/core/service/material.service';
-import { ToastService } from '@app/core/toast/toast.service';
 
 @Component({
   selector: 'app-soundtracks',
@@ -44,8 +43,7 @@ export class SoundtracksComponent implements OnInit {
     private soundtrackService: SoundtrackService,
     private materialService: MaterialService,
     private translateService: TranslateService,
-    private matDialog: MatDialog,
-    private toastService: ToastService
+    private matDialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -55,9 +53,6 @@ export class SoundtracksComponent implements OnInit {
     this.audioTransportStarted$ = this.synthService.audioTransportIsStarted$();
 
     this.soundtrackStore.loadAllFromStorage();
-    this.toastService.show({
-      text: 'Salut mon pote'
-    });
   }
 
   ngOnDestroy() {
