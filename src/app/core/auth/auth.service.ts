@@ -110,7 +110,6 @@ export class AuthService {
   }
 
   private storeRefreshTokenInLocalStorage(response: HttpResponse<User>): void {
-    const name: string = this.tokenService.getRefreshTokenHeaderName();
     const refreshTokenHeader: any = response.headers.get(this.tokenService.getRefreshTokenHeaderName());
     if (null != refreshTokenHeader) {
       const refreshToken: any = this.tokenService.extractTokenFromHeaderValue(refreshTokenHeader);
