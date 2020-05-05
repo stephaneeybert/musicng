@@ -1,5 +1,5 @@
 import { Injectable, Injector, Inject } from '@angular/core';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { Overlay, OverlayRef, GlobalPositionStrategy } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 
 import { ToastComponent } from './toast.component';
@@ -19,34 +19,35 @@ export class ToastService {
     @Inject(TOAST_CONFIG_TOKEN) private toastConfig: ToastConfig
   ) { }
 
-  show(data: ToastData) {
+  public show(data: ToastData): ToastRef {
     const positionStrategy: any = this.getPositionStrategy();
-    const overlayRef: any = this.overlay.create({ positionStrategy });
-    const toastRef: any = new ToastRef(overlayRef);
+    const overlayRef: OverlayRef = this.overlay.create({ positionStrategy });
+    const toastRef: ToastRef = new ToastRef(overlayRef);
     this.lastToast = toastRef;
-    const injector: any = this.getInjector(data, toastRef, this.parentInjector);
-    const toastPortal: any = new ComponentPortal(ToastComponent, null, injector);
+    const injector: PortalInjector = this.getInjector(data, toastRef, this.parentInjector);
+    const toastPortal: ComponentPortal<ToastComponent> = new ComponentPortal(ToastComponent, null, injector);
     overlayRef.attach(toastPortal);
     return toastRef;
   }
 
-  getPositionStrategy() {
+  private getPositionStrategy(): GlobalPositionStrategy {
     return this.overlay.position()
       .global()
       .top(this.getPosition())
       .right(this.toastConfig.position.right + 'px');
   }
 
-  getPosition() {
+  private getPosition(): string {
     const lastToastIsVisible: any = this.lastToast && this.lastToast.isVisible();
     const position: any = lastToastIsVisible ? this.lastToast.getPosition().bottom : this.toastConfig.position.top;
     return position + 'px';
   }
 
-  getInjector(data: ToastData, toastRef: ToastRef, parentInjector: Injector) {
+  private getInjector(data: ToastData, toastRef: ToastRef, parentInjector: Injector): PortalInjector {
     const tokens: any = new WeakMap();
     tokens.set(ToastData, data);
     tokens.set(ToastRef, toastRef);
     return new PortalInjector(parentInjector, tokens);
   }
+
 }
