@@ -67,7 +67,7 @@ export class AuthGuardService implements CanActivate, CanActivateChild, CanLoad 
 
   // Check if a module should be loaded
   // It would be pointless to load a module if the user may not use it
-  canLoad$(): Observable<boolean> {
+  canLoad(): Observable<boolean> {
     if (this.authService.isAuthenticated$()) {
       return of(true);
     } else {
