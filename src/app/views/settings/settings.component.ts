@@ -60,6 +60,7 @@ export class SettingsComponent implements OnInit {
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.hasBackdrop = true;
+    dialogConfig.restoreFocus = false;
     dialogConfig.data = {
       settings: existingSettings
     };
