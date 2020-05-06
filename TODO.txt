@@ -30,3 +30,14 @@ Change the measure tempo to be a number of beats
 Should the clef be determined from the time signature of the measure ?
 
 When clicking on the settings icon, it stays highlighted after closing the dialog
+
+
+
+Shared Modules
+SharedModule consists of components, directives, and pipes that we can use everywhere in our app. This module should consist entirely of declarations, most of them exported.
+The SharedModule should also re-export other widget modules, such as CommonModule, FormsModule, and modules with the UI controls that you use most widely.
+Core Modules
+CoreModule will include providers for the singleton services that we load when the application starts.
+
+I am using ShareModule to encapsulate Angular and commonly used 3rd party modules (Material Design, flex-layout, Angular's CommonModule, FormsModule etc) and importing ShareModule into each Lazy-loaded Feature Modules (which are also under lib)
+My CoreModule consists shared Services, and some Components that are only used by AppModule. This CoreModule is imported only into AppModule, basically to keep AppModule slim.
