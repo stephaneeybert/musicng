@@ -4,16 +4,19 @@ import { LibI18nModule } from 'lib-i18n';
 import { LibCoreModule } from 'lib-core';
 import { LibPwaModule } from 'lib-pwa';
 import { LibToastModule } from 'lib-toast';
+import { EnvironmentModule } from './environment.module';
 
 @NgModule({
   imports: [
     HttpClientModule,
+    EnvironmentModule,
     LibI18nModule,
     LibCoreModule,
     LibPwaModule,
     LibToastModule.forRoot()
   ],
   exports: [
+    EnvironmentModule,
     LibI18nModule,
     LibCoreModule,
     LibPwaModule

@@ -45,6 +45,7 @@
     "midi-file-slicer": "^5.0.45",
     "midi-json-parser": "^6.4.19",
     "nexusui": "^2.0.13",
+    "ng-environmenter": "^0.1.2",
     "npm": "^6.9.0",
     "rxjs": "^6.5.2",
     "rxjs-compat": "^6.4.0",
