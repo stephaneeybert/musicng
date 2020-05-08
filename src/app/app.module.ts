@@ -47,7 +47,6 @@ import { SoundtrackDialogComponent } from './views/soundtrack/soundtrack-dialog.
   imports: [
     CoreModule,
     AppLayoutModule,
-    AppUiModule,
     ErrorModule,
     AuthModule
   ],
