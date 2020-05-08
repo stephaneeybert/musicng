@@ -27,10 +27,11 @@ export class AppComponent implements OnInit {
   }
 
   private setAppMetaData(): void {
-    this.screenDeviceService.setMetaData({
-      title: this.translateService.instant('app.title'),
-      description: this.translateService.instant('app.description')
-    });
+    const title: string = this.translateService.instant('app.title');
+    const description: string = this.translateService.instant('app.description');
+    const themeColor: string = '#E8EAF6';
+    const image: string = 'assets/icons/icon-192x192.png';
+    this.screenDeviceService.setMetaData(title, description, themeColor, image);
   }
 
   public getDummyTestTitle(): Observable<string> {
