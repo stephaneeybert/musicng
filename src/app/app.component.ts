@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { ScreenDeviceService } from 'lib-core';
 
 @Component({
@@ -33,4 +33,7 @@ export class AppComponent implements OnInit {
     });
   }
 
+  public getDummyTestTitle(): Observable<string> {
+    return this.translateService.get('app.title');
+  }
 }
