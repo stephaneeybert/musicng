@@ -1,8 +1,8 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LibCoreModule } from 'lib-core';
-import { LibI18nModule } from 'lib-i18n';
+import { LibCoreModule } from '@stephaneeybert/lib-core';
+import { LibI18nModule } from '@stephaneeybert/lib-i18n';
 import { Subscription } from 'rxjs';
 
 describe('AppComponent', () => {

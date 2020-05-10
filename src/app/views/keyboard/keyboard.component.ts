@@ -7,7 +7,7 @@ import { Subscription, ReplaySubject, Subject } from 'rxjs';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Device } from '@app/model/device';
 import { delay } from 'rxjs/operators';
-import { ScreenDeviceService } from 'lib-core';
+import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 
 const NAME_PREFIX_SOUNDTRACK: string = 'keyboard-soundtrack-';
 const NAME_PREFIX_DEVICE: string = 'keyboard-device-';

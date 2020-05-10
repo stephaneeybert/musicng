@@ -6,7 +6,7 @@ import { HttpParams } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { User } from './user';
 import { HateoasPageable } from './hateoas-pageable';
-import { HttpService } from 'lib-core';
+import { HttpService } from '@stephaneeybert/lib-core';
 
 const DOMAIN_URI: string = 'users';
 

@@ -4,7 +4,7 @@ import { ErrorHandler } from '@angular/core';
 
 import { ErrorService } from './error.service';
 import { Subscription } from 'rxjs';
-import { NotificationService } from 'lib-core';
+import { NotificationService } from '@stephaneeybert/lib-core';
 
 @Injectable()
 export class ErrorCustomHandler implements ErrorHandler {

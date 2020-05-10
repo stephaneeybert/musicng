@@ -11,7 +11,6 @@ import { SoundtrackDialogComponent } from './soundtrack-dialog.component';
 import { SoundtrackEdition } from './soundtrack-edition';
 import { TranslateService } from '@ngx-translate/core';
 import { delay } from 'rxjs/operators';
-import { ScreenDeviceService } from 'lib-core';
 import { MaterialService } from '@app/core/service/material.service';
 
 @Component({

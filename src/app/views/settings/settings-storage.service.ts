@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Settings } from '@app/model/settings';
-import { LocalStorageService } from 'lib-core';
+import { LocalStorageService } from '@stephaneeybert/lib-core';
 
 const PREFIX: string = 'musicng-settings';
 

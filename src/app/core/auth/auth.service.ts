@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { environment } from '@env/environment';
 import { TokenService } from '@app/core/auth/token.service';
 import { User } from '@app/views/user/user';
-import { HttpService } from 'lib-core';
+import { HttpService } from '@stephaneeybert/lib-core';
 
 const PATH_AUTH: string = 'auth';
 const PATH_LOGIN: string = 'login';

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Store } from './store';
 import { Device } from '@app/model/device';
 import { map } from 'rxjs/operators';
-import { CommonService } from 'lib-core';
+import { CommonService } from '@stephaneeybert/lib-core';
 
 @Injectable({
   providedIn: 'root'

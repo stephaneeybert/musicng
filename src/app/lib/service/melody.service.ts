@@ -6,7 +6,7 @@ import { NotationService } from './notation.service';
 import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Track } from '@app/model/track';
-import { CommonService } from 'lib-core';
+import { CommonService } from '@stephaneeybert/lib-core';
 
 const DEFAULT_TEMPO_BPM_VALUE: number = 128;
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 2;

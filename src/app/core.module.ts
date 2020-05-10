@@ -1,9 +1,9 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { LibI18nModule } from 'lib-i18n';
-import { LibCoreModule } from 'lib-core';
-import { LibPwaModule } from 'lib-pwa';
-import { LibToastModule } from 'lib-toast';
+import { LibI18nModule } from '@stephaneeybert/lib-i18n';
+import { LibCoreModule } from '@stephaneeybert/lib-core';
+import { LibPwaModule } from '@stephaneeybert/lib-pwa';
+import { LibToastModule } from '@stephaneeybert/lib-toast';
 import { EnvironmentModule } from './environment.module';
 
 @NgModule({

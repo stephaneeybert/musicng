@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Soundtrack } from '@app/model/soundtrack';
 import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
-import { CommonService } from 'lib-core';
+import { CommonService } from '@stephaneeybert/lib-core';
 
 enum RANDOM_METHOD {
   BASE = 0,

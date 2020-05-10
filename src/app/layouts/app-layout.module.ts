@@ -11,9 +11,9 @@ import { UnsecuredSidenavComponent } from '@app/layouts/unsecured/unsecured.side
 import { SettingsComponent } from '@app/views/settings/settings.component';
 import { AppUiModule } from '@app/app-ui.module';
 import { SettingsDialogComponent } from '@app/views/settings/settings-dialog.component';
-import { LibI18nModule } from 'lib-i18n';
-import { LibCoreModule } from 'lib-core';
-import { LibPwaModule } from 'lib-pwa';
+import { LibI18nModule } from '@stephaneeybert/lib-i18n';
+import { LibCoreModule } from '@stephaneeybert/lib-core';
+import { LibPwaModule } from '@stephaneeybert/lib-pwa';
 
 @NgModule({
   declarations: [

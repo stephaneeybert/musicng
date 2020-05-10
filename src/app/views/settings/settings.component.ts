@@ -6,7 +6,6 @@ import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dial
 import { TranslateService } from '@ngx-translate/core';
 import { SettingsDialogComponent } from './settings-dialog.component';
 import { SettingsEdition } from './settings-edition';
-import { ScreenDeviceService } from 'lib-core';
 import { MaterialService } from '@app/core/service/material.service';
 
 @Component({

@@ -25,7 +25,7 @@ import { Note } from '@app/model/note/note';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { Duration } from '@app/model/note/duration/duration';
 import { SynthService } from './synth.service';
-import { CommonService } from 'lib-core';
+import { CommonService } from '@stephaneeybert/lib-core';
 
 const NOTE_ON: number = 144; // A command value of 144 is a "note on"
 const NOTE_OFF: number = 128; // A command value of 128 is a "note off"

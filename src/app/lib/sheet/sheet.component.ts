@@ -7,7 +7,7 @@ import { delay } from 'rxjs/operators';
 import { Settings } from '@app/model/settings';
 import { SettingsStore } from '@app/lib/store/settings-store';
 import { SoundtrackStore } from '../store/soundtrack-store';
-import { ScreenDeviceService } from 'lib-core';
+import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 
 @Component({
   selector: 'app-midi-sheet',

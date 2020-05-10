@@ -6,7 +6,7 @@ import { Measure } from '@app/model/measure/measure';
 import { Note } from '@app/model/note/note';
 import { TempoUnit } from '@app/model/tempo-unit';
 import { PlacedChord } from '@app/model/note/placed-chord';
-import { CommonService, LocalStorageService } from 'lib-core';
+import { CommonService, LocalStorageService } from '@stephaneeybert/lib-core';
 
 const PREFIX: string = 'musicng-soundtrack-';
 

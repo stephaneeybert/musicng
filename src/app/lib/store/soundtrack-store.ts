@@ -3,7 +3,7 @@ import { Store } from './store';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Observable } from 'rxjs';
 import { SoundtrackStorageService } from '@app/views/soundtrack/soundtrack-storage.service';
-import { CommonService } from 'lib-core';
+import { CommonService } from '@stephaneeybert/lib-core';
 
 @Injectable({
   providedIn: 'root'

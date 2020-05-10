@@ -12,7 +12,7 @@ import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
 import { Observable, interval, timer, Subscription } from 'rxjs';
 import { map, filter, take } from 'rxjs/operators';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { WakelockService } from 'lib-core';
+import { WakelockService } from '@stephaneeybert/lib-core';
 
 // Observation has shown that a delay between creating the service
 // and starting the transport is required for the transport to work

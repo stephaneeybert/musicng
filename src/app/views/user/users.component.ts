@@ -12,7 +12,7 @@ import { UserService } from '@app/views/user/user.service';
 import { PaginationService } from '@app/core/service/pagination.service';
 import { HateoasPageable } from './hateoas-pageable';
 import { MaterialService } from '@app/core/service/material.service';
-import { ToastService } from 'lib-toast';
+import { ToastService } from '@stephaneeybert/lib-toast';
 
 @Component({
   selector: 'app-users',
