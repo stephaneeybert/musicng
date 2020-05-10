@@ -1,0 +1,4 @@
+# Ignoring the dependencies and git repository allows for a faster build
+node_modules
+.git
+.gitignore

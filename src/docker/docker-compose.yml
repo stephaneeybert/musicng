@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+  musicng-dev:
+    image: stephaneeybert/musicng:dev
+    ports:
+      - "4201:4200"
+    networks:
+      - musicng-dev
+    hostname: dev.musicng
+    volumes:
+      - "~/dev/js/projects/angular/musicng:/usr/local/musicng/"
+    user: "${CURRENT_UID}:${CURRENT_GID}"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 10s
+networks:
+  musicng-dev:
+    name: musicng-dev
