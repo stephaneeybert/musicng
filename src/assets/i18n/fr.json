@@ -28,7 +28,7 @@
     "logout.description": "Me déconnecter de l'application"
   },
   "header": {
-    "home": "Home",
+    "home": "Accueil",
     "users": "Utilisateurs",
     "logout": "Déconnexion",
     "music": "Musique",
@@ -41,7 +41,7 @@
       "title": "Paramètres",
       "cancel": "Annuler",
       "save": "Enregistrer",
-      "animatedStave": "Animated stave"
+      "animatedStave": "Partition animée"
     },
     "message": {
       "saved": "Les paramètres ont été enregistré."
