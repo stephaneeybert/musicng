@@ -21,8 +21,8 @@ const PATH_LOGIN: string = 'login';
 export class AuthInterceptor implements HttpInterceptor {
 
   private refreshTokenInProgress = false;
-  tokenRefreshedSource = new Subject();
-  tokenRefreshed$ = this.tokenRefreshedSource.asObservable();
+  tokenRefreshedSubject = new Subject();
+  tokenRefreshed$ = this.tokenRefreshedSubject.asObservable();
 
   // Contains the current refresh token or is null if
   // the refresh is pending and no refresh token is currently available
@@ -113,7 +113,7 @@ export class AuthInterceptor implements HttpInterceptor {
           tap(() => {
             console.log('The access token has been refreshed by the interceptor');
             this.refreshTokenInProgress = false;
-            this.tokenRefreshedSource.next();
+            this.tokenRefreshedSubject.next();
           })
         );
     }
