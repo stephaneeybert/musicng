@@ -1,5 +1,6 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 
+// TODO Put this in a lib-store
 export abstract class Store<T> {
 
   state$?: Observable<T>;
