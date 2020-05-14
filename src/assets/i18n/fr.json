@@ -7,11 +7,10 @@
     "pwa": {
       "new_version_available": "Une nouvelle version de l'application est disponible. Charger la nouvelle version ?",
       "install": {
-        "install": "Installer",
         "installOnDevice": "Installer sur mon appareil",
-        "installAnIcon": "Ajouter à l'écran d'accueil",
-        "iosInstructions": "Pour installer cette app web sur votre appareil veuillez taper sur le bouton Menu et ensuite sur le bouton Ajouter à l'écran d'accueil",
-        "close": "Fermer"
+        "iosInstructions": "Pour installer cette app web sur votre appareil, veuillez cliquer sur le bouton Menu et sur le bouton Ajouter à l'écran d'accueil",
+        "install": "INSTALLER",
+        "cancel": "ANNULER"
       }
     }
   },

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, Observable } from 'rxjs';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
+import { PwaService } from '@stephaneeybert/lib-pwa';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private translateService: TranslateService,
-    private screenDeviceService: ScreenDeviceService
+    private screenDeviceService: ScreenDeviceService,
+    private pwaService: PwaService
   ) {}
 
   public ngOnInit() {
@@ -24,6 +26,8 @@ export class AppComponent implements OnInit {
 
   private afterLanguageResourcesLoaded(): void {
     this.setAppMetaData();
+    this.checkForAppUpdate();
+    this.autoDisplayPwaInstallPrompt();
   }
 
   private setAppMetaData(): void {
@@ -34,7 +38,20 @@ export class AppComponent implements OnInit {
     this.screenDeviceService.setMetaData(title, description, themeColor, image);
   }
 
+  private checkForAppUpdate(): void {
+    const i18nNewVersionAvailable: string = this.translateService.instant('app.pwa.new_version_available');
+    this.pwaService.checkForAppUpdate(i18nNewVersionAvailable);
+  }
+
+  private autoDisplayPwaInstallPrompt(): void {
+    const i18nCancel: string = this.translateService.instant('app.pwa.install.cancel');
+    const i18nInstall: string = this.translateService.instant('app.pwa.install.install');
+    const i18nIOSInstructions: string = this.translateService.instant('app.pwa.install.iosInstructions');
+    this.pwaService.autoDisplayPwaInstallPrompt(i18nCancel, i18nInstall, i18nIOSInstructions);
+  }
+
   public getDummyTestTitle(): Observable<string> {
     return this.translateService.get('app.title');
   }
+
 }

@@ -7,11 +7,10 @@
     "pwa": {
       "new_version_available": "A newer version of the application is available. Load the new version ?",
       "install": {
-        "install": "Install",
         "installOnDevice": "Install on my device",
-        "installAnIcon": "Add to Home screen",
-        "iosInstructions": "To install this web app on your device tap the Menu button and then the 'Add to Home screen' button",
-        "close": "Close"
+        "iosInstructions": "To install this web app on your device, tap the Menu button and the 'Add to Home screen' button",
+        "install": "INSTALL",
+        "cancel": "CANCEL"
       }
     }
   },
