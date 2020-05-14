@@ -11,10 +11,7 @@ import { UserService } from '@app/views/user/user.service';
 })
 export class UserConfirmedComponent implements OnChanges {
 
-  // The ! definite assignment assertion tells the compiler not to worry about the variable
-  // not being defined at compile time, as the application ensures it shall be defined at run-time
-  // before being used
-  @Input() userId!: string;
+  @Input() userId?: string;
   @Output() confirmedChange: EventEmitter<User> = new EventEmitter<User>();
   confirmed: boolean = false;
 
@@ -23,7 +20,8 @@ export class UserConfirmedComponent implements OnChanges {
   ) { }
 
   toggleConfirmed(event: Event) {
-    this.userService.get(this.userId)
+    if (this.userId) {
+      this.userService.get(this.userId)
       .pipe(
         switchMap((user: User) => {
           user.confirmedEmail = !user.confirmedEmail;
@@ -37,6 +35,7 @@ export class UserConfirmedComponent implements OnChanges {
           return observableOf([]);
         })
       );
+    }
   }
 
   // This method is called after the input bindings attempt
@@ -49,11 +48,13 @@ export class UserConfirmedComponent implements OnChanges {
   // This method is called after the input bindings attempt
   // and only if there was actual input provided to the bindings
   ngOnChanges() {
-    const subscription: Subscription = this.userService.get(this.userId)
+    if (this.userId) {
+      const subscription: Subscription = this.userService.get(this.userId)
       .subscribe(user => {
         this.update(user.confirmedEmail);
         subscription.unsubscribe();
       });
+    }
   }
 
   update(confirmedEmail: boolean) {
