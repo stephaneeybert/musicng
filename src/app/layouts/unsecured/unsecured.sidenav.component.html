@@ -1,39 +1,44 @@
-<mat-sidenav #sidenav mode="push" class="app-sidenav">
-  <mat-toolbar color="primary">
-    <!--future svg to go here-->
-    <span class="toolbar-filler"></span>
-    <button mat-icon-button (click)="sidenav.toggle()" class="mat-icon-button sidenav-toggle-button" [hidden]="!sidenav.opened">
-      <mat-icon aria-label="Menu" class="material-icons">close</mat-icon>
-    </button>
-  </mat-toolbar>
-  <mat-nav-list>
-    <!-- <a mat-list-item class="sidenav-link" [routerLink]="['/login']" (click)="sidenav.toggle()">
+<div libCoreClickOutside (clickOutsideEvent)="sidenav.close()">
+  <mat-sidenav #sidenav mode="push" class="app-sidenav">
+    <mat-toolbar color="primary">
+      <span class="toolbar-filler"></span>
+      <button mat-icon-button (click)="sidenav.toggle()" class="mat-icon-button sidenav-toggle-button"
+        [hidden]="!sidenav.opened">
+        <mat-icon aria-label="Menu" class="material-icons">close</mat-icon>
+      </button>
+    </mat-toolbar>
+    <mat-nav-list>
+      <!-- <a mat-list-item class="sidenav-link" [routerLink]="['/login']" (click)="sidenav.toggle()">
       <mat-icon mat-list-icon>account_box</mat-icon>
       <span class="title" mat-line>{{ 'menu.login' | translate }}</span>
       <span mat-line class="secondary">{{ 'menu.login.description' | translate }}</span>
     </a> -->
-    <a mat-list-item class="sidenav-link" [routerLink]="['/soundtracks']" (click)="sidenav.toggle()">
-      <mat-icon mat-list-icon>music_note</mat-icon>
-      <span class="title" mat-line>{{ 'menu.soundtrack' | translate }}</span>
-      <span mat-line class="secondary">{{ 'menu.soundtrack.description' | translate }}</span>
-    </a>
-    <a mat-list-item class="sidenav-link" [routerLink]="['/devices']" (click)="sidenav.toggle()">
-      <mat-icon mat-list-icon>keyboard</mat-icon>
-      <span class="title" mat-line>{{ 'menu.device' | translate }}</span>
-      <span mat-line class="secondary">{{ 'menu.device.description' | translate }}</span>
-    </a>
-    <a appPwaPrompt i18nInstall="{{ 'app.pwa.install.install' | translate }}" i18nCancel="{{ 'app.pwa.install.cancel' | translate }}" i18nIOSInstructions="{{ 'app.pwa.install.iosInstructions' | translate }}" mat-list-item class="sidenav-link">
-      <mat-icon mat-list-icon>home</mat-icon>
-      <span class="title" mat-line>{{ 'app.pwa.install.install' | translate }}</span>
-      <span mat-line class="secondary">{{ 'app.pwa.install.installOnDevice' | translate }}</span>
-    </a>
-  </mat-nav-list>
-</mat-sidenav>
-<mat-toolbar color="primary">
-  <button mat-icon-button (click)="sidenav.toggle()" class="mat-icon-button sidenav-toggle-button" [hidden]="sidenav.opened">
-    <mat-icon aria-label="Another menu" class="material-icons">menu</mat-icon>
-  </button>
-  <span class="title">{{ 'app.title' | translate }}</span>
-  <span class="fill-remaining-space"></span>
-  <app-header></app-header>
-</mat-toolbar>
+      <a mat-list-item class="sidenav-link" [routerLink]="['/soundtracks']" (click)="sidenav.toggle()">
+        <mat-icon mat-list-icon>music_note</mat-icon>
+        <span class="title" mat-line>{{ 'menu.soundtrack' | translate }}</span>
+        <span mat-line class="secondary">{{ 'menu.soundtrack.description' | translate }}</span>
+      </a>
+      <a mat-list-item class="sidenav-link" [routerLink]="['/devices']" (click)="sidenav.toggle()">
+        <mat-icon mat-list-icon>keyboard</mat-icon>
+        <span class="title" mat-line>{{ 'menu.device' | translate }}</span>
+        <span mat-line class="secondary">{{ 'menu.device.description' | translate }}</span>
+      </a>
+      <a appPwaPrompt i18nInstall="{{ 'app.pwa.install.install' | translate }}"
+        i18nCancel="{{ 'app.pwa.install.cancel' | translate }}"
+        i18nIOSInstructions="{{ 'app.pwa.install.iosInstructions' | translate }}" mat-list-item class="sidenav-link">
+        <mat-icon mat-list-icon>home</mat-icon>
+        <span class="title" mat-line>{{ 'app.pwa.install.install' | translate }}</span>
+        <span mat-line class="secondary">{{ 'app.pwa.install.installOnDevice' | translate }}</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="sidenav.toggle()" class="mat-icon-button sidenav-toggle-button"
+      [hidden]="sidenav.opened">
+      <mat-icon aria-label="Another menu" class="material-icons">menu</mat-icon>
+    </button>
+    <span class="title">{{ 'app.title' | translate }}</span>
+    <span class="fill-remaining-space"></span>
+    <app-header></app-header>
+  </mat-toolbar>
+</div>
