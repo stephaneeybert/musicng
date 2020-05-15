@@ -36,7 +36,7 @@ export class DebounceClickDirective implements OnInit, OnDestroy {
   }
 
   @HostListener('click', ['$event'])
-  clickEvent(event: Event) {
+  onClickEvent(event: Event) {
     event.preventDefault();
     event.stopPropagation();
     this.clicks.next(event);
