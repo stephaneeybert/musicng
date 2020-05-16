@@ -3,16 +3,16 @@
 @include mat-core();
 
 // Creating a custom theme
-$palette-primary: mat-palette($mat-lime);
-$palette-accent: mat-palette($mat-orange);
+$palette-primary: mat-palette($mat-light-green);
+$palette-accent: mat-palette($mat-deep-orange);
 $palette-warn: mat-palette($mat-red);
 $standard-light-theme: mat-light-theme($palette-primary, $palette-accent, $palette-warn);
 
 // Changing the background color of the app
-$background: map-get($standard-light-theme, background);
-$bg-color: #FFFFFF;
-$background: map_merge($background, (background: $bg-color));
-$standard-light-theme: map_merge($standard-light-theme, (background: $background));
+// $background: map-get($standard-light-theme, background);
+// $bg-color: #FFFFFF;
+// $background: map_merge($background, (background: $bg-color));
+// $standard-light-theme: map_merge($standard-light-theme, (background: $background));
 
 @include angular-material-theme($standard-light-theme);
 
@@ -21,12 +21,12 @@ $standard-light-theme: map_merge($standard-light-theme, (background: $background
 // $custom-light-theme: mat-light-theme($palette-primary, $palette-accent, $palette-warn);
 // @include mat-toolbar-theme($custom-light-theme);
 
-// Changing some palette properties of a theme and applying it to a component
-$background: map-get($standard-light-theme, background);
-$bg-color: #FFFFFF;
-$background: map_merge($background, (app-bar: $bg-color));
-$custom-light-theme: map_merge($standard-light-theme, (background: $background));
-@include mat-toolbar-theme($custom-light-theme);
+// Changing some palette properties of a component
+// $background: map-get($standard-light-theme, background);
+// $bg-color: #FFFFFF;
+// $background: map_merge($background, (app-bar: $bg-color));
+// $custom-light-theme: map_merge($standard-light-theme, (background: $background));
+// @include mat-toolbar-theme($custom-light-theme);
 
 // Changing some palette properties of a theme and applying it to a component
 // $background: map-get($standard-light-theme, background);
