@@ -7,6 +7,7 @@ $palette-primary: mat-palette($mat-light-green);
 $palette-accent: mat-palette($mat-deep-orange);
 $palette-warn: mat-palette($mat-red);
 $standard-light-theme: mat-light-theme($palette-primary, $palette-accent, $palette-warn);
+$standard-dark-theme: mat-dark-theme($palette-primary, $palette-accent, $palette-warn);
 
 // Changing the background color of the app
 // $background: map-get($standard-light-theme, background);
@@ -14,12 +15,18 @@ $standard-light-theme: mat-light-theme($palette-primary, $palette-accent, $palet
 // $background: map_merge($background, (background: $bg-color));
 // $standard-light-theme: map_merge($standard-light-theme, (background: $background));
 
-@include angular-material-theme($standard-light-theme);
+.app-light-theme {
+  @include angular-material-theme($standard-light-theme);
+}
+.app-dark-theme {
+  @include angular-material-theme($standard-dark-theme);
+}
 
 // Applying a theme to a component
-// $palette-primary: mat-palette($mat-grey);
-// $custom-light-theme: mat-light-theme($palette-primary, $palette-accent, $palette-warn);
-// @include mat-toolbar-theme($custom-light-theme);
+.soft-theme {
+  $custom-light-theme: mat-light-theme(mat-palette($mat-grey, 400), $palette-accent, $palette-warn);
+  @include mat-toolbar-theme($custom-light-theme);
+}
 
 // Changing some palette properties of a component
 // $background: map-get($standard-light-theme, background);

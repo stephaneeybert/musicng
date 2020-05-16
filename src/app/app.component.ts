@@ -24,6 +24,11 @@ export class AppComponent implements OnInit {
     });
   }
 
+  getAppTheme(): string {
+    return 'app-light-theme';
+    // return 'app-dark-theme';
+  }
+
   private afterLanguageResourcesLoaded(): void {
     this.setAppMetaData();
     this.checkForAppUpdate();
