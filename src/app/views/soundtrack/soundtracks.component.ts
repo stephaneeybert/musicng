@@ -12,6 +12,9 @@ import { SoundtrackEdition } from './soundtrack-edition';
 import { TranslateService } from '@ngx-translate/core';
 import { delay } from 'rxjs/operators';
 import { MaterialService } from '@app/core/service/material.service';
+import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faLayerPlus as farLayerPlus } from '@fortawesome/pro-regular-svg-icons';
+import { faLayerPlus as fasLayerPlus } from '@fortawesome/pro-solid-svg-icons';
 
 @Component({
   selector: 'app-soundtracks',
@@ -42,8 +45,11 @@ export class SoundtracksComponent implements OnInit {
     private soundtrackService: SoundtrackService,
     private materialService: MaterialService,
     private translateService: TranslateService,
-    private matDialog: MatDialog
-  ) { }
+    private matDialog: MatDialog,
+    private faIconLibrary: FaIconLibrary
+  ) {
+    this.faIconLibrary.addIcons(farLayerPlus, fasLayerPlus);
+  }
 
   ngOnInit() {
     this.observeSoundtracks();
