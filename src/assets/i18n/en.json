@@ -9,6 +9,7 @@
       "install": {
         "installOnDevice": "Install on my device",
         "iosInstructions": "To install this web app on your device, tap the Menu button and the 'Add to Home screen' button",
+        "question": "Install on the device ?",
         "install": "INSTALL",
         "cancel": "CANCEL"
       }

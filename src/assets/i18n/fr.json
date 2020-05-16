@@ -9,6 +9,7 @@
       "install": {
         "installOnDevice": "Installer sur mon appareil",
         "iosInstructions": "Pour installer cette app web sur votre appareil, veuillez cliquer sur le bouton Menu et sur le bouton Ajouter à l'écran d'accueil",
+        "question": "Installer sur l'appareil ?",
         "install": "INSTALLER",
         "cancel": "ANNULER"
       }
