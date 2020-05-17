@@ -181,8 +181,7 @@ export class GeneratorService {
     while (nbAddedChord < this.NB_CHORDS) {
       const chord: Array<string> = new Array();
 
-      // Start on the Do chord and then randomly pick a chord
-      // TODO Change all == by ===
+      // For each randomly picked chroma, add its chord to an array
       const chromaNoteIndex: number = (nbAddedChord === 0) ? 0 : this.randomlyPickChroma(previousChromaNoteIndex);
       for (let noteIndex = 0; noteIndex < this.CHORD_WIDTH; noteIndex++) {
         chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);
