@@ -15,6 +15,7 @@ enum RANDOM_METHOD {
   BONUS_TABLE = 1
 }
 
+const REVERSE_DISSIMILAR_CHORD: boolean = false;
 const DEFAULT_TEMPO_BPM_VALUE: number = 128;
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
 const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
@@ -197,11 +198,14 @@ export class GeneratorService {
         chords.push(chord); // TODO Do we still double the notes ?
         nbAddedChord++;
       } else {
-        // TODO Do we still not reverse the notes ?
-        // Create a chord from a variation on the previous one
-        // const slidedChord: Array<string> = this.createShiftedChord(previousChord);
-        // chords.push(chord);
-        // nbAddedChord++;
+        // TODO Do we still reverse the notes ?
+        // If the current chord is too dissimilar from its previous one
+        // then create a chord from a reversing of the previous one
+        if (REVERSE_DISSIMILAR_CHORD) {
+          const slidedChord: Array<string> = this.createShiftedChord(previousChord);
+          chords.push(chord);
+          nbAddedChord++;
+        }
       }
     }
     return chords;
