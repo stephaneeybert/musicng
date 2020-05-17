@@ -56,3 +56,28 @@ https://appsco.pe/developer/splash-screens
 <link href="splashscreens/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
 
 The #E8EAF6 is hard coded 3 times now
+
+Norbert:
+Param: MIN_BONUS number 0 to 100
+Param: REVERSE_DISSIMILAR_CHORD boolean
+Param: CHORD_WIDTH number 0 to 4
+Générer des silences aussi et pas que des notes
+Ajouter une voix pour la partition de basse bass
+Ajouter une voix pour la partition de percussion drum
+
+Avoir une matrice par tonalité, soit 12 matrices pour les tonalités mineures
+et encore 12 matrices pour les tonalités majeures
+Question: Comment se nomment ces tonalités ?
+On doit pouvoir changer de tonalité.
+Question: A quel moment ? Entre deux mesures ? Entre deux accords dans une mesure ?
+
+Avoir 8 notes par mesure pour la mélodie.
+
+Une note de passage et une note hors de l'accord précédent (avoir la formule de probabilités)
+Question: C'est quoi une note de passage ?
+
+Question: Qu'entends tu par: De même si on a 4 fois la même note, ce sera une blanche et 8 fois une ronde ?
+Question: Quelle est la différence entre DoM et Do#M ? Et entre Dom et Do#m ?
+Question: La mélodie a t'elle sa série qui est différente des séries des refrains et des couplets ?
+Question: La série du refrain est elle alternée avec celle du couplet ?
+Question: Une série fait elle une ou plusieurs mesures ? Ou bien est elle plusieurs accords ?
