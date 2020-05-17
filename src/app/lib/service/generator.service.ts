@@ -255,7 +255,7 @@ export class GeneratorService {
       // If a minimum bonus is specified then do not consider the chromas that have a lower bonus
       if ((MIN_BONUS > 0 && chromaBonus >= MIN_BONUS) || 0 === MIN_BONUS) {
         // The higher the more random
-        chromaBonus = RANDOMLINESS + chromaBonus;
+        chromaBonus += RANDOMLINESS;
         for (let nb = 0; nb < chromaBonus; nb++) {
           chromasPool.push(currentChromaIndex);
         }
