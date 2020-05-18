@@ -18,12 +18,3 @@ $standard-dark-theme: map_merge($standard-dark-theme, (background: $background))
 
 @include angular-material-theme($standard-light-theme);
 // @include angular-material-theme($standard-dark-theme);
-
-// Changing the background color of a component
-.soft-theme {
-  $background: map-get($standard-light-theme, background);
-  $bg-color: #f1f8e9;
-  $background: map_merge($background, (background: $bg-color, card: $bg-color, dialog: $bg-color, app-bar: $bg-color));
-  $custom-light-theme: map_merge($standard-light-theme, (background: $background));
-  @include mat-toolbar-theme($custom-light-theme);
-}
