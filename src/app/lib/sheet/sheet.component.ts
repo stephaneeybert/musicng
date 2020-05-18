@@ -18,7 +18,7 @@ export class SheetComponent implements OnInit, OnDestroy {
 
   inputSoundtrack?: Soundtrack;
   private soundtrack$: Subject<Soundtrack> = new ReplaySubject<Soundtrack>();
-  // KNOW A setter with the very same name as the variable can be used in place of the variable
+  // HINT: A setter with the very same name as the variable can be used in place of the variable
   @Input()
   set soundtrack(soundtrack: Soundtrack) {
     this.soundtrack$.next(soundtrack);
@@ -26,7 +26,7 @@ export class SheetComponent implements OnInit, OnDestroy {
   };
 
   private device$: Subject<Device> = new ReplaySubject<Device>();
-  // KNOW A setter with the very same name as the variable can be used in place of the variable
+  // HINT: A setter with the very same name as the variable can be used in place of the variable
   @Input()
   set device(device: Device) {
     this.device$.next(device);
