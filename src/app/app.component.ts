@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
 
   getAppTheme(): string {
     return 'app-light-theme';
-    // return 'app-dark-theme';
+    // return 'app-dark-theme'; // TODO Have a theme switcher
   }
 
   private afterLanguageResourcesLoaded(): void {
