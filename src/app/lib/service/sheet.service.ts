@@ -92,7 +92,9 @@ export class SheetService {
           for (const measure of track.getSortedMeasures()) {
             if (measure.placedChords) {
               if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
-                const stave = new Vex.Flow.Stave(this.getStaveX(animatedStave, track.index, measureWithVisibleNotesIndex), this.getStaveY(animatedStave, nbTracks, track.index, measureWithVisibleNotesIndex), displayWidth);
+                const staveX: number = this.getStaveX(animatedStave, track.index, measureWithVisibleNotesIndex);
+                const staveY: number = this.getStaveY(animatedStave, nbTracks, track.index, measureWithVisibleNotesIndex);
+                const stave = new Vex.Flow.Stave(staveX, staveY, displayWidth);
                 if (soundtrack.sheetContext != null) {
                   stave.setContext(soundtrack.sheetContext);
                 }
@@ -154,6 +156,10 @@ export class SheetService {
                 measure.sheetVoice = voice;
                 voices.push(voice);
                 measureWithVisibleNotesIndex++;
+
+                if (track.name != null && soundtrack.sheetContext != null) {
+                  this.drawText(soundtrack.sheetContext, track.name, staveX, staveY);
+                }
               }
             } else {
               throw new Error('The measure placed chords array has not been instantiated.');
@@ -192,6 +198,11 @@ export class SheetService {
     if (soundtrack.sheetContext != null) {
       soundtrack.sheetContext.resize(width, height);
     }
+  }
+
+  private drawText(sheetContext: any, text: string, x: number, y: number): void {
+    const textHeight = sheetContext.measureText(text).height;
+    sheetContext.fillText(text, x, y + textHeight);
   }
 
   public drawFirstMeasure(soundtrack: Soundtrack): void {
