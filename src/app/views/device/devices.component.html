@@ -5,8 +5,10 @@
   <mat-card-content>
     <table>
       <thead>
-        <th *ngIf="devices && devices.length > 0">{{ 'devices.title' | translate }}</th>
-        <th *ngIf="devices && devices.length === 0">{{ 'devices.none' | translate }}</th>
+        <tr>
+          <th *ngIf="devices && devices.length > 0">{{ 'devices.title' | translate }}</th>
+          <th *ngIf="devices && devices.length === 0">{{ 'devices.none' | translate }}</th>
+        </tr>
       </thead>
       <tbody>
         <tr *ngFor="let device of devices">
