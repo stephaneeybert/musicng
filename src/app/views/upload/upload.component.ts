@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MidiService } from '@app/lib/service/midi.service';
+import { MidiService } from '@app/service/midi.service';
 import { Soundtrack } from '@app/model/soundtrack';
-import { SoundtrackStore } from '@app/lib/store/soundtrack-store';
+import { SoundtrackStore } from '@app/store/soundtrack-store';
 
 @Component({
   selector: 'app-upload',

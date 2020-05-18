@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SettingsStore } from '@app/lib/store/settings-store';
+import { SettingsStore } from '@app/store/settings-store';
 import { Settings } from '@app/model/settings';
 
 @Injectable({

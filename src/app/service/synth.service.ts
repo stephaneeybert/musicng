@@ -3,7 +3,7 @@ import * as Tone from 'tone';
 import { Track } from '@app/model/track';
 import { Measure } from '@app/model/measure/measure';
 import { Soundtrack } from '@app/model/soundtrack';
-import { KeyboardService } from '@app/lib/service/keyboard.service';
+import { KeyboardService } from '@app/service/keyboard.service';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { NotationService } from './notation.service';
 import { TempoUnit } from '@app/model/tempo-unit';

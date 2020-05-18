@@ -1,10 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Soundtrack } from '@app/model/soundtrack';
-import { SoundtrackStore } from '@app/lib/store/soundtrack-store';
-import { GeneratorService } from '@app/lib/service/generator.service';
-import { SynthService } from '@app/lib/service/synth.service';
-import { MelodyService } from '@app/lib/service/melody.service';
+import { SoundtrackStore } from '@app/store/soundtrack-store';
+import { GeneratorService } from '@app/service/generator.service';
+import { SynthService } from '@app/service/synth.service';
+import { MelodyService } from '@app/service/melody.service';
 import { SoundtrackService } from './soundtrack.service';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { SoundtrackDialogComponent } from './soundtrack-dialog.component';

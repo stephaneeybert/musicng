@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SoundtrackStore } from '@app/lib/store/soundtrack-store';
+import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { Soundtrack } from '@app/model/soundtrack';
 import { CommonService } from '@stephaneeybert/lib-core';
 

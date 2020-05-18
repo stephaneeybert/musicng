@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Soundtrack } from '@app/model/soundtrack';
-import { NotationService } from '@app/lib/service/notation.service';
+import { NotationService } from '@app/service/notation.service';
 import { Track } from '@app/model/track';
 import { Measure } from '@app/model/measure/measure';
 import { Note } from '@app/model/note/note';

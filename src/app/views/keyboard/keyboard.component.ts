@@ -1,8 +1,8 @@
 import { Component, AfterViewInit, Input, ChangeDetectorRef, HostListener } from '@angular/core';
-import { KeyboardService } from '@app/lib/service/keyboard.service';
-import { SynthService } from '@app/lib/service/synth.service';
-import { SoundtrackStore } from '@app/lib/store/soundtrack-store';
-import { DeviceStore } from '@app/lib/store/device-store';
+import { KeyboardService } from '@app/service/keyboard.service';
+import { SynthService } from '@app/service/synth.service';
+import { SoundtrackStore } from '@app/store/soundtrack-store';
+import { DeviceStore } from '@app/store/device-store';
 import { Subscription, ReplaySubject, Subject } from 'rxjs';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Device } from '@app/model/device';

@@ -1,12 +1,12 @@
 import { Component, Input, ChangeDetectorRef, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { Device } from '@app/model/device';
-import { SheetService } from '@app/lib/service/sheet.service';
+import { SheetService } from '@app/service/sheet.service';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Subscription, Subject, ReplaySubject, Observable, combineLatest } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { Settings } from '@app/model/settings';
-import { SettingsStore } from '@app/lib/store/settings-store';
-import { SoundtrackStore } from '../store/soundtrack-store';
+import { SettingsStore } from '@app/store/settings-store';
+import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 
 @Component({

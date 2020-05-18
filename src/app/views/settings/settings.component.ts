@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Settings } from '@app/model/settings';
-import { SettingsStore } from '@app/lib/store/settings-store';
+import { SettingsStore } from '@app/store/settings-store';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingsDialogComponent } from './settings-dialog.component';
