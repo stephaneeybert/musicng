@@ -49,10 +49,11 @@ export class AppComponent implements OnInit {
   }
 
   private autoDisplayPwaInstallPrompt(): void {
+    const i18nQuestion: string = this.translateService.instant('app.pwa.install.question');
     const i18nCancel: string = this.translateService.instant('app.pwa.install.cancel');
     const i18nInstall: string = this.translateService.instant('app.pwa.install.install');
     const i18nIOSInstructions: string = this.translateService.instant('app.pwa.install.iosInstructions');
-    this.pwaService.autoDisplayPwaInstallPrompt(i18nCancel, i18nInstall, i18nIOSInstructions);
+    this.pwaService.autoDisplayPwaInstallPrompt(i18nQuestion, i18nCancel, i18nInstall, i18nIOSInstructions);
   }
 
   public getDummyTestTitle(): Observable<string> {
