@@ -30,6 +30,12 @@ const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const CHROMAS_GERMAN_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'H'];
 const CHROMAS_SYLLABIC: Map<string, string> = new Map([ ['rest', 'rest'], ['C', 'Do'], ['C#', 'Do#'], ['D', 'Rém'], ['D#', 'Rém#'], ['E', 'Mim'], ['F', 'Fa'], ['F#', 'Fa#'], ['G', 'Sol'], ['G#', 'Sol#'], ['A', 'Lam'], ['A#', 'Lam#'], ['B', 'Si-'] ]);
 const OCTAVES: Array<number> = [ 1, 2, 3, 4, 5, 6 ];
+export enum TRACK_TYPES {
+  MELODY = 'melody',
+  SYMPHONY = 'symphony',
+  DRUMS = 'drums',
+  BASS = 'bass'
+}
 
 @Injectable({
   providedIn: 'root'

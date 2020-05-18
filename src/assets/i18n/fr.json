@@ -47,6 +47,16 @@
       "saved": "Les paramètres ont été enregistré."
     }
   },
+  "music": {
+    "notation": {
+      "track": {
+        "melody": "Melodie",
+        "symphony": "Symphonie",
+        "drums": "Percussions",
+        "bass": "Basse"
+      }
+    }
+  },
   "soundtracks": {
     "assignedName": "Morceau",
     "add": {

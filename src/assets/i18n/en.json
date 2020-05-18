@@ -47,6 +47,16 @@
       "saved": "The settings have been saved."
     }
   },
+  "music": {
+    "notation": {
+      "track": {
+        "melody": "Melody",
+        "symphony": "Symphony",
+        "drums": "Drums",
+        "bass": "Bass"
+      }
+    }
+  },
   "soundtracks": {
     "assignedName": "Soundtrack",
     "add": {

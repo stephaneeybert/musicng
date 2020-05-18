@@ -9,6 +9,7 @@ import { Soundtrack } from '@app/model/soundtrack';
 import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
+import { TRACK_TYPES } from './notation.service';
 
 enum RANDOM_METHOD {
   BASE = 0,
@@ -91,10 +92,16 @@ export class GeneratorService {
     const symphonyChords: Array<Array<string>> = this.generateChords();
     const melodyChords: Array<Array<string>> = this.generateMasterNoteChords(symphonyChords);
     const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_LOUDER, melodyChords)));
+    melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
     const symphonyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, symphonyChords)));
+    symphonyTrack.name = this.getTrackName(TRACK_TYPES.SYMPHONY);
     symphonyTrack.displayChordNames = true;
     this.soundtrackService.storeSoundtrack(soundtrack);
     return soundtrack;
+  }
+
+  private getTrackName(trackType: string): string {
+    return this.translateService.instant('music.notation.track.' + trackType);
   }
 
   private assignNewName(): string {
