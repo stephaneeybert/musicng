@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ElementRef } from '@angular/core';
 import Nexus from 'nexusui';
 
 const KEYBOARD_WIDTH_RATIO: number = 0.9;
@@ -53,27 +53,8 @@ export class KeyboardService {
     });
   }
 
-  public removeKeyboardDomElement(id: string): void {
-    const keyboardElement = document.getElementById(id);
-    if (keyboardElement != null) {
-      while (keyboardElement.firstElementChild) {
-        keyboardElement.firstElementChild.remove();
-      }
-    }
-  }
-
-  public domShow(id: string): void {
-    const element: HTMLElement | null = document.getElementById(id);
-    if (element != null) {
-      element.style.display = 'block';
-    }
-  }
-
-  public domHide(id: string): void {
-    const element: HTMLElement | null = document.getElementById(id);
-    if (element != null) {
-      element.style.display = 'none';
-    }
+  public removeKeyboardDomElement(keyboardElement: ElementRef): void {
+    keyboardElement.nativeElement.innerHTML = '';
   }
 
   public buildSoundtrackKeyboardId(id: string): string {
