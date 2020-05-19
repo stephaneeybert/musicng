@@ -5,20 +5,19 @@ const KEYBOARD_WIDTH_RATIO: number = 0.9;
 const KEYBOARD_HEIGHT: number = 125;
 const RANGE_MIN: number = 36;
 const RANGE_MAX: number = 95;
+const NAME_PREFIX_SOUNDTRACK: string = 'keyboard-soundtrack-';
+const NAME_PREFIX_DEVICE: string = 'keyboard-device-';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KeyboardService {
 
-  constructor() { }
-
-  public createKeyboard(name: string, screenWidth: number): any {
+  public createKeyboard(id: string, screenWidth: number): any {
     // The keyboard width must fit within the screen
     const keeyboardWidth: number = screenWidth * KEYBOARD_WIDTH_RATIO;
 
-    const elementName: string = '#' + name;
-    const piano: any = new Nexus.Piano(elementName, {
+    const piano: any = new Nexus.Piano(id, {
       size: [ keeyboardWidth, KEYBOARD_HEIGHT ],
       lowNote: RANGE_MIN,
       highNote: RANGE_MAX
@@ -52,6 +51,37 @@ export class KeyboardService {
         }
       }
     });
+  }
+
+  public removeKeyboardDomElement(id: string): void {
+    const keyboardElement = document.getElementById(id);
+    if (keyboardElement != null) {
+      while (keyboardElement.firstElementChild) {
+        keyboardElement.firstElementChild.remove();
+      }
+    }
+  }
+
+  public domShow(id: string): void {
+    const element: HTMLElement | null = document.getElementById(id);
+    if (element != null) {
+      element.style.display = 'block';
+    }
+  }
+
+  public domHide(id: string): void {
+    const element: HTMLElement | null = document.getElementById(id);
+    if (element != null) {
+      element.style.display = 'none';
+    }
+  }
+
+  public buildSoundtrackKeyboardId(id: string): string {
+    return NAME_PREFIX_SOUNDTRACK + id;
+  }
+
+  public buildDeviceKeyboardId(id: string): string {
+    return NAME_PREFIX_DEVICE + id;
   }
 
 }

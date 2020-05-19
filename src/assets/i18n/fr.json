@@ -41,7 +41,8 @@
       "title": "Paramètres",
       "cancel": "Annuler",
       "save": "Enregistrer",
-      "animatedStave": "Partition animée"
+      "animatedStave": "Partition animée",
+      "showKeyboard": "Afficher le clavier"
     },
     "message": {
       "saved": "Les paramètres ont été enregistré."

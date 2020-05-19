@@ -41,7 +41,8 @@
       "title": "Settings",
       "cancel": "Cancel",
       "save": "Save",
-      "animatedStave": "Animated stave"
+      "animatedStave": "Animated stave",
+      "showKeyboard": "Show the keyboard"
     },
     "message": {
       "saved": "The settings have been saved."

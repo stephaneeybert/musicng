@@ -17,12 +17,16 @@ export class SettingsDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private data: any,
   ) {
     const inputSettingsEdition: SettingsEdition = data.settings;
-    this.settingsEdition = new SettingsEdition(inputSettingsEdition.animatedStave);
+    this.settingsEdition = new SettingsEdition(
+      inputSettingsEdition.animatedStave,
+      inputSettingsEdition.showKeyboard
+      );
   }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      animatedStave: new FormControl(this.settingsEdition ? this.settingsEdition.animatedStave : '')
+      animatedStave: new FormControl(this.settingsEdition ? this.settingsEdition.animatedStave : ''),
+      showKeyboard: new FormControl(this.settingsEdition ? this.settingsEdition.showKeyboard : '')
     });
     // Have the form fields error messages shown on keystroke
     this.form.markAllAsTouched();

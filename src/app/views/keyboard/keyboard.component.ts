@@ -1,16 +1,16 @@
-import { Component, AfterViewInit, Input, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, AfterViewInit, Input, ChangeDetectorRef, HostListener, ViewChild } from '@angular/core';
 import { KeyboardService } from '@app/service/keyboard.service';
 import { SynthService } from '@app/service/synth.service';
 import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { DeviceStore } from '@app/store/device-store';
-import { Subscription, ReplaySubject, Subject } from 'rxjs';
+import { Subscription, ReplaySubject, Subject, Observable, combineLatest } from 'rxjs';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Device } from '@app/model/device';
 import { delay } from 'rxjs/operators';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
+import { SettingsStore } from '@app/store/settings-store';
+import { Settings } from '@app/model/settings';
 
-const NAME_PREFIX_SOUNDTRACK: string = 'keyboard-soundtrack-';
-const NAME_PREFIX_DEVICE: string = 'keyboard-device-';
 const LIVE_KEYBOARD_MIDI_VELOCITY: number = 127;
 
 @Component({
@@ -36,7 +36,7 @@ export class KeyboardComponent implements AfterViewInit {
   private soundtrackSubscription?: Subscription;
   private deviceSubscription?: Subscription;
 
-  id!: string;
+  id?: string;
 
   screenWidth!: number;
 
@@ -46,18 +46,24 @@ export class KeyboardComponent implements AfterViewInit {
     private deviceStore: DeviceStore,
     private keyboardService: KeyboardService,
     private synthService: SynthService,
-    private screenDeviceService: ScreenDeviceService
+    private screenDeviceService: ScreenDeviceService,
+    private settingsStore: SettingsStore
   ) { }
 
   ngAfterViewInit() {
     this.initScreenWidth();
 
-    this.soundtrackSubscription = this.soundtrack$
+    const soundtrackAndSettings$: Observable<[Soundtrack, Settings]> = combineLatest(
+      this.soundtrack$.pipe(delay(0)),
+      this.settingsStore.getSettings$()
+    );
+
+    this.soundtrackSubscription = soundtrackAndSettings$
     // Wait for a change detection so as to get the soundtracks at loading time
     // See https://stackoverflow.com/q/61043063/958373
     .pipe(delay(0))
-    .subscribe((soundtrack: Soundtrack) => {
-      this.initializeWithSoundtrackId(soundtrack);
+    .subscribe(([soundtrack, settings]: [Soundtrack, Settings]) => {
+      this.initializeWithSoundtrackId(soundtrack, settings.showKeyboard);
     });
 
     this.deviceSubscription = this.device$
@@ -92,29 +98,43 @@ export class KeyboardComponent implements AfterViewInit {
     this.changeDetector.detectChanges();
   }
 
-  private initializeWithSoundtrackId(soundtrack: Soundtrack): void {
+  private initializeWithSoundtrackId(soundtrack: Soundtrack, showKeyboard: boolean): void {
     if (soundtrack != null) {
       // Refresh the view with its id before creating the keyboard
-      this.setIdAndDetectChanges(NAME_PREFIX_SOUNDTRACK + soundtrack.id);
-      this.createSoundtrackKeyboard(soundtrack);
+      this.setIdAndDetectChanges(this.keyboardService.buildSoundtrackKeyboardId(soundtrack.id));
+      this.createSoundtrackKeyboard(soundtrack, showKeyboard);
     }
   }
 
   private initializeWithDeviceId(device: Device): void {
     if (device != null) {
       // Refresh the view with its id before creating the keyboard
-      this.setIdAndDetectChanges(NAME_PREFIX_DEVICE + device.id);
+      this.setIdAndDetectChanges(this.keyboardService.buildDeviceKeyboardId(device.id));
       this.createDeviceKeyboard(device);
     }
   }
 
-  private createSoundtrackKeyboard(soundtrack: Soundtrack): void {
-    const keyboard: any = this.keyboardService.createKeyboard(this.id, this.screenWidth);
-    this.soundtrackStore.setSoundtrackKeyboard(soundtrack, keyboard);
+  private createSoundtrackKeyboard(soundtrack: Soundtrack, showKeyboard: boolean): void {
+    if (showKeyboard) {
+      this.keyboardService.domShow(this.keyboardService.buildSoundtrackKeyboardId(soundtrack.id));
+      if (soundtrack.keyboard == null) {
+        const keyboard: any = this.keyboardService.createKeyboard(this.keyboardService.buildSoundtrackKeyboardId(soundtrack.id), this.screenWidth);
+        this.soundtrackStore.setSoundtrackKeyboard(soundtrack, keyboard);
+      }
+    } else {
+      this.keyboardService.domHide(this.keyboardService.buildSoundtrackKeyboardId(soundtrack.id));
+      if (soundtrack.keyboard != null) {
+        this.keyboardService.removeKeyboardDomElement(this.keyboardService.buildSoundtrackKeyboardId(soundtrack.id));
+        this.soundtrackStore.setSoundtrackKeyboard(soundtrack, undefined);
+      }
+    }
   }
 
   private createDeviceKeyboard(device: Device): void {
-    const keyboard: any = this.keyboardService.createKeyboard(this.id, this.screenWidth);
+    if (device.keyboard != null) {
+      this.keyboardService.removeKeyboardDomElement(this.keyboardService.buildDeviceKeyboardId(device.id));
+    }
+    const keyboard: any = this.keyboardService.createKeyboard(this.keyboardService.buildDeviceKeyboardId(device.id), this.screenWidth);
     this.deviceStore.setDeviceKeyboard(device, keyboard);
     this.playSoundFromKeyboard(keyboard, device.synth);
   }

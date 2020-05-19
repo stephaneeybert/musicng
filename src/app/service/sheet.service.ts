@@ -60,15 +60,15 @@ export class SheetService {
     private materialService: MaterialService
   ) { }
 
-  public createSoundtrackSheet(id: string, animatedStave: boolean, screenWidth: number, soundtrack: Soundtrack): void {
-    this.renderSoundtrackSheet(id, animatedStave, screenWidth, soundtrack);
+  public createSoundtrackSheet(id: string, screenWidth: number, soundtrack: Soundtrack, animatedStave: boolean): void {
+    this.renderSoundtrackSheet(id, screenWidth, soundtrack, animatedStave);
   }
 
   public createDeviceSheet(id: string, screenWidth: number, device: Device): void {
     // TODO
   }
 
-  private renderSoundtrackSheet(id: string, animatedStave: boolean, screenWidth: number, soundtrack: Soundtrack): void {
+  private renderSoundtrackSheet(id: string, screenWidth: number, soundtrack: Soundtrack, animatedStave: boolean): void {
     // The width must fit within the screen
     const displayWidth: number = screenWidth * SHEET_WIDTH_RATIO;
     let previousNoteName: string = '';

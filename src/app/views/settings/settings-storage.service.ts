@@ -25,6 +25,7 @@ export class SettingsStorageService extends LocalStorageService<Settings> {
   public cleanUpInstance(settingJson: any): Settings {
     const settings: Settings = new Settings();
     settings.animatedStave = settingJson.animatedStave;
+    settings.showKeyboard = settingJson.showKeyboard;
     return settings;
   }
 

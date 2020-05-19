@@ -72,6 +72,7 @@ export class SettingsComponent implements OnInit {
         if (settingsEdition) {
           if (existingSettings) {
             existingSettings.animatedStave = settingsEdition.animatedStave;
+            existingSettings.showKeyboard = settingsEdition.showKeyboard;
             this.settingsStore.setAndStoreSettings(existingSettings);
 
             const message: string = this.translateService.instant('settings.message.saved');

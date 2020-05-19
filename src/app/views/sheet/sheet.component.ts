@@ -121,7 +121,7 @@ export class SheetComponent implements OnInit, OnDestroy {
   private createSoundtrackSheet(soundtrack: Soundtrack, animatedStave: boolean): void {
     if (soundtrack != null) {
       if (soundtrack.hasNotes()) {
-        this.sheetService.createSoundtrackSheet(this.id, animatedStave, this.screenWidth, soundtrack);
+        this.sheetService.createSoundtrackSheet(this.id, this.screenWidth, soundtrack, animatedStave);
         this.soundtrackStore.setSoundtrackSheetSVGContext(soundtrack, soundtrack.sheetContext);
       } else {
         throw new Error('No sheet was created for the soundtrack. Notes should be set to the soundtrack before adding it to the observables data store, ensuring that when the new soundtrack is observed, it has notes and can get a sheet.');
