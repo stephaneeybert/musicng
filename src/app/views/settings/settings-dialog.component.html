@@ -1,12 +1,8 @@
 <form [formGroup]="form" autocomplete="off" (ngSubmit)="save(form)">
   <h1 mat-dialog-title>{{ 'settings.form.title' | translate }}</h1>
   <mat-dialog-content>
-    <p>
-      <mat-slide-toggle formControlName="animatedStave">{{ 'settings.form.animatedStave' | translate }}</mat-slide-toggle>
-    </p>
-    <p>
-      <mat-slide-toggle formControlName="showKeyboard">{{ 'settings.form.showKeyboard' | translate }}</mat-slide-toggle>
-    </p>
+    <p><mat-slide-toggle formControlName="showKeyboard" matTooltip="{{ 'settings.form.set.showKeyboard.tip' | translate }}">{{ 'settings.form.set.showKeyboard.label' | translate }}</mat-slide-toggle></p>
+    <p><mat-slide-toggle formControlName="animatedStave" matTooltip="{{ 'settings.form.set.animatedStave.tip' | translate }}">{{ 'settings.form.set.animatedStave.label' | translate }}</mat-slide-toggle></p>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button type="button" (click)="close()">{{ 'settings.form.cancel' | translate }}</button>

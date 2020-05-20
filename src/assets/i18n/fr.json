@@ -41,8 +41,16 @@
       "title": "Paramètres",
       "cancel": "Annuler",
       "save": "Enregistrer",
-      "animatedStave": "Partition animée",
-      "showKeyboard": "Afficher le clavier"
+      "set": {
+        "animatedStave": {
+          "label": "Partition animée",
+          "tip": "Afficher une partie de la partition, animée sur une rangée."
+        },
+        "showKeyboard": {
+          "label": "Afficher le clavier",
+          "tip": "Un clavier peut être affiché au dessus de la partition de la piste."
+        }
+      }
     },
     "message": {
       "saved": "Les paramètres ont été enregistré."

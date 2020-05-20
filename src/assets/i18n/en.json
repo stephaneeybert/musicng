@@ -41,8 +41,16 @@
       "title": "Settings",
       "cancel": "Cancel",
       "save": "Save",
-      "animatedStave": "Animated stave",
-      "showKeyboard": "Show the keyboard"
+      "set": {
+        "animatedStave": {
+          "label": "Animated stave",
+          "tip": "Display part of the stave, animated in one row."
+        },
+        "showKeyboard": {
+          "label": "Show the keyboard",
+          "tip": "A keyboard can be showed above the track stave."
+        }
+      }
     },
     "message": {
       "saved": "The settings have been saved."
