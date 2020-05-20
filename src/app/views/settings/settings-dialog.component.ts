@@ -20,7 +20,7 @@ export class SettingsDialogComponent implements OnInit {
     this.settingsEdition = new SettingsEdition(
       inputSettingsEdition.animatedStave,
       inputSettingsEdition.showKeyboard
-      );
+    );
   }
 
   ngOnInit() {
