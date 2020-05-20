@@ -1,4 +1,4 @@
-export class SettingsEdition {
+export class SettingsEdition { // TODO Why not use the existing Settings class ?
 
   animatedStave: boolean;
   showKeyboard: boolean;
