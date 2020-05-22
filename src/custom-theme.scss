@@ -9,12 +9,5 @@ $palette-warn: mat-palette($mat-red);
 $standard-light-theme: mat-light-theme($palette-primary, $palette-accent, $palette-warn);
 $standard-dark-theme: mat-dark-theme($palette-primary, $palette-accent, $palette-warn);
 
-// Changing the background color of the app
-$background: map-get($standard-light-theme, background);
-$bg-color: #FFFFFF;
-$background: map_merge($background, (background: $bg-color, card: $bg-color, dialog: $bg-color, app-bar: $bg-color));
-$standard-light-theme: map_merge($standard-light-theme, (background: $background));
-$standard-dark-theme: map_merge($standard-dark-theme, (background: $background));
-
 @include angular-material-theme($standard-light-theme);
 // @include angular-material-theme($standard-dark-theme);

@@ -1,9 +1,8 @@
-<mat-toolbar>
-  <span class="fill-remaining-space"></span>
+<div style="text-align: right;">
   <button mat-fab color="accent" (click)="generateSoundtrack()" matTooltip="{{ 'soundtracks.add.tooltip' | translate }}">
     <fa-icon [icon]="['far', 'layer-plus']" size="2x"></fa-icon>
   </button>
-</mat-toolbar>
+</div>
 <div *ngIf="getNbSoundtracks() > 0" class="soundtracks">
   <table>
     <thead>
