@@ -10,16 +10,13 @@ import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { TRACK_TYPES } from './notation.service';
+import { SettingsService } from '@app/views/settings/settings.service';
 
-enum RANDOM_METHOD {
+export enum RANDOM_METHOD {
   BASE = 0,
   BONUS_TABLE = 1
 }
 
-const REVERSE_DISSIMILAR_CHORD: boolean = false;
-const DEFAULT_TEMPO_BPM_VALUE: number = 128;
-const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
-const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 const DEFAULT_VELOCITY_SOFTER: number = 0.1;
 const DEFAULT_VELOCITY_LOUDER: number = 1;
 
@@ -32,15 +29,12 @@ export class GeneratorService {
     private commonService: CommonService,
     private soundtrackService: SoundtrackService,
     private notationService: NotationService,
-    private translateService: TranslateService
+    private settingsService: SettingsService,
+    private translateService: TranslateService,
   ) { }
 
-  NB_CHORDS: number = 120;
   CHROMA_SHIFT_TIMES: number = 2;
-  CHORD_WIDTH: number = 3;
   SIMILAR_NOTE_MIN: number = 2;
-  CHORD_DURATION = 4; // TODO Offer the duration in settings or have a random one
-  NOTE_OCTAVE: number = 5; // TODO Offer the octave in settings
 
   private createPlacedChords(velocity: number, generatedChords: Array<Array<string>>): Array<PlacedChord> {
     let placedChordIndex: number = 0;
@@ -48,11 +42,11 @@ export class GeneratorService {
       .map((chord: Array<string>) => {
         let noteIndex: number = 0;
         const notes: Array<Note> = chord.map((textNote: string) => {
-          const note: Note = this.notationService.createNote(noteIndex, textNote, this.NOTE_OCTAVE);
+          const note: Note = this.notationService.createNote(noteIndex, textNote, this.settingsService.getSettings().generateNoteOctave);
           noteIndex++;
           return note;
         })
-        const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, this.CHORD_DURATION, TempoUnit.DUPLE, velocity, notes); // TODO Maybe have a default chord unit ?
+        const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, this.settingsService.getSettings().generateChordDuration, TempoUnit.DUPLE, velocity, notes);
         placedChordIndex++;
         return placedChord;
       });
@@ -64,7 +58,10 @@ export class GeneratorService {
     let measureIndex: number = 0;
     let chordIndex: number = 0;
     const measures: Array<Measure> = new Array<Measure>();
-    let measure: Measure = this.notationService.createMeasure(measureIndex, DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
+    const tempoBpm: number = this.settingsService.getSettings().generateTempoBpm;
+    const timeSignatureNumerator: number = this.settingsService.getSettings().generateTimeSignatureNumerator;
+    const timeSignatureDenominator: number = this.settingsService.getSettings().generateTimeSignatureDenominator;
+    let measure: Measure = this.notationService.createMeasure(measureIndex, tempoBpm, timeSignatureNumerator, timeSignatureDenominator);
     measure.placedChords = new Array<PlacedChord>();
     generatedChords
       .map((placedChord: PlacedChord) => {
@@ -72,7 +69,7 @@ export class GeneratorService {
           // The number of beats of the chords placed in a measure must equal the number of beats of the measure
           if (measure.getPlacedChordsNbBeats() >= measure.getNbBeats()) {
             measures.push(measure);
-            measure = this.notationService.createMeasure(measureIndex, DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
+            measure = this.notationService.createMeasure(measureIndex, tempoBpm, timeSignatureNumerator, timeSignatureDenominator);
             measure.placedChords = new Array<PlacedChord>();
             measureIndex++;
             chordIndex = 0;
@@ -93,9 +90,28 @@ export class GeneratorService {
     const melodyChords: Array<Array<string>> = this.generateMasterNoteChords(symphonyChords);
     const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_LOUDER, melodyChords)));
     melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
-    const symphonyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, symphonyChords)));
-    symphonyTrack.name = this.getTrackName(TRACK_TYPES.SYMPHONY);
-    symphonyTrack.displayChordNames = true;
+
+    const generateSymphony: boolean = this.settingsService.getSettings().generateSymphony;
+    if (generateSymphony) {
+      const symphonyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, symphonyChords)));
+      symphonyTrack.name = this.getTrackName(TRACK_TYPES.SYMPHONY);
+      symphonyTrack.displayChordNames = true;
+    }
+
+    const generateDrums: boolean = this.settingsService.getSettings().generateDrums;
+    if (generateDrums) {
+      const drumsTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, symphonyChords)));
+      drumsTrack.name = this.getTrackName(TRACK_TYPES.DRUMS);
+      drumsTrack.displayChordNames = true;
+    }
+
+    const generateBass: boolean = this.settingsService.getSettings().generateBass;
+    if (generateBass) {
+      const bassTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, symphonyChords)));
+      bassTrack.name = this.getTrackName(TRACK_TYPES.BASS);
+      bassTrack.displayChordNames = true;
+    }
+
     this.soundtrackService.storeSoundtrack(soundtrack);
     return soundtrack;
   }
@@ -144,7 +160,7 @@ export class GeneratorService {
   // Check if the chord shares a minimum number of notes with its previous chord
   private isSimilarToPrevious(previousChord: Array<string>, chord: Array<string>): boolean {
     let nbSameNotes: number = 0;
-    for (var i = 0; i < this.CHORD_WIDTH; i++) {
+    for (var i = 0; i < this.settingsService.getSettings().generateChordWidth; i++) {
       if (previousChord.includes(chord[i])) {
         nbSameNotes++;
       }
@@ -179,19 +195,19 @@ export class GeneratorService {
 
     // Build the shifted chromas
     shiftedChromas[0] = this.notationService.chromasAlphabetical();
-    for (let index = 1; index < this.CHORD_WIDTH; index++) {
+    for (let index = 1; index < this.settingsService.getSettings().generateChordWidth; index++) {
       shiftedChromas[index] = this.createShiftedChromas(shiftedChromas[index - 1]);
     }
 
     let previousChord: Array<string> = new Array();
     let previousChromaNoteIndex: number = 0;
     let nbAddedChord: number = 0;
-    while (nbAddedChord < this.NB_CHORDS) {
+    while (nbAddedChord < this.settingsService.getSettings().generateNbChords) {
       const chord: Array<string> = new Array();
 
       // For each randomly picked chroma, add its chord to an array
       const chromaNoteIndex: number = (nbAddedChord === 0) ? 0 : this.randomlyPickChroma(previousChromaNoteIndex);
-      for (let noteIndex = 0; noteIndex < this.CHORD_WIDTH; noteIndex++) {
+      for (let noteIndex = 0; noteIndex < this.settingsService.getSettings().generateChordWidth; noteIndex++) {
         chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);
       }
 
@@ -208,7 +224,7 @@ export class GeneratorService {
         // TODO Do we still reverse the notes ?
         // If the current chord is too dissimilar from its previous one
         // then create a chord from a reversing of the previous one
-        if (REVERSE_DISSIMILAR_CHORD) {
+        if (this.settingsService.getSettings().generateReverseDissimilarChord) {
           const slidedChord: Array<string> = this.createShiftedChord(previousChord);
           chords.push(chord);
           nbAddedChord++;
@@ -219,14 +235,13 @@ export class GeneratorService {
   }
 
   private randomlyPickChroma(chromaIndex: number): number {
-    const randomMethod: number = RANDOM_METHOD.BONUS_TABLE; // TODO Have a pref to choose the method
-    switch (randomMethod) {
-      case RANDOM_METHOD.BASE:
-        return this.randomlyPickChromaFromBaseChromas(chromaIndex);
-      case RANDOM_METHOD.BONUS_TABLE:
-        return this.randomlyPickChromaFromChromasPool(chromaIndex);
-      default:
-        throw new Error('The selected random method does not exist.');
+    const randomMethod: RANDOM_METHOD = this.settingsService.getSettings().generateMethod;
+    if (RANDOM_METHOD.BASE == randomMethod) {
+      return this.randomlyPickChromaFromBaseChromas(chromaIndex);
+    } else if (RANDOM_METHOD.BONUS_TABLE == randomMethod) {
+      return this.randomlyPickChromaFromChromasPool(chromaIndex);
+    } else {
+      throw new Error('The selected random method does not exist.');
     }
   }
 

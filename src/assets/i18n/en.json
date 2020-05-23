@@ -42,6 +42,70 @@
       "cancel": "Cancel",
       "save": "Save",
       "set": {
+        "generate": {
+          "tempoBpm": {
+            "label": "Tempo (bpm)",
+            "tip": "The tempo of the measure."
+          },
+          "timeSignature": {
+            "label": "Time signature",
+            "tip": "The time signature of the measure."
+          },
+          "chordDuration": {
+            "label": "Chord duration",
+            "tip": "The duration of a chord."
+          },
+          "chordDurationUnit": {
+            "label": "Duration unit",
+            "tip": "The duration unit of a chord."
+          },
+          "noteOctave": {
+            "label": "Octave",
+            "tip": "The notes octave."
+          },
+          "chordWidth": {
+            "label": "Chord width",
+            "tip": "The number of notes in a chord."
+          },
+          "method": {
+            "label": "Creation method",
+            "tip": "The method used to create a soundtrack.",
+            "set": {
+              "random": {
+                "label": "Random only",
+                "tip": "The chords are randomly picked."
+              },
+              "bonnusTable": {
+                "label": "Random with bonus matrix",
+                "tip": "The chords are randomly selected with a bonus on each chord increasing its chance of being selected."
+              }
+            }
+          },
+          "minBonus": {
+            "label": "Minimum required bonus",
+            "tip": "The minimum required bonus to allow the chord to be selected. A chord with a lower bonus cannot be selected."
+          },
+          "reverseDissimilarChord": {
+            "label": "Reverse chord",
+            "tip": "If the chord is too dissimilar from its previous one then create a chord from a reversing of the previous one."
+          },
+          "nbChords": {
+            "label": "Number of chords",
+            "tip": "The number of chords of the soundtrack."
+          },
+          "symphony": {
+            "label": "Symphony track",
+            "tip": "Have a symphony track when adding a new soundtrack."
+          },
+          "drums": {
+            "label": "Drums track",
+            "tip": "Have a drums track when adding a new soundtrack."
+          },
+          "bass": {
+            "label": "Bass track",
+            "tip": "Have a bass track when adding a new soundtrack."
+          }
+        },
         "animatedStave": {
           "label": "Animated stave",
           "tip": "Display part of the stave, animated in one row."

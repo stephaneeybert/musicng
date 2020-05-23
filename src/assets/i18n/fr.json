@@ -42,6 +42,70 @@
       "cancel": "Annuler",
       "save": "Enregistrer",
       "set": {
+        "generate": {
+          "tempoBpm": {
+            "label": "Tempo (bpm)",
+            "tip": "Le tempo de la mesure."
+          },
+          "timeSignature": {
+            "label": "Signature de temps",
+            "tip": "La signature de temps de la mesure."
+          },
+          "chordDuration": {
+            "label": "Durée d'accord",
+            "tip": "La durée d'un accord."
+          },
+          "chordDurationUnit": {
+            "label": "Unité de durée",
+            "tip": "L'unité de la durée de l'accord."
+          },
+          "noteOctave": {
+            "label": "Octave",
+            "tip": "L'octave des notes."
+          },
+          "chordWidth": {
+            "label": "Largeur d'accord",
+            "tip": "Le nombre de notes dans un accord."
+          },
+          "method": {
+            "label": "Méthode de création",
+            "tip": "La méthode utilisée pour crée un morceau.",
+            "set": {
+              "random": {
+                "label": "Aléatoire seulement",
+                "tip": "Les accords sont sélectionnés au hasard."
+              },
+              "bonnusTable": {
+                "label": "Aléatoire avec une matrice de bonus",
+                "tip": "Les accords sont sélectionnés au hasard avec un bonus sur chaque accord augmentant ses chances d'être sélectionné."
+              }
+            }
+          },
+          "minBonus": {
+            "label": "Bonus minimum requis",
+            "tip": "Le bonus minimum requis pour permettre à l'accord d'être sélectionné. Un accord avec un bonus inférieur à ce mimimum, ne peut pas être sélectionné."
+          },
+          "reverseDissimilarChord": {
+            "label": "Accord renversé",
+            "tip": "Si l'accord est trop dissemblable par rapport à son précédent alors créer un accord à partir d'un renversement du précédent."
+          },
+          "nbChords": {
+            "label": "Nombre d'accords",
+            "tip": "Le nombre d'accords du morceau."
+          },
+          "symphony": {
+            "label": "Piste symphonie",
+            "tip": "Avoir une piste symphonie lors de l'ajout d'un nouveau morceau."
+          },
+          "drums": {
+            "label": "Piste percussions",
+            "tip": "Avoir une piste percussions lors de l'ajout d'un nouveau morceau."
+          },
+          "bass": {
+            "label": "Piste basse",
+            "tip": "Avoir une piste basse lors de l'ajout d'un nouveau morceau."
+          }
+        },
         "animatedStave": {
           "label": "Partition animée",
           "tip": "Afficher une partie de la partition, animée sur une rangée."

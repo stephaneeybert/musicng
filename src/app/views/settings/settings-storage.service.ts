@@ -24,6 +24,19 @@ export class SettingsStorageService extends LocalStorageService<Settings> {
 
   public cleanUpInstance(settingJson: any): Settings {
     const settings: Settings = new Settings();
+    settings.generateTempoBpm = Number(settingJson.generateTempoBpm);
+    settings.generateTimeSignatureNumerator = Number(settingJson.generateTimeSignatureNumerator);
+    settings.generateTimeSignatureDenominator = Number(settingJson.generateTimeSignatureDenominator);
+    settings.generateChordDuration = Number(settingJson.generateChordDuration);
+    settings.generateChordDurationUnit = settingJson.generateChordDurationUnit;
+    settings.generateNoteOctave = Number(settingJson.generateNoteOctave);
+    settings.generateChordWidth = Number(Number(settingJson.generateChordWidth));
+    settings.generateMethod = settingJson.generateMethod;
+    settings.generateReverseDissimilarChord = settingJson.generateReverseDissimilarChord;
+    settings.generateNbChords = Number(settingJson.generateNbChords);
+    settings.generateSymphony = settingJson.generateSymphony;
+    settings.generateDrums = settingJson.generateDrums;
+    settings.generateBass = settingJson.generateBass;
     settings.animatedStave = settingJson.animatedStave;
     settings.showKeyboard = settingJson.showKeyboard;
     return settings;

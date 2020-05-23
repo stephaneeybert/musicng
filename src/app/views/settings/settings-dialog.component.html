@@ -1,11 +1,143 @@
 <form [formGroup]="form" autocomplete="off" (ngSubmit)="save(form)">
   <h1 mat-dialog-title>{{ 'settings.form.title' | translate }}</h1>
   <mat-dialog-content>
-    <p><mat-slide-toggle formControlName="showKeyboard" matTooltip="{{ 'settings.form.set.showKeyboard.tip' | translate }}">{{ 'settings.form.set.showKeyboard.label' | translate }}</mat-slide-toggle></p>
-    <p><mat-slide-toggle formControlName="animatedStave" matTooltip="{{ 'settings.form.set.animatedStave.tip' | translate }}">{{ 'settings.form.set.animatedStave.label' | translate }}</mat-slide-toggle></p>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">visibility</mat-icon>
+        </ng-template>
+        <p>
+          <mat-slide-toggle formControlName="showKeyboard"
+            matTooltip="{{ 'settings.form.set.showKeyboard.tip' | translate }}">
+            {{ 'settings.form.set.showKeyboard.label' | translate }}</mat-slide-toggle>
+        </p>
+        <p>
+          <mat-slide-toggle formControlName="animatedStave"
+            matTooltip="{{ 'settings.form.set.animatedStave.tip' | translate }}">
+            {{ 'settings.form.set.animatedStave.label' | translate }}</mat-slide-toggle>
+        </p>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">music_note</mat-icon>
+        </ng-template>
+        <p>
+          <mat-form-field>
+            <mat-label>{{ 'settings.form.set.generate.nbChords.label' | translate }}</mat-label>
+            <input formControlName="generateNbChords" matInput placeholder="120"
+              matTooltip="{{ 'settings.form.set.generate.nbChords.tip' | translate }}">
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-label>{{ 'settings.form.set.generate.chordWidth.label' | translate }} </mat-label>
+          <mat-slider thumbLabel min='1' max='6' value='3' formControlName="generateChordWidth"
+            matTooltip="{{ 'settings.form.set.generate.chordWidth.tip' | translate }}"></mat-slider>
+        </p>
+        <p>
+          <mat-form-field>
+            <mat-label>{{ 'settings.form.set.generate.chordDuration.label' | translate }}</mat-label>
+            <input formControlName="generateChordDuration" matInput placeholder="4" value="4"
+              matTooltip="{{ 'settings.form.set.generate.chordDuration.tip' | translate }}">
+          </mat-form-field>
+          <!-- <mat-form-field>
+            <mat-label>{{ 'settings.form.set.generate.chordDurationUnit.label' | translate }}</mat-label>
+            <mat-select formControlName="generateChordDurationUnit" [compareWith]="compareItemsById"
+              matTooltip="{{ 'settings.form.set.generate.chordDurationUnit.tip' | translate }}">
+              <mat-option *ngFor="let chordDurationUnit of chordDurationUnits" value="{{ chordDurationUnit.id }}">
+                {{ chordDurationUnit.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> -->
+        </p>
+        <p>
+          <mat-form-field>
+            <mat-label>{{ 'settings.form.set.generate.noteOctave.label' | translate }}</mat-label>
+            <input formControlName="generateNoteOctave" matInput placeholder="5"
+              matTooltip="{{ 'settings.form.set.generate.noteOctave.tip' | translate }}">
+          </mat-form-field>
+        </p>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">speed</mat-icon>
+        </ng-template>
+        <p>
+          <mat-form-field>
+            <mat-label>{{ 'settings.form.set.generate.tempoBpm.label' | translate }}</mat-label>
+            <input formControlName="generateTempoBpm" matInput placeholder="128"
+              matTooltip="{{ 'settings.form.set.generate.tempoBpm.tip' | translate }}">
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field>
+            <mat-label>{{ 'settings.form.set.generate.timeSignature.label' | translate }}</mat-label>
+            <mat-select formControlName="generateTimeSignatureNumerator" [compareWith]="compareItemsById"
+              matTooltip="{{ 'settings.form.set.generate.timeSignature.tip' | translate }}">
+              <mat-option *ngFor="let timeSignature of timeSignatures" value="{{ timeSignature.id }}">
+                {{ timeSignature.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          /
+          <mat-form-field>
+            <mat-label>{{ 'settings.form.set.generate.timeSignature.label' | translate }}</mat-label>
+            <mat-select formControlName="generateTimeSignatureDenominator" [compareWith]="compareItemsById"
+              matTooltip="{{ 'settings.form.set.generate.timeSignature.tip' | translate }}">
+              <mat-option *ngFor="let timeSignature of timeSignatures" value="{{ timeSignature.id }}">
+                {{ timeSignature.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-slide-toggle formControlName="generateReverseDissimilarChord"
+            matTooltip="{{ 'settings.form.set.generate.reverseDissimilarChord.tip' | translate }}">
+            {{ 'settings.form.set.generate.reverseDissimilarChord.label' | translate }}</mat-slide-toggle>
+        </p>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">equalizer</mat-icon>
+        </ng-template>
+        <p>
+          <mat-slide-toggle formControlName="generateSymphony"
+            matTooltip="{{ 'settings.form.set.generate.symphony.tip' | translate }}">
+            {{ 'settings.form.set.generate.symphony.label' | translate }}</mat-slide-toggle>
+        </p>
+        <p>
+          <mat-slide-toggle formControlName="generateDrums"
+            matTooltip="{{ 'settings.form.set.generate.drums.tip' | translate }}">
+            {{ 'settings.form.set.generate.drums.label' | translate }}</mat-slide-toggle>
+        </p>
+        <p>
+          <mat-slide-toggle formControlName="generateBass"
+            matTooltip="{{ 'settings.form.set.generate.bass.tip' | translate }}">
+            {{ 'settings.form.set.generate.bass.label' | translate }}</mat-slide-toggle>
+        </p>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">tune</mat-icon>
+        </ng-template>
+        <p>
+          <mat-form-field>
+            <mat-label>{{ 'settings.form.set.generate.method.label' | translate }}</mat-label>
+            <mat-select formControlName="generateMethod" [compareWith]="compareItemsById"
+              matTooltip="{{ 'settings.form.set.generate.method.tip' | translate }}">
+              <mat-option *ngFor="let generateMethod of generateMethods" value="{{ generateMethod.id }}">
+                {{ generateMethod.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </p>
+      </mat-tab>
+    </mat-tab-group>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button type="button" (click)="close()">{{ 'settings.form.cancel' | translate }}</button>
-    <button mat-button [disabled]="!form.valid" type="submit">{{ 'settings.form.save' | translate }}</button>
+    <mat-toolbar>
+      <button mat-flat-button type="button" (click)="close()">{{ 'settings.form.cancel' | translate }}</button>
+      <span class="fill-remaining-space"></span>
+      <button mat-flat-button color="primary" [disabled]="!form.valid" type="submit">{{ 'settings.form.save' | translate }}</button>
+    </mat-toolbar>
   </mat-dialog-actions>
 </form>

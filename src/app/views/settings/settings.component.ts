@@ -71,6 +71,19 @@ export class SettingsComponent implements OnInit {
       .subscribe((settingsEdition: SettingsEdition) => {
         if (settingsEdition) {
           if (existingSettings) {
+            existingSettings.generateTempoBpm = settingsEdition.generateTempoBpm;
+            existingSettings.generateTimeSignatureNumerator = settingsEdition.generateTimeSignatureNumerator;
+            existingSettings.generateTimeSignatureDenominator = settingsEdition.generateTimeSignatureDenominator;
+            existingSettings.generateChordDuration = settingsEdition.generateChordDuration;
+            existingSettings.generateChordDurationUnit = settingsEdition.generateChordDurationUnit;
+            existingSettings.generateNoteOctave = settingsEdition.generateNoteOctave;
+            existingSettings.generateChordWidth = settingsEdition.generateChordWidth;
+            existingSettings.generateMethod = settingsEdition.generateMethod;
+            existingSettings.generateReverseDissimilarChord = settingsEdition.generateReverseDissimilarChord;
+            existingSettings.generateNbChords = settingsEdition.generateNbChords;
+            existingSettings.generateSymphony = settingsEdition.generateSymphony;
+            existingSettings.generateDrums = settingsEdition.generateDrums;
+            existingSettings.generateBass = settingsEdition.generateBass;
             existingSettings.animatedStave = settingsEdition.animatedStave;
             existingSettings.showKeyboard = settingsEdition.showKeyboard;
             this.settingsStore.setAndStoreSettings(existingSettings);
