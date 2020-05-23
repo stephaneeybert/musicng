@@ -55,9 +55,9 @@ export class NotationService {
     return measures;
   }
 
-  public createMeasure(index: number, tempo: number, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
+  public createMeasure(index: number, tempoInBpm: number, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
     const timeSignature: TimeSignature = this.createTimeSignature(timeSignatureNumerator, timeSignatureDenominator);
-    const measure: Measure = new Measure(index, this.createDuration(tempo, TempoUnit.BPM), timeSignature);
+    const measure: Measure = new Measure(index, this.createDuration(tempoInBpm, TempoUnit.BPM), timeSignature);
     return measure;
   }
 
@@ -101,9 +101,9 @@ export class NotationService {
   private parseTextChord(index: number, textChord: string, velocity: number): PlacedChord {
     const chordAndDuration: Array<string> = textChord.split(CHORD_DURATION_SEPARATOR);
     const chordNotes: string = chordAndDuration[0];
-    const chordDuration: number = Number(chordAndDuration[1]);
+    const chordDurationInBpm: number = Number(chordAndDuration[1]);
     const notes: Array<Note> = this.parseTextNotes(chordNotes);
-    const placedChord: PlacedChord = this.createPlacedChord(index, chordDuration, TempoUnit.DUPLE, velocity, notes);
+    const placedChord: PlacedChord = this.createPlacedChord(index, chordDurationInBpm, TempoUnit.DUPLE, velocity, notes);
     return placedChord;
   }
 
@@ -130,8 +130,8 @@ export class NotationService {
     }
   }
 
-  public createPlacedChord(index: number, chordDuration: number, tempoUnit: TempoUnit, velocity: number, notes: Array<Note>): PlacedChord {
-    const duration: Duration = this.createDuration(chordDuration, tempoUnit);
+  public createPlacedChord(index: number, chordDurationInBpm: number, tempoUnit: TempoUnit, velocity: number, notes: Array<Note>): PlacedChord {
+    const duration: Duration = this.createDuration(chordDurationInBpm, tempoUnit);
     const placedChord: PlacedChord = this.createEmptyChord(index, duration, velocity);
     this.addNotes(placedChord, notes);
     return placedChord;
@@ -255,46 +255,46 @@ export class NotationService {
     return new Octave(value);
   }
 
-  private createSubdivision(duration: number): Subdivision {
-    if (duration === Subdivisions.HUNDERD_TWENTY_EIGHTH) {
+  private createSubdivision(durationInBpm: number): Subdivision {
+    if (durationInBpm === Subdivisions.HUNDERD_TWENTY_EIGHTH) {
       return Subdivision.HUNDERD_TWENTY_EIGHTH;
-    } else if (duration === (Subdivisions.HUNDERD_TWENTY_EIGHTH + Subdivisions.TWO_HUNDRED_FIFTY_SIXTH)) {
+    } else if (durationInBpm === (Subdivisions.HUNDERD_TWENTY_EIGHTH + Subdivisions.TWO_HUNDRED_FIFTY_SIXTH)) {
       return Subdivision.DOTTED_HUNDERD_TWENTY_EIGHTH;
-    } else if (duration === Subdivisions.SIXTY_FOURTH) {
+    } else if (durationInBpm === Subdivisions.SIXTY_FOURTH) {
       return Subdivision.SIXTY_FOURTH;
-    } else if (duration === (Subdivisions.SIXTY_FOURTH + Subdivisions.HUNDERD_TWENTY_EIGHTH)) {
+    } else if (durationInBpm === (Subdivisions.SIXTY_FOURTH + Subdivisions.HUNDERD_TWENTY_EIGHTH)) {
       return Subdivision.DOTTED_SIXTY_FOURTH;
-    } else if (duration === Subdivisions.THIRTY_SECONDTH) {
+    } else if (durationInBpm === Subdivisions.THIRTY_SECONDTH) {
       return Subdivision.THIRTY_SECONDTH;
-    } else if (duration === (Subdivisions.THIRTY_SECONDTH + Subdivisions.SIXTY_FOURTH)) {
+    } else if (durationInBpm === (Subdivisions.THIRTY_SECONDTH + Subdivisions.SIXTY_FOURTH)) {
       return Subdivision.DOTTED_THIRTY_SECOND;
-    } else if (duration === Subdivisions.SIXTEENTH) {
+    } else if (durationInBpm === Subdivisions.SIXTEENTH) {
       return Subdivision.SIXTEENTH;
-    } else if (duration === (Subdivisions.SIXTEENTH + Subdivisions.THIRTY_SECONDTH)) {
+    } else if (durationInBpm === (Subdivisions.SIXTEENTH + Subdivisions.THIRTY_SECONDTH)) {
       return Subdivision.DOTTED_SIXTEENTH;
-    } else if (duration === Subdivisions.EIGHTH) {
+    } else if (durationInBpm === Subdivisions.EIGHTH) {
       return Subdivision.EIGHTH;
-    } else if (duration === (Subdivisions.EIGHTH + Subdivisions.SIXTEENTH)) {
+    } else if (durationInBpm === (Subdivisions.EIGHTH + Subdivisions.SIXTEENTH)) {
       return Subdivision.DOTTED_EIGHTH;
-    } else if (duration === Subdivisions.QUARTER) {
+    } else if (durationInBpm === Subdivisions.QUARTER) {
       return Subdivision.QUARTER;
-    } else if (duration === (Subdivisions.QUARTER + Subdivisions.EIGHTH)) {
+    } else if (durationInBpm === (Subdivisions.QUARTER + Subdivisions.EIGHTH)) {
       return Subdivision.DOTTED_QUARTER;
-    } else if (duration === Subdivisions.HALF) {
+    } else if (durationInBpm === Subdivisions.HALF) {
       return Subdivision.HALF;
-    } else if (duration === (Subdivisions.HALF + Subdivisions.QUARTER)) {
+    } else if (durationInBpm === (Subdivisions.HALF + Subdivisions.QUARTER)) {
       return Subdivision.DOTTED_HALF;
-    } else if (duration === Subdivisions.WHOLE) {
+    } else if (durationInBpm === Subdivisions.WHOLE) {
       return Subdivision.WHOLE;
-    } else if (duration === Subdivisions.NONE) {
+    } else if (durationInBpm === Subdivisions.NONE) {
       return Subdivision.NONE;
     } else {
-      throw new Error('Unknown subdivision for duration: ' + duration);
+      throw new Error('Unknown subdivision for duration: ' + durationInBpm);
     }
   }
 
-  public createDuration(duration: number, tempoUnit: TempoUnit): Duration {
-    return new Duration(this.createSubdivision(duration), tempoUnit);
+  public createDuration(durationInBpm: number, tempoUnit: TempoUnit): Duration {
+    return new Duration(this.createSubdivision(durationInBpm), tempoUnit);
   }
 
   private createPitch(chroma: Chroma, octave: Octave): Pitch {

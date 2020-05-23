@@ -61,10 +61,10 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                 this.deleteSoundtrack(soundtrack.id);
                 throw new Error('The measure duration subdivision or unit could not be accessed from the untyped soundtrack.');
               }
-              const measureDuration: number = Number(measureJson.tempo.subdivision.left) + Number(measureJson.tempo.subdivision.right);
-              const measure: Measure = this.notationService.createMeasure(measureIndex, measureDuration, Number(measureJson.timeSignature.numerator), Number(measureJson.timeSignature.denominator));
+              const measureDurationInBpm: number = Number(measureJson.tempo.subdivision.left) + Number(measureJson.tempo.subdivision.right);
+              const measure: Measure = this.notationService.createMeasure(measureIndex, measureDurationInBpm, Number(measureJson.timeSignature.numerator), Number(measureJson.timeSignature.denominator));
               measure.placedChords = new Array();
-              measure.tempo = this.notationService.createDuration(measureDuration, measureJson.tempo.unit);
+              measure.tempo = this.notationService.createDuration(measureDurationInBpm, measureJson.tempo.unit);
               measure.timeSignature = this.notationService.createTimeSignature(Number(measureJson.timeSignature.numerator), Number(measureJson.timeSignature.denominator));
               let placedChordIndex: number = 0;
               measureJson.placedChords.forEach((placedChordJson: any) => {
@@ -84,10 +84,10 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                     this.deleteSoundtrack(soundtrack.id);
                     throw new Error('The placed chord duration subdivistion or unit could not be accessed from the untyped soundtrack.');
                   }
-                  const duration: number = Number(placedChordJson.duration.subdivision.left) + Number(placedChordJson.duration.subdivision.right);
+                  const durationInBpm: number = Number(placedChordJson.duration.subdivision.left) + Number(placedChordJson.duration.subdivision.right);
                   const tempoUnit: TempoUnit = placedChordJson.duration.unit as TempoUnit;
                   const velocity: number = parseFloat(placedChordJson.velocity);
-                  const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, duration, tempoUnit, velocity, notes);
+                  const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, durationInBpm, tempoUnit, velocity, notes);
                   placedChord.dottedAll = placedChordJson.dottedAll;
                   if (!measure.placedChords) {
                     this.deleteSoundtrack(soundtrack.id);
