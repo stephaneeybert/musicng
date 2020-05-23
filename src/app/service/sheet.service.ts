@@ -157,6 +157,7 @@ export class SheetService {
                 voices.push(voice);
                 measureWithVisibleNotesIndex++;
 
+                // Display the name of the track above the stave
                 if (track.name != null && soundtrack.sheetContext != null) {
                   this.drawText(soundtrack.sheetContext, track.name, staveX, staveY);
                 }
