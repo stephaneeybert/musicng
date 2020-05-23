@@ -394,7 +394,7 @@ export class SheetService {
 
   private renderDuration(placedChord: PlacedChord): string {
     if (!this.notationService.placedChordIsNotRest(placedChord)) {
-      return placedChord.renderDuration() + VEXFLOW_REST_SUFFIX;
+      return placedChord.getDuration() + VEXFLOW_REST_SUFFIX;
     } else {
       return placedChord.renderDuration();
     }

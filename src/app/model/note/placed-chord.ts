@@ -64,6 +64,10 @@ export class PlacedChord {
     return this.duration.renderValue();
   }
 
+  public getUnit(): string {
+    return this.duration.renderUnit();
+  }
+
   public renderDuration(): string {
     return this.duration.renderValueInUnit();
   }

@@ -19,6 +19,10 @@ export class Duration {
     }
   }
 
+  public renderUnit(): string {
+    return this.unit;
+  }
+
   public renderValueInUnit(): string {
     return this.renderValue() + this.unit;
   }
