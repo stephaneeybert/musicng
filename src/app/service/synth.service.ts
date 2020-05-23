@@ -188,7 +188,7 @@ export class SynthService {
     if (animatedStave) {
       const subscription: Subscription = timer(WHITEWASH_DELAY).subscribe((time: number) => { // TODO Missing unsubscribe
         this.sheetService.whitewashSheetContext(soundtrack.sheetContext);
-        this.sheetService.drawFirstMeasure(soundtrack);
+        this.sheetService.drawFirstSoundtrackMeasure(soundtrack);
         subscription.unsubscribe();
       });
     }

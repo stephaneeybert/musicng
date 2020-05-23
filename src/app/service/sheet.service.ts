@@ -206,7 +206,7 @@ export class SheetService {
     sheetContext.fillText(text, x, y + textHeight);
   }
 
-  public drawFirstMeasure(soundtrack: Soundtrack): void {
+  public drawFirstSoundtrackMeasure(soundtrack: Soundtrack): void {
     if (soundtrack.tracks) {
       soundtrack.getSortedTracks().forEach((track: Track) => {
         if (track.hasMeasures()) {
