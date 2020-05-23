@@ -219,7 +219,7 @@ export class MidiService {
             const pitchOctave: Array<string> = this.notationService.noteToChromaOctave(midiNote.name);
             const note: Note = this.notationService.buildNoteWithTicks(
               pitchOctave[0],
-              parseInt(pitchOctave[1], 10));
+              Number(pitchOctave[1]));
             const duration: Duration = midiNote.time; // TODO midiNote.durationTicks How to retrieve the note time and store it in the chord ?
             const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, midiNote.velocity);
             placedChord.addNote(note);
@@ -377,7 +377,7 @@ export class MidiService {
 
   private placeEventOnNewMeasure(noteOnTime: TValue, pulsesPerMeasure: number, measureCounter: number): boolean {
     if (noteOnTime) {
-      noteOnTime = parseInt(noteOnTime.toString(), 10);
+      noteOnTime = Number(noteOnTime.toString());
     } else {
       throw new Error('The noteOnTime has not been instantiated.');
     }
@@ -465,7 +465,7 @@ export class MidiService {
 
   private delta(t2: TValue, t1: TValue): number {
     if (t2 && t1) {
-      return parseInt(t2.toString(), 10) - parseInt(t1.toString(), 10);
+      return Number(t2.toString()) - Number(t1.toString());
     } else {
       throw new Error('The delta times t1 or t2 have not been instantiated.');
     }

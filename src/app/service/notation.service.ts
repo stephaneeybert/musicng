@@ -77,7 +77,7 @@ export class NotationService {
       const chromaAndOctave: Array<string> = this.noteToChromaOctave(textNote);
       chroma = chromaAndOctave[0];
       if (chromaAndOctave.length > 1) {
-        octave = parseInt(chromaAndOctave[1], 10);
+        octave = Number(chromaAndOctave[1]);
       } else {
         throw new Error('Unspecified octave for the note: ' + textNote + ' with chroma: ' + chroma);
       }
@@ -101,7 +101,7 @@ export class NotationService {
   private parseTextChord(index: number, textChord: string, velocity: number): PlacedChord {
     const chordAndDuration: Array<string> = textChord.split(CHORD_DURATION_SEPARATOR);
     const chordNotes: string = chordAndDuration[0];
-    const chordDuration: number = parseInt(chordAndDuration[1], 10);
+    const chordDuration: number = Number(chordAndDuration[1]);
     const notes: Array<Note> = this.parseTextNotes(chordNotes);
     const placedChord: PlacedChord = this.createPlacedChord(index, chordDuration, TempoUnit.DUPLE, velocity, notes);
     return placedChord;
