@@ -247,20 +247,22 @@ export class SheetService {
   }
 
   public drawMeasure(measure: Measure, soundtrack: Soundtrack): void {
-    if (measure.sheetStave && soundtrack.sheetContext != null) {
-      try {
-        measure.sheetStave.draw();
-      } catch (error) {
-        this.logNoCanvasContextError(error);
-        this.screenDeviceService.reloadPage(); // TODO Change al reload by some thrown new Error()
+    if (soundtrack.sheetContext != null) {
+      if (measure.sheetStave) {
+        try {
+          measure.sheetStave.draw();
+        } catch (error) {
+          this.logNoCanvasContextError(error);
+          this.screenDeviceService.reloadPage(); // TODO Change al reload by some thrown new Error()
+        }
       }
-    }
-    if (measure.sheetVoice && soundtrack.sheetContext != null) {
-      try {
-        measure.sheetVoice.draw(soundtrack.sheetContext);
-      } catch (error) {
-        this.logNoCanvasContextError(error);
-        this.screenDeviceService.reloadPage();
+      if (measure.sheetVoice) {
+        try {
+          measure.sheetVoice.draw(soundtrack.sheetContext);
+        } catch (error) {
+          this.logNoCanvasContextError(error);
+          this.screenDeviceService.reloadPage();
+        }
       }
     }
   }
