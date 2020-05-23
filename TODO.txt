@@ -67,8 +67,6 @@ stave.addClef(Clef.TREBLE);
 Norbert:
 
 Générer des silences aussi et pas que des notes
-Ajouter une voix pour la partition de basse bass
-Ajouter une voix pour la partition de percussion drum
 Pouvoir démarrer sur une autre note que le do.
 Avoir une matrice par tonalité, soit 12 matrices pour les tonalités mineures
 et encore 12 matrices pour les tonalités majeures.
