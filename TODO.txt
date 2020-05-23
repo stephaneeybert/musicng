@@ -57,9 +57,14 @@ https://appsco.pe/developer/splash-screens
 
 The #E8EAF6 is hard coded 3 times now
 
+Stave drawing
+Animate the clef when the new measure has a different clef, redraw the clef on each new measure
+stave.addClef(Clef.TREBLE);
+Should the clef be determined from the time signature of the measure ?
+stave.addClef(Clef.TREBLE);
+
+
 Norbert:
-
-
 
 Générer des silences aussi et pas que des notes
 Ajouter une voix pour la partition de basse bass
