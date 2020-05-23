@@ -42,9 +42,6 @@ export enum TRACK_TYPES {
 })
 export class NotationService {
 
-  constructor(
-  ) { }
-
   public parseMeasures(textMeasures: Array<string>, tempo: number, timeSignatureNumerator: number, timeSignatureDenominator: number, velocity: number): Array<Measure> {
     const measures: Array<Measure> = new Array<Measure>();
     let measureIndex: number = 0;
