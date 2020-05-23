@@ -51,7 +51,7 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
         const track: Track = new Track(trackIndex);
         track.name = trackJson.name;
         track.displayChordNames = trackJson.displayChordNames;
-        track.channel = trackJson.channel;
+        track.channel = Number(trackJson.channel);
         track.measures = new Array();
         if (trackJson.measures && trackJson.measures.length > 0) {
           let measureIndex: number = 0;
@@ -61,11 +61,11 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                 this.deleteSoundtrack(soundtrack.id);
                 throw new Error('The measure duration subdivision or unit could not be accessed from the untyped soundtrack.');
               }
-              const measureDuration: number = parseInt(measureJson.tempo.subdivision.left, 10) + parseInt(measureJson.tempo.subdivision.right, 10);
-              const measure: Measure = this.notationService.createMeasure(measureIndex, measureDuration, parseInt(measureJson.timeSignature.numerator), parseInt(measureJson.timeSignature.denominator));
+              const measureDuration: number = Number(measureJson.tempo.subdivision.left) + Number(measureJson.tempo.subdivision.right);
+              const measure: Measure = this.notationService.createMeasure(measureIndex, measureDuration, Number(measureJson.timeSignature.numerator), Number(measureJson.timeSignature.denominator));
               measure.placedChords = new Array();
               measure.tempo = this.notationService.createDuration(measureDuration, measureJson.tempo.unit);
-              measure.timeSignature = this.notationService.createTimeSignature(measureJson.timeSignature.numerator, measureJson.timeSignature.denominator);
+              measure.timeSignature = this.notationService.createTimeSignature(Number(measureJson.timeSignature.numerator), Number(measureJson.timeSignature.denominator));
               let placedChordIndex: number = 0;
               measureJson.placedChords.forEach((placedChordJson: any) => {
                 if (placedChordJson.notes && placedChordJson.notes.length > 0) {
@@ -73,7 +73,7 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                   let noteIndex: number = 0;
                   placedChordJson.notes.forEach((noteJson: any) => {
                     if (noteJson.pitch) {
-                      const note: Note = this.notationService.createNote(noteIndex, noteJson.pitch.chroma.value, noteJson.pitch.octave.value);
+                      const note: Note = this.notationService.createNote(noteIndex, noteJson.pitch.chroma.value, Number(noteJson.pitch.octave.value));
                       note.pitch.accidental = noteJson.pitch.accidental;
                       note.dotted = noteJson.dotted;
                       notes.push(note);
@@ -84,7 +84,7 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                     this.deleteSoundtrack(soundtrack.id);
                     throw new Error('The placed chord duration subdivistion or unit could not be accessed from the untyped soundtrack.');
                   }
-                  const duration: number = parseInt(placedChordJson.duration.subdivision.left, 10) + parseInt(placedChordJson.duration.subdivision.right, 10);
+                  const duration: number = Number(placedChordJson.duration.subdivision.left) + Number(placedChordJson.duration.subdivision.right);
                   const tempoUnit: TempoUnit = placedChordJson.duration.unit as TempoUnit;
                   const velocity: number = parseFloat(placedChordJson.velocity);
                   const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, duration, tempoUnit, velocity, notes);
