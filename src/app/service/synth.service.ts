@@ -258,7 +258,7 @@ export class SynthService {
                 if (placedChord.isFirst()) {
                   if (animatedStave) {
                     this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, measure.index);
-                    this.sheetService.drawMeasure(measure, soundtrack.sheetContext);
+                    this.sheetService.drawMeasure(measure, soundtrack);
                   }
                 }
                 this.sheetService.highlightStaveNote(placedChord, soundtrack);
@@ -273,7 +273,7 @@ export class SynthService {
               Tone.Draw.schedule((actualTime: any) => {
                 if (animatedStave) {
                   this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, measure.index);
-                  this.sheetService.drawMeasure(firstMeasure, soundtrack.sheetContext);
+                  this.sheetService.drawMeasure(firstMeasure, soundtrack);
                 }
                 this.keyboardService.unpressAll(soundtrack.keyboard);
                 this.setPlaying(soundtrack, false);

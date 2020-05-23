@@ -231,7 +231,7 @@ export class SheetService {
   public drawFirstTrackMeasure(track: Track, soundtrack: Soundtrack): void {
     if (track.hasMeasures()) {
       const sortedMeasures: Array<Measure> = track.getSortedMeasures();
-      this.drawMeasure(sortedMeasures[0], soundtrack.sheetContext);
+      this.drawMeasure(sortedMeasures[0], soundtrack);
     }
   }
 
@@ -240,14 +240,14 @@ export class SheetService {
       soundtrack.getSortedTracks().forEach((track: Track) => {
         if (track.hasMeasures()) {
           const sortedMeasures: Array<Measure> = track.getSortedMeasures();
-          this.drawMeasure(sortedMeasures[0], soundtrack.sheetContext);
+          this.drawMeasure(sortedMeasures[0], soundtrack);
         }
       });
     }
   }
 
-  public drawMeasure(measure: Measure, sheetContext: any): void {
-    if (measure.sheetStave && sheetContext != null) {
+  public drawMeasure(measure: Measure, soundtrack: Soundtrack): void {
+    if (measure.sheetStave && soundtrack.sheetContext != null) {
       try {
         measure.sheetStave.draw();
       } catch (error) {
@@ -255,9 +255,9 @@ export class SheetService {
         this.screenDeviceService.reloadPage(); // TODO Change al reload by some thrown new Error()
       }
     }
-    if (measure.sheetVoice && sheetContext != null) {
+    if (measure.sheetVoice && soundtrack.sheetContext != null) {
       try {
-        measure.sheetVoice.draw(sheetContext);
+        measure.sheetVoice.draw(soundtrack.sheetContext);
       } catch (error) {
         this.logNoCanvasContextError(error);
         this.screenDeviceService.reloadPage();
