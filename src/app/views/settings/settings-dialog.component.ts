@@ -40,20 +40,20 @@ export class SettingsDialogComponent implements OnInit {
   ) {
     const existingSettings: SettingsEdition = data.settings;
     this.settingsEdition = new SettingsEdition(
-      existingSettings.generateTempoBpm,
-      existingSettings.generateTimeSignatureNumerator,
-      existingSettings.generateTimeSignatureDenominator,
-      existingSettings.generateChordDuration,
+      existingSettings.generateTempoBpm ? existingSettings.generateTempoBpm : NotationConstant.DEFAUT_TEMPO_BPM,
+      existingSettings.generateTimeSignatureNumerator ? existingSettings.generateTimeSignatureNumerator : NotationConstant.DEFAUT_TIME_SIGNATURE_DENOMINATOR,
+      existingSettings.generateTimeSignatureDenominator ? existingSettings.generateTimeSignatureDenominator : NotationConstant.DEFAUT_TIME_SIGNATURE_NUMERATOR,
+      existingSettings.generateChordDuration ? existingSettings.generateChordDuration : NotationConstant.DEFAUT_CHORD_DURATION,
       existingSettings.generateChordDurationUnit,
-      existingSettings.generateNoteOctave,
-      existingSettings.generateChordWidth,
-      existingSettings.generateMethod,
+      existingSettings.generateNoteOctave ? existingSettings.generateNoteOctave : NotationConstant.DEFAUT_NOTE_OCTAVE,
+      existingSettings.generateChordWidth ? existingSettings.generateChordWidth : NotationConstant.DEFAUT_CHORD_WIDTH,
+      existingSettings.generateMethod ? existingSettings.generateMethod : NotationConstant.DEFAUT_RANDOM_METHOD,
       existingSettings.generateReverseDissimilarChord,
-      existingSettings.generateNbChords,
+      existingSettings.generateNbChords ? existingSettings.generateNbChords : NotationConstant.DEFAUT_NB_CHORDS,
       existingSettings.generateSymphony,
       existingSettings.generateDrums,
       existingSettings.generateBass,
-      existingSettings.animatedStave,
+      existingSettings.animatedStave ? existingSettings.animatedStave : true,
       existingSettings.showKeyboard
     );
   }

@@ -34,7 +34,7 @@ export class Settings {
     this.generateDrums = false;
     this.generateBass = false;
     this.animatedStave = false;
-    this.showKeyboard = true;
+    this.showKeyboard = false;
   }
 
 }

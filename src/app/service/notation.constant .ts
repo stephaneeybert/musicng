@@ -11,4 +11,12 @@ export class NotationConstant {
     [RANDOM_METHOD.BASE, 'Base'], [RANDOM_METHOD.BONUS_TABLE, 'Bonus table']
   ]);
 
+  public static readonly DEFAUT_TEMPO_BPM: number = 128;
+  public static readonly DEFAUT_CHORD_WIDTH: number = 3;
+  public static readonly DEFAUT_CHORD_DURATION: number = 4;
+  public static readonly DEFAUT_NOTE_OCTAVE: number = 5;
+  public static readonly DEFAUT_NB_CHORDS: number = 120;
+  public static readonly DEFAUT_TIME_SIGNATURE_DENOMINATOR: number = 4;
+  public static readonly DEFAUT_TIME_SIGNATURE_NUMERATOR: number = 4;
+  public static readonly DEFAUT_RANDOM_METHOD: RANDOM_METHOD = RANDOM_METHOD.BONUS_TABLE;
 }
