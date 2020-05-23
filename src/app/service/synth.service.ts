@@ -188,7 +188,7 @@ export class SynthService {
     if (animatedStave) {
       const subscription: Subscription = timer(WHITEWASH_DELAY).subscribe((time: number) => { // TODO Missing unsubscribe
         this.sheetService.whitewashSheetContext(soundtrack.sheetContext);
-        this.sheetService.drawFirstSoundtrackMeasure(soundtrack);
+        this.sheetService.drawFirstSoundtrackMeasure(soundtrack, animatedStave);
         subscription.unsubscribe();
       });
     }
@@ -258,7 +258,7 @@ export class SynthService {
                 if (placedChord.isFirst()) {
                   if (animatedStave) {
                     this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, measure.index);
-                    this.sheetService.drawMeasure(measure, soundtrack);
+                    this.sheetService.drawMeasure(measure, track, soundtrack, animatedStave);
                   }
                 }
                 this.sheetService.highlightStaveNote(placedChord, soundtrack);
@@ -273,7 +273,7 @@ export class SynthService {
               Tone.Draw.schedule((actualTime: any) => {
                 if (animatedStave) {
                   this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, measure.index);
-                  this.sheetService.drawMeasure(firstMeasure, soundtrack);
+                  this.sheetService.drawMeasure(firstMeasure, track, soundtrack, animatedStave);
                 }
                 this.keyboardService.unpressAll(soundtrack.keyboard);
                 this.setPlaying(soundtrack, false);

@@ -95,7 +95,7 @@ export class SheetService {
                 const staveX: number = this.getStaveX(animatedStave, track.index, measureWithVisibleNotesIndex);
                 const staveY: number = this.getStaveY(animatedStave, nbTracks, track.index, measureWithVisibleNotesIndex);
 
-                this.drawTrackName(track, soundtrack, staveX, staveY);
+                this.drawTrackNameOnMeasure(track, soundtrack, staveX, staveY);
 
                 const stave: Vex.Flow.Stave = this.drawBareStave(measure, soundtrack, displayWidth, staveX, staveY);
                 measure.sheetStave = stave;
@@ -141,12 +141,12 @@ export class SheetService {
           if (animatedStave) {
             const trackFirstMeasure: Measure = track.getSortedMeasures()[0];
             this.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, trackFirstMeasure.index);
-            this.drawFirstTrackMeasure(track, soundtrack);
+            this.drawTrackFirstMeasure(track, soundtrack, animatedStave);
             const staveX: number = this.getStaveX(animatedStave, track.index, 0);
             const staveY: number = this.getStaveY(animatedStave, soundtrack.tracks.length, track.index, 0);
             const stave: Vex.Flow.Stave = this.drawBareStave(trackFirstMeasure, soundtrack, displayWidth, staveX, staveY);
             const voice: Vex.Flow.Voice = this.createBareVoice(trackFirstMeasure, stave);
-            this.drawTrackName(track, soundtrack, staveX, staveY);
+            this.drawTrackNameOnFirstMeasure(track, soundtrack, animatedStave);
           }
         }
       });
@@ -190,7 +190,13 @@ export class SheetService {
     return voice;
   }
 
-  private drawTrackName(track: Track, soundtrack: Soundtrack, staveX: number, staveY: number): void {
+  private drawTrackNameOnFirstMeasure(track: Track, soundtrack: Soundtrack, animatedStave: boolean): void {
+    const staveX: number = this.getStaveX(animatedStave, track.index, 0);
+    const staveY: number = this.getStaveY(animatedStave, soundtrack.tracks.length, track.index, 0);
+    this.drawTrackNameOnMeasure(track, soundtrack, staveX, staveY);
+  }
+
+  private drawTrackNameOnMeasure(track: Track, soundtrack: Soundtrack, staveX: number, staveY: number): void {
     if (track.name != null && soundtrack.sheetContext != null) {
       // Display the name of the track above the stave
       this.drawText(soundtrack.sheetContext, track.name, staveX, staveY);
@@ -228,33 +234,34 @@ export class SheetService {
     sheetContext.fillText(text, x, y + textHeight);
   }
 
-  public drawFirstTrackMeasure(track: Track, soundtrack: Soundtrack): void {
+  public drawTrackFirstMeasure(track: Track, soundtrack: Soundtrack, animatedStave: boolean): void {
     if (track.hasMeasures()) {
       const sortedMeasures: Array<Measure> = track.getSortedMeasures();
-      this.drawMeasure(sortedMeasures[0], soundtrack);
+      this.drawMeasure(sortedMeasures[0], track, soundtrack, animatedStave);
     }
   }
 
-  public drawFirstSoundtrackMeasure(soundtrack: Soundtrack): void {
+  public drawFirstSoundtrackMeasure(soundtrack: Soundtrack, animatedStave: boolean): void {
     if (soundtrack.tracks) {
       soundtrack.getSortedTracks().forEach((track: Track) => {
         if (track.hasMeasures()) {
           const sortedMeasures: Array<Measure> = track.getSortedMeasures();
-          this.drawMeasure(sortedMeasures[0], soundtrack);
+          this.drawMeasure(sortedMeasures[0], track, soundtrack, animatedStave);
         }
       });
     }
   }
 
-  public drawMeasure(measure: Measure, soundtrack: Soundtrack): void {
+  public drawMeasure(measure: Measure, track: Track, soundtrack: Soundtrack, animatedStave: boolean): void {
     if (soundtrack.sheetContext != null) {
       if (measure.sheetStave) {
         try {
           measure.sheetStave.draw();
         } catch (error) {
           this.logNoCanvasContextError(error);
-          this.screenDeviceService.reloadPage(); // TODO Change al reload by some thrown new Error()
+          this.screenDeviceService.reloadPage(); // TODO Change all reload by some thrown new Error()
         }
+        this.drawTrackNameOnFirstMeasure(track, soundtrack, animatedStave);
       }
       if (measure.sheetVoice) {
         try {
