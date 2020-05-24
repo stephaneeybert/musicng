@@ -11,7 +11,7 @@ import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { TRACK_TYPES } from './notation.service';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { RANDOM_METHOD, DEFAULT_VELOCITY_LOUDER, DEFAULT_VELOCITY_SOFTER } from './notation.constant ';
+import { RANDOM_METHOD, DEFAULT_VELOCITY_LOUDER, DEFAULT_VELOCITY_SOFTER, CHROMAS_ALPHABETICAL } from './notation.constant ';
 
 @Injectable({
   providedIn: 'root'
@@ -187,7 +187,7 @@ export class GeneratorService {
     // 'G', 'A', 'B', 'C', 'D', 'E', 'F'
 
     // Build the shifted chromas
-    shiftedChromas[0] = this.notationService.chromasAlphabetical();
+    shiftedChromas[0] = CHROMAS_ALPHABETICAL;
     for (let index = 1; index < this.settingsService.getSettings().generateChordWidth; index++) {
       shiftedChromas[index] = this.createShiftedChromas(shiftedChromas[index - 1]);
     }
@@ -239,7 +239,7 @@ export class GeneratorService {
   }
 
   private randomlyPickChromaFromBaseChromas(chromaIndex: number): number {
-    return this.commonService.getRandomIntegerBetweenAndExcept(0, this.notationService.chromasAlphabetical().length - 1, [ chromaIndex ])
+    return this.commonService.getRandomIntegerBetweenAndExcept(0, CHROMAS_ALPHABETICAL.length - 1, [ chromaIndex ])
   }
 
   // The table of bonus per chroma

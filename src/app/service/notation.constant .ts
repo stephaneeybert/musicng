@@ -23,3 +23,5 @@ export const CHORD_DURATION_UNITS: Map<TempoUnit, string> = new Map([
 export const GENERATE_METHODS: Map<RANDOM_METHOD, string> = new Map([
   [RANDOM_METHOD.BASE, 'Base'], [RANDOM_METHOD.BONUS_TABLE, 'Bonus table']
 ]);
+
+export const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
