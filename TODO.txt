@@ -63,8 +63,15 @@ stave.addClef(Clef.TREBLE);
 Should the clef be determined from the time signature of the measure ?
 stave.addClef(Clef.TREBLE);
 
+Add some export to MIDI format
+
+Have a good timbre for the instrument synth sound
 
 Norbert:
+
+The bass track has annotations of only one note like the melody track
+The drums track has no note names annotations
+Do the track have a type ? Like melody, bass ? Maybe have an array of these types...
 
 Générer des silences aussi et pas que des notes
 Pouvoir démarrer sur une autre note que le do.
