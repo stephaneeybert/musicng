@@ -1,5 +1,5 @@
 import { TempoUnit } from '@app/model/tempo-unit';
-import { RANDOM_METHOD } from '@app/service/generator.service';
+import { RANDOM_METHOD } from '@app/service/notation.constant ';
 
 export class SettingsEdition { // TODO Why not use the existing Settings class ?
 
