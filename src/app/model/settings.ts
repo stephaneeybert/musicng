@@ -1,5 +1,5 @@
 import { TempoUnit } from './tempo-unit';
-import { RANDOM_METHOD } from '@app/service/generator.service';
+import { NotationConstant, RANDOM_METHOD } from '@app/service/notation.constant ';
 
 export class Settings {
 

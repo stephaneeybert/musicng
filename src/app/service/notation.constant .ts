@@ -1,5 +1,9 @@
 import { TempoUnit } from '@app/model/tempo-unit';
-import { RANDOM_METHOD } from './generator.service';
+
+export enum RANDOM_METHOD {
+  BASE = 0,
+  BONUS_TABLE = 1
+}
 
 export class NotationConstant {
 

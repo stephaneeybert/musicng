@@ -11,11 +11,7 @@ import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { TRACK_TYPES } from './notation.service';
 import { SettingsService } from '@app/views/settings/settings.service';
-
-export enum RANDOM_METHOD {
-  BASE = 0,
-  BONUS_TABLE = 1
-}
+import { RANDOM_METHOD } from './notation.constant ';
 
 const DEFAULT_VELOCITY_SOFTER: number = 0.1;
 const DEFAULT_VELOCITY_LOUDER: number = 1;
