@@ -16,7 +16,7 @@ import { MaterialService } from '@app/core/service/material.service';
 const NAME_PREFIX_SOUNDTRACK: string = 'sheet-soundtrack-';
 const NAME_PREFIX_DEVICE: string = 'sheet-device-';
 
-const SHEET_WIDTH_RATIO: number = 0.9;
+const VEXFLOW_SHEET_WIDTH_RATIO: number = 0.9;
 const VEXFLOW_STAVE_HEIGHT: number = 120;
 const VEXFLOW_OCTAVE_SEPARATOR: string = '/';
 const VEXFLOW_REST_NOTE: string = 'B/4';
@@ -70,7 +70,7 @@ export class SheetService {
 
   private renderSoundtrackSheet(id: string, screenWidth: number, soundtrack: Soundtrack, animatedStave: boolean): void {
     // The width must fit within the screen
-    const displayWidth: number = screenWidth * SHEET_WIDTH_RATIO;
+    const displayWidth: number = screenWidth * VEXFLOW_SHEET_WIDTH_RATIO;
 
     let sheetWidth: number;
     let sheetHeight: number;
