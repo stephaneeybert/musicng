@@ -20,20 +20,20 @@ export class Settings {
   showKeyboard: boolean;
 
   constructor() {
-    this.generateTempoBpm = 0;
-    this.generateTimeSignatureNumerator = 0;
-    this.generateTimeSignatureDenominator = 0;
-    this.generateChordDuration = 0;
+    this.generateTempoBpm = NotationConstant.DEFAUT_TEMPO_BPM;
+    this.generateTimeSignatureNumerator = NotationConstant.DEFAUT_TIME_SIGNATURE_NUMERATOR;
+    this.generateTimeSignatureDenominator = NotationConstant.DEFAUT_TIME_SIGNATURE_DENOMINATOR;
+    this.generateChordDuration = NotationConstant.DEFAUT_CHORD_DURATION;
     this.generateChordDurationUnit = TempoUnit.BPM;
-    this.generateNoteOctave = 0;
-    this.generateChordWidth = 0;
-    this.generateMethod = 0;
+    this.generateNoteOctave = NotationConstant.DEFAUT_NOTE_OCTAVE;
+    this.generateChordWidth = NotationConstant.DEFAUT_CHORD_WIDTH;
+    this.generateMethod = NotationConstant.DEFAUT_RANDOM_METHOD;
     this.generateReverseDissimilarChord = false;
-    this.generateNbChords = 0;
+    this.generateNbChords = NotationConstant.DEFAUT_NB_CHORDS;
     this.generateSymphony = false;
     this.generateDrums = false;
     this.generateBass = false;
-    this.animatedStave = false;
+    this.animatedStave = true;
     this.showKeyboard = false;
   }
 
