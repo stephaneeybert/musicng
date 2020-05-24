@@ -11,10 +11,7 @@ import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { TRACK_TYPES } from './notation.service';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { RANDOM_METHOD } from './notation.constant ';
-
-const DEFAULT_VELOCITY_SOFTER: number = 0.1;
-const DEFAULT_VELOCITY_LOUDER: number = 1;
+import { RANDOM_METHOD, DEFAULT_VELOCITY_LOUDER, DEFAULT_VELOCITY_SOFTER } from './notation.constant ';
 
 @Injectable({
   providedIn: 'root'

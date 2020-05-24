@@ -1,5 +1,8 @@
 import { TempoUnit } from '@app/model/tempo-unit';
 
+export const DEFAULT_VELOCITY_SOFTER: number = 0.1;
+export const DEFAULT_VELOCITY_LOUDER: number = 1;
+
 export enum RANDOM_METHOD {
   BASE = 0,
   BONUS_TABLE = 1
