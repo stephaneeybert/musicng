@@ -2,9 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { SettingsEdition } from './settings-edition';
-import { NotationConstant } from '@app/service/notation.constant ';
+import { TIME_SIGNATURES, RANDOM_METHOD, CHORD_DURATION_UNITS, GENERATE_METHODS } from '@app/service/notation.constant ';
 import { TempoUnit } from '@app/model/tempo-unit';
-import { RANDOM_METHOD } from '@app/service/generator.service';
 
 type TimeSignatureType = {
   id: number,
@@ -84,16 +83,16 @@ export class SettingsDialogComponent implements OnInit {
   }
 
   private instantiateLists(): void {
-    NotationConstant.TIME_SIGNATURES.forEach((timeSignature: number) => {
+    TIME_SIGNATURES.forEach((timeSignature: number) => {
       console.log(typeof timeSignature);
       this.timeSignatures.push({ 'id': timeSignature, 'name': String(timeSignature) });
     });
 
-    NotationConstant.CHORD_DURATION_UNITS.forEach((name: string, id: TempoUnit) => {
+    CHORD_DURATION_UNITS.forEach((name: string, id: TempoUnit) => {
       this.chordDurationUnits.push({ 'id': id, 'name': name });
     });
 
-    NotationConstant.GENERATE_METHODS.forEach((name: string, id: RANDOM_METHOD) => {
+    GENERATE_METHODS.forEach((name: string, id: RANDOM_METHOD) => {
       this.generateMethods.push({ 'id': id, 'name': name });
     });
   }
