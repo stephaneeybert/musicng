@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable, from, Subscription, empty } from 'rxjs';
 import { map, filter, switchMap, catchError, delay } from 'rxjs/operators';
 import { parseArrayBuffer } from 'midi-json-parser';
-import { IMidiFile, TMidiEvent, IMidiNoteOnEvent,
+import {
+  IMidiFile, TMidiEvent, IMidiNoteOnEvent,
   IMidiNoteOffEvent, IMidiSetTempoEvent,
   IMidiTrackNameEvent, IMidiCopyrightNoticeEvent,
   IMidiTextEvent, IMidiChannelPrefixEvent,
-  IMidiTimeSignatureEvent, IMidiControlChangeEvent } from 'midi-json-parser-worker';
+  IMidiTimeSignatureEvent, IMidiControlChangeEvent
+} from 'midi-json-parser-worker';
 import { Midi } from '@tonejs/midi';
 import { TValue } from 'worker-factory';
 // import { WebMidi } from 'webmidi';
@@ -80,15 +82,15 @@ export class MidiService {
 
   public requestMIDIAccess$(): Observable<WebMidi.MIDIAccess> {
     return from(navigator.requestMIDIAccess())
-    .pipe(
-      map((midiAccess: any) => {
-        return midiAccess;
-      }),
-      catchError((error: any) => {
-        console.log('Your browser is not compatible with MIDI access. Try using the Chrome browser.');
-        return empty();
-      })
-    );
+      .pipe(
+        map((midiAccess: any) => {
+          return midiAccess;
+        }),
+        catchError((error: any) => {
+          console.log('Your browser is not compatible with MIDI access. Try using the Chrome browser.');
+          return empty();
+        })
+      );
   }
 
   public addMidiDevice(inputDevice: WebMidi.MIDIInput): void {
@@ -120,14 +122,14 @@ export class MidiService {
 
   private handleMessagesFromInputDevice(device: Device): void {
     const subscription: Subscription = this.getInputDevices$()
-    .pipe(
-      filter((midiInput: WebMidi.MIDIInput) => {
-        return (midiInput.name != undefined) && this.commonService.normalizeName(midiInput.name) === this.commonService.normalizeName(device.id);
-      }),
-      switchMap((midiInput: WebMidi.MIDIInput) => this.midiMessageAsObservable(midiInput)),
-    ).subscribe((message: WebMidi.MIDIMessageEvent) => {
-      this.onMIDIMessage(device, message);
-    });
+      .pipe(
+        filter((midiInput: WebMidi.MIDIInput) => {
+          return (midiInput.name != undefined) && this.commonService.normalizeName(midiInput.name) === this.commonService.normalizeName(device.id);
+        }),
+        switchMap((midiInput: WebMidi.MIDIInput) => this.midiMessageAsObservable(midiInput)),
+      ).subscribe((message: WebMidi.MIDIMessageEvent) => {
+        this.onMIDIMessage(device, message);
+      });
     device.midiMessageSubscription = subscription;
   }
 
@@ -162,17 +164,17 @@ export class MidiService {
     switch (status) {
       case NOTE_ON:
         if (velocity > 0) {
-          this.keyboardService.pressKey(device.keyboard, [ midiNote ]);
+          this.keyboardService.pressKey(device.keyboard, [midiNote]);
           // this.synthService.noteOn(midiNote, velocity);
           // A keyboard handler already sends the note to the synth
         } else {
           // But a velocity of 0 is a "note off"
-          this.keyboardService.unpressKey(device.keyboard, [ midiNote ]);
+          this.keyboardService.unpressKey(device.keyboard, [midiNote]);
           // this.synthService.noteOff(midiNote);
         }
         break;
       case NOTE_OFF:
-        this.keyboardService.unpressKey(device.keyboard, [ midiNote ]);
+        this.keyboardService.unpressKey(device.keyboard, [midiNote]);
         // this.synthService.noteOff(midiNote);
         break;
     }
@@ -206,7 +208,8 @@ export class MidiService {
             midiTrack.instrument.id,
             midiTrack.instrument.family,
             midiTrack.instrument.name,
-            midiTrack.instrument.percussion);
+            midiTrack.instrument.percussion
+          );
         }
         const duration: Duration = this.notationService.createDefaultTempo();
         const timeSignature: TimeSignature = this.notationService.createDefaultTimeSignature();
@@ -264,114 +267,114 @@ export class MidiService {
   public async parseRawMidi(name: string, rawMidiData: ArrayBuffer): Promise<Soundtrack> {
     let soundtrack: Soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
     await parseArrayBuffer(rawMidiData)
-    .then((jsonMidi: IMidiFile) => {
-      if (jsonMidi.format === 1) {
-        jsonMidi = this.addEventTime(jsonMidi);
-        const assumedTempoTrackIndex: number = 0;
-        if (this.isTempoTrack(jsonMidi.tracks[assumedTempoTrackIndex])) {
-          jsonMidi = this.copyTempoTrackEventsAndSortByTime(assumedTempoTrackIndex, jsonMidi);
-        }
-        console.log(jsonMidi);
-        let isFirstTrack = true;
-        // The number of pulses per quarter note is expressed in ticks
-        // In MIDI it may also be called PPQ, PPQN, time resolution, time division
-        const pulsesPerQuarter: number = jsonMidi.division ? jsonMidi.division : DEFAULT_MIDI_PPQ;
-        console.log('PPQ: ' + jsonMidi.division + ' pulsesPerQuarter: ' + pulsesPerQuarter);
-        let currentTempo: number = this.bpmToMicroSeconds(DEFAULT_MIDI_TEMPO);
-        let currentNoteOnEvent: IMidiNoteOnEvent;
-        let currentTimeSignature: TimeSignature = this.notationService.createDefaultTimeSignature();
-        let pulsesPerMeasure: number;
-        let trackIndex: number = 0;
-        jsonMidi.tracks.forEach((midiTrack: TMidiEvent[]) => {
-          const track: Track = new Track(trackIndex);
-          console.log('New track');
-          // In MIDI the measure may also be called a bar
-          let measureIndex: number = 0;
-          const measures: Array<Measure> = new Array<Measure>();
-          let currentMeasure: Measure;
-          midiTrack.forEach((midiEvent: any) => {
-            if (midiEvent.hasOwnProperty(MIDI_EVENT_TRACK_NAME)) {
-              const trackNameEvent: IMidiTrackNameEvent = midiEvent;
-              track.name = trackNameEvent.trackName;
-              if (isFirstTrack) {
-                soundtrack.id = track.name; // TODO Normalize this
-                soundtrack.name = track.name;
-              }
-            } else if (midiEvent.hasOwnProperty(MIDI_EVENT_CHANNEL_PREFIX)) {
-              const channelPrefixEvent: IMidiChannelPrefixEvent = midiEvent;
-              track.channel = channelPrefixEvent.channelPrefix;
-            } else if (midiEvent.hasOwnProperty(MIDI_EVENT_COPYRIGHT_NOTICE)) {
-              const copyrightNoticeEvent: IMidiCopyrightNoticeEvent = midiEvent;
-              if (isFirstTrack) {
-                soundtrack.copyright = copyrightNoticeEvent.copyrightNotice;
-              }
-            } else if (midiEvent.hasOwnProperty(MIDI_EVENT_TEXT)) {
-              const textEvent: IMidiTextEvent = midiEvent;
-              if (isFirstTrack) {
-                soundtrack.lyrics += textEvent.text + ' ';
-              }
-            } else if (midiEvent.hasOwnProperty(MIDI_EVENT_TIME_SIGNATURE)) {
-              const timeSignatureEvent: IMidiTimeSignatureEvent = midiEvent;
-              currentTimeSignature = this.notationService.createTimeSignature(
-                timeSignatureEvent.timeSignature.numerator,
-                timeSignatureEvent.timeSignature.denominator);
-              pulsesPerMeasure = this.pulsesPerMeasure(this.quarterNotesPerMeasure(currentTimeSignature), pulsesPerQuarter);
-              console.log('pulsesPerMeasure: ' + pulsesPerMeasure);
-            } else if (midiEvent.hasOwnProperty(MIDI_EVENT_SET_TEMPO)) {
-              const tempoEvent: IMidiSetTempoEvent = midiEvent;
-              currentTempo = tempoEvent.setTempo.microsecondsPerBeat;
-            } else if (midiEvent.hasOwnProperty(MIDI_EVENT_NOTE_ON)) {
-              const noteOnEvent: IMidiNoteOnEvent = midiEvent;
-              // Ignore additional note-on events if any
-              if (currentNoteOnEvent == null) {
-                currentNoteOnEvent = noteOnEvent;
-              }
-            } else if (midiEvent.hasOwnProperty(MIDI_EVENT_CONTROL_CHANGE)) {
-              // A control-change event might be sitting between a note-on and a note-off event
-              // In that case, the control-change event delta is used as the note-off event delta is 0
-              const controlChangeEvent: IMidiControlChangeEvent = midiEvent;
-              if (currentNoteOnEvent != null) {
-                const delta: number = this.delta(controlChangeEvent.time, currentNoteOnEvent.time);
-                if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, pulsesPerMeasure, measureIndex)) {
-                  const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempo), TempoUnit.BPM);
-                  currentMeasure = new Measure(measureIndex, tempo, currentTimeSignature);
-                  currentMeasure.placedChords = new Array<PlacedChord>();
-                  measures.push(currentMeasure);
-                  measureIndex++;
+      .then((jsonMidi: IMidiFile) => {
+        if (jsonMidi.format === 1) {
+          jsonMidi = this.addEventTime(jsonMidi);
+          const assumedTempoTrackIndex: number = 0;
+          if (this.isTempoTrack(jsonMidi.tracks[assumedTempoTrackIndex])) {
+            jsonMidi = this.copyTempoTrackEventsAndSortByTime(assumedTempoTrackIndex, jsonMidi);
+          }
+          console.log(jsonMidi);
+          let isFirstTrack = true;
+          // The number of pulses per quarter note is expressed in ticks
+          // In MIDI it may also be called PPQ, PPQN, time resolution, time division
+          const pulsesPerQuarter: number = jsonMidi.division ? jsonMidi.division : DEFAULT_MIDI_PPQ;
+          console.log('PPQ: ' + jsonMidi.division + ' pulsesPerQuarter: ' + pulsesPerQuarter);
+          let currentTempo: number = this.bpmToMicroSeconds(DEFAULT_MIDI_TEMPO);
+          let currentNoteOnEvent: IMidiNoteOnEvent;
+          let currentTimeSignature: TimeSignature = this.notationService.createDefaultTimeSignature();
+          let pulsesPerMeasure: number;
+          let trackIndex: number = 0;
+          jsonMidi.tracks.forEach((midiTrack: TMidiEvent[]) => {
+            const track: Track = new Track(trackIndex);
+            console.log('New track');
+            // In MIDI the measure may also be called a bar
+            let measureIndex: number = 0;
+            const measures: Array<Measure> = new Array<Measure>();
+            let currentMeasure: Measure;
+            midiTrack.forEach((midiEvent: any) => {
+              if (midiEvent.hasOwnProperty(MIDI_EVENT_TRACK_NAME)) {
+                const trackNameEvent: IMidiTrackNameEvent = midiEvent;
+                track.name = trackNameEvent.trackName;
+                if (isFirstTrack) {
+                  soundtrack.id = track.name; // TODO Normalize this
+                  soundtrack.name = track.name;
                 }
-                if (currentMeasure.placedChords) {
-                  // TODO currentMeasure.placedChords.push(this.buildAndPlaceNote(delta, pulsesPerQuarter, currentTempo, currentNoteOnEvent));
-                  // currentNoteOnEvent = null;
+              } else if (midiEvent.hasOwnProperty(MIDI_EVENT_CHANNEL_PREFIX)) {
+                const channelPrefixEvent: IMidiChannelPrefixEvent = midiEvent;
+                track.channel = channelPrefixEvent.channelPrefix;
+              } else if (midiEvent.hasOwnProperty(MIDI_EVENT_COPYRIGHT_NOTICE)) {
+                const copyrightNoticeEvent: IMidiCopyrightNoticeEvent = midiEvent;
+                if (isFirstTrack) {
+                  soundtrack.copyright = copyrightNoticeEvent.copyrightNotice;
+                }
+              } else if (midiEvent.hasOwnProperty(MIDI_EVENT_TEXT)) {
+                const textEvent: IMidiTextEvent = midiEvent;
+                if (isFirstTrack) {
+                  soundtrack.lyrics += textEvent.text + ' ';
+                }
+              } else if (midiEvent.hasOwnProperty(MIDI_EVENT_TIME_SIGNATURE)) {
+                const timeSignatureEvent: IMidiTimeSignatureEvent = midiEvent;
+                currentTimeSignature = this.notationService.createTimeSignature(
+                  timeSignatureEvent.timeSignature.numerator,
+                  timeSignatureEvent.timeSignature.denominator);
+                pulsesPerMeasure = this.pulsesPerMeasure(this.quarterNotesPerMeasure(currentTimeSignature), pulsesPerQuarter);
+                console.log('pulsesPerMeasure: ' + pulsesPerMeasure);
+              } else if (midiEvent.hasOwnProperty(MIDI_EVENT_SET_TEMPO)) {
+                const tempoEvent: IMidiSetTempoEvent = midiEvent;
+                currentTempo = tempoEvent.setTempo.microsecondsPerBeat;
+              } else if (midiEvent.hasOwnProperty(MIDI_EVENT_NOTE_ON)) {
+                const noteOnEvent: IMidiNoteOnEvent = midiEvent;
+                // Ignore additional note-on events if any
+                if (currentNoteOnEvent == null) {
+                  currentNoteOnEvent = noteOnEvent;
+                }
+              } else if (midiEvent.hasOwnProperty(MIDI_EVENT_CONTROL_CHANGE)) {
+                // A control-change event might be sitting between a note-on and a note-off event
+                // In that case, the control-change event delta is used as the note-off event delta is 0
+                const controlChangeEvent: IMidiControlChangeEvent = midiEvent;
+                if (currentNoteOnEvent != null) {
+                  const delta: number = this.delta(controlChangeEvent.time, currentNoteOnEvent.time);
+                  if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, pulsesPerMeasure, measureIndex)) {
+                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempo), TempoUnit.BPM);
+                    currentMeasure = new Measure(measureIndex, tempo, currentTimeSignature);
+                    currentMeasure.placedChords = new Array<PlacedChord>();
+                    measures.push(currentMeasure);
+                    measureIndex++;
+                  }
+                  if (currentMeasure.placedChords) {
+                    // TODO currentMeasure.placedChords.push(this.buildAndPlaceNote(delta, pulsesPerQuarter, currentTempo, currentNoteOnEvent));
+                    // currentNoteOnEvent = null;
+                  }
+                }
+              } else if (midiEvent.hasOwnProperty(MIDI_EVENT_CONTROL_CHANGE) || midiEvent.hasOwnProperty(MIDI_EVENT_NOTE_OFF)) {
+                const noteOffEvent: IMidiNoteOffEvent = midiEvent;
+                if (currentNoteOnEvent != null) {
+                  // console.log('Note off');
+                  const delta: number = this.delta(noteOffEvent.time, currentNoteOnEvent.time);
+                  if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, pulsesPerMeasure, measureIndex)) {
+                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempo), TempoUnit.BPM);
+                    currentMeasure = new Measure(measureIndex, tempo, currentTimeSignature);
+                    currentMeasure.placedChords = new Array<PlacedChord>();
+                    measures.push(currentMeasure);
+                    measureIndex++;
+                    // console.log('New measure with counter: ' + measureCounter);
+                  }
+                  // console.log('Push note');
+                  if (currentMeasure.placedChords) {
+                    // TODO currentMeasure.placedChords.push(this.buildAndPlaceNote(delta, pulsesPerQuarter, currentTempo, currentNoteOnEvent));
+                    // currentNoteOnEvent = null;
+                  }
                 }
               }
-            } else if (midiEvent.hasOwnProperty(MIDI_EVENT_CONTROL_CHANGE) || midiEvent.hasOwnProperty(MIDI_EVENT_NOTE_OFF)) {
-              const noteOffEvent: IMidiNoteOffEvent = midiEvent;
-              if (currentNoteOnEvent != null) {
-                // console.log('Note off');
-                const delta: number = this.delta(noteOffEvent.time, currentNoteOnEvent.time);
-                if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, pulsesPerMeasure, measureIndex)) {
-                  const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempo), TempoUnit.BPM);
-                  currentMeasure = new Measure(measureIndex,tempo, currentTimeSignature);
-                  currentMeasure.placedChords = new Array<PlacedChord>();
-                  measures.push(currentMeasure);
-                  measureIndex++;
-                  // console.log('New measure with counter: ' + measureCounter);
-                }
-                // console.log('Push note');
-                if (currentMeasure.placedChords) {
-                  // TODO currentMeasure.placedChords.push(this.buildAndPlaceNote(delta, pulsesPerQuarter, currentTempo, currentNoteOnEvent));
-                  // currentNoteOnEvent = null;
-                }
-              }
-            }
+            });
+            track.measures = measures;
+            trackIndex++;
+            soundtrack.tracks.push(track);
+            isFirstTrack = false;
           });
-          track.measures = measures;
-          trackIndex++;
-          soundtrack.tracks.push(track);
-          isFirstTrack = false;
-        });
-      }
-    });
+        }
+      });
     return soundtrack;
   }
 
@@ -504,8 +507,8 @@ export class MidiService {
     const bpm: number = this.microSecondsToBpm(deltaInMicroSeconds);
     const deltaInSubdivisions: number = this.subdivision(deltaInQuarters);
     console.log('delta: ' + deltaInTicks + ' ' + deltaInQuarters + ' ' + deltaInSubdivisions
-    + ' tempo: ' + tempoInMicroSecondsPerBeat
-    + ' bpm: ' + bpm);
+      + ' tempo: ' + tempoInMicroSecondsPerBeat
+      + ' bpm: ' + bpm);
     return bpm;
   }
 
