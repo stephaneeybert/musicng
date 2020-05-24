@@ -41,8 +41,8 @@ export class SettingsDialogComponent implements OnInit {
     const existingSettings: SettingsEdition = data.settings;
     this.settingsEdition = new SettingsEdition(
       existingSettings.generateTempoBpm ? existingSettings.generateTempoBpm : NotationConstant.DEFAUT_TEMPO_BPM,
-      existingSettings.generateTimeSignatureNumerator ? existingSettings.generateTimeSignatureNumerator : NotationConstant.DEFAUT_TIME_SIGNATURE_DENOMINATOR,
-      existingSettings.generateTimeSignatureDenominator ? existingSettings.generateTimeSignatureDenominator : NotationConstant.DEFAUT_TIME_SIGNATURE_NUMERATOR,
+      existingSettings.generateTimeSignatureNumerator ? existingSettings.generateTimeSignatureNumerator : NotationConstant.DEFAUT_TIME_SIGNATURE_NUMERATOR,
+      existingSettings.generateTimeSignatureDenominator ? existingSettings.generateTimeSignatureDenominator : NotationConstant.DEFAUT_TIME_SIGNATURE_DENOMINATOR,
       existingSettings.generateChordDuration ? existingSettings.generateChordDuration : NotationConstant.DEFAUT_CHORD_DURATION,
       existingSettings.generateChordDurationUnit,
       existingSettings.generateNoteOctave ? existingSettings.generateNoteOctave : NotationConstant.DEFAUT_NOTE_OCTAVE,
