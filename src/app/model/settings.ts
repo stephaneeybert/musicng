@@ -30,7 +30,7 @@ export class Settings {
     this.generateMethod = NotationConstant.DEFAUT_RANDOM_METHOD;
     this.generateReverseDissimilarChord = false;
     this.generateNbChords = NotationConstant.DEFAUT_NB_CHORDS;
-    this.generateSymphony = false;
+    this.generateSymphony = true;
     this.generateDrums = false;
     this.generateBass = false;
     this.animatedStave = true;
