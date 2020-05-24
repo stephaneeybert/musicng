@@ -23,6 +23,7 @@ const PLAY_START_DELAY: number = 0;
 const CHORD_WIDTH: number = 3;
 const WHITEWASH_DELAY: number = 3000;
 const TEMPO_RAMP_TO_IN_SECONDS: number = 2;
+const VELOCITY_MIDI_MAX: number = 127;
 
 // The rest note for the synth is the empty string
 const SYNTH_REST_NOTE: string = '';
@@ -319,12 +320,23 @@ export class SynthService {
 
   public noteOn(midiNote: number, midiVelocity: number, synth: any): void {
     const textNote: string = this.midiToTextNote(midiNote);
-    synth.triggerAttack(textNote, Tone.Context.currentTime, this.notationService.velocityMidiToTonejs(midiVelocity));
+    synth.triggerAttack(textNote, Tone.Context.currentTime, this.velocityMidiToTonejs(midiVelocity));
   }
 
   public noteOff(midiNote: number, synth: any): void {
     const textNote: string = this.midiToTextNote(midiNote);
     synth.triggerRelease(textNote, Tone.Context.currentTime);
+  }
+
+  public velocityMidiToTonejs(midiVelocity: number): number {
+    if (midiVelocity > VELOCITY_MIDI_MAX) {
+      throw new Error('The MIDI velocity ' + midiVelocity + ' is greater than the maximum MIDI velocity ' + VELOCITY_MIDI_MAX);
+    }
+    return midiVelocity / VELOCITY_MIDI_MAX;
+  }
+
+  public velocityTonejsToMidi(tonejsVelocity: number): number {
+    return tonejsVelocity * VELOCITY_MIDI_MAX;
   }
 
   public midiToTextNote(midiNote: number): string {
