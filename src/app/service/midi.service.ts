@@ -193,9 +193,10 @@ export class MidiService {
   }
 
   public async parseRawMidiTonejs(name: string, rawMidiData: ArrayBuffer): Promise<Soundtrack> {
-    const midi: Midi = new Midi(rawMidiData);
-    console.log(midi);
     const soundtrack: Soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
+    let midi: Midi = new Midi(rawMidiData);
+    midi = JSON.parse(JSON.stringify(midi, undefined, 2));
+    console.log(midi);
     soundtrack.name = midi.name;
     if (midi.tracks != null) {
       let trackIndex: number = 0;
@@ -219,10 +220,16 @@ export class MidiService {
           let placedChordIndex: number = 0;
           const placedChords: Array<PlacedChord> = new Array<PlacedChord>();
           midiTrack.notes.forEach((midiNote: any) => {
-            const pitchOctave: Array<string> = this.notationService.noteToChromaOctave(midiNote.name);
-            const note: Note = this.notationService.buildNoteWithTicks(
-              pitchOctave[0],
-              Number(pitchOctave[1]));
+            const chromaAndOctave: Array<string> = this.notationService.noteToChromaOctave(midiNote.name);
+            const chroma: string = chromaAndOctave[0];
+            let octave: number = 0;
+            if (chromaAndOctave.length > 1) {
+              octave = Number(chromaAndOctave[1]);
+            } else {
+              throw new Error('Unspecified octave for the note: ' + midiNote.name + ' with chroma: ' + chroma);
+            }
+            const noteIndex: number = 0; // TODO If the note has the same time than the previous note then add it to the previous chord instead of adding it into a new chord
+            const note: Note = this.notationService.createNote(noteIndex, chroma, octave);
             const duration: Duration = midiNote.time; // TODO midiNote.durationTicks How to retrieve the note time and store it in the chord ?
             const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, midiNote.velocity);
             placedChord.addNote(note);
@@ -234,6 +241,7 @@ export class MidiService {
           measures.push(measure);
           measureIndex++
           track.measures = measures;
+          placedChordIndex = 0;
         }
         track.controls = new Array<Control>();
         if (midiTrack.controlChanges != null) {
