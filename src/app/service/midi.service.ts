@@ -249,7 +249,6 @@ export class MidiService {
             // TODO The control is not yet retrieved
             const midiControl: any = midiTrack.controlChanges[key];
             const control: Control = new Control(midiControl.number, midiControl.time, midiControl.ticks, midiControl.value);
-            console.log(control);
             if (track.controls) {
               track.controls.push(control);
             } else {
@@ -274,39 +273,43 @@ export class MidiService {
 
   public async parseRawMidi(name: string, rawMidiData: ArrayBuffer): Promise<Soundtrack> {
     let soundtrack: Soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
+    // let midi: Midi = new Midi(rawMidiData);
+    // midi = JSON.parse(JSON.stringify(midi, undefined, 2));
     await parseArrayBuffer(rawMidiData)
       .then((jsonMidi: IMidiFile) => {
         if (jsonMidi.format === 1) {
-          jsonMidi = this.addEventTime(jsonMidi);
-          const assumedTempoTrackIndex: number = 0;
-          if (this.isTempoTrack(jsonMidi.tracks[assumedTempoTrackIndex])) {
-            jsonMidi = this.copyTempoTrackEventsAndSortByTime(assumedTempoTrackIndex, jsonMidi);
-          }
+          jsonMidi = this.addEventsTime(jsonMidi);
           console.log(jsonMidi);
+          this.copyTempoTrackEventsAndSortByTime(jsonMidi);
           let isFirstTrack = true;
-          // The number of pulses per quarter note is expressed in ticks
+          // The number of parts per quarter note (or ticks per quarter note) is expressed in ticks
           // In MIDI it may also be called PPQ, PPQN, time resolution, time division
-          const pulsesPerQuarter: number = jsonMidi.division ? jsonMidi.division : DEFAULT_MIDI_PPQ;
-          console.log('PPQ: ' + jsonMidi.division + ' pulsesPerQuarter: ' + pulsesPerQuarter);
-          let currentTempo: number = this.bpmToMicroSeconds(DEFAULT_MIDI_TEMPO);
-          let currentNoteOnEvent: IMidiNoteOnEvent;
+          const PPQ: number = jsonMidi.division ? jsonMidi.division : DEFAULT_MIDI_PPQ;
+          console.log('PPQ: ' + jsonMidi.division + ' PPQ: ' + PPQ);
+          let currentTempoInMicrosecondsPerBeat: number = this.bpmToMicroSeconds(DEFAULT_MIDI_TEMPO);
+          let previousNoteOnEvent: IMidiNoteOnEvent | undefined;
+          let currentNoteOnEvent: IMidiNoteOnEvent | undefined;
           let currentTimeSignature: TimeSignature = this.notationService.createDefaultTimeSignature();
-          let pulsesPerMeasure: number;
+          let currentTicksPerMeasure: number;
           let trackIndex: number = 0;
           jsonMidi.tracks.forEach((midiTrack: TMidiEvent[]) => {
             const track: Track = new Track(trackIndex);
-            console.log('New track');
-            // In MIDI the measure may also be called a bar
-            let measureIndex: number = 0;
             const measures: Array<Measure> = new Array<Measure>();
+            let measureIndex: number = 0;
+            let placedChordIndex: number = 0;
             let currentMeasure: Measure;
             midiTrack.forEach((midiEvent: any) => {
               if (midiEvent.hasOwnProperty(MIDI_EVENT_TRACK_NAME)) {
                 const trackNameEvent: IMidiTrackNameEvent = midiEvent;
                 track.name = trackNameEvent.trackName;
                 if (isFirstTrack) {
-                  soundtrack.id = track.name; // TODO Normalize this
+                  soundtrack.id = this.commonService.normalizeName(track.name);
                   soundtrack.name = track.name;
+                }
+              } else if (midiEvent.hasOwnProperty(MIDI_EVENT_TEXT)) {
+                const textEvent: IMidiTextEvent = midiEvent;
+                if (isFirstTrack) {
+                  soundtrack.lyrics += textEvent.text + ' ';
                 }
               } else if (midiEvent.hasOwnProperty(MIDI_EVENT_CHANNEL_PREFIX)) {
                 const channelPrefixEvent: IMidiChannelPrefixEvent = midiEvent;
@@ -316,21 +319,16 @@ export class MidiService {
                 if (isFirstTrack) {
                   soundtrack.copyright = copyrightNoticeEvent.copyrightNotice;
                 }
-              } else if (midiEvent.hasOwnProperty(MIDI_EVENT_TEXT)) {
-                const textEvent: IMidiTextEvent = midiEvent;
-                if (isFirstTrack) {
-                  soundtrack.lyrics += textEvent.text + ' ';
-                }
               } else if (midiEvent.hasOwnProperty(MIDI_EVENT_TIME_SIGNATURE)) {
                 const timeSignatureEvent: IMidiTimeSignatureEvent = midiEvent;
                 currentTimeSignature = this.notationService.createTimeSignature(
                   timeSignatureEvent.timeSignature.numerator,
-                  timeSignatureEvent.timeSignature.denominator);
-                pulsesPerMeasure = this.pulsesPerMeasure(this.quarterNotesPerMeasure(currentTimeSignature), pulsesPerQuarter);
-                console.log('pulsesPerMeasure: ' + pulsesPerMeasure);
+                  timeSignatureEvent.timeSignature.denominator
+                );
+                currentTicksPerMeasure = this.measureInTicks(this.quarterNotesPerMeasure(currentTimeSignature), PPQ);
               } else if (midiEvent.hasOwnProperty(MIDI_EVENT_SET_TEMPO)) {
                 const tempoEvent: IMidiSetTempoEvent = midiEvent;
-                currentTempo = tempoEvent.setTempo.microsecondsPerBeat;
+                currentTempoInMicrosecondsPerBeat = tempoEvent.setTempo.microsecondsPerBeat; // TODO According to the MIDI codumentaiton this should be setTempo.microsecondsPerQuarter
               } else if (midiEvent.hasOwnProperty(MIDI_EVENT_NOTE_ON)) {
                 const noteOnEvent: IMidiNoteOnEvent = midiEvent;
                 // Ignore additional note-on events if any
@@ -342,36 +340,68 @@ export class MidiService {
                 // In that case, the control-change event delta is used as the note-off event delta is 0
                 const controlChangeEvent: IMidiControlChangeEvent = midiEvent;
                 if (currentNoteOnEvent != null) {
-                  const delta: number = this.delta(controlChangeEvent.time, currentNoteOnEvent.time);
-                  if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, pulsesPerMeasure, measureIndex)) {
-                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempo), TempoUnit.BPM);
+                  const deltaInTicks: number = this.delta(controlChangeEvent.time, currentNoteOnEvent.time);
+                  if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, currentTicksPerMeasure, measureIndex)) {
+                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicrosecondsPerBeat), TempoUnit.BPM);
                     currentMeasure = new Measure(measureIndex, tempo, currentTimeSignature);
                     currentMeasure.placedChords = new Array<PlacedChord>();
                     measures.push(currentMeasure);
                     measureIndex++;
+                    placedChordIndex = 0;
                   }
                   if (currentMeasure.placedChords) {
-                    // TODO currentMeasure.placedChords.push(this.buildAndPlaceNote(delta, pulsesPerQuarter, currentTempo, currentNoteOnEvent));
-                    // currentNoteOnEvent = null;
+                    const note: Note = this.buildNote(deltaInTicks, PPQ, currentTempoInMicrosecondsPerBeat, currentNoteOnEvent);
+                    const measureLastPlacedChord: PlacedChord | undefined = this.getLastPlacedChord(currentMeasure);
+                    // If the note has the same time than the previous note
+                    // then add it to the previous chord instead of adding it into a new chord
+                    if (previousNoteOnEvent != null  && currentNoteOnEvent.time != previousNoteOnEvent.time) {
+                      const velocity: number = currentNoteOnEvent.noteOn.velocity;
+                      const duration: Duration; // TODO this.ticksToBpm(deltaInTicks, PPQ, tempoInMicroSecondsPerBeat).toString();
+                      const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, velocity);
+                      placedChord.addNote(note);
+                      currentMeasure.placedChords.push(placedChord);
+                      placedChordIndex++;
+                    } else {
+                      if (measureLastPlacedChord != null) {
+                        measureLastPlacedChord.addNote(note);
+                      }
+                    }
+                    previousNoteOnEvent = currentNoteOnEvent;
+                    currentNoteOnEvent = undefined;
                   }
                 }
               } else if (midiEvent.hasOwnProperty(MIDI_EVENT_CONTROL_CHANGE) || midiEvent.hasOwnProperty(MIDI_EVENT_NOTE_OFF)) {
                 const noteOffEvent: IMidiNoteOffEvent = midiEvent;
                 if (currentNoteOnEvent != null) {
                   // console.log('Note off');
-                  const delta: number = this.delta(noteOffEvent.time, currentNoteOnEvent.time);
-                  if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, pulsesPerMeasure, measureIndex)) {
-                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempo), TempoUnit.BPM);
+                  const deltaInTicks: number = this.delta(noteOffEvent.time, currentNoteOnEvent.time);
+                  if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, currentTicksPerMeasure, measureIndex)) {
+                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicrosecondsPerBeat), TempoUnit.BPM);
                     currentMeasure = new Measure(measureIndex, tempo, currentTimeSignature);
                     currentMeasure.placedChords = new Array<PlacedChord>();
                     measures.push(currentMeasure);
                     measureIndex++;
-                    // console.log('New measure with counter: ' + measureCounter);
+                    placedChordIndex = 0;
                   }
-                  // console.log('Push note');
                   if (currentMeasure.placedChords) {
-                    // TODO currentMeasure.placedChords.push(this.buildAndPlaceNote(delta, pulsesPerQuarter, currentTempo, currentNoteOnEvent));
-                    // currentNoteOnEvent = null;
+                    const note: Note = this.buildNote(deltaInTicks, PPQ, currentTempoInMicrosecondsPerBeat, currentNoteOnEvent);
+                    const measureLastPlacedChord: PlacedChord | undefined = this.getLastPlacedChord(currentMeasure);
+                    // If the note has the same time than the previous note
+                    // then add it to the previous chord instead of adding it into a new chord
+                    if (previousNoteOnEvent != null  && currentNoteOnEvent.time != previousNoteOnEvent.time) {
+                      const velocity: number = currentNoteOnEvent.noteOn.velocity;
+                      const duration: Duration = this.ticksToBpm(deltaInTicks, PPQ, tempoInMicroSecondsPerBeat);
+                      const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, velocity);
+                      placedChord.addNote(note);
+                      currentMeasure.placedChords.push(placedChord);
+                      placedChordIndex++;
+                    } else {
+                      if (measureLastPlacedChord != null) {
+                        measureLastPlacedChord.addNote(note);
+                      }
+                    }
+                    previousNoteOnEvent = currentNoteOnEvent;
+                    currentNoteOnEvent = undefined;
                   }
                 }
               }
@@ -384,6 +414,29 @@ export class MidiService {
         }
       });
     return soundtrack;
+  }
+
+  private getLastPlacedChord(measure: Measure): PlacedChord | undefined {
+    let lastPlacedChord: PlacedChord | undefined;
+    if (measure.placedChords && measure.placedChords.length > 0) {
+      measure.placedChords[measure.placedChords.length - 1];
+    }
+    return lastPlacedChord;
+  }
+
+  private buildNote(deltaInTicks: number, PPQ: number, tempoInMicroSecondsPerBeat: number, currentNoteOnEvent: IMidiNoteOnEvent): Note {
+      const textNote: string = this.synthService.midiToTextNote(currentNoteOnEvent.noteOn.noteNumber);
+    const chromaAndOctave: Array<string> = this.notationService.noteToChromaOctave(textNote);
+    const chroma: string = chromaAndOctave[0];
+    let octave: number = 0;
+    if (chromaAndOctave.length > 1) {
+      octave = Number(chromaAndOctave[1]);
+    } else {
+      throw new Error('Unspecified octave for the note: ' + textNote + ' with chroma: ' + chroma);
+    }
+    const noteIndex: number = 0;
+    const note: Note = this.notationService.createNote(noteIndex, chroma, octave);
+    return note;
   }
 
   private placeEventOnNewMeasure(noteOnTime: TValue, pulsesPerMeasure: number, measureCounter: number): boolean {
@@ -399,10 +452,10 @@ export class MidiService {
     let qpm = 0;
     switch (timeSignature.denominator) {
       case 1:
-        qpm = 4 * timeSignature.numerator;
+        qpm = timeSignature.numerator * 4;
         break;
       case 2:
-        qpm = 2 * timeSignature.numerator;
+        qpm = timeSignature.numerator * 2;
         break;
       case 4:
         qpm = timeSignature.numerator;
@@ -417,23 +470,37 @@ export class MidiService {
     return qpm;
   }
 
-  private pulsesPerMeasure(qpm: number, pulsesPerQuarter: number): number {
-    return qpm * pulsesPerQuarter;
+  private measureInTicks(qpm: number, PPQ: number): number {
+    return qpm * PPQ;
   }
 
   // Copy the tempo change events of the given track into the other tracks
   // and sort the events of the other tracks by their time property
-  private copyTempoTrackEventsAndSortByTime(tempoTrackIndex: number, jsonMidi: IMidiFile): IMidiFile {
+  private copyTempoTrackEventsAndSortByTime(jsonMidi: IMidiFile): void {
+    // Guess the track containing the tempo change events
+    // Usually there is only one track containing all the tempo change events
+    // and usually it is the first track, but being defensive doesn't hurt here
+    let guessedTempoTrackIndex: number = 0;
+    for (let trackIndex: number = 0; trackIndex < jsonMidi.tracks.length; trackIndex++) {
+      const track: TMidiEvent[] = jsonMidi.tracks[trackIndex];
+      if (this.isTempoTrack(track)) {
+        guessedTempoTrackIndex = trackIndex;
+        break;
+      }
+    }
+
+    // Get the tempo change events of the track
     const tempoChangeEvents: Array<any> = new Array<any>();
-    jsonMidi.tracks[tempoTrackIndex].forEach((midiEvent: any, eventIndex: number) => {
+    jsonMidi.tracks[guessedTempoTrackIndex].forEach((midiEvent: any, eventIndex: number) => {
       if (midiEvent.hasOwnProperty(MIDI_EVENT_SET_TEMPO)) {
         tempoChangeEvents.push(midiEvent);
       }
     });
 
+    // Add the tempo events to the other tracks
     if (tempoChangeEvents.length > 0) {
       jsonMidi.tracks.forEach((midiTrack: TMidiEvent[], trackIndex: number) => {
-        if (trackIndex !== tempoTrackIndex) {
+        if (trackIndex !== guessedTempoTrackIndex) {
           const track: Array<TMidiEvent> = midiTrack.concat(tempoChangeEvents);
           track.sort((a: TMidiEvent, b: TMidiEvent) => {
             if (a.time! < b.time!) {
@@ -448,7 +515,6 @@ export class MidiService {
         }
       });
     }
-    return jsonMidi;
   }
 
   // If a track has no notes and its first tempo change event has a delta based on the start time
@@ -484,7 +550,7 @@ export class MidiService {
 
   // Add a time property to all events of all tracks
   // representing the absolute time of each event
-  private addEventTime(jsonMidi: IMidiFile): IMidiFile {
+  private addEventsTime(jsonMidi: IMidiFile): IMidiFile {
     jsonMidi.tracks.forEach((midiTrack: TMidiEvent[], trackIndex: number) => {
       let time: number = 0;
       midiTrack.forEach((midiEvent: any, eventIndex: number) => {
@@ -496,21 +562,12 @@ export class MidiService {
     return jsonMidi;
   }
 
-  // private buildAndPlaceNote(
-  //   deltaInTicks: number, ticksPerQuarter: number,
-  //   tempoInMicroSecondsPerBeat: number, currentNoteOnEvent: IMidiNoteOnEvent): PlacedChord {
-  //   const duration: Duration; // TODO this.ticksToBpm(deltaInTicks, ticksPerQuarter, tempoInMicroSecondsPerBeat).toString();
-  //   const abc: string = this.synthService.midiToTextNote(currentNoteOnEvent.noteOn.noteNumber);
-  //   const octave: number = this.midi2octave(currentNoteOnEvent.noteOn.noteNumber);
-  //   const velocity: number = currentNoteOnEvent.noteOn.velocity;
-  //   const note: Note = this.notationService.buildNoteWithTicks(abc, octave, velocity, deltaInTicks);
-  //   const placedChord: PlacedChord = this.notationService.placeNote(duration);
-  //   placedChord.addNote(note);
-  //   return placedChord;
-  // }
+  private getOneTickInMicroSeconds(PPQ: number, tempoInBpm: number): number {
+    return 60000 / (tempoInBpm  * PPQ);
+  }
 
-  private ticksToBpm(deltaInTicks: number, ticksPerQuarter: number, tempoInMicroSecondsPerBeat: number): number {
-    const deltaInQuarters: number = this.ticksToQuarters(deltaInTicks, ticksPerQuarter);
+  private ticksToBpm(deltaInTicks: number, PPQ: number, tempoInMicroSecondsPerBeat: number): number {
+    const deltaInQuarters: number = this.ticksToQuarters(deltaInTicks, PPQ);
     const deltaInMicroSeconds: number = deltaInQuarters * tempoInMicroSecondsPerBeat;
     const bpm: number = this.microSecondsToBpm(deltaInMicroSeconds);
     const deltaInSubdivisions: number = this.subdivision(deltaInQuarters);
@@ -520,8 +577,19 @@ export class MidiService {
     return bpm;
   }
 
-  private ticksToQuarters(ticks: number, ticksPerQuarter: number): number {
-    return Math.round((ticks / ticksPerQuarter) * 1000000) / 1000000;
+  private bpmToTicks(durationInBpm: number, PPQ: number, tempoInMicroSecondsPerBeat: number): number {
+    const durationInMicroSeconds: number = this.bpmToMicroSeconds(durationInBpm);
+    const durationInQuarters: number = durationInMicroSeconds / tempoInMicroSecondsPerBeat;
+    const durationInTicks: number = this.quartersToTicks(durationInQuarters, PPQ);
+    return durationInTicks;
+  }
+
+  private ticksToQuarters(ticks: number, PPQ: number): number {
+    return Math.round((ticks / PPQ) * 1000000) / 1000000;
+  }
+
+  private quartersToTicks(quarters: number, PPQ: number): number {
+    return quarters * PPQ;
   }
 
   private subdivision(deltaInQuarters: number): number {
@@ -538,35 +606,66 @@ export class MidiService {
     return Math.round(60000 / bpm * 1000);
   }
 
-  // TODO public createRawMidiFile(soundtrack: Soundtrack, filename: string): ToneMidi.Midi {
-  //   const midi: Midi = new ToneMidi.Midi();
-  //   midi.name = soundtrack.name;
-  //   soundtrack.tracks.forEach((track: Track) => {
-  //     const midiTrack: any = midi.addTrack();
-  //     midiTrack.name = track.name;
-  //     midiTrack.channel = track.channel;
-  //     track.notes.forEach((note: Note) => {
-  //       midiTrack
-  //         .addNote({
-  //           midi: note.midi,
-  //           time: note.time,
-  //           ticks: note.ticks,
-  //           name: note.abc,
-  //           velocity: note.velocity,
-  //           duration: note.duration
-  //         });
-  //     });
-  //     track.controls.forEach((control: Control) => {
-  //       midiTrack
-  //         .addCC({
-  //           number: control.cc,
-  //           time: control.time,
-  //           ticks: control.ticks,
-  //           value: control.value
-  //         });
-  //     });
-  //   });
-  //   return midi;
-  // }
+  public getMidiFile(soundtrack: Soundtrack): Uint8Array {
+    const midi: Midi = this.createSoundtrackMidiFile(soundtrack);
+    console.log(midi);
+    return midi.toArray();
+  }
+
+  private createSoundtrackMidiFile(soundtrack: Soundtrack): Midi {
+    const midi: Midi = new Midi();
+    midi.name = soundtrack.name;
+    midi.header.name = soundtrack.name;
+    if (soundtrack.hasTracks()) {
+      soundtrack.tracks.forEach((track: Track) => {
+        const midiTrack: any = midi.addTrack();
+        midiTrack.name = track.name;
+        midiTrack.channel = track.channel;
+        if (track.hasMeasures()) {
+          let totalDurationInSeconds: number = 0;
+          for (const measure of track.getSortedMeasures()) {
+            if (measure.placedChords) {
+              if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
+                for (const placedChord of measure.placedChords) {
+                  if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
+                    const durationInBpm: number = placedChord.getDuration();
+                    const durationInSeconds: number = this.bpmToMicroSeconds(durationInBpm);
+                    const velocity: number = placedChord.velocity;
+                    const tempoInMicroSecondsPerBeat: number = this.bpmToMicroSeconds(measure.getTempo());
+                    const ticks: number = this.bpmToTicks(durationInBpm, DEFAULT_MIDI_PPQ, tempoInMicroSecondsPerBeat);
+                    for (const note of placedChord.notes) {
+                      if (!this.notationService.isEndOfTrackNote(note)) {
+                        midiTrack.addNote({
+                          midi: this.synthService.textToMidiNote(note.renderAbc()),
+                          time: totalDurationInSeconds,
+                          ticks: ticks,
+                          name: note.renderAbc(),
+                          velocity: velocity,
+                          duration: durationInSeconds
+                        });
+                        totalDurationInSeconds += durationInSeconds;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (track.controls) {
+          track.controls.forEach((control: Control) => {
+            midiTrack
+              .addCC({
+                number: control.cc,
+                time: control.time,
+                ticks: control.ticks,
+                value: control.value
+              });
+          });
+        }
+      });
+    }
+    return midi;
+  }
 
 }
