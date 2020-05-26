@@ -90,3 +90,13 @@ Question: La mélodie a t'elle sa série qui est différente des séries des ref
 Question: La série du refrain est elle alternée avec celle du couplet ?
 Question: C'est quoi une gamme ?
 Question: C'est quoi une phrase ?
+Question: C'est quoi un arpège ?
+
+A step is the distance between two notes on the scale.
+Major and minor scales contain whole tone steps and half tone steps.
+So for these two kind of scales, the frequencies of the notes are closer in a half tone step than in a whole tone step.
+
+C major scale
+Our first idea was to use a classic “C major” scale because it sounds nice and most of our readers should be used to it:
+But unfortunately major and minor scales doesn’t work well for sonifications. They include whole tone and half tone steps, so the distance between the steps is not equal. As seen in the image above, there is a half tone step between “E” and “F”. This means that the frequencies of these notes are closer than the ones between “C” and “D”, for example, which is a whole tone step. If you were to map a “1” to “C”, a “2” to “D” and so on, the distances between the values wouldn’t match the distance between the generated tones. The solution is to use a whole tone scale, which consists only of whole tone steps, or a chromatic scale, which consists only of half tone steps. In both of these scales, all notes have an equal distance so you can use them to safely represent your data.
+A large piano has 88 keys. If you want to create a natural sound you could sonify a data set with a value range of 88 for a chromatic scale, or a range of ~40 for a whole tone scale. For our application, we selected a whole tone scale because the differences between the values are better heard and we only had a range from 25.

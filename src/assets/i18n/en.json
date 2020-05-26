@@ -133,7 +133,11 @@
   "soundtracks": {
     "assignedName": "Soundtrack",
     "add": {
-      "tooltip": "Add a new soundtrack"
+      "tip": "Add a new soundtrack"
+    },
+    "download": {
+      "label": "Download",
+      "tip": "Download the soundtrack"
     },
     "edit": "Edit",
     "delete": "Delete",

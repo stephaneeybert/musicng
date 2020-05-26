@@ -25,3 +25,5 @@ export const GENERATE_METHODS: Map<RANDOM_METHOD, string> = new Map([
 ]);
 
 export const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+
+export const MIDI_FILE_SUFFIX: string = 'mid';

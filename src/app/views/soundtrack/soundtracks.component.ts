@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output, Injectable } from '@angular/core';
+import { Observable, Subscription, of } from 'rxjs';
 import { Soundtrack } from '@app/model/soundtrack';
 import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { GeneratorService } from '@app/service/generator.service';
@@ -15,6 +15,9 @@ import { MaterialService } from '@app/core/service/material.service';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faLayerPlus as farLayerPlus } from '@fortawesome/pro-regular-svg-icons';
 import { faLayerPlus as fasLayerPlus } from '@fortawesome/pro-solid-svg-icons';
+import { MidiService } from '@app/service/midi.service';
+import { MIDI_FILE_SUFFIX } from '@app/service/notation.constant ';
+import { DownloadService } from '@stephaneeybert/lib-core';
 
 @Component({
   selector: 'app-soundtracks',
@@ -46,7 +49,9 @@ export class SoundtracksComponent implements OnInit {
     private materialService: MaterialService,
     private translateService: TranslateService,
     private matDialog: MatDialog,
-    private faIconLibrary: FaIconLibrary
+    private faIconLibrary: FaIconLibrary,
+    private midiService: MidiService,
+    private downloadService: DownloadService
   ) {
     this.faIconLibrary.addIcons(farLayerPlus, fasLayerPlus);
   }
@@ -171,6 +176,12 @@ export class SoundtracksComponent implements OnInit {
         this.soundtracks = soundtracks;
         this.detectChanges();
       });
+  }
+
+  downloadSoundtrack(soundtrack: Soundtrack): void {
+    const fileName: string = soundtrack.name + '.' + MIDI_FILE_SUFFIX;
+    const midiData: Uint8Array = this.midiService.getMidiFile(soundtrack);
+    this.downloadService.downloadData(midiData, fileName);
   }
 
 }

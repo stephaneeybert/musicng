@@ -133,7 +133,11 @@
   "soundtracks": {
     "assignedName": "Morceau",
     "add": {
-      "tooltip": "Ajouter un nouveau morceau"
+      "tip": "Ajouter un nouveau morceau"
+    },
+    "download": {
+      "label": "Télécharger",
+      "tip": "Télécharger le morceau"
     },
     "edit": "Modifier",
     "delete": "Supprimer",
