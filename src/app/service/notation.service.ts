@@ -224,12 +224,6 @@ export class NotationService {
     return duration && duration.unit === TempoUnit.BPM;
   }
 
-  public buildNoteWithTicks(abc: string, octave: number): Note {
-    const index: number = 0;
-    const note: Note = this.createNote(index, abc, octave);
-    return note;
-  }
-
   private createChroma(value: string): Chroma {
     return new Chroma(value);
   }
