@@ -10,7 +10,7 @@ import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 
 @Component({
-  selector: 'app-midi-sheet',
+  selector: 'app-midi-sheet', // TODO Remove  the midi- here
   templateUrl: './sheet.component.html',
   styleUrls: ['./sheet.component.css']
 })
@@ -35,7 +35,7 @@ export class SheetComponent implements OnInit, OnDestroy {
   private soundtrackSubscription?: Subscription;
   private deviceSubscription?: Subscription;
 
-  id!: string;
+  id!: string; // TODO Have a # ref like done for the keyboard
 
   screenWidth!: number;
 
