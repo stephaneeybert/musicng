@@ -25,8 +25,8 @@ export class UploadComponent implements OnInit {
     const fileReader: FileReader = new FileReader();
     fileReader.onloadend = (event: Event) => {
       this.rawMidiData = fileReader.result as ArrayBuffer;
-      // TODO Remove this this.midiService.parseRawMidi(file.name, this.rawMidiData).then((soundtrack: Soundtrack) => {
-      this.midiService.parseRawMidiTonejs(file.name, this.rawMidiData).then((soundtrack: Soundtrack) => { // TODO
+      this.midiService.parseRawMidi(file.name, this.rawMidiData).then((soundtrack: Soundtrack) => {
+      // this.midiService.parseRawMidiTonejs(file.name, this.rawMidiData).then((soundtrack: Soundtrack) => {
         this.soundtrack = soundtrack;
         console.log(this.soundtrack);
         this.soundtrackStore.add(soundtrack);
