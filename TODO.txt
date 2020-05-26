@@ -100,3 +100,77 @@ C major scale
 Our first idea was to use a classic “C major” scale because it sounds nice and most of our readers should be used to it:
 But unfortunately major and minor scales doesn’t work well for sonifications. They include whole tone and half tone steps, so the distance between the steps is not equal. As seen in the image above, there is a half tone step between “E” and “F”. This means that the frequencies of these notes are closer than the ones between “C” and “D”, for example, which is a whole tone step. If you were to map a “1” to “C”, a “2” to “D” and so on, the distances between the values wouldn’t match the distance between the generated tones. The solution is to use a whole tone scale, which consists only of whole tone steps, or a chromatic scale, which consists only of half tone steps. In both of these scales, all notes have an equal distance so you can use them to safely represent your data.
 A large piano has 88 keys. If you want to create a natural sound you could sonify a data set with a value range of 88 for a chromatic scale, or a range of ~40 for a whole tone scale. For our application, we selected a whole tone scale because the differences between the values are better heard and we only had a range from 25.
+
+By default a MIDI file is set to a tempo of 120 bpm and the MThd chunk in the file will tell you the resolution in terms of "pulses per quarter note" (ppqn).
+
+If the ppqn is, say, 96 than a delta of 96 ticks is a quarter note.
+
+Should you be interested in the real duration (in seconds) of each sound you should also consider the "tempo" that can be changed by an event "FF 51 03 tt tt tt"; the three bytes are the microseconds for a quarter note.
+
+With these two values you should find what you need. Beware that the duration in the midi file can be approximate, especially if that MIDI file it's the recording of a human player.
+
+I've put together a C library to read/write midifiles a long time ago: https://github.com/rdentato/middl in case it may be helpful (it's quite some time I don't look at the code, feel free to ask if there's anything unclear).
+
+I would suggest to follow this approach:
+
+choose a "minimal note" that is compatible with your division (e.g. 1/128) and use it as a sort of grid.
+Align each note to the closest grid line (i.e. to the closest integer multiple of the minimal node)
+Convert it to standard notation (e.g a quarter note, a dotted eight note, etc...).
+In your case, take 1/32 as minimal note and 384 as division (that would be 48 ticks). For your note of 376 tick you'll have 376/48=7.8 which you round to 8 (the closest integer) and 8/32 = 1/4.
+
+If you find a note whose duration is 193 ticks you can see it's a 1/8 note as 193/48 is 4.02 (which you can round to 4) and 4/32 = 1/8.
+
+Continuing this reasoning you can see that a note of duration 671 ticks should be a double dotted quarter note.
+
+In fact, 671 should be approximated to 672 (the closest multiple of 48) which is 14*48. So your note is a 14/32 -> 7/16 -> (1/16 + 2/16 + 4/16) -> 1/16 + 1/8 + 1/4.
+
+If you are comfortable using binary numbers, you could notice that 14 is 1110 and from there, directly derive the presence of 1/16, 1/4 and 1/
+
+
+
+Each of these can be thought of as a conversion factor. Typically, you're converting everything to or from beats (which are the basic unit of time in music). If you recall "dimensional analysis" from high-school physics, this is a great place to use it!
+
+Time signature numerator = beats/bar
+Time signature denominator = beats/whole-note (i.e. what division of whole note is a beat)
+Tempo = beats/minute
+However, there is the additional caveat that the "beats" in the tempo may not be the same as the "beats" in the time signature. In this case, you have to compare the note in the tempo marking with the time signature denominator. This typically happens in compound time, as explained by Dom and Bob Broadley.
+
+So if you were looking for the actual time duration of a note, you'd use the time signature's denominator to determine how many beats (or what fraction of a beat) are allotted to that note. Then you'd use the tempo to determine the length of time in a beat (possibly accounting for different definitions of beat if needed).
+
+Example
+I was asked to give an example, presumably of finding the duration of a note. It should go without saying that this isn't something that any musician would ever need or want to think about while playing (especially since the actual tempo will often be somewhat variable during performance), but that doesn't mean there might not be a reason for someone to do it (such as when programming a computer).
+
+For this example, let's say the time signature is 6/8, the tempo is a dotted quarter at 108 bpm, and you want to know how long a quarter note (or two tied eighth notes) lasts. From the tempo, we know there are (108 dotted-quarters / minute). We also know that our note's duration is 2/3rds the duration of the tempo unit (our quarter note lasts two eighths, while the tempo unit is three eighths). This gives us the formula below. Note that because each of the ratios below is exactly equal to one by definition, I can "flip" them as needed, in order to ensure that the units cancel out properly.
+
+(60 seconds / 1 minute) * (1 minute / 108 dotted-quarters) * (2 dotted-quarter / 3 quarters)
+
+= (60 * 2) seconds / (108 * 3) quarters
+
+= (120/324) seconds / quarter note
+
+= 0.370 seconds / quarter note
+
+You'll also notice that (aside from affecting the unit the tempo is measured in) the time signature never enters into this equation. That's because the time signature is used for finding the length of a bar (or measure), which has no direct bearing on the duration of the note. So what if you wanted to find the length of a bar? The calculation is very similar, but note where the 6 (from the time signature) comes into play.
+
+(60 seconds / 1 minute) * (1 minute / 108 dotted-quarters) * (1 dotted-quarter / 3 eighths) * (6 eighths / bar)
+
+= (60 * 6) seconds / (108 * 3) bars
+
+= (360/324) seconds / bar
+
+= 1.111... seconds / bar
+
+Addendum for MIDI Files
+If you're working with MIDI files and sequencers, you may also come across a quantity called "ticks" or "Pulses Per Quarter Note" (PPQN) which defines the temporal granularity of the events in that file. This doesn't directly reference either beats or real-time units, so there's a bit of conversion necessary. For example, assuming the tempo unit matches the time signature denominator:
+
+ticks per second = (ticks/quarter-note) * (quarter-note/beat) * (beats/minute) * (minute/second) = PPQN * (4/denominator) * (tempo/60)
+
+
+
+
+
+
+
+
+Metre, also spelled Meter, in music, rhythmic pattern constituted by the grouping of basic temporal units, called beats, into regular measures, or bars; in Western notation, each measure is set off from those adjoining it by bar lines. A time (or metre) signature, found at the beginning of a piece of music, indicates the number of beats in a measure and the value of the basic beat. For example, 3/4 metre has three quarter-note beats per measure. 
+
