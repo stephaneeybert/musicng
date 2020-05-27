@@ -35,6 +35,9 @@
           <app-midi-keyboard [soundtrack]="soundtrack"></app-midi-keyboard>
           <app-midi-sheet [soundtrack]="soundtrack"></app-midi-sheet>
           <!-- <app-soundtrack-upload></app-soundtrack-upload> -->
+          <mat-progress-bar *ngIf="download$ | async as download"
+            [mode]="download | libCoreDownloadProgressMatState" [value]="download | libCoreDownloadProgressMatProgress">
+          </mat-progress-bar>
         </td>
       </tr>
     </tbody>

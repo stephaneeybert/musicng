@@ -356,10 +356,10 @@ export class MidiService {
                     // then add it to the previous chord instead of adding it into a new chord
                     if (previousNoteOnEvent != null  && currentNoteOnEvent.time != previousNoteOnEvent.time) {
                       const velocity: number = currentNoteOnEvent.noteOn.velocity;
-                      const duration: Duration; // TODO this.ticksToBpm(deltaInTicks, PPQ, tempoInMicroSecondsPerBeat).toString();
-                      const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, velocity);
-                      placedChord.addNote(note);
-                      currentMeasure.placedChords.push(placedChord);
+                      // const duration: Duration; // TODO this.ticksToBpm(deltaInTicks, PPQ, tempoInMicroSecondsPerBeat).toString();
+                      // const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, velocity);
+                      // placedChord.addNote(note);
+                      // currentMeasure.placedChords.push(placedChord);
                       placedChordIndex++;
                     } else {
                       if (measureLastPlacedChord != null) {
@@ -390,10 +390,10 @@ export class MidiService {
                     // then add it to the previous chord instead of adding it into a new chord
                     if (previousNoteOnEvent != null  && currentNoteOnEvent.time != previousNoteOnEvent.time) {
                       const velocity: number = currentNoteOnEvent.noteOn.velocity;
-                      const duration: Duration = this.ticksToBpm(deltaInTicks, PPQ, tempoInMicroSecondsPerBeat);
-                      const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, velocity);
-                      placedChord.addNote(note);
-                      currentMeasure.placedChords.push(placedChord);
+                      // const duration: Duration = this.ticksToBpm(deltaInTicks, PPQ, tempoInMicroSecondsPerBeat);
+                      // const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, velocity);
+                      // placedChord.addNote(note);
+                      // currentMeasure.placedChords.push(placedChord);
                       placedChordIndex++;
                     } else {
                       if (measureLastPlacedChord != null) {
@@ -606,13 +606,13 @@ export class MidiService {
     return Math.round(60000 / bpm * 1000);
   }
 
-  public getMidiFile(soundtrack: Soundtrack): Uint8Array {
-    const midi: Midi = this.createSoundtrackMidiFile(soundtrack);
+  public getMidi(soundtrack: Soundtrack): Uint8Array {
+    const midi: Midi = this.createSoundtrackMidi(soundtrack);
     console.log(midi);
     return midi.toArray();
   }
 
-  private createSoundtrackMidiFile(soundtrack: Soundtrack): Midi {
+  private createSoundtrackMidi(soundtrack: Soundtrack): Midi {
     const midi: Midi = new Midi();
     midi.name = soundtrack.name;
     midi.header.name = soundtrack.name;
