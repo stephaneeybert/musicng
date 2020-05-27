@@ -1,5 +1,6 @@
 <div style="text-align: right;">
-  <button mat-fab color="accent" (click)="generateSoundtrack()" matTooltip="{{ 'soundtracks.add.tooltip' | translate }}">
+  <button mat-fab color="accent" (click)="generateSoundtrack()"
+    matTooltip="{{ 'soundtracks.add.tooltip' | translate }}">
     <fa-icon [icon]="['far', 'layer-plus']" size="2x"></fa-icon>
   </button>
 </div>
@@ -13,19 +14,18 @@
           <mat-toolbar>
             {{soundtrack.name}}
             <span class="fill-remaining-space"></span>
-            <mat-icon *ngIf="!(audioRunning$ | async) || !(audioTransportStarted$ | async)"
-              (click)="startTransport()" matTooltip="{{ 'synth.sound.switchOn' | translate }}" class="soundtrack-action">
+            <mat-icon *ngIf="!(audioRunning$ | async) || !(audioTransportStarted$ | async)" (click)="startTransport()"
+              matTooltip="{{ 'synth.sound.switchOn' | translate }}" class="soundtrack-action">
               volume_up</mat-icon>
-            <mat-icon
-              *ngIf="(audioRunning$ | async) && (audioTransportStarted$ | async) && !isNowPlaying(soundtrack)"
+            <mat-icon *ngIf="(audioRunning$ | async) && (audioTransportStarted$ | async) && !isNowPlaying(soundtrack)"
               (click)="playSoundtrack(soundtrack)" matTooltip="{{ 'soundtracks.play' | translate }}"
               class="soundtrack-action">play_circle_outline</mat-icon>
             <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="stopSoundtrack(soundtrack)"
-            matTooltip="{{ 'soundtracks.stop' | translate }}" class="soundtrack-action">stop</mat-icon>
+              matTooltip="{{ 'soundtracks.stop' | translate }}" class="soundtrack-action">stop</mat-icon>
             <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="replaySoundtrack(soundtrack)"
-            matTooltip="{{ 'soundtracks.replay' | translate }}" class="soundtrack-action">replay</mat-icon>
+              matTooltip="{{ 'soundtracks.replay' | translate }}" class="soundtrack-action">replay</mat-icon>
             <mat-icon *ngIf="!isNowPlaying(soundtrack)" (click)="openSoundtrackDialog(soundtrack)"
-            matTooltip="{{ 'soundtracks.edit' | translate }}" class="soundtrack-action">edit</mat-icon>
+              matTooltip="{{ 'soundtracks.edit' | translate }}" class="soundtrack-action">edit</mat-icon>
             <mat-icon (click)="downloadSoundtrack(soundtrack)" matTooltip="{{ 'soundtracks.download.tip' | translate }}"
               class="soundtrack-action">arrow_downward</mat-icon>
             <mat-icon (click)="deleteSoundtrack(soundtrack)" matTooltip="{{ 'soundtracks.delete' | translate }}"
