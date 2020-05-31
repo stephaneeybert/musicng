@@ -60,7 +60,6 @@ export class KeyboardComponent implements AfterViewInit {
 
     this.soundtrackSubscription = soundtrackAndSettings$
     // Wait for a change detection so as to get the soundtracks at loading time
-    // See https://stackoverflow.com/q/61043063/958373
     .pipe(delay(0))
     .subscribe(([soundtrack, settings]: [Soundtrack, Settings]) => {
       this.initializeWithSoundtrackId(soundtrack, settings.showKeyboard);
