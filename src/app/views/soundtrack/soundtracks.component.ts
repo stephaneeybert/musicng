@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output, Injectable } from '@angular/core';
-import { Observable, Subscription, of, asyncScheduler, range } from 'rxjs';
+import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Observable, Subscription, ReplaySubject } from 'rxjs';
 import { Soundtrack } from '@app/model/soundtrack';
 import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { GeneratorService } from '@app/service/generator.service';
@@ -19,6 +19,7 @@ import { MidiService } from '@app/service/midi.service';
 import { MIDI_FILE_SUFFIX } from '@app/service/notation.constant ';
 import { DownloadService } from '@stephaneeybert/lib-core';
 import { Download } from '@stephaneeybert/lib-core/lib/download/download';
+import { ProgressTask } from '@stephaneeybert/lib-core/lib/download/progress-task';
 
 @Component({
   selector: 'app-soundtracks',
@@ -32,6 +33,7 @@ export class SoundtracksComponent implements OnInit {
 
   audioRunning$?: Observable<boolean>;
   audioTransportStarted$?: Observable<boolean>;
+
   download$?: Observable<Download>;
 
   dialogRef!: MatDialogRef<SoundtrackDialogComponent>;
@@ -182,9 +184,9 @@ export class SoundtracksComponent implements OnInit {
 
   downloadSoundtrack(soundtrack: Soundtrack): void {
     const fileName: string = soundtrack.name + '.' + MIDI_FILE_SUFFIX;
-    const midiData: Uint8Array = this.midiService.getMidi(soundtrack);
-    // this.downloadService.downloadData(midiData, fileName);
-    this.download$ = this.downloadService.downloadDataAsBlobWithFakeProgressAndSaveInFile(midiData, fileName);
+    const downloadProgress$: ReplaySubject<ProgressTask<Uint8Array>> = this.midiService.creatingSoundtrackMidi(soundtrack);
+    this.download$ = this.downloadService.downloadObservableDataAsBlobWithProgressAndSaveInFile(downloadProgress$.asObservable(), fileName);
+    const midiData: Uint8Array = this.midiService.createSoundtrackMidi(soundtrack, downloadProgress$);
   }
 
 }

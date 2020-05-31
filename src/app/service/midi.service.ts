@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable, from, Subscription, empty } from 'rxjs';
+import { Subject, Observable, from, Subscription, empty, ReplaySubject } from 'rxjs';
 import { map, filter, switchMap, catchError, delay } from 'rxjs/operators';
 import { parseArrayBuffer } from 'midi-json-parser';
 import {
@@ -27,7 +27,8 @@ import { Note } from '@app/model/note/note';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { Duration } from '@app/model/note/duration/duration';
 import { SynthService } from './synth.service';
-import { CommonService } from '@stephaneeybert/lib-core';
+import { CommonService, DownloadService } from '@stephaneeybert/lib-core';
+import { ProgressTask } from '@stephaneeybert/lib-core/lib/download/progress-task';
 
 const NOTE_ON: number = 144; // A command value of 144 is a "note on"
 const NOTE_OFF: number = 128; // A command value of 128 is a "note off"
@@ -61,7 +62,8 @@ export class MidiService {
     private commonService: CommonService,
     private keyboardService: KeyboardService,
     private notationService: NotationService,
-    private synthService: SynthService
+    private synthService: SynthService,
+    private downloadService: DownloadService
   ) { }
 
   public getInputDevices$(): Observable<WebMidi.MIDIInput> {
@@ -286,7 +288,7 @@ export class MidiService {
           // In MIDI it may also be called PPQ, PPQN, time resolution, time division
           const PPQ: number = jsonMidi.division ? jsonMidi.division : DEFAULT_MIDI_PPQ;
           console.log('PPQ: ' + jsonMidi.division + ' PPQ: ' + PPQ);
-          let currentTempoInMicrosecondsPerBeat: number = this.bpmToMicroSeconds(DEFAULT_MIDI_TEMPO);
+          let currentTempoInMicrosecondsPerQuarter: number = this.bpmToMicroSeconds(DEFAULT_MIDI_TEMPO);
           let previousNoteOnEvent: IMidiNoteOnEvent | undefined;
           let currentNoteOnEvent: IMidiNoteOnEvent | undefined;
           let currentTimeSignature: TimeSignature = this.notationService.createDefaultTimeSignature();
@@ -328,7 +330,7 @@ export class MidiService {
                 currentTicksPerMeasure = this.measureInTicks(this.quarterNotesPerMeasure(currentTimeSignature), PPQ);
               } else if (midiEvent.hasOwnProperty(MIDI_EVENT_SET_TEMPO)) {
                 const tempoEvent: IMidiSetTempoEvent = midiEvent;
-                currentTempoInMicrosecondsPerBeat = tempoEvent.setTempo.microsecondsPerBeat; // TODO According to the MIDI codumentaiton this should be setTempo.microsecondsPerQuarter
+                currentTempoInMicrosecondsPerQuarter = tempoEvent.setTempo.microsecondsPerBeat;
               } else if (midiEvent.hasOwnProperty(MIDI_EVENT_NOTE_ON)) {
                 const noteOnEvent: IMidiNoteOnEvent = midiEvent;
                 // Ignore additional note-on events if any
@@ -342,7 +344,7 @@ export class MidiService {
                 if (currentNoteOnEvent != null) {
                   const deltaInTicks: number = this.delta(controlChangeEvent.time, currentNoteOnEvent.time);
                   if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, currentTicksPerMeasure, measureIndex)) {
-                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicrosecondsPerBeat), TempoUnit.BPM);
+                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicrosecondsPerQuarter), TempoUnit.BPM);
                     currentMeasure = new Measure(measureIndex, tempo, currentTimeSignature);
                     currentMeasure.placedChords = new Array<PlacedChord>();
                     measures.push(currentMeasure);
@@ -350,12 +352,12 @@ export class MidiService {
                     placedChordIndex = 0;
                   }
                   if (currentMeasure.placedChords) {
-                    const note: Note = this.buildNote(deltaInTicks, PPQ, currentTempoInMicrosecondsPerBeat, currentNoteOnEvent);
+                    const note: Note = this.buildNote(deltaInTicks, PPQ, currentTempoInMicrosecondsPerQuarter, currentNoteOnEvent);
                     const measureLastPlacedChord: PlacedChord | undefined = this.getLastPlacedChord(currentMeasure);
                     // If the note has the same time than the previous note
                     // then add it to the previous chord instead of adding it into a new chord
                     if (previousNoteOnEvent != null  && currentNoteOnEvent.time != previousNoteOnEvent.time) {
-                      const velocity: number = currentNoteOnEvent.noteOn.velocity;
+                      // const velocity: number = currentNoteOnEvent.noteOn.velocity;
                       // const duration: Duration; // TODO this.ticksToBpm(deltaInTicks, PPQ, tempoInMicroSecondsPerBeat).toString();
                       // const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, velocity);
                       // placedChord.addNote(note);
@@ -373,10 +375,9 @@ export class MidiService {
               } else if (midiEvent.hasOwnProperty(MIDI_EVENT_CONTROL_CHANGE) || midiEvent.hasOwnProperty(MIDI_EVENT_NOTE_OFF)) {
                 const noteOffEvent: IMidiNoteOffEvent = midiEvent;
                 if (currentNoteOnEvent != null) {
-                  // console.log('Note off');
                   const deltaInTicks: number = this.delta(noteOffEvent.time, currentNoteOnEvent.time);
                   if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, currentTicksPerMeasure, measureIndex)) {
-                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicrosecondsPerBeat), TempoUnit.BPM);
+                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicrosecondsPerQuarter), TempoUnit.BPM);
                     currentMeasure = new Measure(measureIndex, tempo, currentTimeSignature);
                     currentMeasure.placedChords = new Array<PlacedChord>();
                     measures.push(currentMeasure);
@@ -384,12 +385,12 @@ export class MidiService {
                     placedChordIndex = 0;
                   }
                   if (currentMeasure.placedChords) {
-                    const note: Note = this.buildNote(deltaInTicks, PPQ, currentTempoInMicrosecondsPerBeat, currentNoteOnEvent);
+                    const note: Note = this.buildNote(deltaInTicks, PPQ, currentTempoInMicrosecondsPerQuarter, currentNoteOnEvent);
                     const measureLastPlacedChord: PlacedChord | undefined = this.getLastPlacedChord(currentMeasure);
                     // If the note has the same time than the previous note
                     // then add it to the previous chord instead of adding it into a new chord
                     if (previousNoteOnEvent != null  && currentNoteOnEvent.time != previousNoteOnEvent.time) {
-                      const velocity: number = currentNoteOnEvent.noteOn.velocity;
+                      // const velocity: number = currentNoteOnEvent.noteOn.velocity;
                       // const duration: Duration = this.ticksToBpm(deltaInTicks, PPQ, tempoInMicroSecondsPerBeat);
                       // const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, velocity);
                       // placedChord.addNote(note);
@@ -425,7 +426,7 @@ export class MidiService {
   }
 
   private buildNote(deltaInTicks: number, PPQ: number, tempoInMicroSecondsPerBeat: number, currentNoteOnEvent: IMidiNoteOnEvent): Note {
-      const textNote: string = this.synthService.midiToTextNote(currentNoteOnEvent.noteOn.noteNumber);
+    const textNote: string = this.synthService.midiToTextNote(currentNoteOnEvent.noteOn.noteNumber);
     const chromaAndOctave: Array<string> = this.notationService.noteToChromaOctave(textNote);
     const chroma: string = chromaAndOctave[0];
     let octave: number = 0;
@@ -606,13 +607,11 @@ export class MidiService {
     return Math.round(60000 / bpm * 1000);
   }
 
-  public getMidi(soundtrack: Soundtrack): Uint8Array {
-    const midi: Midi = this.createSoundtrackMidi(soundtrack);
-    console.log(midi);
-    return midi.toArray();
+  public creatingSoundtrackMidi(soundtrack: Soundtrack): ReplaySubject<ProgressTask<Uint8Array>> {
+    return new ReplaySubject(soundtrack.getNbTracks());
   }
 
-  private createSoundtrackMidi(soundtrack: Soundtrack): Midi {
+  public createSoundtrackMidi(soundtrack: Soundtrack, progressTask$?: ReplaySubject<ProgressTask<Uint8Array>>): Uint8Array {
     const midi: Midi = new Midi();
     midi.name = soundtrack.name;
     midi.header.name = soundtrack.name;
@@ -622,6 +621,9 @@ export class MidiService {
         midiTrack.name = track.name;
         midiTrack.channel = track.channel;
         if (track.hasMeasures()) {
+          if (progressTask$) {
+            progressTask$.next(this.downloadService.createProgressTask<Uint8Array>(soundtrack.getNbTracks(), track.index));
+          }
           let totalDurationInSeconds: number = 0;
           for (const measure of track.getSortedMeasures()) {
             if (measure.placedChords) {
@@ -654,6 +656,9 @@ export class MidiService {
         }
         if (track.controls) {
           track.controls.forEach((control: Control) => {
+            if (progressTask$) {
+              // TODO Add progress
+            }
             midiTrack
               .addCC({
                 number: control.cc,
@@ -665,7 +670,10 @@ export class MidiService {
         }
       });
     }
-    return midi;
+    if (progressTask$) {
+      progressTask$.next(this.downloadService.createProgressTask<Uint8Array>(soundtrack.getNbTracks(), soundtrack.getNbTracks(), midi.toArray()));
+    }
+    return midi.toArray();
   }
 
 }
