@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Input, ChangeDetectorRef, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, Input, ChangeDetectorRef, HostListener, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { KeyboardService } from '@app/service/keyboard.service';
 import { SynthService } from '@app/service/synth.service';
 import { SoundtrackStore } from '@app/store/soundtrack-store';
@@ -17,7 +17,7 @@ const LIVE_KEYBOARD_MIDI_VELOCITY: number = 127;
   selector: 'app-midi-keyboard',
   templateUrl: './keyboard.component.html'
 })
-export class KeyboardComponent implements AfterViewInit {
+export class KeyboardComponent implements AfterViewInit, OnDestroy {
 
   private soundtrack$: Subject<Soundtrack> = new ReplaySubject<Soundtrack>();
   // HINT: A setter with the very same name as the variable can be used in place of the variable

@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, OnChanges, SimpleChange } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnChanges, SimpleChange, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { User } from './user';
@@ -11,7 +11,7 @@ import { MaterialService } from '@app/core/service/material.service';
   selector: 'app-user-edit',
   templateUrl: './user-edit.component.html',
 })
-export class UserEditComponent implements OnChanges {
+export class UserEditComponent implements OnChanges, OnDestroy {
 
   private _label = 'Edit'; // TODO Is using a _label part of the public API ?
   @Input() existingUser?: User;

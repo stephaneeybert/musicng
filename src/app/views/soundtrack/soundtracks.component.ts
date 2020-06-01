@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { Observable, Subscription, ReplaySubject } from 'rxjs';
 import { Soundtrack } from '@app/model/soundtrack';
 import { SoundtrackStore } from '@app/store/soundtrack-store';
@@ -26,7 +26,7 @@ import { ProgressTask } from '@stephaneeybert/lib-core/lib/download/progress-tas
   templateUrl: './soundtracks.component.html',
   styleUrls: ['./soundtracks.component.css']
 })
-export class SoundtracksComponent implements OnInit {
+export class SoundtracksComponent implements OnInit, OnDestroy {
 
   soundtracks!: Array<Soundtrack>;
   private soundtracksSubscription?: Subscription;

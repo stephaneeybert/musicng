@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
+import { Component, Input, AfterViewInit, OnDestroy } from '@angular/core';
 import { SynthService } from '@app/service/synth.service';
 import { Device } from '@app/model/device';
 import { Soundtrack } from '@app/model/soundtrack';
@@ -14,7 +14,7 @@ import { combineLatest } from 'rxjs';
   templateUrl: './synth.component.html',
   styleUrls: ['./synth.component.css']
 })
-export class SynthComponent implements AfterViewInit {
+export class SynthComponent implements AfterViewInit, OnDestroy {
 
   private soundtrack$: Subject<Soundtrack> = new ReplaySubject<Soundtrack>();
   // HINT: A setter with the very same name as the variable can be used in place of the variable

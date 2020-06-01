@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Settings } from '@app/model/settings';
 import { SettingsStore } from '@app/store/settings-store';
@@ -12,7 +12,7 @@ import { MaterialService } from '@app/core/service/material.service';
   selector: 'app-settings',
   templateUrl: './settings.component.html'
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
 
   settings$?: Observable<Settings>;
   settings!: Settings;
