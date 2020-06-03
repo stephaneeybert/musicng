@@ -25,7 +25,15 @@
     "login": "Connexion",
     "login.description": "Me connecter à l'application",
     "logout": "Déconnexion",
-    "logout.description": "Me déconnecter de l'application"
+    "logout.description": "Me déconnecter de l'application",
+    "theme": "Thème",
+    "theme.description": "Choisr un thème de couleurs"
+  },
+  "theme": {
+    "dark-toggle": {
+      "label": "Thème sombre",
+      "tip": "Activer le thème sombre"
+    }
   },
   "header": {
     "home": "Accueil",
@@ -34,7 +42,8 @@
     "music": "Musique",
     "soundtrack": "Musique",
     "device": "Appareils",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "theme": "Thèmes"
   },
   "settings": {
     "form": {

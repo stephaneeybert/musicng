@@ -67,6 +67,13 @@ Add some export to MIDI format
 
 Have a good timbre for the instrument synth sound
 
+Try not using the pasted StyleManagerService class
+
+Themes themes/options.json
+How not to have these hard coded color codes ?
+How to know these color codes  for all the themes ?
+Add the remaining entries for the other themes
+
 Norbert:
 
 The bass track has annotations of only one note like the melody track

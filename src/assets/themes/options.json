@@ -1,0 +1,30 @@
+[
+  {
+    "backgroundColor": "#fff",
+    "buttonColor": "#ffc107",
+    "headingColor": "#673ab7",
+    "label": "Deep Purple",
+    "value": "deep-purple"
+  },
+  {
+    "backgroundColor": "#fff",
+    "buttonColor": "#ff4081",
+    "headingColor": "#3f51b5",
+    "label": "Indigo",
+    "value": "indigo"
+  },
+  {
+    "backgroundColor": "#303030",
+    "buttonColor": "#607d8b",
+    "headingColor": "#e91e63",
+    "label": "Pink",
+    "value": "pink"
+  },
+  {
+    "backgroundColor": "#303030",
+    "buttonColor": "#4caf50",
+    "headingColor": "#9c27b0",
+    "label": "Red",
+    "value": "red"
+  }
+]

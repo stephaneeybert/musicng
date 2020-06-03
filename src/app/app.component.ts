@@ -1,20 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, combineLatest } from 'rxjs';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 import { PwaService } from '@stephaneeybert/lib-pwa';
+import { ThemeService } from './core/theme/theme.service';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+
+  customTheme?: string;
+
+  private customAndDarkSubscription?: Subscription;
 
   constructor(
     private translateService: TranslateService,
     private screenDeviceService: ScreenDeviceService,
-    private pwaService: PwaService
+    private pwaService: PwaService,
+    private themeService: ThemeService
   ) {}
 
   public ngOnInit() {
@@ -22,11 +29,14 @@ export class AppComponent implements OnInit {
       this.afterLanguageResourcesLoaded();
       subscription.unsubscribe();
     });
+
+    this.observeTheme();
   }
 
-  getAppTheme(): string {
-    return 'app-light-theme';
-    // return 'app-dark-theme'; // TODO Have a theme switcher
+  ngOnDestroy() {
+    if (this.customAndDarkSubscription != null) {
+      this.customAndDarkSubscription.unsubscribe();
+    }
   }
 
   private afterLanguageResourcesLoaded(): void {
@@ -58,6 +68,27 @@ export class AppComponent implements OnInit {
 
   public getDummyTestTitle(): Observable<string> {
     return this.translateService.get('app.title');
+  }
+
+  private observeTheme(): void {
+    this.customTheme = this.themeService.getDefaultThemeName();
+
+    const customAndDark$: Observable<[string, boolean]> = combineLatest(
+      this.themeService.customTheme$,
+      this.themeService.isDarkTheme$
+    );
+
+    this.customAndDarkSubscription = customAndDark$
+    // Wait for a change detection so as to get the theme at loading time
+    // .pipe(delay(0)) TODO Do I need it ?
+    .subscribe(([customTheme, isDarkTheme]: [string, boolean]) => {
+      if (isDarkTheme) {
+        this.customTheme = customTheme + '-dark-theme';
+      } else {
+        this.customTheme = customTheme + '-light-theme';
+      }
+      console.log(this.customTheme);
+    });
   }
 
 }

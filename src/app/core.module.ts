@@ -5,6 +5,7 @@ import { LibCoreModule } from '@stephaneeybert/lib-core';
 import { LibPwaModule } from '@stephaneeybert/lib-pwa';
 import { LibToastModule } from '@stephaneeybert/lib-toast';
 import { EnvironmentModule } from './environment.module';
+import { ThemeModule } from './core/theme/theme.module';
 
 @NgModule({
   imports: [
@@ -13,13 +14,15 @@ import { EnvironmentModule } from './environment.module';
     LibI18nModule,
     LibCoreModule,
     LibPwaModule,
-    LibToastModule.forRoot()
+    LibToastModule.forRoot(),
+    ThemeModule
   ],
   exports: [
     EnvironmentModule,
     LibI18nModule,
     LibCoreModule,
-    LibPwaModule
+    LibPwaModule,
+    ThemeModule
   ]
 })
 export class CoreModule {

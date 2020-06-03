@@ -25,7 +25,15 @@
     "login": "Log in",
     "login.description": "Log in the application",
     "logout": "Log out",
-    "logout.description": "Log me out of the application"
+    "logout.description": "Log me out of the application",
+    "theme": "Theme",
+    "theme.description": "Choose a colors theme"
+  },
+  "theme": {
+    "dark-toggle": {
+      "label": "Dark theme",
+      "tip": "Switch the dark theme"
+    }
   },
   "header": {
     "home": "Home",
@@ -34,7 +42,8 @@
     "music": "Music",
     "soundtrack": "Soundtrack",
     "device": "Devices",
-    "settings": "Settings"
+    "settings": "Settings",
+    "theme": "Themes"
   },
   "settings": {
     "form": {

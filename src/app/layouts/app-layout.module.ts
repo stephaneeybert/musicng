@@ -14,6 +14,7 @@ import { SettingsDialogComponent } from '@app/views/settings/settings-dialog.com
 import { LibI18nModule } from '@stephaneeybert/lib-i18n';
 import { LibCoreModule } from '@stephaneeybert/lib-core';
 import { LibPwaModule } from '@stephaneeybert/lib-pwa';
+import { ThemeModule } from '@app/core/theme/theme.module';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { LibPwaModule } from '@stephaneeybert/lib-pwa';
     MDBootstrapModule,
     LibI18nModule,
     LibCoreModule,
-    LibPwaModule
+    LibPwaModule,
+    ThemeModule
   ],
   exports: [
     AppRoutingModule,

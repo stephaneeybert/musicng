@@ -3,5 +3,7 @@
   <button mat-button routerLink="/soundtracks" matTooltip="{{ 'header.soundtrack' | translate }}"><mat-icon mat-list-icon>music_note</mat-icon></button>
   <button mat-button routerLink="/devices" matTooltip="{{ 'header.device' | translate }}"><mat-icon mat-list-icon>keyboard</mat-icon></button>
   <app-settings></app-settings>
+  <app-theme></app-theme>
+  <app-theme-dark-toggle></app-theme-dark-toggle>
   <button mat-button appPwaPrompt i18nQuestion="{{ 'app.pwa.install.question' | translate }}" i18nInstall="{{ 'app.pwa.install.install' | translate }}" i18nCancel="{{ 'app.pwa.install.cancel' | translate }}" i18nIOSInstructions="{{ 'app.pwa.install.iosInstructions' | translate }}" matTooltip="{{ 'app.pwa.install.installOnDevice' | translate }}"><mat-icon mat-list-icon>home</mat-icon></button>
 </mat-toolbar>
