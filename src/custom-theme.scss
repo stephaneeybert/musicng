@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@import "~@angular/material/theming";
 
 @include mat-core();
 
@@ -75,7 +75,11 @@ $mat-deep-purple-primary: mat-palette($mat-deep-purple);
 $mat-deep-purple-accent: mat-palette($mat-deep-purple);
 $mat-deep-purple-warn: mat-palette($mat-deep-purple);
 .deep-purple-light-theme {
-  $mat-deep-purple-light-theme: mat-light-theme($mat-deep-purple-primary, $mat-deep-purple-accent, $mat-deep-purple-warn);
+  $mat-deep-purple-light-theme: mat-light-theme(
+    $mat-deep-purple-primary,
+    $mat-deep-purple-accent,
+    $mat-deep-purple-warn
+  );
   @include angular-material-theme($mat-deep-purple-light-theme);
 }
 .deep-purple-dark-theme {
@@ -183,7 +187,11 @@ $mat-light-green-primary: mat-palette($mat-light-green);
 $mat-light-green-accent: mat-palette($mat-light-green);
 $mat-light-green-warn: mat-palette($mat-light-green);
 .light-green-light-theme {
-  $mat-light-green-light-theme: mat-light-theme($mat-light-green-primary, $mat-light-green-accent, $mat-light-green-warn);
+  $mat-light-green-light-theme: mat-light-theme(
+    $mat-light-green-primary,
+    $mat-light-green-accent,
+    $mat-light-green-warn
+  );
   @include angular-material-theme($mat-light-green-light-theme);
 }
 .light-green-dark-theme {
@@ -243,7 +251,11 @@ $mat-deep-orange-primary: mat-palette($mat-deep-orange);
 $mat-deep-orange-accent: mat-palette($mat-deep-orange);
 $mat-deep-orange-warn: mat-palette($mat-deep-orange);
 .deep-orange-light-theme {
-  $mat-deep-orange-light-theme: mat-light-theme($mat-deep-orange-primary, $mat-deep-orange-accent, $mat-deep-orange-warn);
+  $mat-deep-orange-light-theme: mat-light-theme(
+    $mat-deep-orange-primary,
+    $mat-deep-orange-accent,
+    $mat-deep-orange-warn
+  );
   @include angular-material-theme($mat-deep-orange-light-theme);
 }
 .deep-orange-dark-theme {
@@ -285,4 +297,76 @@ $mat-blue-grey-warn: mat-palette($mat-blue-grey);
 .blue-grey-dark-theme {
   $mat-blue-grey-dark-theme: mat-dark-theme($mat-blue-grey-primary, $mat-blue-grey-accent, $mat-blue-grey-warn);
   @include angular-material-theme($mat-blue-grey-dark-theme);
+}
+
+@mixin get-theme-bg-colors($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  .primaryColorBG {
+    background-color: mat-color($primary);
+  }
+  .accentColorBG {
+    background-color: mat-color($accent);
+  }
+  .warnColorBG {
+    background-color: mat-color($warn);
+  }
+}
+
+@mixin get-theme-element-color($mat-theme, $element, $background: true) {
+  @if $background {
+    $palette: map-get($mat-theme, background);
+  } @else {
+    $palette: map-get($mat-theme, foreground);
+  }
+  $element-color: map-get($background, $element);
+}
+
+@mixin get-theme-colors($mat-theme) {
+  // Theme colors
+  $primary: map-get($mat-theme, primary);
+  $accent: map-get($mat-theme, accent);
+  $warn: map-get($mat-theme, warn);
+  $primary-color: mat-color($primary);
+  $accent-color: mat-color($accent);
+  $warn-color: mat-color($warn);
+
+  // Background element colors:
+  $background: map-get($mat-theme, background);
+  $status-bar-color: map-get($background, "status-bar");
+  $app-bar-color: map-get($background, "app-bar");
+  $background-color: map-get($background, "background");
+  $hover-color: map-get($background, "hover");
+  $card-color: map-get($background, "card");
+  $dialog-color: map-get($background, "dialog");
+  $disabled-button-color: map-get($background, "disabled-button");
+  $raised-button-color: map-get($background, "raised-button");
+  $focused-button-color: map-get($background, "focused-button");
+  $selected-button-color: map-get($background, "selected-button");
+  $selected-disabled-button-color: map-get($background, "selected-disabled-button");
+  $disabled-button-toggle-color: map-get($background, "disabled-button-toggle");
+  $unselected-chip-color: map-get($background, "unselected-chip");
+  $disabled-list-option-color: map-get($background, "disabled-list-option");
+
+  // Foreground element colors:
+  $foreground: map-get($mat-theme, foreground);
+  $base-color: map-get($foreground, "base");
+  $divider-color: map-get($foreground, "divider");
+  $dividers-color: map-get($foreground, "dividers");
+  $disabled-color: map-get($foreground, "disabled");
+  $disabled-button-color: map-get($foreground, "disabled-button");
+  $disabled-text-color: map-get($foreground, "disabled-text");
+  $elevation-color: map-get($foreground, "elevation");
+  $hint-text-color: map-get($foreground, "hint-text");
+  $secondary-text-color: map-get($foreground, "secondary-text");
+  $icon-color: map-get($foreground, "icon");
+  $icons-color: map-get($foreground, "icons");
+  $text-color: map-get($foreground, "text");
+  $slider-min-color: map-get($foreground, "slider-min");
+  $slider-off-color: map-get($foreground, "slider-off");
+  $slider-off-active-color: map-get($foreground, "slider-off-active");
+
+  $is-dark: map-get($mat-theme, is-dark);
 }
