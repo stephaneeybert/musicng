@@ -1,30 +1,135 @@
 [
   {
-    "backgroundColor": "#fff",
-    "buttonColor": "#ffc107",
-    "headingColor": "#673ab7",
+    "value": "purple",
+    "label": "Purple",
+    "backgroundColor": "#9c27b0",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "deep-purple",
     "label": "Deep Purple",
-    "value": "deep-purple"
+    "backgroundColor": "#673ab7",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
   },
   {
-    "backgroundColor": "#fff",
-    "buttonColor": "#ff4081",
-    "headingColor": "#3f51b5",
+    "value": "indigo",
     "label": "Indigo",
-    "value": "indigo"
+    "backgroundColor": "#3f51b5",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
   },
   {
-    "backgroundColor": "#303030",
-    "buttonColor": "#607d8b",
-    "headingColor": "#e91e63",
+    "value": "pink",
     "label": "Pink",
-    "value": "pink"
+    "backgroundColor": "#e91e63",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
   },
   {
-    "backgroundColor": "#303030",
-    "buttonColor": "#4caf50",
-    "headingColor": "#9c27b0",
+    "value": "red",
     "label": "Red",
-    "value": "red"
+    "backgroundColor": "#f44336",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "blue",
+    "label": "Blue",
+    "backgroundColor": "#2196f3",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "light-blue",
+    "label": "Light Blue",
+    "backgroundColor": "#03a9f4",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "cyan",
+    "label": "Cyan",
+    "backgroundColor": "#00bcd4",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "teal",
+    "label": "Teal",
+    "backgroundColor": "#009688",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "green",
+    "label": "Green",
+    "backgroundColor": "#4caf50",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "light-green",
+    "label": "Light Green",
+    "backgroundColor": "#8bc34a",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "lime",
+    "label": "Lime",
+    "backgroundColor": "#cddc39",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "yellow",
+    "label": "Yellow",
+    "backgroundColor": "#ffeb3b",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "amber",
+    "label": "Amber",
+    "backgroundColor": "#ffc107",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "orange",
+    "label": "Orange",
+    "backgroundColor": "#ff9800",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "deep-orange",
+    "label": "Deep Orange",
+    "backgroundColor": "#ff5722",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "brown",
+    "label": "Brown",
+    "backgroundColor": "#795548",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "grey",
+    "label": "Grey",
+    "backgroundColor": "#9e9e9e",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
+  },
+  {
+    "value": "blue-grey",
+    "label": "Blue Grey",
+    "backgroundColor": "#607d8b",
+    "buttonColor": "#e0e0e0",
+    "headingColor": "#f5f5f5"
   }
 ]

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { ThemeMenuOption } from './theme-menu-option';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 const DEFAULT_THEME: string = 'indigo';
 const THEME_MENU_OPTIONS_PATH: string = 'assets/themes/options.json';
@@ -13,10 +13,10 @@ const THEME_MENU_OPTIONS_PATH: string = 'assets/themes/options.json';
 })
 export class ThemeService {
 
-  private customTheme: Subject<string> = new Subject<string>();
+  private customTheme: BehaviorSubject<string> = new BehaviorSubject<string>(DEFAULT_THEME);
   customTheme$: Observable<string> = this.customTheme.asObservable();
 
-  private isDarkTheme: Subject<boolean> = new Subject<boolean>();
+  private isDarkTheme: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   isDarkTheme$: Observable<boolean> = this.isDarkTheme.asObservable();
 
   constructor(

@@ -79,15 +79,12 @@ export class AppComponent implements OnInit, OnDestroy {
     );
 
     this.customAndDarkSubscription = customAndDark$
-    // Wait for a change detection so as to get the theme at loading time
-    // .pipe(delay(0)) TODO Do I need it ?
     .subscribe(([customTheme, isDarkTheme]: [string, boolean]) => {
       if (isDarkTheme) {
         this.customTheme = customTheme + '-dark-theme';
       } else {
         this.customTheme = customTheme + '-light-theme';
       }
-      console.log(this.customTheme);
     });
   }
 
