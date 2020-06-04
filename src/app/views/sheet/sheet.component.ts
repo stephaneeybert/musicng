@@ -54,7 +54,7 @@ export class SheetComponent implements OnInit, OnDestroy {
     this.initScreenWidth();
 
     const soundtrackAndSettings$: Observable<[Soundtrack, Settings]> = combineLatest(
-      this.soundtrack$.pipe(delay(0)),
+      this.soundtrack$,
       this.settingsStore.getSettings$()
     );
 
