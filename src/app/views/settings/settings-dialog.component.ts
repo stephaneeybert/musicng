@@ -84,7 +84,6 @@ export class SettingsDialogComponent implements OnInit {
 
   private instantiateLists(): void {
     TIME_SIGNATURES.forEach((timeSignature: number) => {
-      console.log(typeof timeSignature);
       this.timeSignatures.push({ 'id': timeSignature, 'name': String(timeSignature) });
     });
 
