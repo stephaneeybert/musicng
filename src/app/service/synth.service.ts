@@ -28,6 +28,9 @@ const VELOCITY_MIDI_MAX: number = 127;
 // The rest note for the synth is the empty string
 const SYNTH_REST_NOTE: string = '';
 
+// Prevent the device screen from locking https://web.dev/wakelock/
+const WAKELOCK_TOKEN: string = 'ApKIpnNa3Vl705e8dSRtBi2z7Fu9s3fXFVSejGuj+E9+iUCwuwLqafkLmzsPDqHJCg3qC64K84Fu1boj4Wf68wQAAABteyJvcmlnaW4iOiJodHRwczovL3N0ZXBoYW5lZXliZXJ0LmdpdGh1Yi5pbzo0NDMiLCJmZWF0dXJlIjoiV2FrZUxvY2siLCJleHBpcnkiOjE1OTQxNjYzOTksImlzU3ViZG9tYWluIjp0cnVlfQ==';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -42,6 +45,7 @@ export class SynthService {
     private wakelockService: WakelockService
   ) {
     this.startTransport();
+    this.wakelockService.setMetaToken(WAKELOCK_TOKEN);
   }
 
   public createSoundtrackSynth(): any {
@@ -49,7 +53,6 @@ export class SynthService {
   }
 
   public createDeviceSynth(): any {
-
     const synth: any = new Tone.PolySynth(CHORD_WIDTH, Tone.Synth, {
       oscillator: {
         type: 'sine',

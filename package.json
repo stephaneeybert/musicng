@@ -32,7 +32,7 @@
     "@fortawesome/pro-light-svg-icons": "^5.13.0",
     "@fortawesome/pro-regular-svg-icons": "^5.13.0",
     "@fortawesome/pro-solid-svg-icons": "^5.13.0",
-    "@stephaneeybert/lib-core": "^0.1.43",
+    "@stephaneeybert/lib-core": "^0.1.45",
     "@stephaneeybert/lib-i18n": "0.0.1",
     "@stephaneeybert/lib-pwa": "^0.1.33",
     "@stephaneeybert/lib-toast": "0.0.1",
