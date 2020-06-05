@@ -4,7 +4,6 @@ import { Subscription, Observable, combineLatest } from 'rxjs';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 import { PwaService } from '@stephaneeybert/lib-pwa';
 import { ThemeService } from './core/theme/theme.service';
-import { Theme } from './core/theme/theme';
 
 @Component({
   selector: 'app-root',
@@ -72,15 +71,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private observeTheme(): void {
-    const customAndDark$: Observable<[string, boolean]> = combineLatest(
-      this.themeService.themeId$,
-      this.themeService.themeIsDark$
-    );
-
-    this.customAndDarkSubscription = customAndDark$
+    this.customAndDarkSubscription = this.themeService.getTheme$()
     .subscribe(([themeId, themeIsDark]: [string, boolean]) => {
       this.themeClassName = this.themeService.buildThemeClassName(themeId, themeIsDark);
-      this.themeService.notifyOverlay(themeId, themeIsDark);
     });
   }
 

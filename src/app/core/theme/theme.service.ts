@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { ThemeMenuOption } from './theme-menu-option';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ThemeStorageService } from './theme-storage.service';
 import { Theme } from './theme';
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -24,11 +24,15 @@ export class ThemeService {
   private themeIsDark: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   themeIsDark$: Observable<boolean> = this.themeIsDark.asObservable();
 
+  private customAndDarkSubscription?: Subscription;
+
   constructor(
     private httpClient: HttpClient,
     private overlayContainer: OverlayContainer,
     private themeStorageService: ThemeStorageService
-  ) { }
+  ) {
+    this.observeTheme();
+  }
 
   public getThemeOptions(): Observable<Array<ThemeMenuOption>> {
     return this.httpClient.get<Array<ThemeMenuOption>>(THEME_MENU_OPTIONS_PATH);
@@ -63,6 +67,20 @@ export class ThemeService {
     } else {
       return themeId + '-light-theme';
     }
+  }
+
+  public getTheme$(): Observable<[string, boolean]> {
+    return combineLatest(
+      this.themeId$,
+      this.themeIsDark$
+    );
+  }
+
+  private observeTheme(): void {
+    this.customAndDarkSubscription = this.getTheme$()
+    .subscribe(([themeId, themeIsDark]: [string, boolean]) => {
+      this.notifyOverlay(themeId, themeIsDark);
+    });
   }
 
   // Apply the theme to a dialog box
