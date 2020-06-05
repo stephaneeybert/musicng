@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ThemeService } from '@app/core/theme/theme.service';
 import { Observable } from 'rxjs';
 import { ThemeMenuOption } from './theme-menu-option';
@@ -7,7 +7,7 @@ import { ThemeMenuOption } from './theme-menu-option';
   selector: 'app-theme',
   templateUrl: './theme.component.html'
 })
-export class ThemeComponent implements OnInit {
+export class ThemeComponent {
 
   themeMenuOptions$: Observable<Array<ThemeMenuOption>> = this.themeService.getThemeOptions();
 
@@ -15,12 +15,8 @@ export class ThemeComponent implements OnInit {
     private themeService: ThemeService
   ) { }
 
-  ngOnInit() {
-    this.themeService.setDefaultTheme();
-  }
-
-  themeChangeHandler(themeName: string): void {
-    this.themeService.setCustomTheme(themeName);
+  themeChangeHandler(themeId: string): void {
+    this.themeService.switchTheme(themeId);
   }
 
 }

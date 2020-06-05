@@ -13,8 +13,8 @@ export class ThemeMenuComponent {
   @Output()
   themeChangeEvent: EventEmitter<string> = new EventEmitter<string>();
 
-  changeTheme(themeName: string): void {
-    this.themeChangeEvent.emit(themeName);
+  changeTheme(themeId: string): void {
+    this.themeChangeEvent.emit(themeId);
   }
 
 }

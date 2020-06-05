@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { OverlayContainer } from '@angular/cdk/overlay';
 import { Subscription, Observable, combineLatest } from 'rxjs';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 import { PwaService } from '@stephaneeybert/lib-pwa';
 import { ThemeService } from './core/theme/theme.service';
+import { Theme } from './core/theme/theme';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,7 @@ import { ThemeService } from './core/theme/theme.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  customTheme?: string;
+  themeClassName?: string;
 
   private customAndDarkSubscription?: Subscription;
 
@@ -21,8 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private screenDeviceService: ScreenDeviceService,
     private pwaService: PwaService,
-    private themeService: ThemeService,
-    private overlayContainer: OverlayContainer
+    private themeService: ThemeService
   ) {}
 
   ngOnInit() {
@@ -32,6 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     this.observeTheme();
+    this.themeService.initTheme();
   }
 
   ngOnDestroy() {
@@ -72,23 +72,15 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private observeTheme(): void {
-    this.customTheme = this.themeService.getDefaultThemeName();
-
     const customAndDark$: Observable<[string, boolean]> = combineLatest(
-      this.themeService.customTheme$,
-      this.themeService.isDarkTheme$
+      this.themeService.themeId$,
+      this.themeService.themeIsDark$
     );
 
     this.customAndDarkSubscription = customAndDark$
-    .subscribe(([customTheme, isDarkTheme]: [string, boolean]) => {
-      if (isDarkTheme) {
-        this.customTheme = customTheme + '-dark-theme';
-      } else {
-        this.customTheme = customTheme + '-light-theme';
-      }
-
-      // Apply the theme to a dialog box
-      this.overlayContainer.getContainerElement().classList.add(this.customTheme);
+    .subscribe(([themeId, themeIsDark]: [string, boolean]) => {
+      this.themeClassName = this.themeService.buildThemeClassName(themeId, themeIsDark);
+      this.themeService.notifyOverlay(themeId, themeIsDark);
     });
   }
 

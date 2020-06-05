@@ -8,12 +8,12 @@ import { ThemeService } from './theme.service';
 })
 export class ThemeDarkToggleComponent implements OnInit {
 
-  isDarkTheme$?: Observable<boolean>;
+  themeIsDark$?: Observable<boolean>;
 
   constructor(private themeService: ThemeService) { }
 
   ngOnInit() {
-    this.isDarkTheme$ = this.themeService.isDarkTheme$;
+    this.themeIsDark$ = this.themeService.themeIsDark$;
   }
 
   toggleDarkTheme(checked: boolean) {

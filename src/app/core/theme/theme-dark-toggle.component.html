@@ -1,1 +1,1 @@
-<mat-slide-toggle [checked]="isDarkTheme$ | async" (change)="toggleDarkTheme($event.checked)" matTooltip="{{ 'theme.dark-toggle.tip' | translate }}">{{ 'theme.dark-toggle.label' | translate }}</mat-slide-toggle>
+<mat-slide-toggle [checked]="themeIsDark$ | async" (change)="toggleDarkTheme($event.checked)" matTooltip="{{ 'theme.dark-toggle.tip' | translate }}">{{ 'theme.dark-toggle.label' | translate }}</mat-slide-toggle>
