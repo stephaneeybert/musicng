@@ -4,7 +4,6 @@ import { Subscription, Observable, combineLatest } from 'rxjs';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 import { PwaService } from '@stephaneeybert/lib-pwa';
 import { ThemeService } from './core/theme/theme.service';
-import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
