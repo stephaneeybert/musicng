@@ -2,7 +2,7 @@
   <mat-sidenav #sidenav mode="push" class="app-sidenav">
     <mat-toolbar color="primary">
       <span class="toolbar-filler"></span>
-      <button mat-icon-button (click)="sidenav.toggle()" class="mat-icon-button sidenav-toggle-button"
+      <button mat-icon-button (click)="sidenav.toggle()" class="sidenav-toggle-button"
         [hidden]="!sidenav.opened">
         <mat-icon aria-label="Menu" class="material-icons">close</mat-icon>
       </button>
@@ -38,7 +38,7 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-toolbar color="primary">
-    <button mat-icon-button (click)="sidenav.toggle()" class="mat-icon-button sidenav-toggle-button"
+    <button mat-icon-button (click)="sidenav.toggle()" class="sidenav-toggle-button"
       [hidden]="sidenav.opened">
       <mat-icon aria-label="Another menu" class="material-icons">menu</mat-icon>
     </button>
