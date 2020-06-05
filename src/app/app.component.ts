@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { Subscription, Observable, combineLatest } from 'rxjs';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 import { PwaService } from '@stephaneeybert/lib-pwa';
@@ -20,7 +21,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private screenDeviceService: ScreenDeviceService,
     private pwaService: PwaService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private overlayContainer: OverlayContainer
   ) {}
 
   ngOnInit() {
@@ -84,6 +86,9 @@ export class AppComponent implements OnInit, OnDestroy {
       } else {
         this.customTheme = customTheme + '-light-theme';
       }
+
+      // Apply the theme to a dialog box
+      this.overlayContainer.getContainerElement().classList.add(this.customTheme);
     });
   }
 
