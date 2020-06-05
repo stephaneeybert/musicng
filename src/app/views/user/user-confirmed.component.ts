@@ -40,7 +40,7 @@ export class UserConfirmedComponent implements OnChanges {
 
   // This method is called after the input bindings attempt
   // this, even if no actual input was provided to the bindings
-  public ngOnInit(): void {
+  ngOnInit(): void {
     // Ensure the input bindings are actually provided at run-time
     this.assertInputsProvided();
   }

@@ -17,7 +17,7 @@ export class UnsecuredSidenavComponent implements OnInit, OnDestroy {
     this.subscription = new Subscription();
   }
 
-  public ngOnInit() {
+  ngOnInit() {
     this.subscription.add(
       this.translateService.get('app.title').subscribe((text: string) => {
         console.log('The app title: ' + text);
@@ -25,7 +25,7 @@ export class UnsecuredSidenavComponent implements OnInit, OnDestroy {
     );
   }
 
-  public ngOnDestroy() {
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 

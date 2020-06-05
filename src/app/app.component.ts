@@ -24,7 +24,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private themeService: ThemeService
   ) {}
 
-  public ngOnInit() {
+  ngOnInit() {
     const subscription: Subscription = this.translateService.get('app.title').subscribe((text: string) => {
       this.afterLanguageResourcesLoaded();
       subscription.unsubscribe();
