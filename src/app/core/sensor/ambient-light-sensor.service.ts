@@ -7,7 +7,7 @@ import {
   ERROR_TYPES,
   ERROR_MESSAGES,
   SENSOR_AMBIENT_ILLUMINANCE_DARK_ENOUGH,
-  SENSOR_AMBIENT_ILLUMINANCE_BRIGHT_ENOUGH
+  SENSOR_OBSERVE_DELAY
 } from './ambient-light-sensor.constant';
 import { HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -71,6 +71,7 @@ export class AmbientLightSensorService {
   public ambientIsDarkEnough$(): Observable<boolean> {
     return this.illuminance$
       .pipe(
+        delay(SENSOR_OBSERVE_DELAY),
         map((illuminance: number) => {
           if (illuminance < SENSOR_AMBIENT_ILLUMINANCE_DARK_ENOUGH) {
             return true;
@@ -84,6 +85,7 @@ export class AmbientLightSensorService {
   public ambientIsBrightEnough$(): Observable<boolean> {
     return this.illuminance$
       .pipe(
+        delay(SENSOR_OBSERVE_DELAY),
         map((illuminance: number) => {
           if (illuminance > SENSOR_AMBIENT_ILLUMINANCE_BRIGHT_ENOUGH) {
             return true;

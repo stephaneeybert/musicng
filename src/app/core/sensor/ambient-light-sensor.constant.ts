@@ -25,3 +25,5 @@ export const ERROR_MESSAGES = {
 
 export const SENSOR_AMBIENT_ILLUMINANCE_DARK_ENOUGH: number = 20;
 export const SENSOR_AMBIENT_ILLUMINANCE_BRIGHT_ENOUGH: number = 30;
+
+export const SENSOR_OBSERVE_DELAY: number = 1000;
