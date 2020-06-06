@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, Observable, combineLatest } from 'rxjs';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
@@ -17,6 +17,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private customAndDarkSubscription?: Subscription;
 
   constructor(
+    private changeDetector: ChangeDetectorRef,
     private translateService: TranslateService,
     private screenDeviceService: ScreenDeviceService,
     private pwaService: PwaService,
@@ -74,7 +75,13 @@ export class AppComponent implements OnInit, OnDestroy {
     this.customAndDarkSubscription = this.themeService.getTheme$()
     .subscribe(([themeId, themeIsDark]: [string, boolean]) => {
       this.themeClassName = this.themeService.buildThemeClassName(themeId, themeIsDark);
+      this.detectChanges();
     });
+  }
+
+  // The dark mode may be activated by the ambient light sensor without any user UI action
+  private detectChanges(): void {
+    this.changeDetector.detectChanges();
   }
 
 }
