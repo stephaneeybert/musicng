@@ -11,7 +11,7 @@ import {
   SENSOR_OBSERVE_DELAY
 } from './ambient-light-sensor.constant';
 import { HttpErrorResponse } from '@angular/common/http';
-import { map, catchError, delay } from 'rxjs/operators';
+import { map, delay } from 'rxjs/operators';
 
 declare global {
   interface Window {
@@ -51,19 +51,6 @@ export class AmbientLightSensorService {
     }
   }
 
-  private requestAmbientLightSensor$(): Observable<any> {
-    return from(new this.window.AmbientLightSensor())
-      .pipe(
-        map((sensor: any) => {
-          return sensor;
-        }),
-        catchError((error: any) => {
-          console.log('Your browser is not compatible with MIDI access. Try using the Chrome browser.');
-          console.log(error);
-          return empty();
-        })
-      );
-  }
   private startReading(): void {
     const sensor: any = new this.window.AmbientLightSensor();
     sensor.onreading = () => {
