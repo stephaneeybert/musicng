@@ -38,11 +38,11 @@ export class AmbientLightSensorService {
       if (SENSOR_NAME in window) {
         this.startReading();
       } else {
-        this.illuminance.error(ERROR_MESSAGES.UNSUPPORTED_FEATURE);
+        this.illuminance.error(ERROR_MESSAGES.UNSUPPORTED_SENSOR);
       }
     } catch (error) {
       if (error.name === ERROR_TYPES.SECURITY) {
-        this.illuminance.error(ERROR_MESSAGES.BLOCKED_BY_FEATURE_POLICY);
+        this.illuminance.error(ERROR_MESSAGES.NOT_ALLOWED_BY_SECURITY);
       } else if (error.name === ERROR_TYPES.REFERENCE) {
         this.illuminance.error(ERROR_MESSAGES.NOT_SUPPORTED_BY_USER_AGENT);
       } else {
