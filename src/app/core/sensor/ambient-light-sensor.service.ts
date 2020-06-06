@@ -48,7 +48,9 @@ export class AmbientLightSensorService {
 
   private startReading(): void {
     const sensor: any = new this.window.AmbientLightSensor();
-    sensor.onreading = () => this.illuminance.next(sensor.illuminance);
+    sensor.onreading = () => {
+      return this.illuminance.next(sensor.illuminance)
+    };
     sensor.onerror = async (event: HttpErrorResponse) => {
       if (event.error.name === ERROR_TYPES.NOT_ALLOWED) {
         const result: PermissionStatus = await navigator.permissions.query({
