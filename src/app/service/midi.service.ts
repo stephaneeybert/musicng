@@ -90,6 +90,7 @@ export class MidiService {
         }),
         catchError((error: any) => {
           console.log('Your browser is not compatible with MIDI access. Try using the Chrome browser.');
+          console.log(error);
           return empty();
         })
       );
