@@ -109,13 +109,13 @@ export class ThemeService implements OnDestroy {
   private observeAmbientlightSensor(): void {
     this.sensorAmbientDarkEnoughSubscription = this.ambientLightSensorService.ambientIsDarkEnough$()
     .subscribe((isDarkEnough: boolean) => {
-      if (isDarkEnough) {
+      if (!this.currentTheme.isDark && isDarkEnough) {
         this.setDarkTheme(true);
       }
     });
     this.sensorAmbientBrightEnoughSubscription = this.ambientLightSensorService.ambientIsBrightEnough$()
     .subscribe((isBrightEnough: boolean) => {
-      if (isBrightEnough) {
+      if (this.currentTheme.isDark && isBrightEnough) {
         this.setDarkTheme(false);
       }
     });
