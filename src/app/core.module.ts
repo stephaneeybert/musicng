@@ -6,6 +6,7 @@ import { LibPwaModule } from '@stephaneeybert/lib-pwa';
 import { LibToastModule } from '@stephaneeybert/lib-toast';
 import { EnvironmentModule } from './environment.module';
 import { ThemeModule } from './core/theme/theme.module';
+import { SensorModule } from './core/sensor/sensor.module';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { ThemeModule } from './core/theme/theme.module';
     LibI18nModule,
     LibCoreModule,
     LibPwaModule,
-    ThemeModule
+    ThemeModule,
+    SensorModule
   ]
 })
 export class CoreModule {

@@ -15,6 +15,7 @@ import { LibI18nModule } from '@stephaneeybert/lib-i18n';
 import { LibCoreModule } from '@stephaneeybert/lib-core';
 import { LibPwaModule } from '@stephaneeybert/lib-pwa';
 import { ThemeModule } from '@app/core/theme/theme.module';
+import { SensorModule } from '@app/core/sensor/sensor.module';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { ThemeModule } from '@app/core/theme/theme.module';
     LibI18nModule,
     LibCoreModule,
     LibPwaModule,
-    ThemeModule
+    ThemeModule,
+    SensorModule
   ],
   exports: [
     AppRoutingModule,

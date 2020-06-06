@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
@@ -7,6 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ThemeStorageService } from './theme-storage.service';
 import { Theme } from './theme';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { AmbientLightSensorService } from '../sensor/ambient-light-sensor.service';
 
 const DEFAULT_THEME: string = 'indigo';
 const THEME_MENU_OPTIONS_PATH: string = 'assets/themes/options.json';
@@ -14,7 +15,7 @@ const THEME_MENU_OPTIONS_PATH: string = 'assets/themes/options.json';
 @Injectable({
   providedIn: 'root'
 })
-export class ThemeService {
+export class ThemeService implements OnDestroy {
 
   private currentTheme: Theme = new Theme(DEFAULT_THEME, false);
 
@@ -25,13 +26,29 @@ export class ThemeService {
   themeIsDark$: Observable<boolean> = this.themeIsDark.asObservable();
 
   private customAndDarkSubscription?: Subscription;
+  private sensorAmbientDarkEnoughSubscription?: Subscription;
+  private sensorAmbientBrightEnoughSubscription?: Subscription;
 
   constructor(
     private httpClient: HttpClient,
     private overlayContainer: OverlayContainer,
-    private themeStorageService: ThemeStorageService
+    private themeStorageService: ThemeStorageService,
+    private ambientLightSensorService: AmbientLightSensorService
   ) {
     this.observeTheme();
+    this.observeAmbientlightSensor();
+  }
+
+  ngOnDestroy() {
+    if (this.customAndDarkSubscription) {
+      this.customAndDarkSubscription.unsubscribe();
+    }
+    if (this.sensorAmbientDarkEnoughSubscription) {
+      this.sensorAmbientDarkEnoughSubscription.unsubscribe();
+    }
+    if (this.sensorAmbientBrightEnoughSubscription) {
+      this.sensorAmbientBrightEnoughSubscription.unsubscribe();
+    }
   }
 
   public getThemeOptions(): Observable<Array<ThemeMenuOption>> {
@@ -87,6 +104,21 @@ export class ThemeService {
   public notifyOverlay(themeId: string, themeIsDark: boolean): void {
     const themeClassName: string = this.buildThemeClassName(themeId, themeIsDark);
     this.overlayContainer.getContainerElement().classList.add(themeClassName);
+  }
+
+  private observeAmbientlightSensor(): void {
+    this.sensorAmbientDarkEnoughSubscription = this.ambientLightSensorService.ambientIsDarkEnough$()
+    .subscribe((isDarkEnough: boolean) => {
+      if (isDarkEnough) {
+        this.setDarkTheme(true);
+      }
+    });
+    this.sensorAmbientBrightEnoughSubscription = this.ambientLightSensorService.ambientIsBrightEnough$()
+    .subscribe((isBrightEnough: boolean) => {
+      if (isBrightEnough) {
+        this.setDarkTheme(false);
+      }
+    });
   }
 
 }
