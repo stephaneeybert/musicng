@@ -29,6 +29,10 @@ export class AmbientLightSensorService {
   constructor(
     private window: Window
   ) {
+    this.init();
+  }
+
+  private init(): void {
     try {
       if (SENSOR_NAME in window) {
         this.startReading();
