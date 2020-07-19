@@ -104,9 +104,9 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     }
   }
 
-  private getSoundtrackIndex(soundtrackName: string): number {
+  private getSoundtrackIndex(soundtrackId: string): number {
     return this.getState().findIndex((soundtrack: Soundtrack) => {
-      return this.commonService.normalizeName(soundtrack.id) === this.commonService.normalizeName(soundtrackName);
+      return this.commonService.normalizeName(soundtrack.id) === this.commonService.normalizeName(soundtrackId);
     });
   }
 
