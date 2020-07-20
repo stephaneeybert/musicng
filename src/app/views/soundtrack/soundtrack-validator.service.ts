@@ -11,7 +11,7 @@ export class SoundtrackValidatorService {
   ) { }
 
   public nameIsAlreadyUsed(soundtrackId: string, name: string): boolean {
-    if (this.soundtrackStore.findByName(soundtrackId, name)) {
+    if (this.soundtrackStore.findOtherWithName(soundtrackId, name)) {
       return true;
     } else {
       return false;
