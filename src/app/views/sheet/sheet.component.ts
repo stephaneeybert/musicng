@@ -95,7 +95,6 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  // Updating a view model in a subscribe() block requires an explicit call to the change detection
   private detectChanges(id: string): void {
     this.sheetElementRef.nativeElement.id = id;
     // Detect the change AFTER the id has been set

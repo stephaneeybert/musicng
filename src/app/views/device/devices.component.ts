@@ -48,18 +48,12 @@ export class DevicesComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Updating a view model in a subscribe() block requires an explicit call to the change detection
-  private detectChanges(): void {
-    this.changeDetector.detectChanges();
-  }
-
   private observeDevices(): void {
     this.devicesSubscription = this.deviceStore.getDevices$()
     .pipe(
       delay(500)
     ).subscribe((devices: Array<Device>) => {
       this.devices = devices;
-      this.detectChanges();
     });
   }
 

@@ -95,16 +95,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
       });
   }
 
-  // Updating a view model in a subscribe() block requires an explicit call to the change detection
-  private detectChanges(): void {
-    this.changeDetector.detectChanges();
-  }
-
   private observeSettingss(): void {
     this.settingsSubscription = this.settingsStore.getSettings$()
       .subscribe((settings: Settings) => {
         this.settings = settings;
-        this.detectChanges();
       });
   }
 

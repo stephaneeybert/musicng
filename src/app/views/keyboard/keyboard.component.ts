@@ -90,7 +90,6 @@ export class KeyboardComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  // Updating a view model in a subscribe() block requires an explicit call to the change detection
   private detectChanges(id: string): void {
     this.keyboardElementRef.nativeElement.id = this.keyboardService.buildSoundtrackKeyboardId(id);
     // Detect the change AFTER the id has been set
