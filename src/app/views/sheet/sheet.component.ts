@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectorRef, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, ChangeDetectorRef, HostListener, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Device } from '@app/model/device';
 import { SheetService } from '@app/service/sheet.service';
 import { Soundtrack } from '@app/model/soundtrack';
@@ -14,7 +14,7 @@ import { ScreenDeviceService } from '@stephaneeybert/lib-core';
   templateUrl: './sheet.component.html',
   styleUrls: ['./sheet.component.css']
 })
-export class SheetComponent implements OnInit, OnDestroy {
+export class SheetComponent implements AfterViewInit, OnDestroy {
 
   inputSoundtrack?: Soundtrack;
   private soundtrack$: Subject<Soundtrack> = new ReplaySubject<Soundtrack>();
@@ -35,7 +35,7 @@ export class SheetComponent implements OnInit, OnDestroy {
   private soundtrackSubscription?: Subscription;
   private deviceSubscription?: Subscription;
 
-  id!: string; // TODO Have a # ref like done for the keyboard
+  @ViewChild("sheet") sheetElementRef!: ElementRef;
 
   screenWidth!: number;
 
@@ -50,7 +50,7 @@ export class SheetComponent implements OnInit, OnDestroy {
     private settingsStore: SettingsStore
   ) { }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.initScreenWidth();
 
     const soundtrackAndSettings$: Observable<[Soundtrack, Settings]> = combineLatest(
@@ -97,7 +97,7 @@ export class SheetComponent implements OnInit, OnDestroy {
 
   // Updating a view model in a subscribe() block requires an explicit call to the change detection
   private detectChanges(id: string): void {
-    this.id = id;
+    this.sheetElementRef.nativeElement.id = id;
     // Detect the change AFTER the id has been set
     this.changeDetector.detectChanges();
   }
@@ -121,7 +121,7 @@ export class SheetComponent implements OnInit, OnDestroy {
   private createSoundtrackSheet(soundtrack: Soundtrack, animatedStave: boolean): void {
     if (soundtrack != null) {
       if (soundtrack.hasNotes()) {
-        this.sheetService.createSoundtrackSheet(this.id, this.screenWidth, soundtrack, animatedStave);
+        this.sheetService.createSoundtrackSheet(this.sheetService.buildSoundtrackSheetId(soundtrack), this.screenWidth, soundtrack, animatedStave);
         this.soundtrackStore.setSoundtrackSheetSVGContext(soundtrack, soundtrack.sheetContext);
       } else {
         throw new Error('No sheet was created for the soundtrack. Notes should be set to the soundtrack before adding it to the observables data store, ensuring that when the new soundtrack is observed, it has notes and can get a sheet.');
@@ -131,7 +131,7 @@ export class SheetComponent implements OnInit, OnDestroy {
 
   private createDeviceSheet(device: Device): void {
     if (device != null) {
-      this.sheetService.createDeviceSheet(this.id, this.screenWidth, device);
+      this.sheetService.createDeviceSheet(this.sheetService.buildDeviceSheetId(device), this.screenWidth, device);
     }
   }
 
