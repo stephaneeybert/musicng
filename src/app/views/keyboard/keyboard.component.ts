@@ -91,7 +91,7 @@ export class KeyboardComponent implements AfterViewInit, OnDestroy {
   }
 
   // Updating a view model in a subscribe() block requires an explicit call to the change detection
-  private setIdAndDetectChanges(id: string): void {
+  private detectChanges(id: string): void {
     this.keyboardElementRef.nativeElement.id = this.keyboardService.buildSoundtrackKeyboardId(id);
     // Detect the change AFTER the id has been set
     this.changeDetector.detectChanges();
@@ -100,7 +100,7 @@ export class KeyboardComponent implements AfterViewInit, OnDestroy {
   private initializeWithSoundtrackId(soundtrack: Soundtrack, showKeyboard: boolean): void {
     if (soundtrack != null) {
       // Refresh the view with its id before creating the keyboard
-      this.setIdAndDetectChanges(soundtrack.id);
+      this.detectChanges(soundtrack.id);
       this.createSoundtrackKeyboard(soundtrack, showKeyboard);
     }
   }
@@ -108,7 +108,7 @@ export class KeyboardComponent implements AfterViewInit, OnDestroy {
   private initializeWithDeviceId(device: Device): void {
     if (device != null) {
       // Refresh the view with its id before creating the keyboard
-      this.setIdAndDetectChanges(this.keyboardService.buildDeviceKeyboardId(device.id));
+      this.detectChanges(this.keyboardService.buildDeviceKeyboardId(device.id));
       this.createDeviceKeyboard(device);
     }
   }
