@@ -79,28 +79,28 @@ export class GeneratorService {
 
   public generateSoundtrack(): Soundtrack {
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.assignNewName());
-    const symphonyChords: Array<Array<string>> = this.generateChords();
-    const melodyChords: Array<Array<string>> = this.generateMasterNoteChords(symphonyChords);
+    const harmonyChords: Array<Array<string>> = this.generateChords();
+    const melodyChords: Array<Array<string>> = this.generateMasterNoteChords(harmonyChords);
     const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_LOUDER, melodyChords)));
     melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
 
-    const generateSymphony: boolean = this.settingsService.getSettings().generateSymphony;
-    if (generateSymphony) {
-      const symphonyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, symphonyChords)));
-      symphonyTrack.name = this.getTrackName(TRACK_TYPES.SYMPHONY);
-      symphonyTrack.displayChordNames = true;
+    const generateHarmony: boolean = this.settingsService.getSettings().generateHarmony;
+    if (generateHarmony) {
+      const harmonyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, harmonyChords)));
+      harmonyTrack.name = this.getTrackName(TRACK_TYPES.HARMONY);
+      harmonyTrack.displayChordNames = true;
     }
 
     const generateDrums: boolean = this.settingsService.getSettings().generateDrums;
     if (generateDrums) {
-      const drumsTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, symphonyChords)));
+      const drumsTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, harmonyChords)));
       drumsTrack.name = this.getTrackName(TRACK_TYPES.DRUMS);
       drumsTrack.displayChordNames = true;
     }
 
     const generateBass: boolean = this.settingsService.getSettings().generateBass;
     if (generateBass) {
-      const bassTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, symphonyChords)));
+      const bassTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, harmonyChords)));
       bassTrack.name = this.getTrackName(TRACK_TYPES.BASS);
       bassTrack.displayChordNames = true;
     }
@@ -165,9 +165,9 @@ export class GeneratorService {
     return this.createArrayShiftOnceRight(chord);
   }
 
-  private generateMasterNoteChords(symphonieChords: Array<Array<string>>): Array<Array<string>> {
+  private generateMasterNoteChords(harmonyChords: Array<Array<string>>): Array<Array<string>> {
     const melodyChords: Array<Array<string>> = new Array();
-    symphonieChords.forEach((chords: Array<string>) => {
+    harmonyChords.forEach((chords: Array<string>) => {
       const masterNote: string = chords[0];
       const melodyChord: Array<string> = new Array();
       melodyChord.push(masterNote);

@@ -102,9 +102,9 @@
             "label": "Nombre d'accords",
             "tip": "Le nombre d'accords du morceau."
           },
-          "symphony": {
-            "label": "Piste symphonie",
-            "tip": "Avoir une piste symphonie lors de l'ajout d'un nouveau morceau."
+          "harmony": {
+            "label": "Piste harmonie",
+            "tip": "Avoir une piste harmonie lors de l'ajout d'un nouveau morceau."
           },
           "drums": {
             "label": "Piste percussions",
@@ -133,7 +133,7 @@
     "notation": {
       "track": {
         "melody": "Melodie",
-        "symphony": "Symphonie",
+        "harmony": "Harmonie",
         "drums": "Percussions",
         "bass": "Basse"
       }

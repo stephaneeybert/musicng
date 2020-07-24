@@ -30,7 +30,7 @@ const CHROMAS_SYLLABIC: Map<string, string> = new Map([['rest', 'rest'], ['C', '
 const OCTAVES: Array<number> = [1, 2, 3, 4, 5, 6];
 export enum TRACK_TYPES {
   MELODY = 'melody',
-  SYMPHONY = 'symphony',
+  HARMONY = 'harmony',
   DRUMS = 'drums',
   BASS = 'bass'
 }

@@ -13,7 +13,7 @@ export class Settings {
   generateMethod: RANDOM_METHOD;
   generateReverseDissimilarChord: boolean;
   generateNbChords: number;
-  generateSymphony: boolean;
+  generateHarmony: boolean;
   generateDrums: boolean;
   generateBass: boolean;
   animatedStave: boolean;
@@ -30,7 +30,7 @@ export class Settings {
     this.generateMethod = DEFAUT_RANDOM_METHOD;
     this.generateReverseDissimilarChord = false;
     this.generateNbChords = DEFAUT_NB_CHORDS;
-    this.generateSymphony = true;
+    this.generateHarmony = true;
     this.generateDrums = false;
     this.generateBass = false;
     this.animatedStave = true;

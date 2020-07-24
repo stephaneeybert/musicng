@@ -13,7 +13,7 @@ export class SettingsEdition { // TODO Why not use the existing Settings class ?
   generateMethod: RANDOM_METHOD;
   generateReverseDissimilarChord: boolean;
   generateNbChords: number;
-  generateSymphony: boolean;
+  generateHarmony: boolean;
   generateDrums: boolean;
   generateBass: boolean;
   animatedStave: boolean;
@@ -30,7 +30,7 @@ export class SettingsEdition { // TODO Why not use the existing Settings class ?
     generateMethod: RANDOM_METHOD,
     generateReverseDissimilarChord: boolean,
     generateNbChords: number,
-    generateSymphony: boolean,
+    generateHarmony: boolean,
     generateDrums: boolean,
     generateBass: boolean,
     animatedStave: boolean,
@@ -46,7 +46,7 @@ export class SettingsEdition { // TODO Why not use the existing Settings class ?
     this.generateMethod = generateMethod;
     this.generateReverseDissimilarChord = generateReverseDissimilarChord;
     this.generateNbChords = generateNbChords;
-    this.generateSymphony = generateSymphony;
+    this.generateHarmony = generateHarmony;
     this.generateDrums = generateDrums;
     this.generateBass = generateBass;
     this.animatedStave = animatedStave;
