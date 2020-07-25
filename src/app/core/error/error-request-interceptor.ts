@@ -9,8 +9,6 @@ import { Observable } from 'rxjs/Observable';
 import { of, throwError } from 'rxjs';
 import { retryWhen, switchMap, delay, take, concat } from 'rxjs/operators';
 
-import { ErrorCustomHandler } from './error-custom-handler';
-
 // Because the best error is the one that never happens, improve the error handling
 // using an HttpInterceptor to intercept all the server calls and retry them n times
 // before throwing an error
@@ -20,9 +18,7 @@ const HTTP_SERVER_ERROR: RegExp = /^5.*$/;
 @Injectable()
 export class ErrorRequestInterceptor implements HttpInterceptor {
 
-  constructor(
-    private errorCustomHandler: ErrorCustomHandler
-  ) { }
+  constructor() { }
 
   // TODO https://stackoverflow.com/questions/51999929
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

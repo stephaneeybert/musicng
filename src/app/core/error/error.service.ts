@@ -1,6 +1,6 @@
-import { ErrorHandler, Injectable, Injector } from '@angular/core';
-import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, Injector } from '@angular/core';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { Router, Event, NavigationError } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
