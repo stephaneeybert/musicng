@@ -30,11 +30,11 @@ const routes: Routes = [
         path: 'error',
         component: ErrorComponent
       },
-      // { // TODO Do not redirect for now, as it prevents the audit from Lighthouse to be done for the PWA check up
-      //   path: '',
-      //   redirectTo: 'soundtracks',
-      //   pathMatch: 'full'
-      // }
+      {
+        path: '', // Note that a redirect prevents Lighthouse from auditing the PWA
+        redirectTo: 'soundtracks',
+        pathMatch: 'full'
+      }
     ]
   },
   {
