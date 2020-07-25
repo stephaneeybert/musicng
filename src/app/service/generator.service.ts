@@ -79,9 +79,12 @@ export class GeneratorService {
 
   public generateSoundtrack(): Soundtrack {
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.assignNewName());
+
     const randomMethod: RANDOM_METHOD = this.settingsService.getSettings().generateMethod;
+
     const harmonyChords: Array<Array<string>> = this.generateChords(randomMethod);
     const melodyChords: Array<Array<string>> = this.generateMasterNoteChords(harmonyChords);
+
     const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_LOUDER, melodyChords)));
     melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
 
