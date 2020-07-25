@@ -79,7 +79,8 @@ export class GeneratorService {
 
   public generateSoundtrack(): Soundtrack {
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.assignNewName());
-    const harmonyChords: Array<Array<string>> = this.generateChords();
+    const randomMethod: RANDOM_METHOD = this.settingsService.getSettings().generateMethod;
+    const harmonyChords: Array<Array<string>> = this.generateChords(randomMethod);
     const melodyChords: Array<Array<string>> = this.generateMasterNoteChords(harmonyChords);
     const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_LOUDER, melodyChords)));
     melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
@@ -178,7 +179,7 @@ export class GeneratorService {
     return melodyChords;
   }
 
-  private generateChords(): Array<Array<string>> {
+  private generateChords(randomMethod: number): Array<Array<string>> {
     const shiftedChromas: Array<Array<string>> = new Array();
     const chords: Array<Array<string>> = new Array();
     // Create shifted chromas, each starting some notes down the previous chroma
@@ -201,7 +202,7 @@ export class GeneratorService {
       const chord: Array<string> = new Array();
 
       // For each randomly picked chroma, add its chord to an array
-      const chromaNoteIndex: number = (nbAddedChord === 0) ? 0 : this.randomlyPickChroma(previousChromaNoteIndex);
+      const chromaNoteIndex: number = (nbAddedChord === 0) ? 0 : this.randomlyPickChroma(previousChromaNoteIndex, randomMethod);
       for (let noteIndex = 0; noteIndex < this.settingsService.getSettings().generateChordWidth; noteIndex++) {
         chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);
       }
@@ -229,8 +230,7 @@ export class GeneratorService {
     return chords;
   }
 
-  private randomlyPickChroma(chromaIndex: number): number {
-    const randomMethod: RANDOM_METHOD = this.settingsService.getSettings().generateMethod;
+  private randomlyPickChroma(chromaIndex: number, randomMethod: number): number {
     if (RANDOM_METHOD.BASE == randomMethod) {
       return this.randomlyPickChromaFromBaseChromas(chromaIndex);
     } else if (RANDOM_METHOD.BONUS_TABLE == randomMethod) {
