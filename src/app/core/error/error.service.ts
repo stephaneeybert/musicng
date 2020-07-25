@@ -5,6 +5,7 @@ import { Router, Event, NavigationError } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { of, Subscription } from 'rxjs';
+import { environment } from '@env/environment';
 
 export const DEFAULT_JSON_URL: string = 'https://jsonplaceholder.typicode.com/1';
 
@@ -37,7 +38,7 @@ export class ErrorService {
   }
 
   private addContextInfo(error: any) {
-    const appId: string = 'My API id'; // TODO get an env variable
+    const appId: string = environment.APP_NAME;
     const location: any = this.injector.get(LocationStrategy);
     const url: string = location instanceof PathLocationStrategy ? location.path() : '';
     const time: number = new Date().getTime();
