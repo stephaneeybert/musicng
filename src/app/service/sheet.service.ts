@@ -387,7 +387,7 @@ export class SheetService {
 
   private getNoteFrequency(note: Note): number {
     // The accidental must not be present in the note when getting the frequency
-    return Tone.Frequency(note.renderAbc()).toFrequency(); // TODO Move to synth service
+    return Tone.Frequency(note.renderAbc()).toFrequency();
   }
 
   private sortNotesByPitch(notes: Array<Note>): Array<Note> {
@@ -527,7 +527,6 @@ export class SheetService {
       const renderer: Vex.Flow.Renderer = new Vex.Flow.Renderer(domElement, Vex.Flow.Renderer.Backends.SVG);
       renderer.resize(width, height);
       const sheetContext: any = renderer.getContext();
-      // sheetContext.setFont('Arial', 10, 0).setBackgroundFillStyle('#eed'); // TODO Hard coded font
       return sheetContext;
     } else {
       throw new Error('The sheet context could not be created');
