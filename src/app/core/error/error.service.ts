@@ -6,8 +6,6 @@ import { Router, Event, NavigationError } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { of, Subscription } from 'rxjs';
 
-import * as StackTraceParser from 'error-stack-parser';
-
 export const DEFAULT_JSON_URL: string = 'https://jsonplaceholder.typicode.com/1';
 
 @Injectable()
@@ -49,7 +47,7 @@ export class ErrorService {
     const id: string = `${appId}-${user}-${time}`;
     const status: string = error.status || null;
     const message: string = (error && error.body) ? error.body : error;
-    const stack: any = error instanceof HttpErrorResponse ? null : error; // TODO StackTraceParser.parse(error);
+    const stack: any = error instanceof HttpErrorResponse ? null : error;
     const method: any = (stack && stack[0]) ? stack[0].functionName : null;
 
     const errorWithContext: any = { message, error, method, name, appId, user, time, id, url, status, stack };
