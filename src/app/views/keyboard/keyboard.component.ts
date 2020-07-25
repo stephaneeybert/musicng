@@ -91,7 +91,7 @@ export class KeyboardComponent implements AfterViewInit, OnDestroy {
   }
 
   private detectChanges(id: string): void {
-    this.keyboardElementRef.nativeElement.id = this.keyboardService.buildSoundtrackKeyboardId(id);
+    this.keyboardElementRef.nativeElement.id = id;
     // Detect the change AFTER the id has been set
     this.changeDetector.detectChanges();
   }
@@ -99,7 +99,7 @@ export class KeyboardComponent implements AfterViewInit, OnDestroy {
   private initializeWithSoundtrackId(soundtrack: Soundtrack, showKeyboard: boolean): void {
     if (soundtrack != null) {
       // Refresh the view with its id before creating the keyboard
-      this.detectChanges(soundtrack.id);
+      this.detectChanges(this.keyboardService.buildSoundtrackKeyboardId(soundtrack.id));
       this.createSoundtrackKeyboard(soundtrack, showKeyboard);
     }
   }
