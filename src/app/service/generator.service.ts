@@ -93,14 +93,16 @@ export class GeneratorService {
 
     const generateDrums: boolean = this.settingsService.getSettings().generateDrums;
     if (generateDrums) {
-      const drumsTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, harmonyChords)));
+      const drumsChords: Array<Array<string>> = [[]];
+      const drumsTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, drumsChords)));
       drumsTrack.name = this.getTrackName(TRACK_TYPES.DRUMS);
       drumsTrack.displayChordNames = true;
     }
 
     const generateBass: boolean = this.settingsService.getSettings().generateBass;
     if (generateBass) {
-      const bassTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, harmonyChords)));
+      const bassChords: Array<Array<string>> = [[]];
+      const bassTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, bassChords)));
       bassTrack.name = this.getTrackName(TRACK_TYPES.BASS);
       bassTrack.displayChordNames = true;
     }
