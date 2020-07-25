@@ -4,7 +4,6 @@ import { ErrorHandler } from '@angular/core';
 
 import { ErrorService } from './error.service';
 import { Subscription } from 'rxjs';
-import { NotificationService } from '@stephaneeybert/lib-core';
 
 @Injectable()
 export class ErrorCustomHandler implements ErrorHandler {
@@ -14,13 +13,11 @@ export class ErrorCustomHandler implements ErrorHandler {
   ) { }
 
   handleError(error: Error | HttpErrorResponse): void {
-    const notificationService: any = this.injector.get(NotificationService);
     const errorService: any = this.injector.get(ErrorService);
 
     if (error instanceof HttpErrorResponse) {
       // Handle server or connection errors
       if (!navigator.onLine) {
-        // TODO return notificationService.notify('No Internet Connection');
         console.log('No internet connection');
       } else {
         // Handle Http errors (like error.status === 403, 404...)
@@ -29,7 +26,6 @@ export class ErrorCustomHandler implements ErrorHandler {
           console.log(errorWithContextInfo);
           subscription.unsubscribe();
         });
-        // TODO return notificationService.notify(`${error.status} - ${error.message}`);
       }
     } else {
       // Handle client errors (Angular Error, ReferenceError...)
