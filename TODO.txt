@@ -1,8 +1,8 @@
-// dateOfPublication: new FormControl(new Date()), TODO add a field
-
+Add a date field
+// dateOfPublication: new FormControl(new Date()),
   <mat-dialog-content>
     <mat-form-field>
-      <input formControlName="dateOfPublication" matInput [matDatepicker]="picker" placeholder="TODO Choose a date of publication"
+      <input formControlName="dateOfPublication" matInput [matDatepicker]="picker" placeholder="Choose a date of publication"
         readonly (click)="picker.open()">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
