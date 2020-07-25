@@ -258,8 +258,7 @@ export class SheetService {
         try {
           measure.sheetStave.draw();
         } catch (error) {
-          this.logNoCanvasContextError(error);
-          this.screenDeviceService.reloadPage(); // TODO Change all reload by some thrown new Error()
+          this.noCanvasContextError(error);
         }
         this.drawTrackNameOnFirstMeasure(track, soundtrack, animatedStave);
       }
@@ -267,8 +266,7 @@ export class SheetService {
         try {
           measure.sheetVoice.draw(soundtrack.sheetContext);
         } catch (error) {
-          this.logNoCanvasContextError(error);
-          this.screenDeviceService.reloadPage();
+          this.noCanvasContextError(error);
         }
       }
     }
@@ -331,8 +329,7 @@ export class SheetService {
           const staveNote: Vex.Flow.StaveNote = this.styleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR);
           staveNote.draw();
         } catch (error) {
-          this.logNoCanvasContextError(error);
-          this.screenDeviceService.reloadPage();
+          this.noCanvasContextError(error);
         }
       }
     }
@@ -345,8 +342,7 @@ export class SheetService {
           const staveNote: Vex.Flow.StaveNote = this.styleStaveNote(placedChord, VEXFLOW_NOTE_COLOR);
           staveNote.draw();
         } catch (error) {
-          this.logNoCanvasContextError(error);
-          this.screenDeviceService.reloadPage();
+          this.noCanvasContextError(error);
         }
       }
     }
@@ -361,8 +357,9 @@ export class SheetService {
     + ' ' + this.translateService.instant('message.error.reloadApp');
   }
 
-  private logNoCanvasContextError(error: Error): void {
+  private noCanvasContextError(error: Error): void {
     this.logMessageError(this.renderCanvasContextErrorMessage(), error);
+    throw new Error(error.message);
   }
 
   private logMessageError(message: string, error: Error): void {
