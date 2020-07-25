@@ -35,7 +35,7 @@ export class ErrorService {
 
   public log(error: any) {
     const errorWithContext: any = this.addContextInfo(error);
-    return MockHttpService.post(errorWithContext); // TODO Implement a server side error inbox
+    return MockHttpService.post(errorWithContext);
   }
 
   private addContextInfo(error: any) {
@@ -72,8 +72,11 @@ export class ErrorService {
 
 }
 
-class MockHttpService {
+ // A mocked service until a server side one is implemented
+ class MockHttpService {
+
   static post(error: any): Observable<any> {
     return of(error);
   }
+
 }
