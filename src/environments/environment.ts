@@ -7,6 +7,7 @@ export const environment: any = {
   wakeLock: null,
   production: false,
   pwaInstallPromptAutoDisplay: false,
+  APP_NAME: 'MusicNG',
   CLIENT_ID: 'musicng',
   ROLE_PREFIX: 'role_',
   BASE_REST_URI: 'http://dev.thalasoft.com:8443/api',
