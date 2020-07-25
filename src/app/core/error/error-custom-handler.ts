@@ -34,8 +34,10 @@ export class ErrorCustomHandler implements ErrorHandler {
       // or keep the user working on stuff that wouldn’t be saved
       // If something is broken in the app, stop the app and
       // redirect the user to an error screen with all the information
-      errorService.log(error).subscribe((errorWithContextInfo: any) => { // TODO Missing unsubscribe
+      const subscription: Subscription = errorService.log(error)
+      .subscribe((errorWithContextInfo: any) => {
         console.log(errorWithContextInfo);
+        subscription.unsubscribe();
       });
     }
   }
