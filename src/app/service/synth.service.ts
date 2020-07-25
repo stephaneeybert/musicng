@@ -190,7 +190,7 @@ export class SynthService {
 
     const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
     if (animatedStave) {
-      const subscription: Subscription = timer(WHITEWASH_DELAY).subscribe((time: number) => { // TODO Missing unsubscribe
+      const subscription: Subscription = timer(WHITEWASH_DELAY).subscribe((time: number) => {
         this.sheetService.whitewashSheetContext(soundtrack.sheetContext);
         this.sheetService.drawFirstSoundtrackMeasure(soundtrack, animatedStave);
         subscription.unsubscribe();
