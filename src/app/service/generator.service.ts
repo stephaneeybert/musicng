@@ -82,7 +82,7 @@ export class GeneratorService {
 
     const randomMethod: RANDOM_METHOD = this.settingsService.getSettings().generateMethod;
 
-    const harmonyChords: Array<Array<string>> = this.generateChords(randomMethod);
+    const harmonyChords: Array<Array<string>> = this.generateHarmonyChords(randomMethod);
     const melodyChords: Array<Array<string>> = this.generateMasterNoteChords(harmonyChords);
 
     const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_LOUDER, melodyChords)));
@@ -182,7 +182,7 @@ export class GeneratorService {
     return melodyChords;
   }
 
-  private generateChords(randomMethod: number): Array<Array<string>> {
+  private generateHarmonyChords(randomMethod: number): Array<Array<string>> {
     const shiftedChromas: Array<Array<string>> = new Array();
     const chords: Array<Array<string>> = new Array();
     // Create shifted chromas, each starting some notes down the previous chroma
