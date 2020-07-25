@@ -83,7 +83,6 @@ export class NotationService {
       chroma = textNote;
       octave = 0;
     }
-    // TODO Instead of building a note, can we return both chroma and octave ?
     const note: Note = this.createNote(index, chroma, octave);
     return note;
   }
