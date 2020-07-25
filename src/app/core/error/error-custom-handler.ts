@@ -37,7 +37,9 @@ export class ErrorCustomHandler implements ErrorHandler {
       const subscription: Subscription = errorService.log(error)
       .subscribe((errorWithContextInfo: any) => {
         console.log(errorWithContextInfo);
-        subscription.unsubscribe();
+        if (subscription != null) {
+          subscription.unsubscribe();
+        }
       });
     }
   }
