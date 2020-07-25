@@ -8,6 +8,8 @@ import { of, Subscription } from 'rxjs';
 
 import * as StackTraceParser from 'error-stack-parser';
 
+export const DEFAULT_JSON_URL: string = 'https://jsonplaceholder.typicode.com/1';
+
 @Injectable()
 export class ErrorService {
 
@@ -62,7 +64,7 @@ export class ErrorService {
 
   fireFakeServerError() {
     const subscription: Subscription = this.httpClient
-      .get('https://jsonplaceholder.typicode.com/1') // TODO Hard coded url
+      .get(DEFAULT_JSON_URL)
       .subscribe(() => {
         subscription.unsubscribe();
       });
