@@ -171,7 +171,7 @@ export class GeneratorService {
     return this.createArrayShiftOnceRight(chord);
   }
 
-  private generateMasterNoteChords(harmonyChords: Array<Array<string>>): Array<Array<string>> {
+  private generateMelodyChords(harmonyChords: Array<Array<string>>): Array<Array<string>> {
     const melodyChords: Array<Array<string>> = new Array();
     harmonyChords.forEach((chord: Array<string>) => {
       const masterNote: string = chord[0];
