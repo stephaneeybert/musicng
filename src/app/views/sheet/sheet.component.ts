@@ -10,7 +10,7 @@ import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 
 @Component({
-  selector: 'app-midi-sheet', // TODO Remove  the midi- here
+  selector: 'app-sheet', // TODO Remove  the midi- here
   templateUrl: './sheet.component.html',
   styleUrls: ['./sheet.component.css']
 })

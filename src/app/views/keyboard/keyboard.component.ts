@@ -14,7 +14,7 @@ import { Settings } from '@app/model/settings';
 const LIVE_KEYBOARD_MIDI_VELOCITY: number = 127;
 
 @Component({
-  selector: 'app-midi-keyboard',
+  selector: 'app-keyboard',
   templateUrl: './keyboard.component.html'
 })
 export class KeyboardComponent implements AfterViewInit, OnDestroy {

@@ -10,7 +10,7 @@ import { Settings } from '@app/model/settings';
 import { combineLatest } from 'rxjs';
 
 @Component({
-  selector: 'app-midi-synth',
+  selector: 'app-synth',
   templateUrl: './synth.component.html',
   styleUrls: ['./synth.component.css']
 })
