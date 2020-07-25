@@ -5,7 +5,6 @@ import { SettingsStore } from '@app/store/settings-store';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingsDialogComponent } from './settings-dialog.component';
-import { SettingsEdition } from './settings-edition';
 import { MaterialService } from '@app/core/service/material.service';
 
 @Component({
@@ -68,7 +67,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
     this.dialogSubscription = this.dialogRef
       .afterClosed()
-      .subscribe((settingsEdition: SettingsEdition) => {
+      .subscribe((settingsEdition: Settings) => {
         if (settingsEdition) {
           if (existingSettings) {
             existingSettings.generateTempoBpm = settingsEdition.generateTempoBpm;

@@ -37,4 +37,38 @@ export class Settings {
     this.showKeyboard = false;
   }
 
+  public set(
+    generateTempoBpm: number,
+    generateTimeSignatureNumerator: number,
+    generateTimeSignatureDenominator: number,
+    generateChordDuration: number,
+    generateChordDurationUnit: TempoUnit,
+    generateNoteOctave: number,
+    generateChordWidth: number,
+    generateMethod: RANDOM_METHOD,
+    generateReverseDissimilarChord: boolean,
+    generateNbChords: number,
+    generateHarmony: boolean,
+    generateDrums: boolean,
+    generateBass: boolean,
+    animatedStave: boolean,
+    showKeyboard: boolean
+    ) {
+    this.generateTempoBpm = generateTempoBpm;
+    this.generateTimeSignatureNumerator = generateTimeSignatureNumerator;
+    this.generateTimeSignatureDenominator = generateTimeSignatureDenominator;
+    this.generateChordDuration = generateChordDuration;
+    this.generateChordDurationUnit = generateChordDurationUnit;
+    this.generateNoteOctave = generateNoteOctave;
+    this.generateChordWidth = generateChordWidth;
+    this.generateMethod = generateMethod;
+    this.generateReverseDissimilarChord = generateReverseDissimilarChord;
+    this.generateNbChords = generateNbChords;
+    this.generateHarmony = generateHarmony;
+    this.generateDrums = generateDrums;
+    this.generateBass = generateBass;
+    this.animatedStave = animatedStave;
+    this.showKeyboard = showKeyboard;
+  }
+
 }

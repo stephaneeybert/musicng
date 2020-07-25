@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { SettingsEdition } from './settings-edition';
 import { TIME_SIGNATURES, RANDOM_METHOD, CHORD_DURATION_UNITS, GENERATE_METHODS } from '@app/service/notation.constant ';
 import { TempoUnit } from '@app/model/tempo-unit';
+import { Settings } from '@app/model/settings';
 
 type TimeSignatureType = {
   id: number,
@@ -26,7 +26,7 @@ type GenerateMethodType = {
 })
 export class SettingsDialogComponent implements OnInit {
 
-  settingsEdition: SettingsEdition;
+  settingsEdition: Settings;
   form!: FormGroup;
   timeSignatures: Array<TimeSignatureType> = new Array();
   chordDurationUnits: Array<ChordDurationUnitType> = new Array();
@@ -37,8 +37,9 @@ export class SettingsDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<SettingsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) {
-    const existingSettings: SettingsEdition = data.settings;
-    this.settingsEdition = new SettingsEdition(
+    const existingSettings: Settings = data.settings;
+    this.settingsEdition = new Settings();
+    this.settingsEdition.set(
       existingSettings.generateTempoBpm,
       existingSettings.generateTimeSignatureNumerator,
       existingSettings.generateTimeSignatureDenominator,
