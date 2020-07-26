@@ -305,8 +305,8 @@ export class GeneratorService {
 
   private randomlyPickChromaFromChromasPool(chromaIndex: number): number {
     const chromasPool: Array<number> = this.buildUpChromasPoolFromBonuses(chromaIndex);
-    const random: number = this.commonService.getRandomIntegerBetween(0, chromasPool.length - 1);
-    return chromasPool[random];
+    const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, chromasPool.length - 1);
+    return chromasPool[randomChromaIndex];
   }
 
   private randomlyPickChromaFromChromasPoolOrFromInpassingNotes(chromaIndex: number): number {
