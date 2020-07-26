@@ -196,20 +196,34 @@ export class GeneratorService {
     return this.createArrayShiftOnceRight(chord);
   }
 
+  // The randomised pick between a source chord note or an inpassing note can be tuned by a setting
+  private fromInpassingNote(): boolean {
+    const inpassingNote: number = this.settingsService.getSettings().generateInpassingNote;
+    if (inpassingNote > 0) {
+      const randomInpassingnote: number = this.commonService.getRandomIntegerBetween(0, 100);
+      if (randomInpassingnote < inpassingNote) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private generateMelodyChords(harmonyChords: Array<Array<string>>): Array<Array<string>> {
     const melodyChords: Array<Array<string>> = new Array();
     harmonyChords.forEach((chord: Array<string>) => {
-      const melodyNote: string = chord[0];
-      const melodyChord: Array<string> = new Array();
-      melodyChord.push(melodyNote);
-      melodyChords.push(melodyChord);
+      if (this.fromInpassingNote()) {
+      } else {
+        const melodyNote: string = chord[0];
+        const melodyChord: Array<string> = new Array();
+        melodyChord.push(melodyNote);
+        melodyChords.push(melodyChord);
+      }
     });
     return melodyChords;
   }
 
   private generateHarmonyChords(randomMethod: number): Array<Array<string>> {
     const chords: Array<Array<string>> = new Array();
-    const shiftedChromas: Array<Array<string>> = this.createAllShiftedChromas();
     let previousChord: Array<string> = new Array();
     let previousChromaNoteIndex: number = 0;
     let nbAddedChord: number = 0;
@@ -308,17 +322,6 @@ export class GeneratorService {
     const chromasPool: Array<number> = this.buildUpChromasPoolFromBonuses(chromaIndex);
     const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, chromasPool.length - 1);
     return chromasPool[randomChromaIndex];
-  }
-
-  private randomlyPickChromaFromChromasPoolOrFromInpassingNotes(chromaIndex: number): number {
-    const inpassingNote: number = this.settingsService.getSettings().generateInpassingNote;
-    if (inpassingNote > 0) {
-      const randomInpassingnote: number = this.commonService.getRandomIntegerBetween(0, 100);
-      if (randomInpassingnote < inpassingNote) {
-        return 0; // TODO
-      }
-    }
-    return this.randomlyPickChromaFromChromasPool(chromaIndex);
   }
 
 }
