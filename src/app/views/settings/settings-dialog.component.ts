@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { TIME_SIGNATURES, RANDOM_METHOD, CHORD_DURATION_UNITS, GENERATE_METHODS } from '@app/service/notation.constant ';
 import { TempoUnit } from '@app/model/tempo-unit';
 import { Settings } from '@app/model/settings';
+import { SettingsService } from './settings.service';
 
 type TimeSignatureType = {
   id: number,
@@ -33,6 +34,7 @@ export class SettingsDialogComponent implements OnInit {
   generateMethods: Array<GenerateMethodType> = new Array();
 
   constructor(
+    private settingsService: SettingsService,
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<SettingsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any
@@ -72,7 +74,10 @@ export class SettingsDialogComponent implements OnInit {
       generateChordWidth: new FormControl(this.settingsEdition.generateChordWidth),
       generateMethod: new FormControl(this.settingsEdition.generateMethod),
       generateReverseDissimilarChord: new FormControl(this.settingsEdition.generateReverseDissimilarChord),
-      generateInpassingNote: new FormControl(this.settingsEdition.generateInpassingNote),
+      generateInpassingNote: new FormControl({
+        value: this.settingsEdition.generateInpassingNote,
+        disabled: !this.isHarmonyBaseMethod()
+      }),
       generateNbChords: new FormControl(this.settingsEdition.generateNbChords),
       generateHarmony: new FormControl(this.settingsEdition.generateHarmony),
       generateDrums: new FormControl(this.settingsEdition.generateDrums),
@@ -121,6 +126,11 @@ export class SettingsDialogComponent implements OnInit {
       return value  + '%';
     }
     return value;
+  }
+
+  isHarmonyBaseMethod(): boolean {
+    const randomMethod: RANDOM_METHOD = this.settingsService.getSettings().generateMethod;
+    return RANDOM_METHOD.HARMONY_BASE == randomMethod;
   }
 
 }
