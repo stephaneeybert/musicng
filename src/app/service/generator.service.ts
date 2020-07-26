@@ -192,9 +192,9 @@ export class GeneratorService {
   private generateMelodyChords(harmonyChords: Array<Array<string>>): Array<Array<string>> {
     const melodyChords: Array<Array<string>> = new Array();
     harmonyChords.forEach((chord: Array<string>) => {
-      const masterNote: string = chord[0];
+      const melodyNote: string = chord[0];
       const melodyChord: Array<string> = new Array();
-      melodyChord.push(masterNote);
+      melodyChord.push(melodyNote);
       melodyChords.push(melodyChord);
     });
     return melodyChords;
