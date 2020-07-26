@@ -39,6 +39,7 @@ export class GeneratorService {
           noteIndex++;
           return note;
         })
+        // TODO if (RANDOM_METHOD.HARMONY_BASE == randomMethod) { halve the duration }
         const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, this.settingsService.getSettings().generateChordDuration, TempoUnit.DUPLE, velocity, notes);
         placedChordIndex++;
         return placedChord;
@@ -81,15 +82,8 @@ export class GeneratorService {
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.assignNewName());
 
     const randomMethod: RANDOM_METHOD = this.settingsService.getSettings().generateMethod;
-    if (RANDOM_METHOD.BASE == randomMethod) {
-    } else if (RANDOM_METHOD.BONUS_TABLE == randomMethod) {
-    } else if (RANDOM_METHOD.HARMONY_BASE == randomMethod) {
-    } else {
-      throw new Error('The selected random method does not exist.');
-    }
-
     const harmonyChords: Array<Array<string>> = this.generateHarmonyChords(randomMethod);
-    const melodyChords: Array<Array<string>> = this.generateMelodyChords(harmonyChords);
+    const melodyChords: Array<Array<string>> = this.generateMelodyChords(harmonyChords, randomMethod);
 
     const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_LOUDER, melodyChords)));
     melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
@@ -175,7 +169,8 @@ export class GeneratorService {
 
     // Build the shifted chromas
     shiftedChromas[0] = CHROMAS_ALPHABETICAL;
-    for (let index = 1; index < this.settingsService.getSettings().generateChordWidth; index++) {
+    const chordWidth: number = this.settingsService.getSettings().generateChordWidth;
+    for (let index = 1; index < chordWidth; index++) {
       shiftedChromas[index] = this.createShiftedChromas(shiftedChromas[index - 1]);
     }
     return shiftedChromas;
@@ -208,11 +203,32 @@ export class GeneratorService {
     return false;
   }
 
-  private generateMelodyChords(harmonyChords: Array<Array<string>>): Array<Array<string>> {
+  private generateMelodyChords(harmonyChords: Array<Array<string>>, randomMethod: number): Array<Array<string>> {
     const melodyChords: Array<Array<string>> = new Array();
     harmonyChords.forEach((chord: Array<string>) => {
-      if (this.fromInpassingNote()) {
+      if (RANDOM_METHOD.HARMONY_BASE == randomMethod) {
+        // For each source chord of the harmony track, there are two single note chords of half duration in the melody track
+        // The first note is one of the source chord, and the second one is also a note from the same source chord or an inpassing note
+        // So an inpassing note cannot be followed by another inpassing note
+        // But a source chord note can be followed by another source chord note
+
+        // Get one of the source chord notes
+        const melodyChord: Array<string> = new Array();
+        const chordWidth: number = this.settingsService.getSettings().generateChordWidth;
+        const firstNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth - 1);
+        const firstMelodyNote: string = chord[firstNoteIndex];
+        melodyChord.push(firstMelodyNote);
+        if (this.fromInpassingNote()) {
+          // Get then a note near the previous note, but not one of the source chord notes
+          // TODO
       } else {
+          // Get one of the source chord notes but not the already picked one
+          const secondNoteIndex: number = this.commonService.getRandomIntegerBetweenAndExcept(0, chordWidth, [ firstNoteIndex ]);
+          const secondMelodyNote: string = chord[secondNoteIndex];
+          melodyChord.push(secondMelodyNote);
+        }
+      } else {
+        // Get the first note of the source chord notes
         const melodyNote: string = chord[0];
         const melodyChord: Array<string> = new Array();
         melodyChord.push(melodyNote);
