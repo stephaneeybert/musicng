@@ -2,7 +2,8 @@ import { TempoUnit } from '@app/model/tempo-unit';
 
 export enum RANDOM_METHOD {
   BASE = 0,
-  BONUS_TABLE = 1
+  BONUS_TABLE = 1,
+  HARMONY_BASE = 2
 }
 
 export const DEFAULT_VELOCITY_SOFTER: number = 0.1;
@@ -21,7 +22,9 @@ export const CHORD_DURATION_UNITS: Map<TempoUnit, string> = new Map([
   [TempoUnit.BPM, 'BPM'], [TempoUnit.TRIPLET, 'Triplet'], [TempoUnit.DUPLE, 'Duple'], [TempoUnit.MEASURE, 'Measure']
 ]);
 export const GENERATE_METHODS: Map<RANDOM_METHOD, string> = new Map([
-  [RANDOM_METHOD.BASE, 'Base'], [RANDOM_METHOD.BONUS_TABLE, 'Bonus table']
+  [RANDOM_METHOD.BASE, 'Base'],
+  [RANDOM_METHOD.BONUS_TABLE, 'Bonus table'],
+  [RANDOM_METHOD.HARMONY_BASE, 'Harmony base']
 ]);
 
 export const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];

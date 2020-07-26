@@ -81,15 +81,21 @@ export class GeneratorService {
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.assignNewName());
 
     const randomMethod: RANDOM_METHOD = this.settingsService.getSettings().generateMethod;
+    if (RANDOM_METHOD.BASE == randomMethod) {
+    } else if (RANDOM_METHOD.BONUS_TABLE == randomMethod) {
+    } else if (RANDOM_METHOD.HARMONY_BASE == randomMethod) {
+    } else {
+      throw new Error('The selected random method does not exist.');
+    }
 
     const harmonyChords: Array<Array<string>> = this.generateHarmonyChords(randomMethod);
-    const melodyChords: Array<Array<string>> = this.generateMasterNoteChords(harmonyChords);
+    const melodyChords: Array<Array<string>> = this.generateMelodyChords(harmonyChords);
 
     const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_LOUDER, melodyChords)));
     melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
 
     const generateHarmony: boolean = this.settingsService.getSettings().generateHarmony;
-    if (generateHarmony) {
+    if (generateHarmony || RANDOM_METHOD.HARMONY_BASE == randomMethod) {
       const harmonyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, harmonyChords)));
       harmonyTrack.name = this.getTrackName(TRACK_TYPES.HARMONY);
       harmonyTrack.displayChordNames = true;
@@ -244,6 +250,8 @@ export class GeneratorService {
       return this.randomlyPickChromaFromBaseChromas(chromaIndex);
     } else if (RANDOM_METHOD.BONUS_TABLE == randomMethod) {
       return this.randomlyPickChromaFromChromasPool(chromaIndex);
+    } else if (RANDOM_METHOD.HARMONY_BASE == randomMethod) {
+      return this.randomlyPickChromaFromChromasPoolOrFromInpassingNotes(chromaIndex);
     } else {
       throw new Error('The selected random method does not exist.');
     }
@@ -296,6 +304,12 @@ export class GeneratorService {
   }
 
   private randomlyPickChromaFromChromasPool(chromaIndex: number): number {
+    const chromasPool: Array<number> = this.buildUpChromasPoolFromBonuses(chromaIndex);
+    const random: number = this.commonService.getRandomIntegerBetween(0, chromasPool.length - 1);
+    return chromasPool[random];
+  }
+
+  private randomlyPickChromaFromChromasPoolOrFromInpassingNotes(chromaIndex: number): number {
     const chromasPool: Array<number> = this.buildUpChromasPoolFromBonuses(chromaIndex);
     const random: number = this.commonService.getRandomIntegerBetween(0, chromasPool.length - 1);
     return chromasPool[random];
