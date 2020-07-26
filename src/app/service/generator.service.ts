@@ -253,8 +253,6 @@ export class GeneratorService {
       return this.randomlyPickChromaFromBaseChromas(chromaIndex);
     } else if (RANDOM_METHOD.BONUS_TABLE == randomMethod) {
       return this.randomlyPickChromaFromChromasPool(chromaIndex);
-    } else if (RANDOM_METHOD.HARMONY_BASE == randomMethod) {
-      return this.randomlyPickChromaFromChromasPoolOrFromInpassingNotes(chromaIndex);
     } else {
       throw new Error('The selected random method does not exist.');
     }
