@@ -156,6 +156,24 @@ export class GeneratorService {
     return chromas;
   }
 
+  // Create all the shifted chromas arrays for a chord width
+  private createAllShiftedChromas(): Array<Array<string>> {
+    const shiftedChromas: Array<Array<string>> = new Array();
+    // Create shifted chromas, each starting some notes down the previous chroma
+    // The number of shifted chromas is the width of the chord
+    //  Do Re.m  Mi.m  Fa  Sol  La.m  Si-
+    // 'C', 'D', 'E', 'F', 'G', 'A', 'B'
+    // 'E', 'F', 'G', 'A', 'B', 'C', 'D'
+    // 'G', 'A', 'B', 'C', 'D', 'E', 'F'
+
+    // Build the shifted chromas
+    shiftedChromas[0] = CHROMAS_ALPHABETICAL;
+    for (let index = 1; index < this.settingsService.getSettings().generateChordWidth; index++) {
+      shiftedChromas[index] = this.createShiftedChromas(shiftedChromas[index - 1]);
+    }
+    return shiftedChromas;
+  }
+
   // Check if the chord shares a minimum number of notes with its previous chord
   private isSimilarToPrevious(previousChord: Array<string>, chord: Array<string>): boolean {
     let nbSameNotes: number = 0;
@@ -183,21 +201,8 @@ export class GeneratorService {
   }
 
   private generateHarmonyChords(randomMethod: number): Array<Array<string>> {
-    const shiftedChromas: Array<Array<string>> = new Array();
     const chords: Array<Array<string>> = new Array();
-    // Create shifted chromas, each starting some notes down the previous chroma
-    // The number of shifted chromas is the width of the chord
-    //  Do Re.m  Mi.m  Fa  Sol  La.m  Si-
-    // 'C', 'D', 'E', 'F', 'G', 'A', 'B'
-    // 'E', 'F', 'G', 'A', 'B', 'C', 'D'
-    // 'G', 'A', 'B', 'C', 'D', 'E', 'F'
-
-    // Build the shifted chromas
-    shiftedChromas[0] = CHROMAS_ALPHABETICAL;
-    for (let index = 1; index < this.settingsService.getSettings().generateChordWidth; index++) {
-      shiftedChromas[index] = this.createShiftedChromas(shiftedChromas[index - 1]);
-    }
-
+    const shiftedChromas: Array<Array<string>> = this.createAllShiftedChromas();
     let previousChord: Array<string> = new Array();
     let previousChromaNoteIndex: number = 0;
     let nbAddedChord: number = 0;
