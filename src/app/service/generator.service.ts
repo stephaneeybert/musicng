@@ -149,6 +149,7 @@ export class GeneratorService {
     return shiftedItems;
   }
 
+  // Create a chromas array shifted from another one
   private createShiftedChromas(chromas: Array<string>): Array<string> {
     for (var i = 0; i < this.CHROMA_SHIFT_TIMES; i++) {
       chromas = this.createArrayShiftOnceLeft(chromas);
