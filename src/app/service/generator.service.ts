@@ -213,6 +213,9 @@ export class GeneratorService {
     let previousChord: Array<string> = new Array();
     let previousChromaNoteIndex: number = 0;
     let nbAddedChord: number = 0;
+
+    const shiftedChromas: Array<Array<string>> = this.createAllShiftedChromas();
+
     while (nbAddedChord < this.settingsService.getSettings().generateNbChords) {
       const chord: Array<string> = new Array();
 
