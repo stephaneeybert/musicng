@@ -12,6 +12,7 @@ export class Settings {
   generateChordWidth: number;
   generateMethod: RANDOM_METHOD;
   generateReverseDissimilarChord: boolean;
+  generateInpassingNote: number;
   generateNbChords: number;
   generateHarmony: boolean;
   generateDrums: boolean;
@@ -29,6 +30,7 @@ export class Settings {
     this.generateChordWidth = DEFAUT_CHORD_WIDTH;
     this.generateMethod = DEFAUT_RANDOM_METHOD;
     this.generateReverseDissimilarChord = false;
+    this.generateInpassingNote = 0;
     this.generateNbChords = DEFAUT_NB_CHORDS;
     this.generateHarmony = true;
     this.generateDrums = false;
@@ -47,6 +49,7 @@ export class Settings {
     generateChordWidth: number,
     generateMethod: RANDOM_METHOD,
     generateReverseDissimilarChord: boolean,
+    generateInpassingNote: number,
     generateNbChords: number,
     generateHarmony: boolean,
     generateDrums: boolean,
@@ -63,6 +66,7 @@ export class Settings {
     this.generateChordWidth = generateChordWidth;
     this.generateMethod = generateMethod;
     this.generateReverseDissimilarChord = generateReverseDissimilarChord;
+    this.generateInpassingNote = generateInpassingNote;
     this.generateNbChords = generateNbChords;
     this.generateHarmony = generateHarmony;
     this.generateDrums = generateDrums;

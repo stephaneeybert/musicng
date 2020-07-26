@@ -98,6 +98,10 @@
             "label": "Reverse chord",
             "tip": "If the chord is too dissimilar from its previous one then create a chord from a reversing of the previous one."
           },
+          "inpassingNote": {
+            "label": "In passing note",
+            "tip": "When choosing a note for a chord, tune the probability of choosing an in passing note."
+          },
           "nbChords": {
             "label": "Number of chords",
             "tip": "The number of chords of the soundtrack."

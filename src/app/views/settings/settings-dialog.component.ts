@@ -49,6 +49,7 @@ export class SettingsDialogComponent implements OnInit {
       existingSettings.generateChordWidth,
       existingSettings.generateMethod,
       existingSettings.generateReverseDissimilarChord,
+      existingSettings.generateInpassingNote,
       existingSettings.generateNbChords,
       existingSettings.generateHarmony,
       existingSettings.generateDrums,
@@ -71,6 +72,7 @@ export class SettingsDialogComponent implements OnInit {
       generateChordWidth: new FormControl(this.settingsEdition.generateChordWidth),
       generateMethod: new FormControl(this.settingsEdition.generateMethod),
       generateReverseDissimilarChord: new FormControl(this.settingsEdition.generateReverseDissimilarChord),
+      generateInpassingNote: new FormControl(this.settingsEdition.generateInpassingNote),
       generateNbChords: new FormControl(this.settingsEdition.generateNbChords),
       generateHarmony: new FormControl(this.settingsEdition.generateHarmony),
       generateDrums: new FormControl(this.settingsEdition.generateDrums),
@@ -112,6 +114,13 @@ export class SettingsDialogComponent implements OnInit {
   compareItemsById(id1: string, id2: string): boolean {
     // Use a == instead of a === so as to ignore the type difference if any
     return id1 == id2;
+  }
+
+  formatInpassingNoteLabel(value: number) {
+    if (value > 0) {
+      return value  + '%';
+    }
+    return value;
   }
 
 }

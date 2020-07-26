@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Settings } from '@app/model/settings';
 import { SettingsStore } from '@app/store/settings-store';
@@ -25,7 +25,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
   private dialogSubscription?: Subscription;
 
   constructor(
-    private changeDetector: ChangeDetectorRef,
     private settingsStore: SettingsStore,
     private materialService: MaterialService,
     private translateService: TranslateService,
@@ -79,6 +78,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
             existingSettings.generateChordWidth = settingsEdition.generateChordWidth;
             existingSettings.generateMethod = settingsEdition.generateMethod;
             existingSettings.generateReverseDissimilarChord = settingsEdition.generateReverseDissimilarChord;
+            existingSettings.generateInpassingNote = settingsEdition.generateInpassingNote;
             existingSettings.generateNbChords = settingsEdition.generateNbChords;
             existingSettings.generateHarmony = settingsEdition.generateHarmony;
             existingSettings.generateDrums = settingsEdition.generateDrums;

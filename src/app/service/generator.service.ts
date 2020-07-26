@@ -310,9 +310,12 @@ export class GeneratorService {
   }
 
   private randomlyPickChromaFromChromasPoolOrFromInpassingNotes(chromaIndex: number): number {
-    const chromasPool: Array<number> = this.buildUpChromasPoolFromBonuses(chromaIndex);
-    const random: number = this.commonService.getRandomIntegerBetween(0, chromasPool.length - 1);
-    return chromasPool[random];
+    const inpassingNote: number = this.settingsService.getSettings().generateInpassingNote;
+    if (inpassingNote > 0) {
+      return 0; // TODO
+    } else {
+      return this.randomlyPickChromaFromChromasPool(chromaIndex);
+    }
   }
 
 }

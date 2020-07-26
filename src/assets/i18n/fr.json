@@ -98,6 +98,10 @@
             "label": "Accord renversé",
             "tip": "Si l'accord est trop dissemblable par rapport à son précédent alors créer un accord à partir d'un renversement du précédent."
           },
+          "inpassingNote": {
+            "label": "Note de passage",
+            "tip": "Lors du choix d'une note pour un accord, régler la probabilité de choisir une note de passage."
+          },
           "nbChords": {
             "label": "Nombre d'accords",
             "tip": "Le nombre d'accords du morceau."

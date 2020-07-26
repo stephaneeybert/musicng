@@ -35,8 +35,8 @@ When clicking on the settings icon, it stays highlighted after closing the dialo
 / Use these chords as source for the single note chords of the melody track.
 / Each chord of the melody track has only one note.
 / The note of the first chord of the melody track is the Do, that is, the first note of the source chord of the harmony track.
-The next note of the melody track is again taken from the source chord of the harmony track, or it can be an inpassing note.
-The randomised pick between a source chord note or an inpassing note can be tuned by a setting.
+/ The next note of the melody track is again taken from the source chord of the harmony track, or it can be an inpassing note.
+/ The randomised pick between a source chord note or an inpassing note can be tuned by a setting.
 An inpassing note is one that is not one of the source chord, and that is near the previous note.
 A near note is any other note that is between the previous chord note and another note of the source chord even of a different octave.
 For each source chord of the harmony track, there are two single note chords of half duration in the melody track. The first note is one of the source chord, and the second one is also a note from the same source chord or an inpassing note.

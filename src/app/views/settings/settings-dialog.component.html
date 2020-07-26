@@ -94,6 +94,11 @@
             matTooltip="{{ 'settings.form.set.generate.reverseDissimilarChord.tip' | translate }}">
             {{ 'settings.form.set.generate.reverseDissimilarChord.label' | translate }}</mat-slide-toggle>
         </p>
+        <p>
+          <mat-label>{{ 'settings.form.set.generate.inpassingNote.label' | translate }} </mat-label>
+          <mat-slider thumbLabel [displayWith]="formatInpassingNoteLabel" min="0" max="100" value="10" step="10" formControlName="generateInpassingNote"
+            matTooltip="{{ 'settings.form.set.generate.inpassingNote.tip' | translate }}"></mat-slider>
+        </p>
       </mat-tab>
       <mat-tab>
         <ng-template mat-tab-label>
