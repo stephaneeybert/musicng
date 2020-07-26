@@ -95,7 +95,7 @@ export class GeneratorService {
     melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
 
     const generateHarmony: boolean = this.settingsService.getSettings().generateHarmony;
-    if (generateHarmony || RANDOM_METHOD.HARMONY_BASE == randomMethod) {
+    if (generateHarmony) {
       const harmonyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, harmonyChords)));
       harmonyTrack.name = this.getTrackName(TRACK_TYPES.HARMONY);
       harmonyTrack.displayChordNames = true;
