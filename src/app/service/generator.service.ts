@@ -219,7 +219,9 @@ export class GeneratorService {
         const firstMelodyNote: string = chord[firstNoteIndex];
         melodyChord.push(firstMelodyNote);
         if (this.fromInpassingNote()) {
-          // Get then a note near the previous note, but not one of the source chord notes
+          // Get an inpassing note, one that is not in the source chord,
+          // but that is between the previous note and another note of the source chord
+          // even of a different octave
           // TODO
       } else {
           // Get one of the source chord notes but not the already picked one
