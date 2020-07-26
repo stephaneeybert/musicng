@@ -312,10 +312,12 @@ export class GeneratorService {
   private randomlyPickChromaFromChromasPoolOrFromInpassingNotes(chromaIndex: number): number {
     const inpassingNote: number = this.settingsService.getSettings().generateInpassingNote;
     if (inpassingNote > 0) {
-      return 0; // TODO
-    } else {
-      return this.randomlyPickChromaFromChromasPool(chromaIndex);
+      const randomInpassingnote: number = this.commonService.getRandomIntegerBetween(0, 100);
+      if (randomInpassingnote < inpassingNote) {
+        return 0; // TODO
+      }
     }
+    return this.randomlyPickChromaFromChromasPool(chromaIndex);
   }
 
 }
