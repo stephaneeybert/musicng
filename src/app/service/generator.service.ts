@@ -224,9 +224,8 @@ export class GeneratorService {
           // even of a different octave
           // TODO
       } else {
-          // Get one of the source chord notes but not the already picked one
-          const secondNoteIndex: number = this.commonService.getRandomIntegerBetweenAndExcept(0, chordWidth, [ firstNoteIndex ]);
-          const secondMelodyNote: string = chord[secondNoteIndex];
+          // Get one of the source chord notes even the already picked one
+          const secondNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth);
           melodyChord.push(secondMelodyNote);
         }
       } else {
