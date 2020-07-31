@@ -250,21 +250,30 @@ export class GeneratorService {
         const firstNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth - 1);
         const firstMelodyNote: string = harmonyChord[firstNoteIndex];
         melodyChord.push(firstMelodyNote);
+        melodyChords.push(melodyChord);
         if (this.fromInpassingNote()) {
           const inpassingNote: string = this.getInpassingNote(harmonyChord, firstMelodyNote);
           melodyChord.push(inpassingNote);
+          melodyChords.push(melodyChord);
         } else {
           // Get one of the source chord notes even the already picked one
           const secondNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth);
           const secondMelodyNote: string = harmonyChord[secondNoteIndex];
-          melodyChord.push(secondMelodyNote);
+          if (secondMelodyNote != firstMelodyNote) {
+            melodyChord.push(secondMelodyNote);
+            melodyChords.push(melodyChord);
+          } else {
+            // If the second note is the same as the fisrt one then have only one chord
+            // of a duration that is twice as long
+            // TODO
+          }
         }
       } else {
         // Get the first note of the source chord notes
         const melodyNote: string = harmonyChord[0];
         melodyChord.push(melodyNote);
+        melodyChords.push(melodyChord);
       }
-      melodyChords.push(melodyChord);
     });
     return melodyChords;
   }
