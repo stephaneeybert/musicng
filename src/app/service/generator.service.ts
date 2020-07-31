@@ -203,38 +203,68 @@ export class GeneratorService {
     return false;
   }
 
+  private getNearNotes(harmonyChord: Array<string>, firstMelodyNote: string): Array<string> {
+    const nearNotes: Array<string> = new Array<string>();
+    let chromas: Array<string> = CHROMAS_ALPHABETICAL;
+    const firstMelodyNoteIndex: number = CHROMAS_ALPHABETICAL.indexOf(firstMelodyNote);
+    for (let chromaIndex: number = 0; chromaIndex < CHROMAS_ALPHABETICAL.length; chromaIndex++) {
+      chromas = this.createArrayShiftOnceLeft(chromas);
+      if (!harmonyChord.includes(chromas[firstMelodyNoteIndex])) {
+        nearNotes.push(chromas[firstMelodyNoteIndex]);
+      } else {
+        break;
+      }
+    }
+    chromas = CHROMAS_ALPHABETICAL;
+    for (let chromaIndex: number = 0; chromaIndex < CHROMAS_ALPHABETICAL.length; chromaIndex++) {
+      chromas = this.createArrayShiftOnceRight(chromas);
+      if (!harmonyChord.includes(chromas[firstMelodyNoteIndex])) {
+        nearNotes.push(chromas[firstMelodyNoteIndex]);
+      } else {
+        break;
+      }
+    }
+    return nearNotes;
+  }
+
+  private getInpassingNote(harmonyChord: Array<string>, firstMelodyNote: string): string {
+    // Randomly pick a note from the near ones
+    const nearNotes: Array<string> = this.getNearNotes(harmonyChord, firstMelodyNote);
+    const nearNoteIndex: number = this.commonService.getRandomIntegerBetween(0, nearNotes.length - 1);
+    return harmonyChord[nearNoteIndex];
+  }
+
   private generateMelodyChords(harmonyChords: Array<Array<string>>, randomMethod: number): Array<Array<string>> {
     const melodyChords: Array<Array<string>> = new Array();
-    harmonyChords.forEach((chord: Array<string>) => {
+    harmonyChords.forEach((harmonyChord: Array<string>) => {
+      const melodyChord: Array<string> = new Array();
       if (RANDOM_METHOD.HARMONY_BASE == randomMethod) {
         // For each source chord of the harmony track, there are two single note chords of half duration in the melody track
-        // The first note is one of the source chord, and the second one is also a note from the same source chord or an inpassing note
-        // So an inpassing note cannot be followed by another inpassing note
-        // But a source chord note can be followed by another source chord note
+        // The first note is one of the source chord, and the second note is also a note from the same source chord or an inpassing note
+        // An inpassing note is one that is not in the source chord but that is between the previous note and another note of the source chord even if of a another octave
+        // So an inpassing note cannot be followed by another inpassing note, but a source chord note can be followed by another source chord note
 
         // Get one of the source chord notes
         const melodyChord: Array<string> = new Array();
         const chordWidth: number = this.settingsService.getSettings().generateChordWidth;
         const firstNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth - 1);
-        const firstMelodyNote: string = chord[firstNoteIndex];
+        const firstMelodyNote: string = harmonyChord[firstNoteIndex];
         melodyChord.push(firstMelodyNote);
         if (this.fromInpassingNote()) {
-          // Get an inpassing note, one that is not in the source chord,
-          // but that is between the previous note and another note of the source chord
-          // even of a different octave
-          // TODO
-      } else {
+          const inpassingNote: string = this.getInpassingNote(harmonyChord, firstMelodyNote);
+          melodyChord.push(inpassingNote);
+        } else {
           // Get one of the source chord notes even the already picked one
           const secondNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth);
+          const secondMelodyNote: string = harmonyChord[secondNoteIndex];
           melodyChord.push(secondMelodyNote);
         }
       } else {
         // Get the first note of the source chord notes
-        const melodyNote: string = chord[0];
-        const melodyChord: Array<string> = new Array();
+        const melodyNote: string = harmonyChord[0];
         melodyChord.push(melodyNote);
-        melodyChords.push(melodyChord);
       }
+      melodyChords.push(melodyChord);
     });
     return melodyChords;
   }
@@ -284,8 +314,10 @@ export class GeneratorService {
       return this.randomlyPickChromaFromBaseChromas(chromaIndex);
     } else if (RANDOM_METHOD.BONUS_TABLE == randomMethod) {
       return this.randomlyPickChromaFromChromasPool(chromaIndex);
+    } else if (RANDOM_METHOD.HARMONY_BASE == randomMethod) {
+      return this.randomlyPickChromaFromChromasPool(chromaIndex);
     } else {
-      throw new Error('The selected random method does not exist.');
+      throw new Error('The selected generation method does not exist.');
     }
   }
 
