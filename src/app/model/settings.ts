@@ -1,5 +1,5 @@
 import { TempoUnit } from './tempo-unit';
-import { RANDOM_METHOD, DEFAUT_TEMPO_BPM, DEFAUT_TIME_SIGNATURE_NUMERATOR, DEFAUT_TIME_SIGNATURE_DENOMINATOR, DEFAUT_CHORD_DURATION, DEFAUT_NOTE_OCTAVE, DEFAUT_CHORD_WIDTH, DEFAUT_RANDOM_METHOD, DEFAUT_NB_CHORDS } from '@app/service/notation.constant ';
+import { RANDOM_METHOD, DEFAUT_TEMPO_BPM, DEFAUT_TIME_SIGNATURE_NUMERATOR, DEFAUT_TIME_SIGNATURE_DENOMINATOR, DEFAUT_CHORD_DURATION, DEFAUT_NOTE_OCTAVE, DEFAUT_CHORD_WIDTH, DEFAUT_RANDOM_METHOD, DEFAULT_RANDOM_INPASSING, DEFAUT_NB_CHORDS } from '@app/service/notation.constant ';
 
 export class Settings {
 
@@ -30,7 +30,7 @@ export class Settings {
     this.generateChordWidth = DEFAUT_CHORD_WIDTH;
     this.generateMethod = DEFAUT_RANDOM_METHOD;
     this.generateReverseDissimilarChord = false;
-    this.generateInpassingNote = 0;
+    this.generateInpassingNote = DEFAULT_RANDOM_INPASSING;
     this.generateNbChords = DEFAUT_NB_CHORDS;
     this.generateHarmony = true;
     this.generateDrums = false;

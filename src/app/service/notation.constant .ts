@@ -16,7 +16,8 @@ export const DEFAUT_NOTE_OCTAVE: number = 5;
 export const DEFAUT_NB_CHORDS: number = 120;
 export const DEFAUT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 export const DEFAUT_TIME_SIGNATURE_NUMERATOR: number = 4;
-export const DEFAUT_RANDOM_METHOD: RANDOM_METHOD = RANDOM_METHOD.BONUS_TABLE;
+export const DEFAUT_RANDOM_METHOD: RANDOM_METHOD = RANDOM_METHOD.HARMONY_BASE;
+export const DEFAULT_RANDOM_INPASSING: number = 50;
 
 export const CHORD_DURATION_UNITS: Map<TempoUnit, string> = new Map([
   [TempoUnit.BPM, 'BPM'], [TempoUnit.TRIPLET, 'Triplet'], [TempoUnit.DUPLE, 'Duple'], [TempoUnit.MEASURE, 'Measure']
