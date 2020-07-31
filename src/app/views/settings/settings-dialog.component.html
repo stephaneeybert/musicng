@@ -24,19 +24,19 @@
         <p>
           <mat-form-field>
             <mat-label>{{ 'settings.form.set.generate.nbChords.label' | translate }}</mat-label>
-            <input formControlName="generateNbChords" matInput placeholder="120"
+            <input formControlName="generateNbChords" matInput
               matTooltip="{{ 'settings.form.set.generate.nbChords.tip' | translate }}">
           </mat-form-field>
         </p>
         <p>
           <mat-label>{{ 'settings.form.set.generate.chordWidth.label' | translate }} </mat-label>
-          <mat-slider thumbLabel min='1' max='6' value='3' formControlName="generateChordWidth"
+          <mat-slider thumbLabel min='1' max='6' formControlName="generateChordWidth"
             matTooltip="{{ 'settings.form.set.generate.chordWidth.tip' | translate }}"></mat-slider>
         </p>
         <p>
           <mat-form-field>
             <mat-label>{{ 'settings.form.set.generate.chordDuration.label' | translate }}</mat-label>
-            <input formControlName="generateChordDuration" matInput placeholder="4" value="4"
+            <input formControlName="generateChordDuration" matInput
               matTooltip="{{ 'settings.form.set.generate.chordDuration.tip' | translate }}">
           </mat-form-field>
           <!-- <mat-form-field>
@@ -52,7 +52,7 @@
         <p>
           <mat-form-field>
             <mat-label>{{ 'settings.form.set.generate.noteOctave.label' | translate }}</mat-label>
-            <input formControlName="generateNoteOctave" matInput placeholder="5"
+            <input formControlName="generateNoteOctave" matInput
               matTooltip="{{ 'settings.form.set.generate.noteOctave.tip' | translate }}">
           </mat-form-field>
         </p>
@@ -64,7 +64,7 @@
         <p>
           <mat-form-field>
             <mat-label>{{ 'settings.form.set.generate.tempoBpm.label' | translate }}</mat-label>
-            <input formControlName="generateTempoBpm" matInput placeholder="128"
+            <input formControlName="generateTempoBpm" matInput
               matTooltip="{{ 'settings.form.set.generate.tempoBpm.tip' | translate }}">
           </mat-form-field>
         </p>
@@ -96,7 +96,7 @@
         </p>
         <p>
           <mat-label>{{ 'settings.form.set.generate.inpassingNote.label' | translate }} </mat-label>
-          <mat-slider thumbLabel [displayWith]="formatInpassingNoteLabel" min="0" max="100" value="{{ defaultInpassingNote }}" step="5" formControlName="generateInpassingNote"
+          <mat-slider thumbLabel [displayWith]="formatInpassingNoteLabel" min="0" max="100" step="5" formControlName="generateInpassingNote"
             matTooltip="{{ 'settings.form.set.generate.inpassingNote.tip' | translate }}"></mat-slider>
         </p>
       </mat-tab>
