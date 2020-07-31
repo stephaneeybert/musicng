@@ -8,15 +8,15 @@ export enum RANDOM_METHOD {
 
 export const DEFAULT_VELOCITY_SOFTER: number = 0.1;
 export const DEFAULT_VELOCITY_LOUDER: number = 1;
-export const TIME_SIGNATURES: Array<number> = [2, 4];
-export const DEFAUT_TEMPO_BPM: number = 128;
-export const DEFAUT_CHORD_WIDTH: number = 3;
-export const DEFAUT_CHORD_DURATION: number = 4;
-export const DEFAUT_NOTE_OCTAVE: number = 5;
-export const DEFAUT_NB_CHORDS: number = 120;
-export const DEFAUT_TIME_SIGNATURE_DENOMINATOR: number = 4;
-export const DEFAUT_TIME_SIGNATURE_NUMERATOR: number = 4;
-export const DEFAUT_RANDOM_METHOD: RANDOM_METHOD = RANDOM_METHOD.HARMONY_BASE;
+export const DEFAULT_TIME_SIGNATURES: Array<number> = [2, 4];
+export const DEFAULT_TEMPO_BPM: number = 128;
+export const DEFAULT_CHORD_WIDTH: number = 3;
+export const DEFAULT_CHORD_DURATION: number = 4;
+export const DEFAULT_NOTE_OCTAVE: number = 5;
+export const DEFAULT_NB_CHORDS: number = 120;
+export const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
+export const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
+export const DEFAULT_RANDOM_METHOD: RANDOM_METHOD = RANDOM_METHOD.HARMONY_BASE;
 export const DEFAULT_RANDOM_INPASSING: number = 50;
 
 export const CHORD_DURATION_UNITS: Map<TempoUnit, string> = new Map([

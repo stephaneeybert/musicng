@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { TIME_SIGNATURES, RANDOM_METHOD, CHORD_DURATION_UNITS, GENERATE_METHODS } from '@app/service/notation.constant ';
+import { DEFAULT_TIME_SIGNATURES, RANDOM_METHOD, CHORD_DURATION_UNITS, GENERATE_METHODS } from '@app/service/notation.constant ';
 import { TempoUnit } from '@app/model/tempo-unit';
 import { Settings } from '@app/model/settings';
 import { SettingsService } from './settings.service';
@@ -91,7 +91,7 @@ export class SettingsDialogComponent implements OnInit {
   }
 
   private instantiateLists(): void {
-    TIME_SIGNATURES.forEach((timeSignature: number) => {
+    DEFAULT_TIME_SIGNATURES.forEach((timeSignature: number) => {
       this.timeSignatures.push({ 'id': timeSignature, 'name': String(timeSignature) });
     });
 

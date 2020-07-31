@@ -1,5 +1,5 @@
 import { TempoUnit } from './tempo-unit';
-import { RANDOM_METHOD, DEFAUT_TEMPO_BPM, DEFAUT_TIME_SIGNATURE_NUMERATOR, DEFAUT_TIME_SIGNATURE_DENOMINATOR, DEFAUT_CHORD_DURATION, DEFAUT_NOTE_OCTAVE, DEFAUT_CHORD_WIDTH, DEFAUT_RANDOM_METHOD, DEFAULT_RANDOM_INPASSING, DEFAUT_NB_CHORDS } from '@app/service/notation.constant ';
+import { RANDOM_METHOD, DEFAULT_TEMPO_BPM, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_CHORD_DURATION, DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_WIDTH, DEFAULT_RANDOM_METHOD, DEFAULT_RANDOM_INPASSING, DEFAULT_NB_CHORDS } from '@app/service/notation.constant ';
 
 export class Settings {
 
@@ -21,17 +21,17 @@ export class Settings {
   showKeyboard: boolean;
 
   constructor() {
-    this.generateTempoBpm = DEFAUT_TEMPO_BPM;
-    this.generateTimeSignatureNumerator = DEFAUT_TIME_SIGNATURE_NUMERATOR;
-    this.generateTimeSignatureDenominator = DEFAUT_TIME_SIGNATURE_DENOMINATOR;
-    this.generateChordDuration = DEFAUT_CHORD_DURATION;
+    this.generateTempoBpm = DEFAULT_TEMPO_BPM;
+    this.generateTimeSignatureNumerator = DEFAULT_TIME_SIGNATURE_NUMERATOR;
+    this.generateTimeSignatureDenominator = DEFAULT_TIME_SIGNATURE_DENOMINATOR;
+    this.generateChordDuration = DEFAULT_CHORD_DURATION;
     this.generateChordDurationUnit = TempoUnit.BPM;
-    this.generateNoteOctave = DEFAUT_NOTE_OCTAVE;
-    this.generateChordWidth = DEFAUT_CHORD_WIDTH;
-    this.generateMethod = DEFAUT_RANDOM_METHOD;
+    this.generateNoteOctave = DEFAULT_NOTE_OCTAVE;
+    this.generateChordWidth = DEFAULT_CHORD_WIDTH;
+    this.generateMethod = DEFAULT_RANDOM_METHOD;
     this.generateReverseDissimilarChord = false;
     this.generateInpassingNote = DEFAULT_RANDOM_INPASSING;
-    this.generateNbChords = DEFAUT_NB_CHORDS;
+    this.generateNbChords = DEFAULT_NB_CHORDS;
     this.generateHarmony = true;
     this.generateDrums = false;
     this.generateBass = false;
