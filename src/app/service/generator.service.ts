@@ -29,18 +29,22 @@ export class GeneratorService {
   CHROMA_SHIFT_TIMES: number = 2;
   SIMILAR_NOTE_MIN: number = 2;
 
-  private createPlacedChords(velocity: number, generatedChords: Array<Array<string>>): Array<PlacedChord> {
+  private createNotesAndPlacedChord(octave: number, chordDuration: number, velocity: number, placedChordIndex: number, chord: Array<string>): PlacedChord {
+    let noteIndex: number = 0;
+    const notes: Array<Note> = chord.map((textNote: string) => {
+      const note: Note = this.notationService.createNote(noteIndex, textNote, octave);
+      noteIndex++;
+      return note;
+    })
+    // TODO if (RANDOM_METHOD.HARMONY_BASE == randomMethod) { halve the duration }
+    return this.notationService.createPlacedChord(placedChordIndex, chordDuration, TempoUnit.DUPLE, velocity, notes);
+  }
+
+  private createPlacedChords(octave: number, chordDuration: number, velocity: number, generatedChords: Array<Array<string>>): Array<PlacedChord> {
     let placedChordIndex: number = 0;
     const createdPlacedChords: Array<PlacedChord> = generatedChords
       .map((chord: Array<string>) => {
-        let noteIndex: number = 0;
-        const notes: Array<Note> = chord.map((textNote: string) => {
-          const note: Note = this.notationService.createNote(noteIndex, textNote, this.settingsService.getSettings().generateNoteOctave);
-          noteIndex++;
-          return note;
-        })
-        // TODO if (RANDOM_METHOD.HARMONY_BASE == randomMethod) { halve the duration }
-        const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, this.settingsService.getSettings().generateChordDuration, TempoUnit.DUPLE, velocity, notes);
+        const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, placedChordIndex, chord);
         placedChordIndex++;
         return placedChord;
       });
@@ -82,15 +86,19 @@ export class GeneratorService {
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.assignNewName());
 
     const randomMethod: RANDOM_METHOD = this.settingsService.getSettings().generateMethod;
+
+    const octave: number = this.settingsService.getSettings().generateNoteOctave;
+    const chordDuration: number = this.settingsService.getSettings().generateChordDuration;
+
     const harmonyChords: Array<Array<string>> = this.generateHarmonyChords(randomMethod);
     const melodyChords: Array<Array<string>> = this.generateMelodyChords(harmonyChords, randomMethod);
 
-    const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_LOUDER, melodyChords)));
+    const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(octave, chordDuration, DEFAULT_VELOCITY_LOUDER, melodyChords)));
     melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
 
     const generateHarmony: boolean = this.settingsService.getSettings().generateHarmony;
     if (generateHarmony) {
-      const harmonyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, harmonyChords)));
+      const harmonyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(octave, chordDuration, DEFAULT_VELOCITY_SOFTER, harmonyChords)));
       harmonyTrack.name = this.getTrackName(TRACK_TYPES.HARMONY);
       harmonyTrack.displayChordNames = true;
     }
@@ -98,7 +106,7 @@ export class GeneratorService {
     const generateDrums: boolean = this.settingsService.getSettings().generateDrums;
     if (generateDrums) {
       const drumsChords: Array<Array<string>> = [[]];
-      const drumsTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, drumsChords)));
+      const drumsTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(octave, chordDuration, DEFAULT_VELOCITY_SOFTER, drumsChords)));
       drumsTrack.name = this.getTrackName(TRACK_TYPES.DRUMS);
       drumsTrack.displayChordNames = true;
     }
@@ -106,7 +114,7 @@ export class GeneratorService {
     const generateBass: boolean = this.settingsService.getSettings().generateBass;
     if (generateBass) {
       const bassChords: Array<Array<string>> = [[]];
-      const bassTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(DEFAULT_VELOCITY_SOFTER, bassChords)));
+      const bassTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(octave, chordDuration, DEFAULT_VELOCITY_SOFTER, bassChords)));
       bassTrack.name = this.getTrackName(TRACK_TYPES.BASS);
       bassTrack.displayChordNames = true;
     }
@@ -266,6 +274,8 @@ export class GeneratorService {
             // If the second note is the same as the fisrt one then have only one chord
             // but with a duration that is twice as long
             // TODO
+            melodyChord.push(secondMelodyNote);
+            melodyChords.push(melodyChord);
           }
         }
       } else {
