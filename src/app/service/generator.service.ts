@@ -264,7 +264,7 @@ export class GeneratorService {
             melodyChords.push(melodyChord);
           } else {
             // If the second note is the same as the fisrt one then have only one chord
-            // of a duration that is twice as long
+            // but with a duration that is twice as long
             // TODO
           }
         }
