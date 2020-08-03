@@ -36,7 +36,6 @@ export class GeneratorService {
       noteIndex++;
       return note;
     })
-    // TODO if (RANDOM_METHOD.HARMONY_BASE == randomMethod) { halve the duration }
     return this.notationService.createPlacedChord(placedChordIndex, chordDuration, TempoUnit.DUPLE, velocity, notes);
   }
 
@@ -257,10 +256,12 @@ export class GeneratorService {
         const chordWidth: number = this.settingsService.getSettings().generateChordWidth;
         const firstNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth - 1);
         const firstMelodyNote: string = harmonyChord[firstNoteIndex];
+        // TODO halve the duration
         melodyChord.push(firstMelodyNote);
         melodyChords.push(melodyChord);
         if (this.fromInpassingNote()) {
           const inpassingNote: string = this.getInpassingNote(harmonyChord, firstMelodyNote);
+          // TODO halve the duration
           melodyChord.push(inpassingNote);
           melodyChords.push(melodyChord);
         } else {
@@ -268,12 +269,13 @@ export class GeneratorService {
           const secondNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth);
           const secondMelodyNote: string = harmonyChord[secondNoteIndex];
           if (secondMelodyNote != firstMelodyNote) {
+            // TODO halve the duration
             melodyChord.push(secondMelodyNote);
             melodyChords.push(melodyChord);
           } else {
             // If the second note is the same as the fisrt one then have only one chord
             // but with a duration that is twice as long
-            // TODO
+            // TODO double the previously halved duration
             melodyChord.push(secondMelodyNote);
             melodyChords.push(melodyChord);
           }
