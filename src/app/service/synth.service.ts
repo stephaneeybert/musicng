@@ -278,7 +278,7 @@ export class SynthService {
                   this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, measure.index);
                   this.sheetService.drawMeasure(firstMeasure, track, soundtrack, animatedStave);
                 }
-                this.stopSoundtrack(soundtrack);
+                this.stopSoundtrack(soundtrack); // TODO What if the track is shorter than the other tracks ? The soundtrack should be stopped when all tracks have completed.
               }, releaseTime);
             }
             relativeTime += durationInSeconds;
