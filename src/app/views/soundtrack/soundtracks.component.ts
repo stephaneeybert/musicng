@@ -167,12 +167,18 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
     console.log(soundtrack);
   }
 
+  // Updating a view model in a subscribe() block requires an explicit call to the change detection
+  private detectChanges(): void {
+    this.changeDetector.detectChanges();
+  }
+
   private observeSoundtracks(): void {
     this.soundtracksSubscription = this.soundtrackStore.getSoundtracks$()
       .pipe(
         delay(500)
       ).subscribe((soundtracks: Array<Soundtrack>) => {
         this.soundtracks = soundtracks;
+        this.detectChanges();
       });
   }
 
