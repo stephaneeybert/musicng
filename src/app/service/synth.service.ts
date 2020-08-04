@@ -369,10 +369,11 @@ export class SynthService {
   }
 
   private allTracksCompletedPlaying(soundtrack: Soundtrack): boolean {
-    return soundtrack.tracks
+    const complete: boolean = soundtrack.tracks
       .every((track: Track) => {
         return track.playingComplete;
       });
+    return complete;
   }
 
 }
