@@ -278,7 +278,10 @@ export class SynthService {
                   this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, measure.index);
                   this.sheetService.drawMeasure(firstMeasure, track, soundtrack, animatedStave);
                 }
-                this.stopSoundtrack(soundtrack); // TODO What if the track is shorter than the other tracks ? The soundtrack should be stopped when all tracks have completed.
+                track.playingComplete = true;
+                if (this.allTracksCompletedPlaying(soundtrack)) {
+                  this.stopSoundtrack(soundtrack);
+                }
               }, releaseTime);
             }
             relativeTime += durationInSeconds;
@@ -362,6 +365,13 @@ export class SynthService {
         } else {
           return textNote;
         }
+      });
+  }
+
+  private allTracksCompletedPlaying(soundtrack: Soundtrack): boolean {
+    return soundtrack.tracks
+      .every((track: Track) => {
+        return track.playingComplete;
       });
   }
 

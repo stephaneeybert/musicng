@@ -8,6 +8,7 @@ export class Track {
   measures: Array<Measure>;
   name?: string;
   displayChordNames: boolean;
+  playingComplete: boolean;
   channel?: number; // TODO Used ?
   instrument?: Instrument; // TODO Used ?
   controls?: Array<Control>; // TODO Used ?
@@ -16,6 +17,7 @@ export class Track {
     this.index = index;
     this.measures = new Array<Measure>();
     this.displayChordNames = false;
+    this.playingComplete = false;
   }
 
   public isFirst(): boolean {
