@@ -193,6 +193,7 @@ export class SynthService {
     this.releaseAllSoundtrackNotes(soundtrack);
     this.keyboardService.unpressAll(soundtrack.keyboard);
     this.clearTransport();
+    this.wakelockService.releaseWakeLock();
 
     const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
     if (animatedStave) {
