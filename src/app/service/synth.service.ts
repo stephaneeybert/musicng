@@ -166,8 +166,16 @@ export class SynthService {
       this.clearTransport();
       this.stopOtherSoundtracks(soundtrack);
 
+      if (!this.isTransportStarted()) {
+        throw new Error('The soundtrack cannot be played as the tone transport has not started.');
+      }
+
+      this.setPlaying(soundtrack, true);
+
+      const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
+
       soundtrack.tracks.forEach((track: Track) => {
-        this.play(track, soundtrack);
+        this.play(track, soundtrack, animatedStave);
       });
     } else {
       throw new Error('The soundtrack contains no notes and could not be played.');
@@ -211,20 +219,12 @@ export class SynthService {
     this.soundtrackService.setSoundtrack(soundtrack);
   }
 
-  private play(track: Track, soundtrack: Soundtrack): void {
+  private play(track: Track, soundtrack: Soundtrack, animatedStave: boolean): void {
     let previousScheduledMeasure: Measure;
     let firstMeasure: Measure;
 
     // By starting at 1 instead of 0 the first measure is never skipped when playing
     let measureCounter: number = 1;
-
-    if (!this.isTransportStarted()) {
-      throw new Error('The soundtrack cannot be played as the tone transport has not started.');
-    }
-
-    this.setPlaying(soundtrack, true);
-
-    const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
 
     track.getSortedMeasures().forEach((measure: Measure) => {
       // Wait for user idleness before starting playing
