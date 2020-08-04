@@ -66,6 +66,7 @@ export class GeneratorService {
           throw new Error('The measure placed chords array has not been instantiated.');
         }
       });
+    measures.push(measure);
     return measures;
   }
 
