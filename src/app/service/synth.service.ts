@@ -213,7 +213,6 @@ export class SynthService {
 
   private play(track: Track, soundtrack: Soundtrack): void {
     let previousScheduledMeasure: Measure;
-    let previousDrawnMeasure: Measure;
     let firstMeasure: Measure;
 
     // By starting at 1 instead of 0 the first measure is never skipped when playing
@@ -267,7 +266,6 @@ export class SynthService {
                 }
                 this.sheetService.highlightStaveNote(placedChord, soundtrack);
                 this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
-                previousDrawnMeasure = measure;
               }, triggerTime);
               Tone.Draw.schedule((actualTime: any) => {
                 this.sheetService.unhighlightStaveNote(placedChord, soundtrack);
