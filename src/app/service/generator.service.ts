@@ -35,7 +35,7 @@ export class GeneratorService {
       const note: Note = this.notationService.createNote(noteIndex, textNote, octave);
       noteIndex++;
       return note;
-    })
+    });
     return this.notationService.createPlacedChord(placedChordIndex, chordDuration, TempoUnit.DUPLE, velocity, notes);
   }
 
