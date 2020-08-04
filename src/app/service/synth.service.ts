@@ -278,9 +278,7 @@ export class SynthService {
                   this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, measure.index);
                   this.sheetService.drawMeasure(firstMeasure, track, soundtrack, animatedStave);
                 }
-                this.keyboardService.unpressAll(soundtrack.keyboard);
-                this.setPlaying(soundtrack, false);
-                this.wakelockService.releaseWakeLock();
+                this.stopSoundtrack(soundtrack);
               }, releaseTime);
             }
             relativeTime += durationInSeconds;
