@@ -39,18 +39,6 @@ export class GeneratorService {
     return this.notationService.createPlacedChord(placedChordIndex, chordDuration, TempoUnit.DUPLE, velocity, notes);
   }
 
-  private createPlacedChords(octave: number, chordDuration: number, velocity: number, generatedChords: Array<Array<string>>): Array<PlacedChord> {
-    let placedChordIndex: number = 0;
-    const createdPlacedChords: Array<PlacedChord> = generatedChords
-      .map((chord: Array<string>) => {
-        const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, placedChordIndex, chord);
-        placedChordIndex++;
-        return placedChord;
-      });
-    this.notationService.addEndOfTrackNote(createdPlacedChords);
-    return createdPlacedChords;
-  }
-
   private createMeasures(generatedChords: Array<PlacedChord>): Array<Measure> {
     let measureIndex: number = 0;
     let chordIndex: number = 0;
@@ -89,31 +77,35 @@ export class GeneratorService {
     const octave: number = this.settingsService.getSettings().generateNoteOctave;
     const chordDuration: number = this.settingsService.getSettings().generateChordDuration;
 
-    const harmonyChords: Array<Array<string>> = this.generateHarmonyChords(randomMethod);
-    const melodyChords: Array<Array<string>> = this.generateMelodyChords(harmonyChords, randomMethod);
+    const harmonyChords: Array<PlacedChord> = this.generateHarmonyChords(randomMethod, octave, chordDuration, DEFAULT_VELOCITY_SOFTER);
 
-    const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(octave, chordDuration, DEFAULT_VELOCITY_LOUDER, melodyChords)));
+    const melodyChords: Array<PlacedChord> = this.generateMelodyChords(harmonyChords, randomMethod, octave, chordDuration, DEFAULT_VELOCITY_LOUDER);
+
+    this.notationService.addEndOfTrackNote(harmonyChords);
+    this.notationService.addEndOfTrackNote(melodyChords);
+
+    const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(melodyChords));
     melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
 
     const generateHarmony: boolean = this.settingsService.getSettings().generateHarmony;
     if (generateHarmony) {
-      const harmonyTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(octave, chordDuration, DEFAULT_VELOCITY_SOFTER, harmonyChords)));
+      const harmonyTrack: Track = soundtrack.addTrack(this.createMeasures(harmonyChords));
       harmonyTrack.name = this.getTrackName(TRACK_TYPES.HARMONY);
       harmonyTrack.displayChordNames = true;
     }
 
     const generateDrums: boolean = this.settingsService.getSettings().generateDrums;
     if (generateDrums) {
-      const drumsChords: Array<Array<string>> = [[]];
-      const drumsTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(octave, chordDuration, DEFAULT_VELOCITY_SOFTER, drumsChords)));
+      const drumsChords: Array<PlacedChord> = new Array();
+      const drumsTrack: Track = soundtrack.addTrack(this.createMeasures(drumsChords));
       drumsTrack.name = this.getTrackName(TRACK_TYPES.DRUMS);
       drumsTrack.displayChordNames = true;
     }
 
     const generateBass: boolean = this.settingsService.getSettings().generateBass;
     if (generateBass) {
-      const bassChords: Array<Array<string>> = [[]];
-      const bassTrack: Track = soundtrack.addTrack(this.createMeasures(this.createPlacedChords(octave, chordDuration, DEFAULT_VELOCITY_SOFTER, bassChords)));
+      const bassChords: Array<PlacedChord> = new Array();
+      const bassTrack: Track = soundtrack.addTrack(this.createMeasures(bassChords));
       bassTrack.name = this.getTrackName(TRACK_TYPES.BASS);
       bassTrack.displayChordNames = true;
     }
@@ -241,10 +233,11 @@ export class GeneratorService {
     return harmonyChord[nearNoteIndex];
   }
 
-  private generateMelodyChords(harmonyChords: Array<Array<string>>, randomMethod: number): Array<Array<string>> {
-    const melodyChords: Array<Array<string>> = new Array();
-    harmonyChords.forEach((harmonyChord: Array<string>) => {
-      const melodyChord: Array<string> = new Array();
+  private generateMelodyChords(harmonyChords: Array<PlacedChord>, randomMethod: number, octave: number, chordDuration: number, velocity: number): Array<PlacedChord> {
+    const melodyChords: Array<PlacedChord> = new Array();
+    let placedChordIndex: number = 0;
+
+    harmonyChords.forEach((harmonyChord: PlacedChord) => {
       if (RANDOM_METHOD.HARMONY_BASE == randomMethod) {
         // For each source chord of the harmony track, there are two single note chords of half duration in the melody track
         // The first note is one of the source chord, and the second note is also a note from the same source chord or an inpassing note
@@ -252,82 +245,82 @@ export class GeneratorService {
         // So an inpassing note cannot be followed by another inpassing note, but a source chord note can be followed by another source chord note
 
         // Get one of the source chord notes
-        const melodyChord: Array<string> = new Array();
         const chordWidth: number = this.settingsService.getSettings().generateChordWidth;
         const firstNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth - 1);
-        const firstMelodyNote: string = harmonyChord[firstNoteIndex];
-        // TODO halve the duration
-        melodyChord.push(firstMelodyNote);
-        melodyChords.push(melodyChord);
+        const firstMelodyChroma: string = harmonyChord.notes[firstNoteIndex].renderChroma();
+        const halfDuration: number = chordDuration * 2;
+        const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, halfDuration, velocity, placedChordIndex, [ firstMelodyChroma ]);
+        melodyChords.push(placedChord);
+        placedChordIndex++;
         if (this.fromInpassingNote()) {
-          const inpassingNote: string = this.getInpassingNote(harmonyChord, firstMelodyNote);
-          // TODO halve the duration
-          melodyChord.push(inpassingNote);
-          melodyChords.push(melodyChord);
+          const inpassingNote: string = this.getInpassingNote(harmonyChord.getNotesChromas(), firstMelodyChroma);
+          const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, halfDuration, velocity, placedChordIndex, [ inpassingNote ]);
+          melodyChords.push(placedChord);
         } else {
           // Get one of the source chord notes even the already picked one
-          const secondNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth);
-          const secondMelodyNote: string = harmonyChord[secondNoteIndex];
-          if (secondMelodyNote != firstMelodyNote) {
-            // TODO halve the duration
-            melodyChord.push(secondMelodyNote);
-            melodyChords.push(melodyChord);
+          const secondNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth - 1);
+          const secondMelodyChroma: string = harmonyChord.getNotesChromas()[secondNoteIndex];
+          if (secondMelodyChroma != firstMelodyChroma) {
+            const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, halfDuration, velocity, placedChordIndex, [ secondMelodyChroma ]);
+            melodyChords.push(placedChord);
           } else {
             // If the second note is the same as the fisrt one then have only one chord
             // but with a duration that is twice as long
-            // TODO double the previously halved duration
-            melodyChord.push(secondMelodyNote);
-            melodyChords.push(melodyChord);
+            // Double the duration of the previous note
+            melodyChords[melodyChords.length - 1].duration = this.notationService.createDuration(chordDuration, TempoUnit.DUPLE);
           }
         }
       } else {
         // Get the first note of the source chord notes
-        const melodyNote: string = harmonyChord[0];
-        melodyChord.push(melodyNote);
-        melodyChords.push(melodyChord);
+        const melodyChroma: string = harmonyChord.getNotesChromas()[0];
+        const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, placedChordIndex, [ melodyChroma ]);
+        melodyChords.push(placedChord);
       }
     });
     return melodyChords;
   }
 
-  private generateHarmonyChords(randomMethod: number): Array<Array<string>> {
-    const chords: Array<Array<string>> = new Array();
-    let previousChord: Array<string> = new Array();
+  private generateHarmonyChords(randomMethod: number, octave: number, chordDuration: number, velocity: number): Array<PlacedChord> {
+    const placedChords: Array<PlacedChord> = new Array();
+    let previousNotes: Array<string> = new Array();
     let previousChromaNoteIndex: number = 0;
-    let nbAddedChord: number = 0;
+    let placedChordIndex: number = 0;
 
     const shiftedChromas: Array<Array<string>> = this.createAllShiftedChromas();
 
-    while (nbAddedChord < this.settingsService.getSettings().generateNbChords) {
-      const chord: Array<string> = new Array();
+    while (placedChordIndex < this.settingsService.getSettings().generateNbChords) {
+      const notes: Array<string> = new Array();
 
       // For each randomly picked chroma, add its chord to an array
-      const chromaNoteIndex: number = (nbAddedChord === 0) ? 0 : this.randomlyPickChroma(previousChromaNoteIndex, randomMethod);
+      const chromaNoteIndex: number = (placedChordIndex === 0) ? 0 : this.randomlyPickChroma(previousChromaNoteIndex, randomMethod);
       for (let noteIndex = 0; noteIndex < this.settingsService.getSettings().generateChordWidth; noteIndex++) {
-        chord.push(shiftedChromas[noteIndex][chromaNoteIndex]);
+        notes.push(shiftedChromas[noteIndex][chromaNoteIndex]);
       }
 
       // Consider a chord only if it is similar to its previous one
-      if (chords.length === 0 || this.isSimilarToPrevious(previousChord, chord)) {
+      if (placedChords.length === 0 || this.isSimilarToPrevious(previousNotes, notes)) {
         previousChromaNoteIndex = chromaNoteIndex;
-        previousChord = chord;
+        previousNotes = notes;
         // Add twice the same chord
-        chords.push(chord);
-        nbAddedChord++;
-        chords.push(chord); // TODO Do we still double the notes ?
-        nbAddedChord++;
+        const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, placedChordIndex, notes);
+        placedChords.push(placedChord);
+        placedChordIndex++;
+        const placedChordBis: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, placedChordIndex, notes);
+        placedChords.push(placedChordBis); // TODO Do we still double the notes ?
+        placedChordIndex++;
       } else {
         // TODO Do we still reverse the notes ?
         // If the current chord is too dissimilar from its previous one
         // then create a chord from a reversing of the previous one
         if (this.settingsService.getSettings().generateReverseDissimilarChord) {
-          const slidedChord: Array<string> = this.createShiftedChord(previousChord);
-          chords.push(chord);
-          nbAddedChord++;
+          const slidedNotes: Array<string> = this.createShiftedChord(previousNotes);
+          const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, placedChordIndex, slidedNotes);
+          placedChords.push(placedChord);
+          placedChordIndex++;
         }
       }
     }
-    return chords;
+    return placedChords;
   }
 
   private randomlyPickChroma(chromaIndex: number, randomMethod: number): number {

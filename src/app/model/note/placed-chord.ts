@@ -52,6 +52,13 @@ export class PlacedChord {
     return abc;
   }
 
+  public getNotesChromas(): Array<string> {
+    return this.getSortedNotes()
+    .map((note: Note) => {
+      return note.renderChroma();
+    });
+  }
+
   public renderAbc(): Array<string> {
     const sortedNotes: Array<string> = this.getSortedNotes()
     .map((note: Note) => {
