@@ -59,7 +59,7 @@ export class SynthService {
       }
     }).toMaster();
 
-    // var synth = new Tone.PolySynth(3, Tone.Synth, {
+    // const synth: any = new Tone.PolySynth(CHORD_WIDTH, Tone.Synth, {
     //   "oscillator" : {
     //     "type" : "fatsawtooth",
     //     "count" : 3,
@@ -74,7 +74,7 @@ export class SynthService {
     //   },
     // }).toMaster();
 
-    // const synth: any = new Tone.PolySynth(4, Tone.Synth, {
+    // const synth: any = new Tone.PolySynth(CHORD_WIDTH, Tone.Synth, {
     //   "volume" : -8,
     //   "oscillator" : {
     //       "partials" : [1, 2, 5],
@@ -98,9 +98,6 @@ export class SynthService {
     // const synth: any = new Tone.PolySynth(CHORD_WIDTH, Tone.Synth, synthConfig)
     // .connect(synthFilter)
     // .toMaster();
-
-    // const synth: any = new Tone.Synth(synthConfig)
-    // .connect(synthFilter);
 
     return synth;
   }
