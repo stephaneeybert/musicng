@@ -5,7 +5,7 @@ import { Measure } from '@app/model/measure/measure';
 import { Soundtrack } from '@app/model/soundtrack';
 import { KeyboardService } from '@app/service/keyboard.service';
 import { PlacedChord } from '@app/model/note/placed-chord';
-import { NotationService } from './notation.service';
+import { NotationService, TRACK_TYPES } from './notation.service';
 import { TempoUnit } from '@app/model/tempo-unit';
 import { SheetService } from './sheet.service';
 import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
@@ -53,7 +53,7 @@ export class SynthService {
   }
 
   public createDeviceSynth(): any {
-    const synth: any = new Tone.PolySynth(CHORD_WIDTH, Tone.Synth, {
+    const synth: any = new Tone.PolySynth(Object.keys(TRACK_TYPES).length, Tone.Synth, {
       oscillator: {
         type: 'sine',
       }
