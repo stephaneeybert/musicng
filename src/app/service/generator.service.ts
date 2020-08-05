@@ -288,7 +288,8 @@ export class GeneratorService {
 
     const shiftedChromas: Array<Array<string>> = this.createAllShiftedChromas();
 
-    while (placedChordIndex < this.settingsService.getSettings().generateNbChords) {
+    const generateNbChords: number = this.settingsService.getSettings().generateNbChords > 0 ? this.settingsService.getSettings().generateNbChords : 1;
+    while (placedChordIndex < generateNbChords) {
       const notes: Array<string> = new Array();
 
       // For each randomly picked chroma, add its chord to an array
