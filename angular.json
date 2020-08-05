@@ -40,7 +40,7 @@
               "outputHashing": "all",
               "sourceMap": true,
               "extractCss": true,
-              "namedChunks": false,
+              "namedChunks": true,
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -64,7 +64,8 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "musicng:build:production"
+              "browserTarget": "musicng:build:production",
+              "sourceMap": true
             }
           }
         },
