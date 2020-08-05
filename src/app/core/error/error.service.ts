@@ -32,7 +32,10 @@ export class ErrorService {
       });
   }
 
-  public log(error: any) {
+  public log(error: any): Observable<any> {
+    if (!environment.production) {
+      console.log(error);
+    }
     const errorWithContext: any = this.addContextInfo(error);
     return MockHttpService.post(errorWithContext);
   }
