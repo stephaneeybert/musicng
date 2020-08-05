@@ -27,7 +27,6 @@ export class GeneratorService {
   ) { }
 
   CHROMA_SHIFT_TIMES: number = 2;
-  SIMILAR_NOTE_MIN: number = 2;
 
   private createNotesAndPlacedChord(octave: number, chordDuration: number, velocity: number, placedChordIndex: number, chord: Array<string>): PlacedChord {
     let noteIndex: number = 0;
@@ -184,7 +183,7 @@ export class GeneratorService {
         nbSameNotes++;
       }
     }
-    return (nbSameNotes >= this.SIMILAR_NOTE_MIN);
+    return (nbSameNotes >= (chord.length - 1));
   }
 
   private createShiftedChord(chord: Array<string>): Array<string> {
