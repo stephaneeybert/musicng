@@ -19,8 +19,6 @@ import { WakelockService } from '@stephaneeybert/lib-core';
 const TRANSPORT_START_DELAY: number = 5;
 const TRANSPORT_STATE_STARTED: string = 'started';
 const AUDIO_CONTEXT_RUNNING: string = 'running';
-const PLAY_START_DELAY: number = 0;
-const CHORD_WIDTH: number = 3;
 const WHITEWASH_DELAY: number = 3000;
 const TEMPO_RAMP_TO_IN_SECONDS: number = 2;
 const VELOCITY_MIDI_MAX: number = 127;
@@ -226,7 +224,7 @@ export class SynthService {
 
     track.getSortedMeasures().forEach((measure: Measure) => {
       // Wait for user idleness before starting playing
-      let relativeTime: number = PLAY_START_DELAY;
+      let relativeTime: number = 0;
 
       // The first measure is always supposed to have a new tempo and time signature
       if (measure.isFirst()) {
