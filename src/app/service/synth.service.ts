@@ -57,6 +57,8 @@ export class SynthService {
       }
     }).toMaster();
 
+    // TODO Have a volume slider synth.volume.value = -6;
+
     // const synth: any = new Tone.PolySynth(CHORD_WIDTH, Tone.Synth, {
     //   "oscillator" : {
     //     "type" : "fatsawtooth",
