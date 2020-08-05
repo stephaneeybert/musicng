@@ -231,7 +231,7 @@ export class GeneratorService {
     // Randomly pick a note from the near ones
     const nearNotes: Array<string> = this.getNearNotes(harmonyChord, firstMelodyNote);
     const nearNoteIndex: number = this.commonService.getRandomIntegerBetween(0, nearNotes.length - 1);
-    return harmonyChord[nearNoteIndex];
+    return nearNotes[nearNoteIndex];
   }
 
   private generateMelodyChords(harmonyChords: Array<PlacedChord>, randomMethod: number, octave: number, chordDuration: number, velocity: number): Array<PlacedChord> {
