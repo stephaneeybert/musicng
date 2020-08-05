@@ -302,10 +302,10 @@ export class GeneratorService {
       if (placedChords.length === 0 || this.isSimilarToPrevious(previousNotes, notes)) {
         previousChromaNoteIndex = chromaNoteIndex;
         previousNotes = notes;
-        // Add twice the same chord
         const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, placedChordIndex, notes);
         placedChords.push(placedChord);
         placedChordIndex++;
+        // Add twice the same chord
         const placedChordBis: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, placedChordIndex, notes);
         placedChords.push(placedChordBis); // TODO Do we still double the notes ?
         placedChordIndex++;
