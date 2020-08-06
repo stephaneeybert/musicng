@@ -62,7 +62,7 @@
           },
           "chordDuration": {
             "label": "Chord duration",
-            "tip": "The duration of a chord."
+            "tip": "The duration of a chord in BPM (beats per minute)."
           },
           "chordDurationUnit": {
             "label": "Duration unit",

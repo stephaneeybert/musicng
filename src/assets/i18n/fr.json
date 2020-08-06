@@ -62,7 +62,7 @@
           },
           "chordDuration": {
             "label": "Durée d'accord",
-            "tip": "La durée d'un accord."
+            "tip": "La durée d'un accord en BPM (beats par minute)."
           },
           "chordDurationUnit": {
             "label": "Unité de durée",
