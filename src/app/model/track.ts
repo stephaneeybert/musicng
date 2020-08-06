@@ -9,6 +9,7 @@ export class Track {
   name?: string;
   displayChordNames: boolean;
   playingComplete: boolean;
+  synth: any;
   channel?: number; // TODO Used ?
   instrument?: Instrument; // TODO Used ?
   controls?: Array<Control>; // TODO Used ?

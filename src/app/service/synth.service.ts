@@ -165,6 +165,8 @@ export class SynthService {
 
       const animatedStave: boolean = this.settingsService.getSettings().animatedStave;
 
+      this.createSoundtrackSynths(soundtrack);
+
       soundtrack.tracks.forEach((track: Track) => {
         this.play(track, soundtrack, animatedStave);
       });
@@ -198,12 +200,22 @@ export class SynthService {
     }
   }
 
+  private createSoundtrackSynths(soundtrack: Soundtrack): void {
+    soundtrack.getSortedTracks().forEach((track: Track) => {
+      if (track.synth == null) {
+        track.synth = this.createSynth();
+      }
+    });
+  }
+
   // Some release events may not be processed when stopping the play
   // resulting in notes that keep playing for ever
   private releaseAllSoundtrackNotes(soundtrack: Soundtrack): void {
-    if (soundtrack.synth != null) {
-      soundtrack.synth.releaseAll();
-    }
+    soundtrack.getSortedTracks().forEach((track: Track) => {
+      if (track.synth != null) {
+        track.synth.releaseAll();
+      }
+    });
   }
 
   private setPlaying(soundtrack: Soundtrack, playing: boolean): void {
@@ -249,8 +261,8 @@ export class SynthService {
 
             if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
               const textNotes: Array<string> = this.restToSynthRest(placedChord.renderAbc());
-              soundtrack.synth.triggerAttack(textNotes, triggerTime, placedChord.velocity);
-              soundtrack.synth.triggerRelease(textNotes, releaseTime);
+              track.synth.triggerAttack(textNotes, triggerTime, placedChord.velocity);
+              track.synth.triggerRelease(textNotes, releaseTime);
               Tone.Draw.schedule((actualTime: any) => {
                 if (placedChord.isFirst()) {
                   if (animatedStave) {

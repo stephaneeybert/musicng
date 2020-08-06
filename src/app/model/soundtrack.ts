@@ -10,7 +10,6 @@ export class Soundtrack {
   copyright: string;
   lyrics: string;
   keyboard: any;
-  synth: any;
   nowPlaying: boolean;
   sheetContext?: vexflow.Flow.SVGContext;
 
