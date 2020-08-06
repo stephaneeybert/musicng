@@ -27,19 +27,7 @@ does not accept the tempo of 128
 but the 120 is fine
 Change the measure tempo to be a number of beats
 
-Should the clef be determined from the time signature of the measure ?
-
 When clicking on the settings icon, it stays highlighted after closing the dialog
-
-/ Create the chords of the harmony track.
-/ Use these chords as source for the single note chords of the melody track.
-/ Each chord of the melody track has only one note.
-/ The note of the first chord of the melody track is the Do, that is, the first note of the source chord of the harmony track.
-/ The next note of the melody track is again taken from the source chord of the harmony track, or it can be an inpassing note.
-/ The randomised pick between a source chord note or an inpassing note can be tuned by a setting.
-/ An inpassing note is one that is not in the source chord, but that is between the previous chord note and another note of the source chord even of a different octave.
-/ For each source chord of the harmony track, there are two single note chords of half duration in the melody track. The first note is one of the source chord, and the second one is also a note from the same source chord or an inpassing note.
-/ So an inpassing note cannot be followed by another inpassing note. But a source chord note can be followed by another source chord note.
 
 If two same notes then have one long note and not two short ones
 
@@ -54,19 +42,6 @@ CoreModule will include providers for the singleton services that we load when t
 I am using ShareModule to encapsulate Angular and commonly used 3rd party modules (Material Design, flex-layout, Angular's CommonModule, FormsModule etc) and importing ShareModule into each Lazy-loaded Feature Modules (which are also under lib)
 My CoreModule consists shared Services, and some Components that are only used by AppModule. This CoreModule is imported only into AppModule, basically to keep AppModule slim.
 
-See assets/icons/splashscreens.zip
-https://appsco.pe/developer/splash-screens
-<link href="splashscreens/iphone5_splash.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-<link href="splashscreens/iphone6_splash.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-<link href="splashscreens/iphoneplus_splash.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
-<link href="splashscreens/iphonex_splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
-<link href="splashscreens/iphonexr_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-<link href="splashscreens/iphonexsmax_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
-<link href="splashscreens/ipad_splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-<link href="splashscreens/ipadpro1_splash.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-<link href="splashscreens/ipadpro3_splash.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-<link href="splashscreens/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-
 The #E8EAF6 is hard coded 3 times now
 
 Stave drawing
@@ -77,20 +52,10 @@ stave.addClef(Clef.TREBLE);
 
 Add some export to MIDI format
 
-Have a good timbre for the instrument synth sound
-
-Try not using the pasted StyleManagerService class
-
-Themes themes/options.json
-How not to have these hard coded color codes ?
-How to know these color codes  for all the themes ?
-Add the remaining entries for the other themes
-
 Norbert:
 
-The bass track has annotations of only one note like the melody track
+The bass track has note names annotations of only one note like the melody track
 The drums track has no note names annotations
-Do the track have a type ? Like melody, bass ? Maybe have an array of these types...
 
 Générer des silences aussi et pas que des notes
 Pouvoir démarrer sur une autre note que le do.
@@ -100,38 +65,44 @@ La tonalité est attachée à un accord.
 Ces tonalités se nomment : Do majeur, Do dièse majeure ...
 On doit pouvoir changer de tonalité d'un accord à l'autre.
 
-Une note de passage est une note qui ne fait pas partie de l'accord.
-
 Une série fait une ou plusieurs mesures.
+La mélodie a sa série, qui est différente des séries des refrains et des couplets.
 
-Question: Quelle est la différence entre DoM et Do#M ? Et entre Dom et Do#m ?
-Question: La mélodie a t'elle sa série qui est différente des séries des refrains et des couplets ? Oui
 Question: La série du refrain est elle alternée avec celle du couplet ?
 Question: C'est quoi une gamme ?
 Question: C'est quoi une phrase ?
 Question: C'est quoi un arpège ?
+
 
 A step is the distance between two notes on the scale.
 Major and minor scales contain whole tone steps and half tone steps.
 So for these two kind of scales, the frequencies of the notes are closer in a half tone step than in a whole tone step.
 
 C major scale
-Our first idea was to use a classic “C major” scale because it sounds nice and most of our readers should be used to it:
-But unfortunately major and minor scales doesn’t work well for sonifications. They include whole tone and half tone steps, so the distance between the steps is not equal. As seen in the image above, there is a half tone step between “E” and “F”. This means that the frequencies of these notes are closer than the ones between “C” and “D”, for example, which is a whole tone step. If you were to map a “1” to “C”, a “2” to “D” and so on, the distances between the values wouldn’t match the distance between the generated tones. The solution is to use a whole tone scale, which consists only of whole tone steps, or a chromatic scale, which consists only of half tone steps. In both of these scales, all notes have an equal distance so you can use them to safely represent your data.
-A large piano has 88 keys. If you want to create a natural sound you could sonify a data set with a value range of 88 for a chromatic scale, or a range of ~40 for a whole tone scale. For our application, we selected a whole tone scale because the differences between the values are better heard and we only had a range from 25.
+Our first idea was to use a classic “C major” scale because it sounds nice and most of 
+our readers should be used to it:
+But unfortunately major and minor scales doesn’t work well for sonifications. 
+They include whole tone and half tone steps, so the distance between the steps is not
+equal. As seen in the image above, there is a half tone step between “E” and “F”. 
+This means that the frequencies of these notes are closer than the ones between “C” 
+and “D”, for example, which is a whole tone step. If you were to map a “1” to “C”, a “2” 
+to “D” and so on, the distances between the values wouldn’t match the distance between 
+the generated tones. The solution is to use a whole tone scale, which consists only of 
+whole tone steps, or a chromatic scale, which consists only of half tone steps. 
+In both of these scales, all notes have an equal distance so you can use them to 
+safely represent your data.
+A large piano has 88 keys. If you want to create a natural sound you could sonify a 
+data set with a value range of 88 for a chromatic scale, or a range of ~40 for a whole 
+tone scale. For our application, we selected a whole tone scale because the differences 
+between the values are better heard and we only had a range from 25.
 
-By default a MIDI file is set to a tempo of 120 bpm and the MThd chunk in the file will tell you the resolution in terms of "pulses per quarter note" (ppqn).
-
+By default a MIDI file is set to a tempo of 120 bpm and the MThd chunk in the file will
+tell you the resolution in terms of "pulses per quarter note" (ppqn).
 If the ppqn is, say, 96 than a delta of 96 ticks is a quarter note.
-
 Should you be interested in the real duration (in seconds) of each sound you should also consider the "tempo" that can be changed by an event "FF 51 03 tt tt tt"; the three bytes are the microseconds for a quarter note.
-
 With these two values you should find what you need. Beware that the duration in the midi file can be approximate, especially if that MIDI file it's the recording of a human player.
-
 I've put together a C library to read/write midifiles a long time ago: https://github.com/rdentato/middl in case it may be helpful (it's quite some time I don't look at the code, feel free to ask if there's anything unclear).
-
 I would suggest to follow this approach:
-
 choose a "minimal note" that is compatible with your division (e.g. 1/128) and use it as a sort of grid.
 Align each note to the closest grid line (i.e. to the closest integer multiple of the minimal node)
 Convert it to standard notation (e.g a quarter note, a dotted eight note, etc...).
@@ -183,13 +154,4 @@ Addendum for MIDI Files
 If you're working with MIDI files and sequencers, you may also come across a quantity called "ticks" or "Pulses Per Quarter Note" (PPQN) which defines the temporal granularity of the events in that file. This doesn't directly reference either beats or real-time units, so there's a bit of conversion necessary. For example, assuming the tempo unit matches the time signature denominator:
 
 ticks per second = (ticks/quarter-note) * (quarter-note/beat) * (beats/minute) * (minute/second) = PPQN * (4/denominator) * (tempo/60)
-
-
-
-
-
-
-
-
-Metre, also spelled Meter, in music, rhythmic pattern constituted by the grouping of basic temporal units, called beats, into regular measures, or bars; in Western notation, each measure is set off from those adjoining it by bar lines. A time (or metre) signature, found at the beginning of a piece of music, indicates the number of beats in a measure and the value of the basic beat. For example, 3/4 metre has three quarter-note beats per measure. 
 
