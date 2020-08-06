@@ -312,7 +312,6 @@ export class GeneratorService {
           placedChordIndex++;
         }
       } else {
-        // TODO Do we still reverse the notes ?
         // If the current chord is too dissimilar from its previous one
         // then create a chord from a reversing of the previous one
         if (this.settingsService.getSettings().generateReverseDissimilarChord) {
