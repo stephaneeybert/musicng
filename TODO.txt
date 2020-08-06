@@ -75,5 +75,3 @@ Question: La série du refrain est elle alternée avec celle du couplet ?
 Question: C'est quoi une gamme ?
 Question: C'est quoi une phrase ?
 Question: C'est quoi un arpège ?
-
-Do Re La (un La n'est pas bon) (un Mi serait bon)
