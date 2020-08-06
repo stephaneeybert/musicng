@@ -1,5 +1,5 @@
 import { TempoUnit } from './tempo-unit';
-import { RANDOM_METHOD, DEFAULT_TEMPO_BPM, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_CHORD_DURATION, DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_WIDTH, DEFAULT_RANDOM_METHOD, DEFAULT_RANDOM_INPASSING, DEFAULT_NB_CHORDS } from '@app/service/notation.constant ';
+import { RANDOM_METHOD, DEFAULT_TEMPO_BPM, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_CHORD_DURATION, DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_WIDTH, DEFAULT_RANDOM_METHOD, DEFAULT_RANDOM_INPASSING, DEFAULT_NB_CHORDS, DEFAULT_VELOCITY_MEDIUM, DEFAULT_VELOCITY_LOUDER } from '@app/service/notation.constant ';
 
 export class Settings {
 
@@ -19,6 +19,10 @@ export class Settings {
   generateHarmony: boolean;
   generateDrums: boolean;
   generateBass: boolean;
+  generateVelocityMelody: number;
+  generateVelocityHarmony: number;
+  generateVelocityDrums: number;
+  generateVelocityBass: number;
   animatedStave: boolean;
   showKeyboard: boolean;
 
@@ -39,6 +43,10 @@ export class Settings {
     this.generateHarmony = true;
     this.generateDrums = false;
     this.generateBass = false;
+    this.generateVelocityMelody = DEFAULT_VELOCITY_LOUDER;
+    this.generateVelocityHarmony = DEFAULT_VELOCITY_MEDIUM;
+    this.generateVelocityDrums = DEFAULT_VELOCITY_MEDIUM;
+    this.generateVelocityBass = DEFAULT_VELOCITY_MEDIUM;
     this.animatedStave = true;
     this.showKeyboard = false;
   }
@@ -60,6 +68,10 @@ export class Settings {
     generateHarmony: boolean,
     generateDrums: boolean,
     generateBass: boolean,
+    generateVelocityMelody: number,
+    generateVelocityHarmony: number,
+    generateVelocityDrums: number,
+    generateVelocityBass: number,
     animatedStave: boolean,
     showKeyboard: boolean
     ) {
@@ -79,6 +91,10 @@ export class Settings {
     this.generateHarmony = generateHarmony;
     this.generateDrums = generateDrums;
     this.generateBass = generateBass;
+    this.generateVelocityMelody = generateVelocityMelody;
+    this.generateVelocityHarmony = generateVelocityHarmony;
+    this.generateVelocityDrums = generateVelocityDrums;
+    this.generateVelocityBass = generateVelocityBass;
     this.animatedStave = animatedStave;
     this.showKeyboard = showKeyboard;
   }

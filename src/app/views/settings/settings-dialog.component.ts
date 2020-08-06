@@ -58,6 +58,10 @@ export class SettingsDialogComponent implements OnInit {
       existingSettings.generateHarmony,
       existingSettings.generateDrums,
       existingSettings.generateBass,
+      existingSettings.generateVelocityMelody,
+      existingSettings.generateVelocityHarmony,
+      existingSettings.generateVelocityDrums,
+      existingSettings.generateVelocityBass,
       existingSettings.animatedStave,
       existingSettings.showKeyboard
     );
@@ -84,8 +88,12 @@ export class SettingsDialogComponent implements OnInit {
       generateDoubleChord: new FormControl(this.settingsEdition.generateDoubleChord),
       generateMelody: new FormControl(this.settingsEdition.generateMelody),
       generateHarmony: new FormControl(this.settingsEdition.generateHarmony),
-      generateDrums: new FormControl(this.settingsEdition.generateDrums),
-      generateBass: new FormControl(this.settingsEdition.generateBass),
+      generateDrums: new FormControl({value: this.settingsEdition.generateDrums, disabled: true}),
+      generateBass: new FormControl({value: this.settingsEdition.generateBass, disabled: true}),
+      generateVelocityMelody: new FormControl(this.settingsEdition.generateVelocityMelody),
+      generateVelocityHarmony: new FormControl(this.settingsEdition.generateVelocityHarmony),
+      generateVelocityDrums: new FormControl(this.settingsEdition.generateVelocityDrums),
+      generateVelocityBass: new FormControl(this.settingsEdition.generateVelocityBass),
       animatedStave: new FormControl(this.settingsEdition.animatedStave),
       showKeyboard: new FormControl(this.settingsEdition.showKeyboard)
     });
@@ -125,7 +133,7 @@ export class SettingsDialogComponent implements OnInit {
     return id1 == id2;
   }
 
-  formatInpassingNoteLabel(value: number) {
+  formatAsPercentage(value: number) {
     if (value > 0) {
       return value  + '%';
     }

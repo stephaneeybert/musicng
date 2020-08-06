@@ -101,7 +101,7 @@
         </p>
         <p>
           <mat-label>{{ 'settings.form.set.generate.inpassingNote.label' | translate }} </mat-label>
-          <mat-slider thumbLabel [displayWith]="formatInpassingNoteLabel" min="0" max="100" step="5" formControlName="generateInpassingNote"
+          <mat-slider thumbLabel [displayWith]="formatAsPercentage" min="0" max="100" step="5" formControlName="generateInpassingNote"
             matTooltip="{{ 'settings.form.set.generate.inpassingNote.tip' | translate }}"></mat-slider>
         </p>
       </mat-tab>
@@ -109,6 +109,7 @@
         <ng-template mat-tab-label>
           <mat-icon class="example-tab-icon">equalizer</mat-icon>
         </ng-template>
+        <mat-label matTooltip="{{ 'settings.form.set.tracks.tip' | translate }}">{{ 'settings.form.set.tracks.label' | translate }} </mat-label>
         <p>
           <mat-slide-toggle formControlName="generateMelody"
             matTooltip="{{ 'settings.form.set.generate.melody.tip' | translate }}">
@@ -128,6 +129,34 @@
           <mat-slide-toggle formControlName="generateBass"
             matTooltip="{{ 'settings.form.set.generate.bass.tip' | translate }}">
             {{ 'settings.form.set.generate.bass.label' | translate }}</mat-slide-toggle>
+        </p>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">volume_up</mat-icon>
+        </ng-template>
+        <p>
+          <mat-label matTooltip="{{ 'settings.form.set.velocity.tip' | translate }}">{{ 'settings.form.set.velocity.label' | translate }} </mat-label>
+        </p>
+        <p>
+          <mat-label>{{ 'settings.form.set.generate.velocity.melody.label' | translate }} </mat-label>
+          <mat-slider thumbLabel [displayWith]="formatAsPercentage" min="0" max="100" step="5" formControlName="generateVelocityMelody"
+          matTooltip="{{ 'settings.form.set.generate.velocity.melody.tip' | translate }}"></mat-slider>
+        </p>
+        <p>
+          <mat-label>{{ 'settings.form.set.generate.velocity.harmony.label' | translate }} </mat-label>
+          <mat-slider thumbLabel [displayWith]="formatAsPercentage" min="0" max="100" step="5" formControlName="generateVelocityHarmony"
+          matTooltip="{{ 'settings.form.set.generate.velocity.harmony.tip' | translate }}"></mat-slider>
+        </p>
+        <p>
+          <mat-label>{{ 'settings.form.set.generate.velocity.drums.label' | translate }} </mat-label>
+          <mat-slider thumbLabel [displayWith]="formatAsPercentage" min="0" max="100" step="5" formControlName="generateVelocityDrums"
+          matTooltip="{{ 'settings.form.set.generate.velocity.drums.tip' | translate }}"></mat-slider>
+        </p>
+        <p>
+          <mat-label>{{ 'settings.form.set.generate.velocity.bass.label' | translate }} </mat-label>
+          <mat-slider thumbLabel [displayWith]="formatAsPercentage" min="0" max="100" step="5" formControlName="generateVelocityBass"
+           matTooltip="{{ 'settings.form.set.generate.velocity.bass.tip' | translate }}"></mat-slider>
         </p>
       </mat-tab>
       <mat-tab>

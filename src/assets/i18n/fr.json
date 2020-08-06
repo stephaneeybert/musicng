@@ -124,8 +124,34 @@
           },
           "bass": {
             "label": "Piste basse",
-            "tip": "Avoir une piste basse lors de l'ajout d'un nouveau morceau."
+            "tip": "Avoir une piste de basse lors de l'ajout d'un nouveau morceau."
+          },
+          "velocity": {
+            "melody": {
+              "label": "Melodie",
+              "tip": "La vélocité des notes de la piste melodie."
+            },
+            "harmony": {
+              "label": "Harmonie",
+              "tip": "La vélocité des notes de la piste harmonie."
+            },
+            "drums": {
+              "label": "Percussions",
+              "tip": "La vélocité des notes de la piste percussions."
+            },
+            "bass": {
+              "label": "Basse",
+              "tip": "La vélocité des notes de la piste de basse."
+            }
           }
+        },
+        "tracks": {
+          "label": "Pistes",
+          "tip": "Les pistes à créer lors de la génération d'un nouveau morceau."
+        },
+        "velocity": {
+          "label": "Velocité",
+          "tip": "La vélocité des notes permet de jouer des notes fortement ou pas."
         },
         "animatedStave": {
           "label": "Partition animée",

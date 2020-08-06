@@ -11,7 +11,7 @@ import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { TRACK_TYPES } from './notation.service';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { RANDOM_METHOD, DEFAULT_VELOCITY_LOUDER, DEFAULT_VELOCITY_SOFTER, CHROMAS_ALPHABETICAL } from './notation.constant ';
+import { RANDOM_METHOD, CHROMAS_ALPHABETICAL } from './notation.constant ';
 
 @Injectable({
   providedIn: 'root'
@@ -77,9 +77,11 @@ export class GeneratorService {
     const octave: number = this.settingsService.getSettings().generateNoteOctave;
     const chordDuration: number = this.settingsService.getSettings().generateChordDuration;
 
-    const harmonyChords: Array<PlacedChord> = this.generateHarmonyChords(randomMethod, octave, chordDuration, DEFAULT_VELOCITY_SOFTER);
+    const harmonyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityHarmony);
+    const harmonyChords: Array<PlacedChord> = this.generateHarmonyChords(randomMethod, octave, chordDuration, harmonyVelocity);
 
-    const melodyChords: Array<PlacedChord> = this.generateMelodyChords(harmonyChords, randomMethod, octave, chordDuration, DEFAULT_VELOCITY_LOUDER);
+    const melodyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityMelody);
+    const melodyChords: Array<PlacedChord> = this.generateMelodyChords(harmonyChords, randomMethod, octave, chordDuration, melodyVelocity);
 
     this.notationService.addEndOfTrackNote(harmonyChords);
     this.notationService.addEndOfTrackNote(melodyChords);

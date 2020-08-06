@@ -19,7 +19,7 @@ export class SettingsStorageService extends LocalStorageService<Settings> {
     if (settings && settings.generateMethod) {
       return settings;
     } else {
-      return new Settings();;
+      return new Settings();
     }
   }
 
@@ -35,16 +35,20 @@ export class SettingsStorageService extends LocalStorageService<Settings> {
     settings.generateChordDuration = Number(settingJson.generateChordDuration);
     settings.generateChordDurationUnit = settingJson.generateChordDurationUnit;
     settings.generateNoteOctave = Number(settingJson.generateNoteOctave);
-    settings.generateChordWidth = Number(Number(settingJson.generateChordWidth));
+    settings.generateChordWidth = Number(settingJson.generateChordWidth);
     settings.generateMethod = settingJson.generateMethod;
     settings.generateReverseDissimilarChord = settingJson.generateReverseDissimilarChord;
-    settings.generateInpassingNote = Number(Number(settingJson.generateInpassingNote));
+    settings.generateInpassingNote = Number(settingJson.generateInpassingNote);
     settings.generateNbChords = Number(settingJson.generateNbChords);
     settings.generateDoubleChord = settingJson.generateDoubleChord;
     settings.generateMelody = settingJson.generateMelody;
     settings.generateHarmony = settingJson.generateHarmony;
     settings.generateDrums = settingJson.generateDrums;
     settings.generateBass = settingJson.generateBass;
+    settings.generateVelocityMelody = Number(settingJson.generateVelocityMelody);
+    settings.generateVelocityHarmony = Number(settingJson.generateVelocityHarmony);
+    settings.generateVelocityDrums = Number(settingJson.generateVelocityDrums);
+    settings.generateVelocityBass = Number(settingJson.generateVelocityBass);
     settings.animatedStave = settingJson.animatedStave;
     settings.showKeyboard = settingJson.showKeyboard;
     return settings;

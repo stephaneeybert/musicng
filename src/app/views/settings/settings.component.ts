@@ -85,6 +85,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
             existingSettings.generateHarmony = settingsEdition.generateHarmony;
             existingSettings.generateDrums = settingsEdition.generateDrums;
             existingSettings.generateBass = settingsEdition.generateBass;
+            existingSettings.generateVelocityMelody = settingsEdition.generateVelocityMelody;
+            existingSettings.generateVelocityHarmony = settingsEdition.generateVelocityHarmony;
+            existingSettings.generateVelocityDrums = settingsEdition.generateVelocityDrums;
+            existingSettings.generateVelocityBass = settingsEdition.generateVelocityBass;
             existingSettings.animatedStave = settingsEdition.animatedStave;
             existingSettings.showKeyboard = settingsEdition.showKeyboard;
             this.settingsStore.setAndStoreSettings(existingSettings);

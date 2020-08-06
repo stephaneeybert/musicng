@@ -23,4 +23,8 @@ export class SettingsService {
     this.settingsStore.setAndStoreSettings(settings);
   }
 
+  public percentageToVelocity(percent: number): number {
+    return percent / 100;
+  }
+
 }
