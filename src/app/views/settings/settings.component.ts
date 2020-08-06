@@ -80,6 +80,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
             existingSettings.generateReverseDissimilarChord = settingsEdition.generateReverseDissimilarChord;
             existingSettings.generateInpassingNote = settingsEdition.generateInpassingNote;
             existingSettings.generateNbChords = settingsEdition.generateNbChords;
+            existingSettings.generateDoubleChord = settingsEdition.generateDoubleChord;
             existingSettings.generateHarmony = settingsEdition.generateHarmony;
             existingSettings.generateDrums = settingsEdition.generateDrums;
             existingSettings.generateBass = settingsEdition.generateBass;

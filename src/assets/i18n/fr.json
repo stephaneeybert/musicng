@@ -94,6 +94,10 @@
             "label": "Bonus minimum requis",
             "tip": "Le bonus minimum requis pour permettre à l'accord d'être sélectionné. Un accord avec un bonus inférieur à ce mimimum, ne peut pas être sélectionné."
           },
+          "doubleChord": {
+            "label": "Accord d'harmonie en double",
+            "tip": "Pour la piste d'harmonie, créer l'accord en double, de façon à avoir deux accords identiques qui se suivent."
+          },
           "reverseDissimilarChord": {
             "label": "Accord renversé",
             "tip": "Si l'accord est trop dissemblable par rapport à son précédent alors créer un accord à partir d'un renversement du précédent."

@@ -94,6 +94,10 @@
             "label": "Minimum required bonus",
             "tip": "The minimum required bonus to allow the chord to be selected. A chord with a lower bonus cannot be selected."
           },
+          "doubleChord": {
+            "label": "Double harmony chord",
+            "tip": "For the harmony track, double create the chord, so as to have two identical chords that follow each other."
+          },
           "reverseDissimilarChord": {
             "label": "Reverse chord",
             "tip": "If the chord is too dissimilar from its previous one then create a chord from a reversing of the previous one."

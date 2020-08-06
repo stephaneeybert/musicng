@@ -53,6 +53,7 @@ export class SettingsDialogComponent implements OnInit {
       existingSettings.generateReverseDissimilarChord,
       existingSettings.generateInpassingNote,
       existingSettings.generateNbChords,
+      existingSettings.generateDoubleChord,
       existingSettings.generateHarmony,
       existingSettings.generateDrums,
       existingSettings.generateBass,
@@ -79,6 +80,7 @@ export class SettingsDialogComponent implements OnInit {
         disabled: !this.isHarmonyBaseMethod()
       }),
       generateNbChords: new FormControl(this.settingsEdition.generateNbChords),
+      generateDoubleChord: new FormControl(this.settingsEdition.generateDoubleChord),
       generateHarmony: new FormControl(this.settingsEdition.generateHarmony),
       generateDrums: new FormControl(this.settingsEdition.generateDrums),
       generateBass: new FormControl(this.settingsEdition.generateBass),

@@ -306,9 +306,11 @@ export class GeneratorService {
         placedChords.push(placedChord);
         placedChordIndex++;
         // Add twice the same chord
-        const placedChordBis: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, placedChordIndex, notes);
-        placedChords.push(placedChordBis); // TODO Do we still double the notes ?
-        placedChordIndex++;
+        if (this.settingsService.getSettings().generateDoubleChord) {
+          const placedChordBis: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, placedChordIndex, notes);
+          placedChords.push(placedChordBis);
+          placedChordIndex++;
+        }
       } else {
         // TODO Do we still reverse the notes ?
         // If the current chord is too dissimilar from its previous one

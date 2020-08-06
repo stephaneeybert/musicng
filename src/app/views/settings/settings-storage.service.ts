@@ -40,6 +40,7 @@ export class SettingsStorageService extends LocalStorageService<Settings> {
     settings.generateReverseDissimilarChord = settingJson.generateReverseDissimilarChord;
     settings.generateInpassingNote = Number(Number(settingJson.generateInpassingNote));
     settings.generateNbChords = Number(settingJson.generateNbChords);
+    settings.generateDoubleChord = settingJson.generateDoubleChord;
     settings.generateHarmony = settingJson.generateHarmony;
     settings.generateDrums = settingJson.generateDrums;
     settings.generateBass = settingJson.generateBass;
