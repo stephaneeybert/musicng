@@ -8,7 +8,7 @@ export enum RANDOM_METHOD {
 
 export const DEFAULT_VELOCITY_SOFTER: number = 0.1;
 export const DEFAULT_VELOCITY_LOUDER: number = 1;
-export const DEFAULT_TIME_SIGNATURES: Array<number> = [2, 4];
+export const DEFAULT_TIME_SIGNATURES: Array<number> = [2, 3, 4];
 export const DEFAULT_TEMPO_BPM: number = 128;
 export const DEFAULT_CHORD_WIDTH: number = 3;
 export const DEFAULT_CHORD_DURATION: number = 4;
