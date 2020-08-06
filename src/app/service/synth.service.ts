@@ -46,11 +46,7 @@ export class SynthService {
     this.wakelockService.setMetaToken(WAKELOCK_TOKEN);
   }
 
-  public createSoundtrackSynth(): any {
-    return this.createDeviceSynth();
-  }
-
-  public createDeviceSynth(): any {
+  public createSynth(): any {
     const synth: any = new Tone.PolySynth(Object.keys(TRACK_TYPES).length, Tone.Synth, {
       oscillator: {
         type: 'sine',
