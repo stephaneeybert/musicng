@@ -172,8 +172,13 @@ export class SheetService {
     if (soundtrack.sheetContext != null) {
       stave.setContext(soundtrack.sheetContext);
     }
-    stave.addClef(Clef.TREBLE); // TODO Should the clef be determined from the time signature of the measure ?
-    // TODO And how to animate the clef on a new measure ?
+    // TODO
+    // List the possible Vexflow clef names
+    // It looks like a new clef can be set to any chord new Vex.Flow.StaveNote({ clef: "tenor", keys: ["d/3"], duration: "q" })
+    // Add a clef property to the measure or the chord model class
+    // Draw the measure clef if the first measure or if the current measure clef differs from the previous measure clef
+    // See http://www.vexflow.com/build/docs/clef.html
+    stave.addClef(this.renderClef(measure));
     stave.addTimeSignature(this.renderTimeSignature(measure));
     stave.draw();
     return stave;
@@ -442,6 +447,10 @@ export class SheetService {
     const time: any = new Tone.Time(duration, unit);
     const durationInNotation: string = time.toNotation();
     return durationInNotation;
+  }
+
+  private renderClef(measure: Measure): string {
+    return Clef.TREBLE;
   }
 
   private renderTimeSignature(measure: Measure): string {
