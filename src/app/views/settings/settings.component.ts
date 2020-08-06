@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy, setTestabilityGetter } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Settings } from '@app/model/settings';
 import { SettingsStore } from '@app/store/settings-store';
@@ -81,6 +81,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
             existingSettings.generateInpassingNote = settingsEdition.generateInpassingNote;
             existingSettings.generateNbChords = settingsEdition.generateNbChords;
             existingSettings.generateDoubleChord = settingsEdition.generateDoubleChord;
+            existingSettings.generateMelody = settingsEdition.generateMelody;
             existingSettings.generateHarmony = settingsEdition.generateHarmony;
             existingSettings.generateDrums = settingsEdition.generateDrums;
             existingSettings.generateBass = settingsEdition.generateBass;

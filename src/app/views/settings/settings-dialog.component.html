@@ -110,6 +110,11 @@
           <mat-icon class="example-tab-icon">equalizer</mat-icon>
         </ng-template>
         <p>
+          <mat-slide-toggle formControlName="generateMelody"
+            matTooltip="{{ 'settings.form.set.generate.melody.tip' | translate }}">
+            {{ 'settings.form.set.generate.melody.label' | translate }}</mat-slide-toggle>
+        </p>
+        <p>
           <mat-slide-toggle formControlName="generateHarmony"
             matTooltip="{{ 'settings.form.set.generate.harmony.tip' | translate }}">
             {{ 'settings.form.set.generate.harmony.label' | translate }}</mat-slide-toggle>

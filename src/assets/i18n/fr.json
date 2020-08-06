@@ -110,6 +110,10 @@
             "label": "Nombre d'accords",
             "tip": "Le nombre d'accords du morceau."
           },
+          "melody": {
+            "label": "Piste mélodie",
+            "tip": "Avoir une piste mélodie lors de l'ajout d'un nouveau morceau."
+          },
           "harmony": {
             "label": "Piste harmonie",
             "tip": "Avoir une piste harmonie lors de l'ajout d'un nouveau morceau."

@@ -110,6 +110,10 @@
             "label": "Number of chords",
             "tip": "The number of chords of the soundtrack."
           },
+          "melody": {
+            "label": "Melody track",
+            "tip": "Have a melody track when adding a new soundtrack."
+          },
           "harmony": {
             "label": "Harmony track",
             "tip": "Have a harmony track when adding a new soundtrack."

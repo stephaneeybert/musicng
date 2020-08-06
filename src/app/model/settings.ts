@@ -15,6 +15,7 @@ export class Settings {
   generateInpassingNote: number;
   generateNbChords: number;
   generateDoubleChord: boolean;
+  generateMelody: boolean;
   generateHarmony: boolean;
   generateDrums: boolean;
   generateBass: boolean;
@@ -34,6 +35,7 @@ export class Settings {
     this.generateInpassingNote = DEFAULT_RANDOM_INPASSING;
     this.generateNbChords = DEFAULT_NB_CHORDS;
     this.generateDoubleChord = false;
+    this.generateMelody = true;
     this.generateHarmony = true;
     this.generateDrums = false;
     this.generateBass = false;
@@ -54,6 +56,7 @@ export class Settings {
     generateInpassingNote: number,
     generateNbChords: number,
     generateDoubleChord: boolean,
+    generateMelody: boolean,
     generateHarmony: boolean,
     generateDrums: boolean,
     generateBass: boolean,
@@ -72,6 +75,7 @@ export class Settings {
     this.generateInpassingNote = generateInpassingNote;
     this.generateNbChords = generateNbChords;
     this.generateDoubleChord = generateDoubleChord;
+    this.generateMelody = generateMelody;
     this.generateHarmony = generateHarmony;
     this.generateDrums = generateDrums;
     this.generateBass = generateBass;

@@ -84,8 +84,11 @@ export class GeneratorService {
     this.notationService.addEndOfTrackNote(harmonyChords);
     this.notationService.addEndOfTrackNote(melodyChords);
 
-    const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(melodyChords));
-    melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
+    const generateMelody: boolean = this.settingsService.getSettings().generateMelody;
+    if (generateMelody) {
+      const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(melodyChords));
+      melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
+    }
 
     const generateHarmony: boolean = this.settingsService.getSettings().generateHarmony;
     if (generateHarmony) {
@@ -202,6 +205,7 @@ export class GeneratorService {
     return false;
   }
 
+  // Do Re La (un La n'est pas bon) (un Mi serait bon)
   private getNearNotes(harmonyChord: Array<string>, firstMelodyNote: string): Array<string> {
     const nearNotes: Array<string> = new Array<string>();
     let chromas: Array<string> = CHROMAS_ALPHABETICAL;
