@@ -1,4 +1,5 @@
 import { Component, Input, AfterViewInit, OnDestroy } from '@angular/core';
+import * as Tone from 'tone';
 import { SynthService } from '@app/service/synth.service';
 import { Device } from '@app/model/device';
 import { Soundtrack } from '@app/model/soundtrack';
@@ -59,7 +60,7 @@ export class SynthComponent implements AfterViewInit, OnDestroy {
 
   private createDeviceSynth(device: Device) {
     if (device != null) {
-      const synth: any = this.synthService.createSynth();
+      const synth: Tone.PolySynth = this.synthService.createSynth();
       this.deviceStore.setDeviceSynth(device, synth);
     }
   }

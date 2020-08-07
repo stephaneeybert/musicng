@@ -1,4 +1,5 @@
 import { Component, AfterViewInit, Input, ChangeDetectorRef, HostListener, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import * as Tone from 'tone';
 import { KeyboardService } from '@app/service/keyboard.service';
 import { SynthService } from '@app/service/synth.service';
 import { SoundtrackStore } from '@app/store/soundtrack-store';
@@ -134,10 +135,10 @@ export class KeyboardComponent implements AfterViewInit, OnDestroy {
     }
     const keyboard: any = this.keyboardService.createKeyboard(this.keyboardService.buildDeviceKeyboardId(device.id), this.screenWidth);
     this.deviceStore.setDeviceKeyboard(device, keyboard);
-    this.playSoundFromKeyboard(keyboard, device.synth);
+    this.playSoundFromKeyboard(keyboard, device.synth!);
   }
 
-  private playSoundFromKeyboard(keyboard: any, synth: any) {
+  private playSoundFromKeyboard(keyboard: any, synth: Tone.PolySynth) {
     keyboard.on('change', (note: any) => {
       if (note.state) {
         this.synthService.noteOn(note.note, LIVE_KEYBOARD_MIDI_VELOCITY, synth);

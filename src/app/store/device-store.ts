@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import * as Tone from 'tone';
 import { Store } from './store';
 import { Device } from '@app/model/device';
 import { map } from 'rxjs/operators';
@@ -84,7 +85,7 @@ export class DeviceStore extends Store<Array<Device>> {
     this.setDevice(device);
   }
 
-  public setDeviceSynth(device: Device, synth: any) {
+  public setDeviceSynth(device: Device, synth: Tone.PolySynth) {
     device.synth = synth;
     this.setDevice(device);
   }

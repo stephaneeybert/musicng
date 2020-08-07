@@ -46,17 +46,12 @@ export class SynthService {
     this.wakelockService.setMetaToken(WAKELOCK_TOKEN);
   }
 
-  public createSynth(): Tone.Synth {
-    const synth: Tone.Synth = new Tone.Synth({
+  public createSynth(): Tone.PolySynth {
+    const synth: Tone.PolySynth = new Tone.PolySynth(Tone.Synth, {
       "volume": 0,
       "detune": 0,
       "portamento": 0,
-			oscillator: {
-        "partialCount": 0,
-        "phase": 0,
-        "type": "triangle"
-			},
-			envelope: {
+      "envelope": {
         "attack": 0.005,
         "attackCurve": "linear",
         "decay": 0.1,
@@ -64,7 +59,12 @@ export class SynthService {
         "release": 1,
         "releaseCurve": "exponential",
         "sustain": 0.3
-			}
+      },
+      "oscillator": {
+        "partialCount": 0,
+        "phase": 0,
+        "type": "triangle"
+      }
     }).toDestination();
 
     // TODO Have a volume slider synth.volume.value = -6;
@@ -236,8 +236,8 @@ export class SynthService {
 
             if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
               const textNotes: Array<string> = this.restToSynthRest(placedChord.renderAbc());
-              track.synth.triggerAttack(textNotes, triggerTime, placedChord.velocity);
-              track.synth.triggerRelease(textNotes, releaseTime);
+              track.synth!.triggerAttack(textNotes, triggerTime, placedChord.velocity);
+              track.synth!.triggerRelease(textNotes, releaseTime);
               Tone.Draw.schedule(() => {
                 if (placedChord.isFirst()) {
                   if (animatedStave) {
@@ -282,7 +282,11 @@ export class SynthService {
    */
   private updateTempo(previousMeasure: Measure, measure: Measure): void {
     if (previousMeasure == null || previousMeasure.tempo.subdivision.left !== measure.tempo.subdivision.left || previousMeasure.tempo.subdivision.right !== measure.tempo.subdivision.right && this.notationService.isBpmTempoUnit(measure.tempo)) {
-      console.log('Ramp up tempo ' + measure.getTempo());
+      if (previousMeasure != null) {
+        console.log(previousMeasure.tempo.subdivision.left);
+        console.log(measure.tempo.subdivision.left);
+        console.log('Ramp up tempo ' + measure.getTempo());
+      }
       Tone.Transport.bpm.rampTo(measure.getTempo(), TEMPO_RAMP_TO_IN_SECONDS);
     } else {
       console.log('Change tempo to ' + measure.getTempo());
@@ -300,12 +304,12 @@ export class SynthService {
     }
   }
 
-  public noteOn(midiNote: number, midiVelocity: number, synth: Tone.Synth): void {
+  public noteOn(midiNote: number, midiVelocity: number, synth: Tone.PolySynth): void {
     const textNote: string = this.midiToTextNote(midiNote);
     synth.triggerAttack(textNote, Tone.context.currentTime, this.velocityMidiToTonejs(midiVelocity));
   }
 
-  public noteOff(midiNote: number, synth: Tone.Synth): void {
+  public noteOff(midiNote: number, synth: Tone.PolySynth): void {
     const textNote: string = this.midiToTextNote(midiNote);
     synth.triggerRelease(textNote);
   }

@@ -1,6 +1,7 @@
 import { Control } from './control';
 import { Instrument } from './instrument';
 import { Measure } from './measure/measure';
+import * as Tone from 'tone';
 
 export class Track {
 
@@ -9,7 +10,7 @@ export class Track {
   name?: string;
   displayChordNames: boolean;
   playingComplete: boolean;
-  synth: any;
+  synth?: Tone.PolySynth;
   channel?: number; // TODO Used ?
   instrument?: Instrument; // TODO Used ?
   controls?: Array<Control>; // TODO Used ?

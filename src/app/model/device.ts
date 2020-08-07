@@ -1,4 +1,5 @@
 import { Subscription } from 'rxjs';
+import * as Tone from 'tone';
 
 export class Device {
 
@@ -6,7 +7,7 @@ export class Device {
   name: string;
   mute: boolean;
   keyboard: any;
-  synth: any;
+  synth?: Tone.PolySynth;
   midiMessageSubscription?: Subscription;
 
   constructor(id: string, name: string) {
