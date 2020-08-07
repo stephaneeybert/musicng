@@ -207,7 +207,6 @@ export class GeneratorService {
     return false;
   }
 
-  // Do Re La (un La n'est pas bon) (un Mi serait bon)
   private getNearNotes(harmonyChord: Array<string>, firstMelodyNote: string): Array<string> {
     const nearNotes: Array<string> = new Array<string>();
     let chromas: Array<string> = CHROMAS_ALPHABETICAL;
