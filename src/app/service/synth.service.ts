@@ -300,14 +300,14 @@ export class SynthService {
     }
   }
 
-  public noteOn(midiNote: number, midiVelocity: number, synth: Tone.PolySynth): void {
+  public noteOn(midiNote: number, midiVelocity: number, synth: Tone.Synth): void {
     const textNote: string = this.midiToTextNote(midiNote);
     synth.triggerAttack(textNote, Tone.context.currentTime, this.velocityMidiToTonejs(midiVelocity));
   }
 
-  public noteOff(midiNote: number, synth: Tone.PolySynth): void {
+  public noteOff(midiNote: number, synth: Tone.Synth): void {
     const textNote: string = this.midiToTextNote(midiNote);
-    synth.triggerRelease(textNote, Tone.context.currentTime);
+    synth.triggerRelease(textNote);
   }
 
   public velocityMidiToTonejs(midiVelocity: number): number {
