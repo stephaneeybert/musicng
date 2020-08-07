@@ -12,6 +12,7 @@ import { Track } from '@app/model/track';
 import { TranslateService } from '@ngx-translate/core';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 import { MaterialService } from '@app/core/service/material.service';
+import { TempoUnitType } from '@app/model/tempo-unit';
 
 const NAME_PREFIX_SOUNDTRACK: string = 'sheet-soundtrack-';
 const NAME_PREFIX_DEVICE: string = 'sheet-device-';
@@ -443,8 +444,8 @@ export class SheetService {
 
   private renderDurationInDuple(placedChord: PlacedChord): string {
     const duration: number = placedChord.getDuration();
-    const unit: string = placedChord.getUnit();
-    const time: any = new Tone.Time(duration, unit);
+    const unit: TempoUnitType = placedChord.getUnit();
+    const time: Tone.TimeClass = Tone.Time(duration, unit);
     const durationInNotation: string = time.toNotation();
     return durationInNotation;
   }

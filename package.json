@@ -57,7 +57,7 @@
     "rxjs": "^6.5.2",
     "rxjs-compat": "^6.4.0",
     "stacktrace-js": "^2.0.0",
-    "tone": "^13.8.34",
+    "tone": "^14.7.39",
     "tslib": "^1.10.0",
     "vexflow": "^3.0.9",
     "web-midi-api": "^2.0.7",

@@ -4,7 +4,7 @@ import { NotationService } from '@app/service/notation.service';
 import { Track } from '@app/model/track';
 import { Measure } from '@app/model/measure/measure';
 import { Note } from '@app/model/note/note';
-import { TempoUnit } from '@app/model/tempo-unit';
+import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { CommonService, LocalStorageService } from '@stephaneeybert/lib-core';
 
@@ -85,7 +85,7 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                     throw new Error('The placed chord duration subdivistion or unit could not be accessed from the untyped soundtrack.');
                   }
                   const durationInBpm: number = Number(placedChordJson.duration.subdivision.left) + Number(placedChordJson.duration.subdivision.right);
-                  const tempoUnit: TempoUnit = placedChordJson.duration.unit as TempoUnit;
+                  const tempoUnit: TempoUnitType = placedChordJson.duration.unit as TempoUnitType;
                   const velocity: number = parseFloat(placedChordJson.velocity);
                   const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, durationInBpm, tempoUnit, velocity, notes);
                   placedChord.dottedAll = placedChordJson.dottedAll;

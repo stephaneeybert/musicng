@@ -13,12 +13,6 @@ Avoir une sortie MIDI
 Export de fichier MIDI
 Live streaming MIDI
 
-The statement
-Tone.Transport.bpm.rampTo
-does not accept the tempo of 128
-but the 120 is fine
-Change the measure tempo to be a number of beats
-
 The #E8EAF6 is hard coded 3 times now
 
 Add some export to MIDI format

@@ -1,4 +1,4 @@
-import { TempoUnit } from './tempo-unit';
+import { TempoUnit, TempoUnitType } from './tempo-unit';
 import { RANDOM_METHOD, DEFAULT_TEMPO_BPM, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_CHORD_DURATION, DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_WIDTH, DEFAULT_RANDOM_METHOD, DEFAULT_RANDOM_INPASSING, DEFAULT_NB_CHORDS, DEFAULT_VELOCITY_MEDIUM, DEFAULT_VELOCITY_LOUDER } from '@app/service/notation.constant ';
 
 export class Settings {
@@ -7,7 +7,7 @@ export class Settings {
   generateTimeSignatureNumerator: number;
   generateTimeSignatureDenominator: number;
   generateChordDuration: number;
-  generateChordDurationUnit: TempoUnit;
+  generateChordDurationUnit: TempoUnitType;
   generateNoteOctave: number;
   generateChordWidth: number;
   generateMethod: RANDOM_METHOD;
@@ -31,7 +31,7 @@ export class Settings {
     this.generateTimeSignatureNumerator = DEFAULT_TIME_SIGNATURE_NUMERATOR;
     this.generateTimeSignatureDenominator = DEFAULT_TIME_SIGNATURE_DENOMINATOR;
     this.generateChordDuration = DEFAULT_CHORD_DURATION;
-    this.generateChordDurationUnit = TempoUnit.BPM;
+    this.generateChordDurationUnit = TempoUnit.DUPLE;
     this.generateNoteOctave = DEFAULT_NOTE_OCTAVE;
     this.generateChordWidth = DEFAULT_CHORD_WIDTH;
     this.generateMethod = DEFAULT_RANDOM_METHOD;
@@ -56,7 +56,7 @@ export class Settings {
     generateTimeSignatureNumerator: number,
     generateTimeSignatureDenominator: number,
     generateChordDuration: number,
-    generateChordDurationUnit: TempoUnit,
+    generateChordDurationUnit: TempoUnitType,
     generateNoteOctave: number,
     generateChordWidth: number,
     generateMethod: RANDOM_METHOD,

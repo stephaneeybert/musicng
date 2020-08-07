@@ -46,60 +46,35 @@ export class SynthService {
     this.wakelockService.setMetaToken(WAKELOCK_TOKEN);
   }
 
-  public createSynth(): any {
-    const synth: any = new Tone.PolySynth(Object.keys(TRACK_TYPES).length, Tone.Synth, {
-      oscillator: {
-        type: 'sine',
-      }
-    }).toMaster();
+  public createSynth(): Tone.Synth {
+    const synth: Tone.Synth = new Tone.Synth({
+      "volume": 0,
+      "detune": 0,
+      "portamento": 0,
+			oscillator: {
+        "partialCount": 0,
+        "phase": 0,
+        "type": "triangle"
+			},
+			envelope: {
+        "attack": 0.005,
+        "attackCurve": "linear",
+        "decay": 0.1,
+        "decayCurve": "exponential",
+        "release": 1,
+        "releaseCurve": "exponential",
+        "sustain": 0.3
+			}
+    }).toDestination();
 
     // TODO Have a volume slider synth.volume.value = -6;
-
-    // const synth: any = new Tone.PolySynth(CHORD_WIDTH, Tone.Synth, {
-    //   "oscillator" : {
-    //     "type" : "fatsawtooth",
-    //     "count" : 3,
-    //     "spread" : 30
-    //   },
-    //   "envelope": {
-    //     "attack": 0.01,
-    //     "decay": 0.1,
-    //     "sustain": 0.5,
-    //     "release": 0.4,
-    //     "attackCurve" : "exponential"
-    //   },
-    // }).toMaster();
-
-    // const synth: any = new Tone.PolySynth(CHORD_WIDTH, Tone.Synth, {
-    //   "volume" : -8,
-    //   "oscillator" : {
-    //       "partials" : [1, 2, 5],
-    //   },
-    //   "portamento" : 0.005
-    // }).toMaster()
-
-    // const synthFilter: any = new Tone.Filter(300, 'lowpass').connect(
-    //   new Tone.Gain(0.4).toMaster()
-    // );
-    // const synthConfig: any = {
-    //   oscillator: {
-    //     type: 'fattriangle'
-    //   },
-    //   envelope: {
-    //     attack: 3,
-    //     sustain: 1,
-    //     release: 1
-    //   }
-    // };
-    // const synth: any = new Tone.PolySynth(CHORD_WIDTH, Tone.Synth, synthConfig)
-    // .connect(synthFilter)
-    // .toMaster();
 
     return synth;
   }
 
   // Start the transport
   public startTransport(): void {
+    Tone.start();
     Tone.Transport.start(TRANSPORT_START_DELAY);
     console.log('Started the transport');
   }
@@ -247,7 +222,7 @@ export class SynthService {
       }
 
       // Schedule each measure independently
-      Tone.Transport.scheduleOnce((measureStartTime: any) => {
+      Tone.Transport.scheduleOnce((measureStartTime: number) => {
         // The time of notes relative to the start of the current measure
         // Note that a non zero init time is needed to have the first note key press displayed
         relativeTime += 0.01;
@@ -263,7 +238,7 @@ export class SynthService {
               const textNotes: Array<string> = this.restToSynthRest(placedChord.renderAbc());
               track.synth.triggerAttack(textNotes, triggerTime, placedChord.velocity);
               track.synth.triggerRelease(textNotes, releaseTime);
-              Tone.Draw.schedule((actualTime: any) => {
+              Tone.Draw.schedule(() => {
                 if (placedChord.isFirst()) {
                   if (animatedStave) {
                     this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, measure.index);
@@ -273,12 +248,12 @@ export class SynthService {
                 this.sheetService.highlightStaveNote(placedChord, soundtrack);
                 this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
               }, triggerTime);
-              Tone.Draw.schedule((actualTime: any) => {
+              Tone.Draw.schedule(() => {
                 this.sheetService.unhighlightStaveNote(placedChord, soundtrack);
                 this.keyboardService.unpressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
               }, releaseTime);
             } else {
-              Tone.Draw.schedule((actualTime: any) => {
+              Tone.Draw.schedule(() => {
                 if (animatedStave) {
                   this.sheetService.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, measure.index);
                   this.sheetService.drawMeasure(firstMeasure, track, soundtrack, animatedStave);
@@ -307,11 +282,10 @@ export class SynthService {
    */
   private updateTempo(previousMeasure: Measure, measure: Measure): void {
     if (previousMeasure == null || previousMeasure.tempo.subdivision.left !== measure.tempo.subdivision.left || previousMeasure.tempo.subdivision.right !== measure.tempo.subdivision.right && this.notationService.isBpmTempoUnit(measure.tempo)) {
-      // console.log('Ramp up tempo ' + measure.getTempo());
-      Tone.Transport.bpm.value = measure.getTempo();
-      // Tone.Transport.bpm.rampTo(measure.getTempo(), TEMPO_RAMP_TO_IN_SECONDS);
+      console.log('Ramp up tempo ' + measure.getTempo());
+      Tone.Transport.bpm.rampTo(measure.getTempo(), TEMPO_RAMP_TO_IN_SECONDS);
     } else {
-      // console.log('Change tempo to ' + measure.getTempo());
+      console.log('Change tempo to ' + measure.getTempo());
       Tone.Transport.bpm.value = measure.getTempo();
     }
   }
@@ -326,14 +300,14 @@ export class SynthService {
     }
   }
 
-  public noteOn(midiNote: number, midiVelocity: number, synth: any): void {
+  public noteOn(midiNote: number, midiVelocity: number, synth: Tone.PolySynth): void {
     const textNote: string = this.midiToTextNote(midiNote);
-    synth.triggerAttack(textNote, Tone.Context.currentTime, this.velocityMidiToTonejs(midiVelocity));
+    synth.triggerAttack(textNote, Tone.context.currentTime, this.velocityMidiToTonejs(midiVelocity));
   }
 
-  public noteOff(midiNote: number, synth: any): void {
+  public noteOff(midiNote: number, synth: Tone.PolySynth): void {
     const textNote: string = this.midiToTextNote(midiNote);
-    synth.triggerRelease(textNote, Tone.Context.currentTime);
+    synth.triggerRelease(textNote, Tone.context.currentTime);
   }
 
   public velocityMidiToTonejs(midiVelocity: number): number {

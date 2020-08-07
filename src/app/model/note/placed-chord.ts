@@ -1,6 +1,7 @@
 import * as vexflow from 'vexflow';
 import { Note } from './note';
 import { Duration } from './duration/duration';
+import { TempoUnitType } from '../tempo-unit';
 
 export class PlacedChord {
 
@@ -71,7 +72,7 @@ export class PlacedChord {
     return this.duration.renderValue();
   }
 
-  public getUnit(): string {
+  public getUnit(): TempoUnitType {
     return this.duration.renderUnit();
   }
 

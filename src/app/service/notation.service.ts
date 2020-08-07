@@ -8,7 +8,7 @@ import { Pitch } from '@app/model/note/pitch/pitch';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
-import { TempoUnit } from '@app/model/tempo-unit';
+import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
 import { Subdivisions } from '@app/model/note/duration/subdivisions';
 
 const CHORD_SEPARATOR: string = ' ';
@@ -55,7 +55,7 @@ export class NotationService {
 
   public createMeasure(index: number, tempoInBpm: number, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
     const timeSignature: TimeSignature = this.createTimeSignature(timeSignatureNumerator, timeSignatureDenominator);
-    const measure: Measure = new Measure(index, this.createDuration(tempoInBpm, TempoUnit.BPM), timeSignature);
+    const measure: Measure = new Measure(index, this.createDuration(tempoInBpm, TempoUnit.DUPLE), timeSignature);
     return measure;
   }
 
@@ -124,7 +124,7 @@ export class NotationService {
     }
   }
 
-  public createPlacedChord(index: number, chordDurationInBpm: number, tempoUnit: TempoUnit, velocity: number, notes: Array<Note>): PlacedChord {
+  public createPlacedChord(index: number, chordDurationInBpm: number, tempoUnit: TempoUnitType, velocity: number, notes: Array<Note>): PlacedChord {
     const duration: Duration = this.createDuration(chordDurationInBpm, tempoUnit);
     const placedChord: PlacedChord = this.createEmptyChord(index, duration, velocity);
     this.addNotes(placedChord, notes);
@@ -213,7 +213,7 @@ export class NotationService {
   }
 
   public createDefaultTempo(): Duration {
-    return this.createDuration(DEFAULT_TEMPO_BPM_VALUE, TempoUnit.BPM);
+    return this.createDuration(DEFAULT_TEMPO_BPM_VALUE, TempoUnit.DUPLE);
   }
 
   public createDefaultTimeSignature(): TimeSignature {
@@ -221,7 +221,7 @@ export class NotationService {
   }
 
   public isBpmTempoUnit(duration: Duration) {
-    return duration && duration.unit === TempoUnit.BPM;
+    return duration && duration.unit === TempoUnit.DUPLE;
   }
 
   private createChroma(value: string): Chroma {
@@ -270,7 +270,7 @@ export class NotationService {
     }
   }
 
-  public createDuration(durationInBpm: number, tempoUnit: TempoUnit): Duration {
+  public createDuration(durationInBpm: number, tempoUnit: TempoUnitType): Duration {
     return new Duration(this.createSubdivision(durationInBpm), tempoUnit);
   }
 

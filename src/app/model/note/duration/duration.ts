@@ -1,12 +1,12 @@
 import { Subdivision } from './subdivision';
-import { TempoUnit } from '@app/model/tempo-unit';
+import { TempoUnitType } from '@app/model/tempo-unit';
 
 export class Duration {
 
   subdivision: Subdivision;
-  unit: TempoUnit;
+  unit: TempoUnitType;
 
-  constructor(subdivision: Subdivision, tempoUnit: TempoUnit) {
+  constructor(subdivision: Subdivision, tempoUnit: TempoUnitType) {
     this.subdivision = subdivision;
     this.unit = tempoUnit;
   }
@@ -19,12 +19,16 @@ export class Duration {
     }
   }
 
-  public renderUnit(): string {
+  public renderUnit(): TempoUnitType {
     return this.unit;
   }
 
   public renderValueInUnit(): string {
-    return this.renderValue() + this.unit;
+    if (this.unit) {
+      return this.renderValue() + this.unit;
+    } else {
+      return String(this.renderValue());
+    }
   }
 
 }
