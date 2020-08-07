@@ -19,31 +19,14 @@ does not accept the tempo of 128
 but the 120 is fine
 Change the measure tempo to be a number of beats
 
-
-Shared Modules
-SharedModule consists of components, directives, and pipes that we can use everywhere in our app. This module should consist entirely of declarations, most of them exported.
-The SharedModule should also re-export other widget modules, such as CommonModule, FormsModule, and modules with the UI controls that you use most widely.
-Core Modules
-CoreModule will include providers for the singleton services that we load when the application starts.
-
-I am using ShareModule to encapsulate Angular and commonly used 3rd party modules (Material Design, flex-layout, Angular's CommonModule, FormsModule etc) and importing ShareModule into each Lazy-loaded Feature Modules (which are also under lib)
-My CoreModule consists shared Services, and some Components that are only used by AppModule. This CoreModule is imported only into AppModule, basically to keep AppModule slim.
-
 The #E8EAF6 is hard coded 3 times now
-
-Stave drawing
-Animate the clef when the new measure has a different clef, redraw the clef on each new measure
-stave.addClef(Clef.TREBLE);
-Should the clef be determined from the time signature of the measure ?
-stave.addClef(Clef.TREBLE);
 
 Add some export to MIDI format
 
 Norbert:
 
-The bass track has note names annotations of only one note like the melody track
-The drums track has no note names annotations
-
+The bass track has note names annotations of only one note like the melody track.
+The drums track has no note names annotations.
 Générer des silences aussi et pas que des notes.
 Pouvoir démarrer sur une autre note que le do.
 Avoir une matrice par tonalité, soit 12 matrices pour les tonalités mineures
