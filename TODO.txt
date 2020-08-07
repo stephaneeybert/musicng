@@ -12,10 +12,10 @@ Add a date field
 Avoir une sortie MIDI
 Export de fichier MIDI
 Live streaming MIDI
+Add some export to MIDI format
 
 The #E8EAF6 is hard coded 3 times now
 
-Add some export to MIDI format
 
 Norbert:
 
