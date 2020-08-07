@@ -98,8 +98,14 @@ export class SettingsDialogComponent implements OnInit {
       }),
       generateVelocityMelody: new FormControl(this.settingsEdition.generateVelocityMelody),
       generateVelocityHarmony: new FormControl(this.settingsEdition.generateVelocityHarmony),
-      generateVelocityDrums: new FormControl(this.settingsEdition.generateVelocityDrums),
-      generateVelocityBass: new FormControl(this.settingsEdition.generateVelocityBass),
+      generateVelocityDrums: new FormControl({
+        value: this.settingsEdition.generateVelocityDrums,
+        disabled: true
+      }),
+      generateVelocityBass: new FormControl({
+        value: this.settingsEdition.generateVelocityBass,
+        disabled: true
+      }),
       animatedStave: new FormControl(this.settingsEdition.animatedStave),
       showKeyboard: new FormControl(this.settingsEdition.showKeyboard)
     });
