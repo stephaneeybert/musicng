@@ -88,8 +88,14 @@ export class SettingsDialogComponent implements OnInit {
       generateDoubleChord: new FormControl(this.settingsEdition.generateDoubleChord),
       generateMelody: new FormControl(this.settingsEdition.generateMelody),
       generateHarmony: new FormControl(this.settingsEdition.generateHarmony),
-      generateDrums: new FormControl({value: this.settingsEdition.generateDrums, disabled: true}),
-      generateBass: new FormControl({value: this.settingsEdition.generateBass, disabled: true}),
+      generateDrums: new FormControl({
+        value: this.settingsEdition.generateDrums,
+        disabled: true
+      }),
+      generateBass: new FormControl({
+        value: this.settingsEdition.generateBass,
+        disabled: true
+      }),
       generateVelocityMelody: new FormControl(this.settingsEdition.generateVelocityMelody),
       generateVelocityHarmony: new FormControl(this.settingsEdition.generateVelocityHarmony),
       generateVelocityDrums: new FormControl(this.settingsEdition.generateVelocityDrums),
