@@ -140,7 +140,7 @@ export class SettingsDialogComponent implements OnInit {
     return value;
   }
 
-  isHarmonyBaseMethod(): boolean {
+  private isHarmonyBaseMethod(): boolean {
     const randomMethod: RANDOM_METHOD = this.settingsService.getSettings().generateMethod;
     return RANDOM_METHOD.HARMONY_BASE == randomMethod;
   }
