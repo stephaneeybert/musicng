@@ -13,24 +13,11 @@ Avoir une sortie MIDI
 Export de fichier MIDI
 Live streaming MIDI
 
-All methods should have a return type, possibly void.
-
-Do a slider for the volume of a track
-https://material.angular.io/guide/getting-started
-<mat-slider min="1" max="100" step="1" value="1"></mat-slider>
-
-Have an installable to home screen app
-
 The statement
 Tone.Transport.bpm.rampTo
 does not accept the tempo of 128
 but the 120 is fine
 Change the measure tempo to be a number of beats
-
-When clicking on the settings icon, it stays highlighted after closing the dialog
-
-If two same notes then have one long note and not two short ones
-
 
 
 Shared Modules
