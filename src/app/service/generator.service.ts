@@ -254,19 +254,19 @@ export class GeneratorService {
         const firstNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth - 1);
         const firstMelodyChroma: string = harmonyChord.notes[firstNoteIndex].renderChroma();
         const halfDuration: number = chordDuration * 2;
-        const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, halfDuration, velocity, placedChordIndex, [ firstMelodyChroma ]);
+        let placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, halfDuration, velocity, placedChordIndex, [ firstMelodyChroma ]);
         melodyChords.push(placedChord);
         placedChordIndex++;
         if (this.fromInpassingNote()) {
           const inpassingNote: string = this.getInpassingNote(harmonyChord.getNotesChromas(), firstMelodyChroma);
-          const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, halfDuration, velocity, placedChordIndex, [ inpassingNote ]);
+          placedChord = this.createNotesAndPlacedChord(octave, halfDuration, velocity, placedChordIndex, [ inpassingNote ]);
           melodyChords.push(placedChord);
         } else {
           // Get one of the source chord notes even the already picked one
           const secondNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth - 1);
           const secondMelodyChroma: string = harmonyChord.getNotesChromas()[secondNoteIndex];
           if (secondMelodyChroma != firstMelodyChroma) {
-            const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, halfDuration, velocity, placedChordIndex, [ secondMelodyChroma ]);
+            placedChord = this.createNotesAndPlacedChord(octave, halfDuration, velocity, placedChordIndex, [ secondMelodyChroma ]);
             melodyChords.push(placedChord);
           } else {
             // If the second note is the same as the fisrt one then have only one chord
