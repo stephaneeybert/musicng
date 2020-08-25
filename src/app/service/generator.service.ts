@@ -246,7 +246,7 @@ export class GeneratorService {
       if (RANDOM_METHOD.HARMONY_BASE == randomMethod) {
         // For each source chord of the harmony track, there are two single note chords of half duration in the melody track
         // The first note is one of the source chord, and the second note is also a note from the same source chord or an inpassing note
-        // An inpassing note is one that is not in the source chord but that is between the previous note and another note of the source chord even if of a another octave
+        // An inpassing note is one that is not in the source chord but that is between the previous note and another note of the source chord even if of another octave
         // So an inpassing note cannot be followed by another inpassing note, but a source chord note can be followed by another source chord note
 
         // Get one of the source chord notes
