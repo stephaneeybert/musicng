@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, OnDestroy, setTestabilityGetter } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Settings } from '@app/model/settings';
 import { SettingsStore } from '@app/store/settings-store';
