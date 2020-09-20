@@ -20,6 +20,8 @@
     "soundtrack.description": "Le générateur de musique",
     "device": "Appareils",
     "device.description": "Les appareils branchés",
+    "settings-reset" : "Réinitialiser tous les paramètres",
+    "settings-reset.description": "Réinitialiser tous les paramètres à leurs valeurs originelles",
     "users": "Utilisateurs",
     "users.description": "Les utilisateurs",
     "login": "Connexion",
@@ -163,8 +165,18 @@
         }
       }
     },
+    "reset": {
+      "tip": "Réinitialiser tous les paramètres",
+      "form": {
+        "title": "Réinitialiser",
+        "statement": "Réinitialiser tous les paramètres à leurs valeurs d'origine",
+        "cancel": "Annuler",
+        "reset": "Réinitialiser"
+      }
+    },
     "message": {
-      "saved": "Les paramètres ont été enregistré."
+      "saved": "Les paramètres ont été enregistré.",
+      "reset-ed": "Les paramètres ont été réinitialisés."
     }
   },
   "music": {

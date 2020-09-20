@@ -20,6 +20,8 @@
     "soundtrack.description": "The soundtrack generator",
     "device": "Devices",
     "device.description": "The plugged-in devices",
+    "settings-reset" : "Reset all settings",
+    "settings-reset.description": "Reset all the settings to their original values",
     "users": "Users",
     "users.description": "The users",
     "login": "Log in",
@@ -163,8 +165,18 @@
         }
       }
     },
+    "reset": {
+      "tip": "Reset all settings",
+      "form": {
+        "title": "Reset",
+        "statement": "Reset all settings to their original values",
+        "cancel": "Cancel",
+        "reset": "Reset"
+      }
+    },
     "message": {
-      "saved": "The settings have been saved."
+      "saved": "The settings have been saved.",
+      "reset-ed": "The settings have been reset."
     }
   },
   "music": {

@@ -1,0 +1,11 @@
+<form autocomplete="off" (ngSubmit)="reset()">
+  <h1 mat-dialog-title>{{ 'settings.reset.form.title' | translate }}</h1>
+  <p>{{ 'settings.reset.form.statement' | translate }}</p>
+  <mat-dialog-actions>
+    <mat-toolbar>
+      <button mat-flat-button type="button" (click)="close()">{{ 'settings.reset.form.cancel' | translate }}</button>
+      <span class="fill-remaining-space"></span>
+      <button mat-flat-button color="primary" type="submit">{{ 'settings.reset.form.reset' | translate }}</button>
+    </mat-toolbar>
+  </mat-dialog-actions>
+</form>
