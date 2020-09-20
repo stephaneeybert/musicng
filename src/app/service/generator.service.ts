@@ -211,17 +211,32 @@ export class GeneratorService {
     const nearNotes: Array<string> = new Array<string>();
     let chromas: Array<string> = CHROMAS_ALPHABETICAL;
     const firstMelodyNoteIndex: number = CHROMAS_ALPHABETICAL.indexOf(firstMelodyNote);
+
+    // The maximum near distance to consider
+    const NEAR_MAX: number = 2; // TODO Have this constant as a settings
+
+    // Consider the chromas above the first melody note chroma
     for (let chromaIndex: number = 0; chromaIndex < CHROMAS_ALPHABETICAL.length; chromaIndex++) {
+      if (chromaIndex == NEAR_MAX) {
+        break;
+      }
       chromas = this.createArrayShiftOnceLeft(chromas);
+      // Consider only notes non added yet
       if (!harmonyChord.includes(chromas[firstMelodyNoteIndex])) {
         nearNotes.push(chromas[firstMelodyNoteIndex]);
       } else {
         break;
       }
     }
+
+    // Consider the chromas below the first melody note chroma
     chromas = CHROMAS_ALPHABETICAL;
     for (let chromaIndex: number = 0; chromaIndex < CHROMAS_ALPHABETICAL.length; chromaIndex++) {
+      if (chromaIndex == NEAR_MAX) {
+        break;
+      }
       chromas = this.createArrayShiftOnceRight(chromas);
+      // Consider only notes non added yet
       if (!harmonyChord.includes(chromas[firstMelodyNoteIndex])) {
         nearNotes.push(chromas[firstMelodyNoteIndex]);
       } else {
