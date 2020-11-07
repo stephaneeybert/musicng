@@ -16,7 +16,6 @@ Add some export to MIDI format
 
 The #E8EAF6 is hard coded 3 times now
 
-
 Norbert:
 
 The bass track has note names annotations of only one note like the melody track.

@@ -38,12 +38,21 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-toolbar color="primary">
-    <button mat-icon-button (click)="sidenav.toggle()" class="sidenav-toggle-button"
-      [hidden]="sidenav.opened">
-      <mat-icon aria-label="Another menu" class="material-icons">menu</mat-icon>
-    </button>
-    <span class="title">{{ 'app.title' | translate }}</span>
-    <span class="fill-remaining-space"></span>
-    <app-header></app-header>
+    <mat-toolbar-row>
+      <button mat-icon-button (click)="sidenav.toggle()" class="sidenav-toggle-button"
+        [hidden]="sidenav.opened">
+        <mat-icon aria-label="Another menu" class="material-icons">menu</mat-icon>
+      </button>
+      <span class="title">{{ 'app.title' | translate }}</span>
+      <span class="fill-remaining-space"></span>
+      <app-settings-reset></app-settings-reset>
+      <app-settings></app-settings>
+      <app-theme></app-theme>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <span class="fill-remaining-space"></span>
+      <button mat-button routerLink="/soundtracks" matTooltip="{{ 'header.soundtrack' | translate }}"><mat-icon mat-list-icon>music_note</mat-icon></button>
+      <button mat-button routerLink="/devices" matTooltip="{{ 'header.device' | translate }}"><mat-icon mat-list-icon>keyboard</mat-icon></button>
+    </mat-toolbar-row>
   </mat-toolbar>
 </div>
