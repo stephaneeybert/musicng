@@ -21,7 +21,13 @@ export const DEFAULT_RANDOM_METHOD: RANDOM_METHOD = RANDOM_METHOD.HARMONY_BASE;
 export const DEFAULT_RANDOM_INPASSING: number = 50;
 
 export const CHORD_DURATION_UNITS: Map<TempoUnit, string> = new Map([
-  [TempoUnit.DUPLE, 'n'], [TempoUnit.HERTZ, 'hz'], [TempoUnit.TICK, 't'], [TempoUnit.SECOND, 's'], [TempoUnit.DUPLE, 'n'], [TempoUnit.TRIPLET, 't'], [TempoUnit.MEASURE, 'm']
+  [TempoUnit.DUPLE, 'n'],
+  [TempoUnit.HERTZ, 'hz'],
+  [TempoUnit.TICK, 't'],
+  [TempoUnit.SECOND, 's'],
+  [TempoUnit.DUPLE, 'n'],
+  [TempoUnit.TRIPLET, 't'],
+  [TempoUnit.MEASURE, 'm']
 ]);
 export const GENERATE_METHODS: Map<RANDOM_METHOD, string> = new Map([
   [RANDOM_METHOD.BASE, '1. Base'],
