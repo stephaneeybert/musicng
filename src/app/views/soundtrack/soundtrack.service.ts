@@ -15,8 +15,8 @@ export class SoundtrackService {
     private soundtrackStore: SoundtrackStore
   ) { }
 
-  public createSoundtrack(name: string): Soundtrack {
-    return new Soundtrack(this.commonService.normalizeName(name), name);
+  public createSoundtrack(id: string, name: string): Soundtrack {
+    return new Soundtrack(this.commonService.normalizeName(id), name);
   }
 
   public storeSoundtrack(soundtrack: Soundtrack): void {

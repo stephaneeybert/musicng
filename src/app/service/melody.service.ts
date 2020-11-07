@@ -42,7 +42,7 @@ export class MelodyService {
 
     const soundtrackName: string = 'Demo soundtrack';
     const measures: Array<Measure> = this.notationService.parseMeasures(textMeasures, DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_VELOCITY);
-    const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(soundtrackName);
+    const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(soundtrackName, soundtrackName);
     const melodyTrack: Track = soundtrack.addTrack(measures);
     melodyTrack.displayChordNames = true;
     this.soundtrackService.storeSoundtrack(soundtrack);
