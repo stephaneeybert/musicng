@@ -10,6 +10,7 @@ import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
 import { Subdivisions } from '@app/model/note/duration/subdivisions';
+import { TEMPO_SUBDIVISIONS } from './notation.constant ';
 
 const CHORD_SEPARATOR: string = ' ';
 const CHORD_DURATION_SEPARATOR: string = '/';
@@ -233,40 +234,11 @@ export class NotationService {
   }
 
   private createSubdivision(durationInBpm: number): Subdivision {
-    if (durationInBpm === Subdivisions.HUNDERD_TWENTY_EIGHTH) {
-      return Subdivision.HUNDERD_TWENTY_EIGHTH;
-    } else if (durationInBpm === (Subdivisions.HUNDERD_TWENTY_EIGHTH + Subdivisions.TWO_HUNDRED_FIFTY_SIXTH)) {
-      return Subdivision.DOTTED_HUNDERD_TWENTY_EIGHTH;
-    } else if (durationInBpm === Subdivisions.SIXTY_FOURTH) {
-      return Subdivision.SIXTY_FOURTH;
-    } else if (durationInBpm === (Subdivisions.SIXTY_FOURTH + Subdivisions.HUNDERD_TWENTY_EIGHTH)) {
-      return Subdivision.DOTTED_SIXTY_FOURTH;
-    } else if (durationInBpm === Subdivisions.THIRTY_SECONDTH) {
-      return Subdivision.THIRTY_SECONDTH;
-    } else if (durationInBpm === (Subdivisions.THIRTY_SECONDTH + Subdivisions.SIXTY_FOURTH)) {
-      return Subdivision.DOTTED_THIRTY_SECOND;
-    } else if (durationInBpm === Subdivisions.SIXTEENTH) {
-      return Subdivision.SIXTEENTH;
-    } else if (durationInBpm === (Subdivisions.SIXTEENTH + Subdivisions.THIRTY_SECONDTH)) {
-      return Subdivision.DOTTED_SIXTEENTH;
-    } else if (durationInBpm === Subdivisions.EIGHTH) {
-      return Subdivision.EIGHTH;
-    } else if (durationInBpm === (Subdivisions.EIGHTH + Subdivisions.SIXTEENTH)) {
-      return Subdivision.DOTTED_EIGHTH;
-    } else if (durationInBpm === Subdivisions.QUARTER) {
-      return Subdivision.QUARTER;
-    } else if (durationInBpm === (Subdivisions.QUARTER + Subdivisions.EIGHTH)) {
-      return Subdivision.DOTTED_QUARTER;
-    } else if (durationInBpm === Subdivisions.HALF) {
-      return Subdivision.HALF;
-    } else if (durationInBpm === (Subdivisions.HALF + Subdivisions.QUARTER)) {
-      return Subdivision.DOTTED_HALF;
-    } else if (durationInBpm === Subdivisions.WHOLE) {
-      return Subdivision.WHOLE;
-    } else if (durationInBpm === Subdivisions.NONE) {
-      return Subdivision.NONE;
+    const subdivision: Subdivision | undefined = TEMPO_SUBDIVISIONS.get(Number(durationInBpm));
+    if (subdivision) {
+      return subdivision;
     } else {
-      throw new Error('Unknown subdivision for duration: ' + durationInBpm);
+      throw new Error('Unknown subdivision for the duration: ' + durationInBpm);
     }
   }
 

@@ -1,10 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { DEFAULT_TIME_SIGNATURES, RANDOM_METHOD, CHORD_DURATION_UNITS, GENERATE_METHODS } from '@app/service/notation.constant ';
+import { DEFAULT_TIME_SIGNATURES, RANDOM_METHOD, CHORD_DURATION_UNITS, GENERATE_METHODS, TEMPO_SUBDIVISIONS } from '@app/service/notation.constant ';
 import { TempoUnitType } from '@app/model/tempo-unit';
 import { Settings } from '@app/model/settings';
 import { SettingsService } from './settings.service';
+import { Subdivision } from '@app/model/note/duration/subdivision';
 
 type TimeSignatureType = {
   id: number,
@@ -21,6 +22,11 @@ type GenerateMethodType = {
   name: string
 };
 
+type TempoSubdivisionType = {
+  id: number,
+  name: string
+};
+
 @Component({
   templateUrl: './settings-dialog.component.html',
   styleUrls: ['./settings-dialog.component.css']
@@ -32,6 +38,7 @@ export class SettingsDialogComponent implements OnInit {
   timeSignatures: Array<TimeSignatureType> = new Array();
   chordDurationUnits: Array<ChordDurationUnitType> = new Array();
   generateMethods: Array<GenerateMethodType> = new Array();
+  tempoSubdivisions: Array<TempoSubdivisionType> = new Array();
 
   constructor(
     private settingsService: SettingsService,
@@ -125,6 +132,10 @@ export class SettingsDialogComponent implements OnInit {
 
     GENERATE_METHODS.forEach((name: string, id: RANDOM_METHOD) => {
       this.generateMethods.push({ 'id': id, 'name': name });
+    });
+
+    TEMPO_SUBDIVISIONS.forEach((subdivision: Subdivision, bpm: number) => {
+      this.tempoSubdivisions.push({ 'id': bpm, 'name': String(subdivision.left) + '/' + String(subdivision.right) });
     });
   }
 

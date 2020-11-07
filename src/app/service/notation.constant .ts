@@ -1,4 +1,6 @@
 import { TempoUnit } from '@app/model/tempo-unit';
+import { Subdivisions } from '@app/model/note/duration/subdivisions';
+import { Subdivision } from '@app/model/note/duration/subdivision';
 
 export enum RANDOM_METHOD {
   BASE = 0,
@@ -38,3 +40,22 @@ export const GENERATE_METHODS: Map<RANDOM_METHOD, string> = new Map([
 export const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
 export const MIDI_FILE_SUFFIX: string = 'mid';
+
+export const TEMPO_SUBDIVISIONS: Map<number, Subdivision> = new Map([
+  [Subdivisions.HUNDERD_TWENTY_EIGHTH + Subdivisions.TWO_HUNDRED_FIFTY_SIXTH, Subdivision.DOTTED_HUNDERD_TWENTY_EIGHTH],
+  [Subdivisions.HUNDERD_TWENTY_EIGHTH, Subdivision.HUNDERD_TWENTY_EIGHTH],
+  [Subdivisions.SIXTY_FOURTH + Subdivisions.HUNDERD_TWENTY_EIGHTH, Subdivision.DOTTED_SIXTY_FOURTH],
+  [Subdivisions.SIXTY_FOURTH, Subdivision.SIXTY_FOURTH],
+  [Subdivisions.THIRTY_SECONDTH + Subdivisions.SIXTY_FOURTH, Subdivision.DOTTED_THIRTY_SECOND],
+  [Subdivisions.THIRTY_SECONDTH, Subdivision.THIRTY_SECONDTH],
+  [Subdivisions.SIXTEENTH + Subdivisions.THIRTY_SECONDTH, Subdivision.DOTTED_SIXTEENTH],
+  [Subdivisions.SIXTEENTH, Subdivision.SIXTEENTH],
+  [Subdivisions.EIGHTH + Subdivisions.SIXTEENTH, Subdivision.DOTTED_EIGHTH],
+  [Subdivisions.EIGHTH, Subdivision.EIGHTH],
+  [Subdivisions.QUARTER + Subdivisions.EIGHTH, Subdivision.DOTTED_QUARTER],
+  [Subdivisions.QUARTER, Subdivision.QUARTER],
+  [Subdivisions.HALF + Subdivisions.QUARTER, Subdivision.DOTTED_HALF],
+  [Subdivisions.HALF, Subdivision.HALF],
+  [Subdivisions.WHOLE, Subdivision.WHOLE],
+  [Subdivisions.NONE, Subdivision.NONE]
+]);
