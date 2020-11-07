@@ -70,7 +70,7 @@ export class GeneratorService {
   }
 
   public generateSoundtrack(): Soundtrack {
-    const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.assignNewName());
+    const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.createNewSoundtrackId());
 
     const randomMethod: RANDOM_METHOD = this.settingsService.getSettings().generateMethod;
 
@@ -123,7 +123,7 @@ export class GeneratorService {
     return this.translateService.instant('music.notation.track.' + trackType);
   }
 
-  private assignNewName(): string {
+  private createNewSoundtrackId(): string {
     return this.translateService.instant('soundtracks.assignedName') + '_' + this.commonService.getRandomString(4);
   }
 
