@@ -651,9 +651,9 @@ export class MidiService {
                           velocity: velocity,
                           duration: durationInSeconds
                         });
-                        totalDurationInSeconds += durationInSeconds;
                       }
                     }
+                  totalDurationInSeconds += durationInSeconds;
                   }
                 }
               }
