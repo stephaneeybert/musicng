@@ -220,10 +220,7 @@ export class GeneratorService {
     const NEAR_MAX: number = 2; // TODO Have this constant as a settings
 
     // Consider the chromas above the first melody note chroma
-    for (let chromaIndex: number = 0; chromaIndex < CHROMAS_ALPHABETICAL.length; chromaIndex++) {
-      if (chromaIndex == NEAR_MAX) {
-        break;
-      }
+    for (let chromaIndex: number = 0; chromaIndex < NEAR_MAX; chromaIndex++) {
       chromas = this.createArrayShiftOnceLeft(chromas);
       // Consider only notes non added yet
       if (!harmonyChord.includes(chromas[firstMelodyNoteIndex])) {
@@ -235,10 +232,7 @@ export class GeneratorService {
 
     // Consider the chromas below the first melody note chroma
     chromas = CHROMAS_ALPHABETICAL;
-    for (let chromaIndex: number = 0; chromaIndex < CHROMAS_ALPHABETICAL.length; chromaIndex++) {
-      if (chromaIndex == NEAR_MAX) {
-        break;
-      }
+    for (let chromaIndex: number = 0; chromaIndex < NEAR_MAX; chromaIndex++) {
       chromas = this.createArrayShiftOnceRight(chromas);
       // Consider only notes non added yet
       if (!harmonyChord.includes(chromas[firstMelodyNoteIndex])) {
@@ -272,6 +266,7 @@ export class GeneratorService {
         const chordWidth: number = this.settingsService.getSettings().generateChordWidth;
         const firstNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth - 1);
         const firstMelodyChroma: string = harmonyChord.notes[firstNoteIndex].renderChroma();
+        // The duration is a quotient base and is thus multiplied by 2 to cut it in half
         const halfDuration: number = chordDuration * 2;
         let placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, halfDuration, velocity, placedChordIndex, [ firstMelodyChroma ]);
         melodyChords.push(placedChord);
