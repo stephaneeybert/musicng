@@ -57,7 +57,6 @@ export class SheetService {
   constructor(
     private notationService: NotationService,
     private translateService: TranslateService,
-    private screenDeviceService: ScreenDeviceService,
     private materialService: MaterialService
   ) { }
 
