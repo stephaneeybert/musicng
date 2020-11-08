@@ -211,7 +211,7 @@ export class GeneratorService {
     return false;
   }
 
-  private getNearNotes(harmonyChord: Array<string>, firstMelodyNote: string): Array<string> {
+  private getNearNotes(harmonyChord: Array<string>, firstMelodyNote: string, firstMelodyOctave: number): Array<string> {
     const nearNotes: Array<string> = new Array<string>();
     let chromas: Array<string> = CHROMAS_ALPHABETICAL;
     const firstMelodyNoteIndex: number = CHROMAS_ALPHABETICAL.indexOf(firstMelodyNote);
@@ -224,7 +224,12 @@ export class GeneratorService {
       chromas = this.createArrayShiftOnceLeft(chromas);
       // Consider only notes non added yet
       if (!harmonyChord.includes(chromas[firstMelodyNoteIndex])) {
-        nearNotes.push(chromas[firstMelodyNoteIndex]);
+        // Check if the note is on the upper octave
+        let octave = firstMelodyOctave;
+        if (firstMelodyNoteIndex + chromaIndex >= CHROMAS_ALPHABETICAL.length) {
+          octave++;
+        }
+        nearNotes.push(chromas[firstMelodyNoteIndex] + octave);
       } else {
         break;
       }
@@ -236,7 +241,12 @@ export class GeneratorService {
       chromas = this.createArrayShiftOnceRight(chromas);
       // Consider only notes non added yet
       if (!harmonyChord.includes(chromas[firstMelodyNoteIndex])) {
-        nearNotes.push(chromas[firstMelodyNoteIndex]);
+        // Check if the note is on the lower octave
+        let octave = firstMelodyOctave;
+        if (firstMelodyNoteIndex - chromaIndex <= 0) {
+          octave--;
+        }
+        nearNotes.push(chromas[firstMelodyNoteIndex] + octave);
       } else {
         break;
       }
@@ -244,9 +254,9 @@ export class GeneratorService {
     return nearNotes;
   }
 
-  private getInpassingNote(harmonyChord: Array<string>, firstMelodyNote: string): string {
+  private getInpassingNote(harmonyChord: Array<string>, firstMelodyNote: string, firstMelodyOctave: number): string {
     // Randomly pick a note from the near ones
-    const nearNotes: Array<string> = this.getNearNotes(harmonyChord, firstMelodyNote);
+    const nearNotes: Array<string> = this.getNearNotes(harmonyChord, firstMelodyNote, firstMelodyOctave);
     const nearNoteIndex: number = this.commonService.getRandomIntegerBetween(0, nearNotes.length - 1);
     return nearNotes[nearNoteIndex];
   }
@@ -266,27 +276,37 @@ export class GeneratorService {
         const chordWidth: number = this.settingsService.getSettings().generateChordWidth;
         const firstNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth - 1);
         const firstMelodyChroma: string = harmonyChord.notes[firstNoteIndex].renderChroma();
+        const firstMelodyOctave: number = harmonyChord.notes[firstNoteIndex].renderOctave();
         // The duration is a quotient base and is thus multiplied by 2 to cut it in half
         const halfDuration: number = chordDuration * 2;
         let placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, halfDuration, velocity, placedChordIndex, [ firstMelodyChroma ]);
         melodyChords.push(placedChord);
         placedChordIndex++;
         if (this.fromInpassingNote()) {
-          const inpassingNote: string = this.getInpassingNote(harmonyChord.getNotesChromas(), firstMelodyChroma);
-          placedChord = this.createNotesAndPlacedChord(octave, halfDuration, velocity, placedChordIndex, [ inpassingNote ]);
+          const inpassingTextNote: string = this.getInpassingNote(harmonyChord.getNotesChromas(), firstMelodyChroma, firstMelodyOctave);
+          const inpassingChromaAndOctave: Array<string> = this.notationService.noteToChromaOctave(inpassingTextNote);
+          const inpassingNoteChroma: string = inpassingChromaAndOctave[0];
+          let inpassingNoteOctave: number = 0;
+          if (inpassingChromaAndOctave.length > 1) {
+            inpassingNoteOctave = Number(inpassingChromaAndOctave[1]);
+          } else {
+            throw new Error('Unspecified octave for the inpassing note: ' + inpassingTextNote + ' with chroma: ' + inpassingNoteChroma);
+          }
+          placedChord = this.createNotesAndPlacedChord(inpassingNoteOctave, halfDuration, velocity, placedChordIndex, [ inpassingNoteChroma ]);
           melodyChords.push(placedChord);
         } else {
           // Get one of the source chord notes even the already picked one
           const secondNoteIndex: number = this.commonService.getRandomIntegerBetween(0, chordWidth - 1);
-          const secondMelodyChroma: string = harmonyChord.getNotesChromas()[secondNoteIndex];
-          if (secondMelodyChroma != firstMelodyChroma) {
-            placedChord = this.createNotesAndPlacedChord(octave, halfDuration, velocity, placedChordIndex, [ secondMelodyChroma ]);
-            melodyChords.push(placedChord);
-          } else {
+          const secondMelodyChroma: string = harmonyChord.notes[secondNoteIndex].renderChroma();
+          const secondMelodyOctave: number = harmonyChord.notes[secondNoteIndex].renderOctave();
+          if (secondMelodyChroma == firstMelodyChroma && secondMelodyOctave == firstMelodyOctave) {
             // If the second note is the same as the fisrt one then have only one chord
             // but with a duration that is twice as long
             // Double the duration of the previous note
             melodyChords[melodyChords.length - 1].duration = this.notationService.createDuration(chordDuration, TempoUnit.DUPLE);
+          } else {
+            placedChord = this.createNotesAndPlacedChord(octave, halfDuration, velocity, placedChordIndex, [ secondMelodyChroma ]);
+            melodyChords.push(placedChord);
           }
         }
       } else {
