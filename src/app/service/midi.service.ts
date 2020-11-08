@@ -9,6 +9,7 @@ import {
   IMidiTextEvent, IMidiChannelPrefixEvent,
   IMidiTimeSignatureEvent, IMidiControlChangeEvent
 } from 'midi-json-parser-worker';
+import * as Tone from 'tone';
 import { Midi } from '@tonejs/midi';
 import { TValue } from 'worker-factory';
 // import { WebMidi } from 'webmidi';
@@ -606,8 +607,8 @@ export class MidiService {
 
   private beatsToSeconds(beats: number, bpm: number): number {
     const oneBeatInSeconds: number = 60 / bpm;
-    const beatsInMicroSeconds: number = oneBeatInSeconds * beats;
-    return Math.round(beatsInMicroSeconds);
+    const beatsInSeconds: number = oneBeatInSeconds * beats;
+    return beatsInSeconds;
   }
 
   public creatingSoundtrackMidi(soundtrack: Soundtrack): ReplaySubject<ProgressTask<Uint8Array>> {
@@ -633,8 +634,8 @@ export class MidiService {
               if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
                 for (const placedChord of measure.placedChords) {
                   if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
-                    const durationInBeats: number = placedChord.getDuration();
-                    const durationInSeconds: number = this.beatsToSeconds(durationInBeats, measure.getTempo());
+                    const duration: string = placedChord.renderDuration();
+                    const durationInSeconds: number = Tone.Time(duration).toSeconds();
                     const velocity: number = placedChord.velocity;
                     // const tempoInMicroSecondsPerBeat: number = this.beatsToMicroSeconds(1, measure.getTempo());
                     // const ticks: number = this.beatsToTicks(durationInBeats, DEFAULT_MIDI_PPQ, tempoInMicroSecondsPerBeat);
