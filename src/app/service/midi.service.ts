@@ -289,7 +289,7 @@ export class MidiService {
           // In MIDI it may also be called PPQ, PPQN, time resolution, time division
           const PPQ: number = jsonMidi.division ? jsonMidi.division : DEFAULT_MIDI_PPQ;
           console.log('PPQ: ' + jsonMidi.division + ' PPQ: ' + PPQ);
-          let currentTempoInMicrosecondsPerQuarter: number = this.bpmToMicroSeconds(DEFAULT_MIDI_TEMPO);
+          let currentTempoInMicroSecondsPerBeat: number = this.beatsToSeconds(1, DEFAULT_MIDI_TEMPO);
           let previousNoteOnEvent: IMidiNoteOnEvent | undefined;
           let currentNoteOnEvent: IMidiNoteOnEvent | undefined;
           let currentTimeSignature: TimeSignature = this.notationService.createDefaultTimeSignature();
@@ -331,7 +331,7 @@ export class MidiService {
                 currentTicksPerMeasure = this.measureInTicks(this.quarterNotesPerMeasure(currentTimeSignature), PPQ);
               } else if (midiEvent.hasOwnProperty(MIDI_EVENT_SET_TEMPO)) {
                 const tempoEvent: IMidiSetTempoEvent = midiEvent;
-                currentTempoInMicrosecondsPerQuarter = tempoEvent.setTempo.microsecondsPerBeat;
+                currentTempoInMicroSecondsPerBeat = tempoEvent.setTempo.microsecondsPerBeat;
               } else if (midiEvent.hasOwnProperty(MIDI_EVENT_NOTE_ON)) {
                 const noteOnEvent: IMidiNoteOnEvent = midiEvent;
                 // Ignore additional note-on events if any
@@ -345,7 +345,7 @@ export class MidiService {
                 if (currentNoteOnEvent != null) {
                   const deltaInTicks: number = this.delta(controlChangeEvent.time, currentNoteOnEvent.time);
                   if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, currentTicksPerMeasure, measureIndex)) {
-                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicrosecondsPerQuarter), TempoUnit.DUPLE);
+                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicroSecondsPerBeat), TempoUnit.DUPLE);
                     currentMeasure = new Measure(measureIndex, tempo, currentTimeSignature);
                     currentMeasure.placedChords = new Array<PlacedChord>();
                     measures.push(currentMeasure);
@@ -353,7 +353,7 @@ export class MidiService {
                     placedChordIndex = 0;
                   }
                   if (currentMeasure.placedChords) {
-                    const note: Note = this.buildNote(deltaInTicks, PPQ, currentTempoInMicrosecondsPerQuarter, currentNoteOnEvent);
+                    const note: Note = this.buildNote(deltaInTicks, PPQ, currentTempoInMicroSecondsPerBeat, currentNoteOnEvent);
                     const measureLastPlacedChord: PlacedChord | undefined = this.getLastPlacedChord(currentMeasure);
                     // If the note has the same time than the previous note
                     // then add it to the previous chord instead of adding it into a new chord
@@ -378,7 +378,7 @@ export class MidiService {
                 if (currentNoteOnEvent != null) {
                   const deltaInTicks: number = this.delta(noteOffEvent.time, currentNoteOnEvent.time);
                   if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, currentTicksPerMeasure, measureIndex)) {
-                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicrosecondsPerQuarter), TempoUnit.DUPLE);
+                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicroSecondsPerBeat), TempoUnit.DUPLE);
                     currentMeasure = new Measure(measureIndex, tempo, currentTimeSignature);
                     currentMeasure.placedChords = new Array<PlacedChord>();
                     measures.push(currentMeasure);
@@ -386,7 +386,7 @@ export class MidiService {
                     placedChordIndex = 0;
                   }
                   if (currentMeasure.placedChords) {
-                    const note: Note = this.buildNote(deltaInTicks, PPQ, currentTempoInMicrosecondsPerQuarter, currentNoteOnEvent);
+                    const note: Note = this.buildNote(deltaInTicks, PPQ, currentTempoInMicroSecondsPerBeat, currentNoteOnEvent);
                     const measureLastPlacedChord: PlacedChord | undefined = this.getLastPlacedChord(currentMeasure);
                     // If the note has the same time than the previous note
                     // then add it to the previous chord instead of adding it into a new chord
@@ -564,48 +564,50 @@ export class MidiService {
     return jsonMidi;
   }
 
-  private getOneTickInMicroSeconds(PPQ: number, tempoInBpm: number): number {
-    return 60000 / (tempoInBpm  * PPQ);
-  }
+  // private ticksToBeats(deltaInTicks: number, PPQ: number, tempoInMicroSecondsPerBeat: number): number {
+  //   const deltaInQuarters: number = this.ticksToQuarters(deltaInTicks, PPQ);
+  //   const deltaInMicroSeconds: number = deltaInQuarters * tempoInMicroSecondsPerBeat;
+  //   const bpm: number = this.microSecondsToBpm(deltaInMicroSeconds);
+  //   const deltaInSubdivisions: number = this.subdivision(deltaInQuarters);
+  //   console.log('delta: ' + deltaInTicks + ' ' + deltaInQuarters + ' ' + deltaInSubdivisions
+  //     + ' tempo: ' + tempoInMicroSecondsPerBeat
+  //     + ' bpm: ' + bpm);
+  //   return bpm;
+  // }
 
-  private ticksToBpm(deltaInTicks: number, PPQ: number, tempoInMicroSecondsPerBeat: number): number {
-    const deltaInQuarters: number = this.ticksToQuarters(deltaInTicks, PPQ);
-    const deltaInMicroSeconds: number = deltaInQuarters * tempoInMicroSecondsPerBeat;
-    const bpm: number = this.microSecondsToBpm(deltaInMicroSeconds);
-    const deltaInSubdivisions: number = this.subdivision(deltaInQuarters);
-    console.log('delta: ' + deltaInTicks + ' ' + deltaInQuarters + ' ' + deltaInSubdivisions
-      + ' tempo: ' + tempoInMicroSecondsPerBeat
-      + ' bpm: ' + bpm);
-    return bpm;
-  }
+  // private beatsToTicks(durationInBeats: number, PPQ: number, tempoInMicroSecondsPerBeat: number): number {
+  //   const durationInMicroSeconds: number = this.beatsToMicroSeconds(1, durationInBeats);
+  //   const durationInQuarters: number = durationInMicroSeconds / tempoInMicroSecondsPerBeat;
+  //   const durationInTicks: number = this.quartersToTicks(durationInQuarters, PPQ);
+  //   return durationInTicks;
+  // }
 
-  private bpmToTicks(durationInBpm: number, PPQ: number, tempoInMicroSecondsPerBeat: number): number {
-    const durationInMicroSeconds: number = this.bpmToMicroSeconds(durationInBpm);
-    const durationInQuarters: number = durationInMicroSeconds / tempoInMicroSecondsPerBeat;
-    const durationInTicks: number = this.quartersToTicks(durationInQuarters, PPQ);
-    return durationInTicks;
-  }
+  // private getOneTickInMicroSeconds(PPQ: number, tempoInBpm: number): number {
+  //   return 60 * 1000 * 1000 / (tempoInBpm  * PPQ);
+  // }
 
-  private ticksToQuarters(ticks: number, PPQ: number): number {
-    return Math.round((ticks / PPQ) * 1000000) / 1000000;
-  }
+  // private quartersToTicks(quarters: number, PPQ: number): number {
+  //   return quarters * PPQ;
+  // }
 
-  private quartersToTicks(quarters: number, PPQ: number): number {
-    return quarters * PPQ;
-  }
+  // private ticksToQuarters(ticks: number, PPQ: number): number {
+  //   return Math.round((ticks / PPQ) * 1000000) / 1000000;
+  // }
 
-  private subdivision(deltaInQuarters: number): number {
-    const subdivisionSlice: number = 1 / 64;
-    const deltaInSubdivisionSlices: number = Math.round(deltaInQuarters / subdivisionSlice);
-    return deltaInSubdivisionSlices;
-  }
+  // private subdivision(deltaInQuarters: number): number {
+  //   const subdivisionSlice: number = 1 / 64;
+  //   const deltaInSubdivisionSlices: number = Math.round(deltaInQuarters / subdivisionSlice);
+  //   return deltaInSubdivisionSlices;
+  // }
 
   private microSecondsToBpm(microSeconds: number): number {
     return Math.round(60000 / (microSeconds / 1000));
   }
 
-  private bpmToMicroSeconds(bpm: number): number {
-    return Math.round(60000 / bpm * 1000);
+  private beatsToSeconds(beats: number, bpm: number): number {
+    const oneBeatInSeconds: number = 60 / bpm;
+    const beatsInMicroSeconds: number = oneBeatInSeconds * beats;
+    return Math.round(beatsInMicroSeconds);
   }
 
   public creatingSoundtrackMidi(soundtrack: Soundtrack): ReplaySubject<ProgressTask<Uint8Array>> {
@@ -631,18 +633,20 @@ export class MidiService {
               if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
                 for (const placedChord of measure.placedChords) {
                   if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
-                    const durationInBpm: number = placedChord.getDuration();
-                    const durationInSeconds: number = this.bpmToMicroSeconds(durationInBpm);
+                    const durationInBeats: number = placedChord.getDuration();
+                    const durationInSeconds: number = this.beatsToSeconds(durationInBeats, measure.getTempo());
                     const velocity: number = placedChord.velocity;
-                    const tempoInMicroSecondsPerBeat: number = this.bpmToMicroSeconds(measure.getTempo());
-                    const ticks: number = this.bpmToTicks(durationInBpm, DEFAULT_MIDI_PPQ, tempoInMicroSecondsPerBeat);
+                    // const tempoInMicroSecondsPerBeat: number = this.beatsToMicroSeconds(1, measure.getTempo());
+                    // const ticks: number = this.beatsToTicks(durationInBeats, DEFAULT_MIDI_PPQ, tempoInMicroSecondsPerBeat);
                     for (const note of placedChord.notes) {
                       if (!this.notationService.isEndOfTrackNote(note)) {
                         midiTrack.addNote({
                           midi: this.synthService.textToMidiNote(note.renderAbc()),
                           time: totalDurationInSeconds,
-                          ticks: ticks,
+                          // ticks: ticks,
                           name: note.renderAbc(),
+                          pitch: note.renderChroma(),
+                          octave: note.renderOctave(),
                           velocity: velocity,
                           duration: durationInSeconds
                         });

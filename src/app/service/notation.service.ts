@@ -100,9 +100,9 @@ export class NotationService {
   private parseTextChord(index: number, textChord: string, velocity: number): PlacedChord {
     const chordAndDuration: Array<string> = textChord.split(CHORD_DURATION_SEPARATOR);
     const chordNotes: string = chordAndDuration[0];
-    const chordDurationInBpm: number = Number(chordAndDuration[1]);
+    const chordDurationInBeats: number = Number(chordAndDuration[1]);
     const notes: Array<Note> = this.parseTextNotes(chordNotes);
-    const placedChord: PlacedChord = this.createPlacedChord(index, chordDurationInBpm, TempoUnit.DUPLE, velocity, notes);
+    const placedChord: PlacedChord = this.createPlacedChord(index, chordDurationInBeats, TempoUnit.DUPLE, velocity, notes);
     return placedChord;
   }
 
@@ -125,8 +125,8 @@ export class NotationService {
     }
   }
 
-  public createPlacedChord(index: number, chordDurationInBpm: number, tempoUnit: TempoUnitType, velocity: number, notes: Array<Note>): PlacedChord {
-    const duration: Duration = this.createDuration(chordDurationInBpm, tempoUnit);
+  public createPlacedChord(index: number, chordDurationInBeats: number, tempoUnit: TempoUnitType, velocity: number, notes: Array<Note>): PlacedChord {
+    const duration: Duration = this.createDuration(chordDurationInBeats, tempoUnit);
     const placedChord: PlacedChord = this.createEmptyChord(index, duration, velocity);
     this.addNotes(placedChord, notes);
     return placedChord;
@@ -233,17 +233,17 @@ export class NotationService {
     return new Octave(value);
   }
 
-  private createSubdivision(durationInBpm: number): Subdivision {
-    const subdivision: Subdivision | undefined = TEMPO_SUBDIVISIONS.get(Number(durationInBpm));
+  private createSubdivision(durationInBeats: number): Subdivision {
+    const subdivision: Subdivision | undefined = TEMPO_SUBDIVISIONS.get(Number(durationInBeats));
     if (subdivision) {
       return subdivision;
     } else {
-      throw new Error('Unknown subdivision for the duration: ' + durationInBpm);
+      throw new Error('Unknown subdivision for the duration: ' + durationInBeats);
     }
   }
 
-  public createDuration(durationInBpm: number, tempoUnit: TempoUnitType): Duration {
-    return new Duration(this.createSubdivision(durationInBpm), tempoUnit);
+  public createDuration(durationInBeats: number, tempoUnit: TempoUnitType): Duration {
+    return new Duration(this.createSubdivision(durationInBeats), tempoUnit);
   }
 
   private createPitch(chroma: Chroma, octave: Octave): Pitch {

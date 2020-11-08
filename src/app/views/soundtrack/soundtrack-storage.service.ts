@@ -84,10 +84,10 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                     this.deleteSoundtrack(soundtrack.id);
                     throw new Error('The placed chord duration subdivistion or unit could not be accessed from the untyped soundtrack.');
                   }
-                  const durationInBpm: number = Number(placedChordJson.duration.subdivision.left) + Number(placedChordJson.duration.subdivision.right);
+                  const durationInBeats: number = Number(placedChordJson.duration.subdivision.left) + Number(placedChordJson.duration.subdivision.right);
                   const tempoUnit: TempoUnitType = placedChordJson.duration.unit as TempoUnitType;
                   const velocity: number = parseFloat(placedChordJson.velocity);
-                  const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, durationInBpm, tempoUnit, velocity, notes);
+                  const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, durationInBeats, tempoUnit, velocity, notes);
                   placedChord.dottedAll = placedChordJson.dottedAll;
                   if (!measure.placedChords) {
                     this.deleteSoundtrack(soundtrack.id);
