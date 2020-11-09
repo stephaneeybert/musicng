@@ -255,7 +255,7 @@ export class GeneratorService {
     return nearNotes;
   }
 
-  private getInpassingNote(harmonyChord: Array<string>, previousMelodyNote: string, previousMelodyOctave: number): string {
+  private pickInpassingNote(harmonyChord: Array<string>, previousMelodyNote: string, previousMelodyOctave: number): string {
     // Randomly pick a note from the near ones
     const nearNotes: Array<string> = this.getInpassingNearNotes(harmonyChord, previousMelodyNote, previousMelodyOctave);
     const nearNoteIndex: number = this.commonService.getRandomIntegerBetween(0, nearNotes.length - 1);
@@ -284,7 +284,7 @@ export class GeneratorService {
         melodyChords.push(placedChord);
         placedChordIndex++;
         if (this.fromInpassingNote()) {
-          const inpassingTextNote: string = this.getInpassingNote(harmonyChord.getNotesChromas(), firstMelodyChroma, firstMelodyOctave);
+          const inpassingTextNote: string = this.pickInpassingNote(harmonyChord.getNotesChromas(), firstMelodyChroma, firstMelodyOctave);
           const inpassingChromaAndOctave: Array<string> = this.notationService.noteToChromaOctave(inpassingTextNote);
           const inpassingNoteChroma: string = inpassingChromaAndOctave[0];
           let inpassingNoteOctave: number = 0;
