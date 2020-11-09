@@ -211,42 +211,42 @@ export class GeneratorService {
     return false;
   }
 
-  private getNearNotes(harmonyChord: Array<string>, firstMelodyNote: string, firstMelodyOctave: number): Array<string> {
+  private getInpassingNearNotes(harmonyChord: Array<string>, previousMelodyNote: string, previousMelodyOctave: number): Array<string> {
     const nearNotes: Array<string> = new Array<string>();
     let chromas: Array<string> = CHROMAS_ALPHABETICAL;
-    const firstMelodyNoteIndex: number = CHROMAS_ALPHABETICAL.indexOf(firstMelodyNote);
+    const previousMelodyNoteIndex: number = CHROMAS_ALPHABETICAL.indexOf(previousMelodyNote);
 
     // The maximum near distance to consider
     const NEAR_MAX: number = 2; // TODO Have this constant as a settings
 
-    // Consider the chromas above the first melody note chroma
+    // Consider the chromas above the previous melody note chroma
     for (let chromaIndex: number = 0; chromaIndex < NEAR_MAX; chromaIndex++) {
       chromas = this.createArrayShiftOnceLeft(chromas);
       // Consider only notes non added yet
-      if (!harmonyChord.includes(chromas[firstMelodyNoteIndex])) {
+      if (!harmonyChord.includes(chromas[previousMelodyNoteIndex])) {
         // Check if the note is on the upper octave
-        let octave = firstMelodyOctave;
-        if (firstMelodyNoteIndex + chromaIndex >= CHROMAS_ALPHABETICAL.length) {
+        let octave = previousMelodyOctave;
+        if (previousMelodyNoteIndex + chromaIndex >= CHROMAS_ALPHABETICAL.length) {
           octave++;
         }
-        nearNotes.push(chromas[firstMelodyNoteIndex] + octave);
+        nearNotes.push(chromas[previousMelodyNoteIndex] + octave);
       } else {
         break;
       }
     }
 
-    // Consider the chromas below the first melody note chroma
+    // Consider the chromas below the previous melody note chroma
     chromas = CHROMAS_ALPHABETICAL;
     for (let chromaIndex: number = 0; chromaIndex < NEAR_MAX; chromaIndex++) {
       chromas = this.createArrayShiftOnceRight(chromas);
       // Consider only notes non added yet
-      if (!harmonyChord.includes(chromas[firstMelodyNoteIndex])) {
+      if (!harmonyChord.includes(chromas[previousMelodyNoteIndex])) {
         // Check if the note is on the lower octave
-        let octave = firstMelodyOctave;
-        if (firstMelodyNoteIndex - chromaIndex <= 0) {
+        let octave = previousMelodyOctave;
+        if (previousMelodyNoteIndex - chromaIndex <= 0) {
           octave--;
         }
-        nearNotes.push(chromas[firstMelodyNoteIndex] + octave);
+        nearNotes.push(chromas[previousMelodyNoteIndex] + octave);
       } else {
         break;
       }
@@ -254,9 +254,9 @@ export class GeneratorService {
     return nearNotes;
   }
 
-  private getInpassingNote(harmonyChord: Array<string>, firstMelodyNote: string, firstMelodyOctave: number): string {
+  private getInpassingNote(harmonyChord: Array<string>, previousMelodyNote: string, previousMelodyOctave: number): string {
     // Randomly pick a note from the near ones
-    const nearNotes: Array<string> = this.getNearNotes(harmonyChord, firstMelodyNote, firstMelodyOctave);
+    const nearNotes: Array<string> = this.getInpassingNearNotes(harmonyChord, previousMelodyNote, previousMelodyOctave);
     const nearNoteIndex: number = this.commonService.getRandomIntegerBetween(0, nearNotes.length - 1);
     return nearNotes[nearNoteIndex];
   }
