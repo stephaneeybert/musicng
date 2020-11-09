@@ -211,6 +211,7 @@ export class GeneratorService {
     return false;
   }
 
+  // Get an inpassing note that is near the previous melody note
   private getInpassingNearNotes(harmonyChord: Array<string>, previousMelodyNote: string, previousMelodyOctave: number): Array<string> {
     const nearNotes: Array<string> = new Array<string>();
     let chromas: Array<string> = CHROMAS_ALPHABETICAL;
