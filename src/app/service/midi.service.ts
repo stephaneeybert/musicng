@@ -611,7 +611,7 @@ export class MidiService {
     return beatsInSeconds;
   }
 
-  public creatingSoundtrackMidi(soundtrack: Soundtrack): ReplaySubject<ProgressTask<Uint8Array>> {
+  public creatingSoundtrackMidiDownloadProgress(soundtrack: Soundtrack): ReplaySubject<ProgressTask<Uint8Array>> {
     return new ReplaySubject(soundtrack.getNbTracks());
   }
 

@@ -34,7 +34,7 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
   audioRunning$?: Observable<boolean>;
   audioTransportStarted$?: Observable<boolean>;
 
-  download$?: Observable<Download>;
+  downloadProgressBar$?: Observable<Download>;
 
   dialogRef!: MatDialogRef<SoundtrackDialogComponent>;
   @Output()
@@ -184,8 +184,8 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
 
   downloadSoundtrack(soundtrack: Soundtrack): void {
     const fileName: string = soundtrack.name + '.' + MIDI_FILE_SUFFIX;
-    const downloadProgress$: ReplaySubject<ProgressTask<Uint8Array>> = this.midiService.creatingSoundtrackMidi(soundtrack);
-    this.download$ = this.downloadService.downloadObservableDataAsBlobWithProgressAndSaveInFile(downloadProgress$.asObservable(), fileName);
+    const downloadProgress$: ReplaySubject<ProgressTask<Uint8Array>> = this.midiService.creatingSoundtrackMidiDownloadProgress(soundtrack);
+    this.downloadProgressBar$ = this.downloadService.downloadObservableDataAsBlobWithProgressAndSaveInFile(downloadProgress$.asObservable(), fileName);
     const midiData: Uint8Array = this.midiService.createSoundtrackMidi(soundtrack, downloadProgress$);
   }
 

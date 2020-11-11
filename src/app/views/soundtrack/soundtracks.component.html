@@ -34,9 +34,9 @@
           <app-synth [soundtrack]="soundtrack"></app-synth>
           <app-keyboard [soundtrack]="soundtrack"></app-keyboard>
           <app-sheet [soundtrack]="soundtrack"></app-sheet>
-          <!-- <app-soundtrack-upload></app-soundtrack-upload> -->
-          <mat-progress-bar *ngIf="download$ | async as download"
-            [mode]="download | libCoreDownloadProgressMatState" [value]="download | libCoreDownloadProgressMatProgress">
+          <!-- <app-soundtrack-upload></app-soundtrack-upload> TODO -->
+          <mat-progress-bar *ngIf="downloadProgressBar$ | async as downloadProgressBar"
+            [mode]="downloadProgressBar | libCoreDownloadProgressMatState" [value]="downloadProgressBar | libCoreDownloadProgressMatProgress">
           </mat-progress-bar>
         </td>
       </tr>
