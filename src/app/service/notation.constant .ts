@@ -37,7 +37,7 @@ export const GENERATE_METHODS: Map<RANDOM_METHOD, string> = new Map([
   [RANDOM_METHOD.HARMONY_BASE, '3. Harmony base']
 ]);
 
-export const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+export const C_TONALITY_CHROMAS: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
 export const MIDI_FILE_SUFFIX: string = 'mid';
 
