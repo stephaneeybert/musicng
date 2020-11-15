@@ -9,7 +9,6 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { Subdivisions } from '@app/model/note/duration/subdivisions';
 import { TEMPO_SUBDIVISIONS } from './notation.constant ';
 
 const CHORD_SEPARATOR: string = ' ';
