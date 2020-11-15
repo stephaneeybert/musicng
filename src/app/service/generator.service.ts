@@ -165,6 +165,10 @@ export class GeneratorService {
     return chromas;
   }
 
+  private getDefaultTonalityChromas(): string[] {
+    return C_TONALITY_CHROMAS;
+  }
+
   // Create all the shifted chromas arrays for a chord width
   private createAllShiftedChromas(): Array<Array<string>> {
     const shiftedChromas: Array<Array<string>> = new Array();
@@ -176,7 +180,7 @@ export class GeneratorService {
     // 'G', 'A', 'B', 'C', 'D', 'E', 'F'
 
     // Build the shifted chromas
-    shiftedChromas[0] = C_TONALITY_CHROMAS;
+    shiftedChromas[0] = this.getDefaultTonalityChromas();
     const chordWidth: number = this.settingsService.getSettings().generateChordWidth;
     for (let index = 1; index < chordWidth; index++) {
       shiftedChromas[index] = this.createShiftedChromas(shiftedChromas[index - 1]);
@@ -214,8 +218,8 @@ export class GeneratorService {
   // Get an inpassing note that is near the previous melody note
   private getInpassingNearNotes(harmonyChordChromas: Array<string>, previousMelodyChroma: string, previousMelodyOctave: number): Array<string> {
     const nearNotes: Array<string> = new Array<string>();
-    let chromas: Array<string> = C_TONALITY_CHROMAS;
-    const previousMelodyNoteIndex: number = C_TONALITY_CHROMAS.indexOf(previousMelodyChroma);
+    let chromas: Array<string> = this.getDefaultTonalityChromas();
+    const previousMelodyNoteIndex: number = this.getDefaultTonalityChromas().indexOf(previousMelodyChroma);
 
     // The maximum near distance to consider
     const NEAR_MAX: number = 2; // TODO Have this constant as a settings
@@ -227,7 +231,7 @@ export class GeneratorService {
       if (!harmonyChordChromas.includes(chromas[previousMelodyNoteIndex])) {
         // Check if the note is on the upper octave
         let octave = previousMelodyOctave;
-        if (previousMelodyNoteIndex + chromaIndex >= C_TONALITY_CHROMAS.length) {
+        if (previousMelodyNoteIndex + chromaIndex >= this.getDefaultTonalityChromas().length) {
           octave++;
         }
         nearNotes.push(chromas[previousMelodyNoteIndex] + octave);
@@ -237,7 +241,7 @@ export class GeneratorService {
     }
 
     // Consider the chromas below the previous melody note chroma
-    chromas = C_TONALITY_CHROMAS;
+    chromas = this.getDefaultTonalityChromas();
     for (let chromaIndex: number = 0; chromaIndex < NEAR_MAX; chromaIndex++) {
       chromas = this.createArrayShiftOnceRight(chromas);
       // Consider only notes non added yet
@@ -267,8 +271,8 @@ export class GeneratorService {
   // The octave remains the same as the one from the source chord
   private getNearNotesFromSourceChord(harmonyChordChromas: Array<string>, previousMelodyChroma: string, previousMelodyOctave: number): Array<[ string, number ]> {
     const nearNoteChromas: Array<[ string, number ]> = new Array<[ string, number ]>();
-    let chromas: Array<string> = C_TONALITY_CHROMAS;
-    const previousMelodyNoteIndex: number = C_TONALITY_CHROMAS.indexOf(previousMelodyChroma);
+    let chromas: Array<string> = this.getDefaultTonalityChromas();
+    const previousMelodyNoteIndex: number = this.getDefaultTonalityChromas().indexOf(previousMelodyChroma);
 
     // The maximum near distance to consider
     const NEAR_MAX: number = 2; // TODO Have this constant as a settings
@@ -423,7 +427,7 @@ export class GeneratorService {
   }
 
   private randomlyPickChromaFromBaseChromas(chromaIndex: number): number {
-    return this.commonService.getRandomIntegerBetweenAndExcept(0, C_TONALITY_CHROMAS.length - 1, [ chromaIndex ])
+    return this.commonService.getRandomIntegerBetweenAndExcept(0, this.getDefaultTonalityChromas().length - 1, [ chromaIndex ])
   }
 
   // The table of bonus per chroma
