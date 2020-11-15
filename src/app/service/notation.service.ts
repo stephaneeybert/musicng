@@ -9,7 +9,7 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { TEMPO_SUBDIVISIONS } from './notation.constant ';
+import { TEMPO_SUBDIVISIONS, NOTE_RANGE, NOTE_RANGE_INTERVALS, HALF_TONE_INTERVAL_NOTES } from './notation.constant ';
 
 const CHORD_SEPARATOR: string = ' ';
 const CHORD_DURATION_SEPARATOR: string = '/';
@@ -255,6 +255,20 @@ export class NotationService {
 
   public createTimeSignature(numerator: number, denominator: number): TimeSignature {
     return new TimeSignature(numerator, denominator);
+  }
+
+  public createTonality(noteRange: NOTE_RANGE, note: string): Array<string> {
+    const tonality: Array<string> = new Array();
+    const HALF_NOTE: number = 0.5;
+    const noteRangeIntervals: Array<number> | undefined = NOTE_RANGE_INTERVALS.get(noteRange);
+    if (noteRangeIntervals) {
+      let index: number = HALF_TONE_INTERVAL_NOTES.indexOf(note);
+      for (var i = 0; i < noteRangeIntervals.length; i++) {
+        index =+ (noteRangeIntervals[i] / HALF_NOTE);
+        tonality.push(HALF_TONE_INTERVAL_NOTES[index]);
+      }
+    }
+    return tonality;
   }
 
 }
