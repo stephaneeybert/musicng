@@ -134,9 +134,9 @@ export class GeneratorService {
   private createArrayShiftOnceLeft(items: Array<string>): Array<string> {
     // Make a deep copy
     let shiftedItems: Array<string> = new Array();
-    items.map((chroma: string) => {
+    items.forEach((chroma: string) => {
       shiftedItems.push(chroma);
-    })
+    });
 
     // Shift the copy and not the original
     const item: string | undefined = shiftedItems.shift();
@@ -147,9 +147,9 @@ export class GeneratorService {
   private createArrayShiftOnceRight(items: Array<string>): Array<string> {
     // Make a deep copy
     let shiftedItems: Array<string> = new Array();
-    items.map((chroma: string) => {
+    items.forEach((chroma: string) => {
       shiftedItems.push(chroma);
-    })
+    });
 
     // Shift the copy and not the original
     const item: string | undefined = shiftedItems.pop();
