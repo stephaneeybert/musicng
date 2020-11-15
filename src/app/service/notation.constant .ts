@@ -39,7 +39,30 @@ export const GENERATE_METHODS: Map<RANDOM_METHOD, string> = new Map([
 
 export const C_TONALITY_CHROMAS: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
+// An interval represents the distance between two notes
+// The interval between two notes is a half-tone
+// The # sign raises the note by a half-tone and the b lowers it by a half-tone
+// There are 2 half-tones between the C and D notes and the C# sounds exactly like the Db note
+// Do       Ré       Mi  Fa       Sol      La       Si  Do
+// C   C#   D   D#   E   F   F#   G   G#   A   A#   B   C
+//     Db       Eb           Gb       Ab       Bb
 export const HALF_TONE_INTERVALS: Array<string> = [ 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C' ];
+
+// A range is an ordered sequence of intervals, from a lower note to an higher note
+export enum NOTE_RANGES {
+  MAJOR = 0,
+  MINOR_NATURAL = 1,
+  MINOR_HARMONIC = 2,
+  MINOR_MELODIC = 3,
+  BLUES = 4
+}
+export const NOTE_RANGE_HALF_TONES: Map<NOTE_RANGES, Array<number>> = new Map([
+  [ NOTE_RANGES.MAJOR, [ 1, 1, 0.5, 1, 1, 1, 0.5 ] ],
+  [ NOTE_RANGES.MINOR_NATURAL, [ 1, 0.5, 1, 1, 0.5, 1, 1 ] ],
+  [ NOTE_RANGES.MINOR_HARMONIC, [ 1, 0.5, 1, 1, 0.5, 1.5, 0.5 ] ],
+  [ NOTE_RANGES.MINOR_MELODIC, [ 1, 0.5, 1, 1, 1, 1, 0.5 ] ],
+  [ NOTE_RANGES.BLUES, [ 1.5, 1, 0.5, 0.5, 1.5, 1 ] ]
+]);
 
 export const MIDI_FILE_SUFFIX: string = 'mid';
 
