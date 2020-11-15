@@ -46,22 +46,22 @@ export const C_TONALITY_CHROMAS: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 
 // Do       Ré       Mi  Fa       Sol      La       Si  Do
 // C   C#   D   D#   E   F   F#   G   G#   A   A#   B   C
 //     Db       Eb           Gb       Ab       Bb
-export const HALF_TONE_INTERVALS: Array<string> = [ 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C' ];
+export const HALF_TONE_INTERVAL_NOTES: Array<string> = [ 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C' ];
 
 // A range is an ordered sequence of intervals, from a lower note to an higher note
-export enum NOTE_RANGES {
+export enum NOTE_RANGE {
   MAJOR = 0,
   MINOR_NATURAL = 1,
   MINOR_HARMONIC = 2,
   MINOR_MELODIC = 3,
   BLUES = 4
 }
-export const NOTE_RANGE_HALF_TONES: Map<NOTE_RANGES, Array<number>> = new Map([
-  [ NOTE_RANGES.MAJOR, [ 1, 1, 0.5, 1, 1, 1, 0.5 ] ],
-  [ NOTE_RANGES.MINOR_NATURAL, [ 1, 0.5, 1, 1, 0.5, 1, 1 ] ],
-  [ NOTE_RANGES.MINOR_HARMONIC, [ 1, 0.5, 1, 1, 0.5, 1.5, 0.5 ] ],
-  [ NOTE_RANGES.MINOR_MELODIC, [ 1, 0.5, 1, 1, 1, 1, 0.5 ] ],
-  [ NOTE_RANGES.BLUES, [ 1.5, 1, 0.5, 0.5, 1.5, 1 ] ]
+export const NOTE_RANGE_INTERVALS: Map<NOTE_RANGE, Array<number>> = new Map([
+  [ NOTE_RANGE.MAJOR, [ 1, 1, 0.5, 1, 1, 1, 0.5 ] ],
+  [ NOTE_RANGE.MINOR_NATURAL, [ 1, 0.5, 1, 1, 0.5, 1, 1 ] ],
+  [ NOTE_RANGE.MINOR_HARMONIC, [ 1, 0.5, 1, 1, 0.5, 1.5, 0.5 ] ],
+  [ NOTE_RANGE.MINOR_MELODIC, [ 1, 0.5, 1, 1, 1, 1, 0.5 ] ],
+  [ NOTE_RANGE.BLUES, [ 1.5, 1, 0.5, 0.5, 1.5, 1 ] ]
 ]);
 
 export const MIDI_FILE_SUFFIX: string = 'mid';
