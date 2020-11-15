@@ -39,6 +39,8 @@ export const GENERATE_METHODS: Map<RANDOM_METHOD, string> = new Map([
 
 export const C_TONALITY_CHROMAS: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
+export const HALF_TONE_INTERVALS: Array<string> = [ 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C' ];
+
 export const MIDI_FILE_SUFFIX: string = 'mid';
 
 export const TEMPO_SUBDIVISIONS: Map<number, Subdivision> = new Map([
