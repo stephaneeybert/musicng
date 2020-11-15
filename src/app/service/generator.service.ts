@@ -165,7 +165,7 @@ export class GeneratorService {
     return chromas;
   }
 
-  private getDefaultTonalityChromas(): string[] {
+  private getDefaultTonalityChromas(): Array<string> {
     return C_TONALITY_CHROMAS;
   }
 
