@@ -264,7 +264,7 @@ export class NotationService {
     if (noteRangeIntervals) {
       let index: number = HALF_TONE_INTERVAL_NOTES.indexOf(note);
       for (var i = 0; i < noteRangeIntervals.length; i++) {
-        index =+ (noteRangeIntervals[i] / HALF_NOTE);
+        index = index + (noteRangeIntervals[i] / HALF_NOTE);
         tonality.push(HALF_TONE_INTERVAL_NOTES[index]);
       }
     }
