@@ -37,16 +37,16 @@ export const GENERATE_METHODS: Map<RANDOM_METHOD, string> = new Map([
   [RANDOM_METHOD.HARMONY_BASE, '3. Harmony base']
 ]);
 
-export const C_TONALITY_CHROMAS: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-
 // An interval represents the distance between two notes
 // The interval between two notes is a half-tone
 // The # sign raises the note by a half-tone and the b lowers it by a half-tone
 // There are 2 half-tones between the C and D notes and the C# sounds exactly like the Db note
-// Do       Ré       Mi  Fa       Sol      La       Si  Do
-// C   C#   D   D#   E   F   F#   G   G#   A   A#   B   C
+// Do       Ré       Mi  Fa       Sol      La       Si
+// C   C#   D   D#   E   F   F#   G   G#   A   A#   B
 //     Db       Eb           Gb       Ab       Bb
-export const HALF_TONE_INTERVAL_NOTES: Array<string> = [ 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C' ];
+export const HALF_TONE_INTERVAL_NOTES: Array<string> = [ 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B' ];
+
+export const HALF_TONE: number = 0.5;
 
 // A range is an ordered sequence of intervals, from a lower note to an higher note
 export enum NOTE_RANGE {

@@ -11,7 +11,7 @@ import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { TRACK_TYPES } from './notation.service';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { RANDOM_METHOD, C_TONALITY_CHROMAS } from './notation.constant ';
+import { RANDOM_METHOD, NOTE_RANGE, HALF_TONE_INTERVAL_NOTES, NOTE_RANGE_INTERVALS, HALF_TONE } from './notation.constant ';
 
 @Injectable({
   providedIn: 'root'
@@ -165,8 +165,26 @@ export class GeneratorService {
     return chromas;
   }
 
+  public getTonality(noteRange: NOTE_RANGE, rangeFirstNote: string): Array<string> {
+    const tonality: Array<string> = new Array();
+    const noteRangeIntervals: Array<number> | undefined = NOTE_RANGE_INTERVALS.get(noteRange);
+    if (noteRangeIntervals) {
+      tonality.push(rangeFirstNote);
+      let chromas: Array<string> = HALF_TONE_INTERVAL_NOTES;
+      let index: number = chromas.indexOf(rangeFirstNote);
+      for (var i = 0; i < noteRangeIntervals.length - 1; i++) {
+        for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
+          chromas = this.createArrayShiftOnceLeft(chromas);
+        }
+        tonality.push(chromas[index]);
+      }
+    }
+    return tonality;
+  }
+
   private getDefaultTonalityChromas(): Array<string> {
-    return C_TONALITY_CHROMAS;
+    const tonalityMajorC: Array<string> = this.getTonality(NOTE_RANGE.MAJOR, 'C');
+    return tonalityMajorC;
   }
 
   // Create all the shifted chromas arrays for a chord width
