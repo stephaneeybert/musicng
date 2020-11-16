@@ -79,11 +79,9 @@ export class GeneratorService {
 
     const harmonyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityHarmony);
     const harmonyChords: Array<PlacedChord> = this.generateHarmonyChords(randomMethod, octave, chordDuration, harmonyVelocity);
-    this.notationService.addEndOfTrackNote(harmonyChords);
 
     const melodyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityMelody);
     const melodyChords: Array<PlacedChord> = this.generateMelodyChords(harmonyChords, randomMethod, octave, chordDuration, melodyVelocity);
-    this.notationService.addEndOfTrackNote(melodyChords);
 
     const generateMelody: boolean = this.settingsService.getSettings().generateMelody;
     if (generateMelody) {
@@ -412,6 +410,7 @@ export class GeneratorService {
         }
       }
     });
+    this.notationService.addEndOfTrackNote(melodyChords);
     return melodyChords;
   }
 
@@ -457,6 +456,7 @@ export class GeneratorService {
         }
       }
     }
+    this.notationService.addEndOfTrackNote(placedChords);
     return placedChords;
   }
 
