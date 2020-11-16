@@ -31,7 +31,7 @@ export class SettingsStore extends Store<Settings> {
     return this.getState();
   }
 
-  public setSettings(settings: Settings) {
+  private setSettings(settings: Settings) {
     this.setState(settings);
   }
 
