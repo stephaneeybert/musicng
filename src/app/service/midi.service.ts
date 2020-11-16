@@ -611,23 +611,25 @@ export class MidiService {
     return beatsInSeconds;
   }
 
-  public creatingSoundtrackMidiDownloadProgress(soundtrack: Soundtrack): ReplaySubject<ProgressTask<Uint8Array>> {
-    return new ReplaySubject(soundtrack.getNbTracks());
+  public progressiveCreateSoundtrackMidi(soundtrack: Soundtrack): Observable<ProgressTask<Uint8Array>> {
+    return Observable.create((progressTask$: ReplaySubject<ProgressTask<Uint8Array>>) => {
+      this.createSoundtrackMidi(soundtrack, progressTask$);
+      progressTask$.complete();
+      return { unsubscribe() { } };
+    });
   }
 
   public createSoundtrackMidi(soundtrack: Soundtrack, progressTask$?: ReplaySubject<ProgressTask<Uint8Array>>): Uint8Array {
     const midi: Midi = new Midi();
     midi.name = soundtrack.name;
     midi.header.name = soundtrack.name;
+    let noteIndex: number = 0;
     if (soundtrack.hasTracks()) {
       soundtrack.tracks.forEach((track: Track) => {
         const midiTrack: any = midi.addTrack();
         midiTrack.name = track.name;
         midiTrack.channel = track.channel;
         if (track.hasMeasures()) {
-          if (progressTask$) {
-            progressTask$.next(this.downloadService.createProgressTask<Uint8Array>(soundtrack.getNbTracks(), track.index));
-          }
           let totalDurationInSeconds: number = 0;
           for (const measure of track.getSortedMeasures()) {
             if (measure.placedChords) {
@@ -641,6 +643,11 @@ export class MidiService {
                     // const ticks: number = this.beatsToTicks(durationInBeats, DEFAULT_MIDI_PPQ, tempoInMicroSecondsPerBeat);
                     for (const note of placedChord.notes) {
                       if (!this.notationService.isEndOfTrackNote(note)) {
+                        if (progressTask$) {
+                          this.commonService.sleep(50);
+                          progressTask$.next(this.downloadService.createProgressTask<Uint8Array>(soundtrack.getNbNotes(), noteIndex));
+                        }
+                        noteIndex++;
                         midiTrack.addNote({
                           midi: this.synthService.textToMidiNote(note.renderAbc()),
                           time: totalDurationInSeconds,
@@ -677,7 +684,7 @@ export class MidiService {
       });
     }
     if (progressTask$) {
-      progressTask$.next(this.downloadService.createProgressTask<Uint8Array>(soundtrack.getNbTracks(), soundtrack.getNbTracks(), midi.toArray()));
+      progressTask$.next(this.downloadService.createProgressTask<Uint8Array>(soundtrack.getNbNotes(), soundtrack.getNbNotes(), midi.toArray()));
     }
     return midi.toArray();
   }

@@ -31,13 +31,13 @@
             <mat-icon (click)="deleteSoundtrack(soundtrack)" matTooltip="{{ 'soundtracks.delete' | translate }}"
               class="soundtrack-action">delete</mat-icon>
           </mat-toolbar>
+          <mat-progress-bar *ngIf="download$ | async as download"
+            [mode]="download | libCoreDownloadProgressMatState" [value]="download | libCoreDownloadProgressMatProgress">
+          </mat-progress-bar>
           <app-synth [soundtrack]="soundtrack"></app-synth>
           <app-keyboard [soundtrack]="soundtrack"></app-keyboard>
           <app-sheet [soundtrack]="soundtrack"></app-sheet>
           <!-- <app-soundtrack-upload></app-soundtrack-upload> TODO -->
-          <mat-progress-bar *ngIf="downloadProgressBar$ | async as downloadProgressBar"
-            [mode]="downloadProgressBar | libCoreDownloadProgressMatState" [value]="downloadProgressBar | libCoreDownloadProgressMatProgress">
-          </mat-progress-bar>
         </td>
       </tr>
     </tbody>
