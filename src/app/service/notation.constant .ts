@@ -21,6 +21,7 @@ export const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 export const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
 export const DEFAULT_RANDOM_METHOD: RANDOM_METHOD = RANDOM_METHOD.HARMONY_BASE;
 export const DEFAULT_RANDOM_INPASSING: number = 50;
+export const DEFAULT_RANDOM_MODULATION: number = 50;
 
 export const CHORD_DURATION_UNITS: Map<TempoUnit, string> = new Map([
   [TempoUnit.DUPLE, 'n'],

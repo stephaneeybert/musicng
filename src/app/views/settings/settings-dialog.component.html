@@ -108,6 +108,22 @@
           <mat-slider thumbLabel [displayWith]="formatAsPercentage" min="0" max="100" step="5" formControlName="generateInpassingNote"
             matTooltip="{{ 'settings.form.set.generate.inpassingNote.tip' | translate }}"></mat-slider>
         </p>
+        <p>
+          <mat-form-field>
+            <mat-label>{{ 'settings.form.set.generate.tonality.label' | translate }}</mat-label>
+            <mat-select formControlName="generateTonality" [compareWith]="compareItemsById"
+              matTooltip="{{ 'settings.form.set.generate.tonality.tip' | translate }}">
+              <mat-option *ngFor="let generateTonality of generateTonalities" value="{{ generateTonality.id }}">
+                {{ generateTonality.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-label>{{ 'settings.form.set.generate.modulation.label' | translate }} </mat-label>
+          <mat-slider thumbLabel [displayWith]="formatAsPercentage" min="0" max="100" step="5" formControlName="generateModulation"
+            matTooltip="{{ 'settings.form.set.generate.modulation.tip' | translate }}"></mat-slider>
+        </p>
       </mat-tab>
       <mat-tab>
         <ng-template mat-tab-label>

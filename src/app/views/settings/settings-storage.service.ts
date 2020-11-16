@@ -39,6 +39,8 @@ export class SettingsStorageService extends LocalStorageService<Settings> {
     settings.generateMethod = settingJson.generateMethod;
     settings.generateReverseDissimilarChord = settingJson.generateReverseDissimilarChord;
     settings.generateInpassingNote = Number(settingJson.generateInpassingNote);
+    settings.generateTonality = Number(settingJson.generateTonality);
+    settings.generateModulation = Number(settingJson.generateModulation);
     settings.generateNbChords = Number(settingJson.generateNbChords);
     settings.generateDoubleChord = settingJson.generateDoubleChord;
     settings.generateMelody = settingJson.generateMelody;

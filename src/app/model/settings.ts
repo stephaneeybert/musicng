@@ -1,5 +1,5 @@
 import { TempoUnit, TempoUnitType } from './tempo-unit';
-import { RANDOM_METHOD, DEFAULT_TEMPO_BPM, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_CHORD_DURATION, DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_WIDTH, DEFAULT_RANDOM_METHOD, DEFAULT_RANDOM_INPASSING, DEFAULT_NB_CHORDS, DEFAULT_VELOCITY_MEDIUM, DEFAULT_VELOCITY_LOUDER } from '@app/service/notation.constant ';
+import { RANDOM_METHOD, DEFAULT_TEMPO_BPM, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_CHORD_DURATION, DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_WIDTH, DEFAULT_RANDOM_METHOD, DEFAULT_RANDOM_INPASSING, DEFAULT_NB_CHORDS, DEFAULT_VELOCITY_MEDIUM, DEFAULT_VELOCITY_LOUDER, NOTE_RANGE, DEFAULT_RANDOM_MODULATION } from '@app/service/notation.constant ';
 
 export class Settings {
 
@@ -13,6 +13,8 @@ export class Settings {
   generateMethod: RANDOM_METHOD;
   generateReverseDissimilarChord: boolean;
   generateInpassingNote: number;
+  generateTonality: number;
+  generateModulation: number;
   generateNbChords: number;
   generateDoubleChord: boolean;
   generateMelody: boolean;
@@ -37,6 +39,8 @@ export class Settings {
     this.generateMethod = DEFAULT_RANDOM_METHOD;
     this.generateReverseDissimilarChord = false;
     this.generateInpassingNote = DEFAULT_RANDOM_INPASSING;
+    this.generateTonality = NOTE_RANGE.MAJOR;
+    this.generateModulation = DEFAULT_RANDOM_MODULATION;
     this.generateNbChords = DEFAULT_NB_CHORDS;
     this.generateDoubleChord = false;
     this.generateMelody = true;
@@ -62,6 +66,8 @@ export class Settings {
     generateMethod: RANDOM_METHOD,
     generateReverseDissimilarChord: boolean,
     generateInpassingNote: number,
+    generateTonality: number,
+    generateModulation: number,
     generateNbChords: number,
     generateDoubleChord: boolean,
     generateMelody: boolean,
@@ -85,6 +91,8 @@ export class Settings {
     this.generateMethod = generateMethod;
     this.generateReverseDissimilarChord = generateReverseDissimilarChord;
     this.generateInpassingNote = generateInpassingNote;
+    this.generateTonality = generateTonality;
+    this.generateModulation = generateModulation;
     this.generateNbChords = generateNbChords;
     this.generateDoubleChord = generateDoubleChord;
     this.generateMelody = generateMelody;

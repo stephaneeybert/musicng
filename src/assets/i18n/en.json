@@ -108,6 +108,14 @@
             "label": "In passing note",
             "tip": "When choosing a note for a chord, tune the probability of choosing an in passing note."
           },
+          "tonality": {
+            "label": "Tonality",
+            "tip": "The tonality of the first measure."
+          },
+          "modulation": {
+            "label": "Modulation",
+            "tip": "Tune the probability of having modulation from one tonality to another."
+          },
           "nbChords": {
             "label": "Number of chords",
             "tip": "The number of chords of the soundtrack."
