@@ -51,6 +51,11 @@ export class Soundtrack {
   }
 
   public hasNotes(): boolean {
+    return this.getNbNotes() > 0;
+  }
+
+  public getNbNotes(): number {
+    let count: number = 0;
     if (this.tracks != null && this.tracks.length > 0) {
       for (const track of this.tracks) {
         if (track.hasMeasures()) {
@@ -58,7 +63,9 @@ export class Soundtrack {
             if (measure.hasChords()) {
               for (const placedChord of measure.placedChords!) {
                 if (placedChord.hasNotes()) {
-                  return true;
+                  for (const note of placedChord.notes) {
+                    count++;
+                  }
                 }
               }
             }
@@ -66,7 +73,7 @@ export class Soundtrack {
         }
       }
     }
-    return false;
+    return count;
   }
 
 }
