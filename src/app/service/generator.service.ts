@@ -494,14 +494,13 @@ export class GeneratorService {
   // The chromas are indexed in the chromas alphabetical array
   private getBonusTable(): Array<Array<number>> {
     const matrix: Array<Array<number>> = [
-    //  C  D   E  F   G  A  B
-      [ 30, 0, 15, 5, 5, 10, 0 ],
-      [ 0, 30, 0, 10, 0, 5, 10 ],
-      [ 15, 0, 30, 0, 10, 0, 0 ],
-      [ 5, 10, 0, 30, 0, 15, 0 ],
-      [ 5, 0, 10, 0, 30, 0, 10 ],
-      [ 10, 5, 0, 15, 0, 30, 0 ],
-      [ 0, 10, 0, 0, 10, 0, 30 ]
+      [ 30, 0, 15, 5, 5, 10, 0 ], // C
+      [ 0, 30, 0, 10, 0, 5, 10 ], // D
+      [ 15, 0, 30, 0, 10, 0, 0 ], // E
+      [ 5, 10, 0, 30, 0, 15, 0 ], // F
+      [ 5, 0, 10, 0, 30, 0, 10 ], // G
+      [ 10, 5, 0, 15, 0, 30, 0 ], // A
+      [ 0, 10, 0, 0, 10, 0, 30 ]  // B
     ];
     return matrix;
   }
