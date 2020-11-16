@@ -82,7 +82,7 @@ export class GeneratorService {
     const chordDuration: number = this.settingsService.getSettings().generateChordDuration;
 
     const harmonyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityHarmony);
-    const harmonyChords: Array<PlacedChord> = this.generateHarmonyChords(randomMethod, octave, chordDuration, harmonyVelocity);
+    const harmonyChords: Array<PlacedChord> = this.generateHarmonyChords(octave, chordDuration, harmonyVelocity);
     const harmonyMeasures: Array<Measure> = this.createMeasures(harmonyChords);
 
     if (this.settingsService.getSettings().generateHarmony) {
@@ -419,7 +419,7 @@ export class GeneratorService {
     return melodyChords;
   }
 
-  private generateHarmonyChords(randomMethod: number, octave: number, chordDuration: number, velocity: number, previousPlacedChord?: PlacedChord): Array<PlacedChord> {
+  private generateHarmonyChords(octave: number, chordDuration: number, velocity: number, previousPlacedChord?: PlacedChord): Array<PlacedChord> {
     const placedChords: Array<PlacedChord> = new Array();
     let placedChordIndex: number = 0;
     let previousChromaIndex: number = 0;
@@ -439,7 +439,7 @@ export class GeneratorService {
       const chromas: Array<string> = new Array();
 
       // For each randomly picked chroma, add its chord to an array
-      const chromaIndex: number = (placedChordIndex === 0) ? 0 : this.randomlyPickChroma(previousChromaIndex, randomMethod);
+      const chromaIndex: number = (placedChordIndex === 0) ? 0 : this.randomlyPickChroma(previousChromaIndex);
       for (let noteIndex = 0; noteIndex < this.settingsService.getSettings().generateChordWidth; noteIndex++) {
         chromas.push(shiftedChromas[noteIndex][chromaIndex]);
       }
@@ -470,16 +470,6 @@ export class GeneratorService {
     }
     this.notationService.addEndOfTrackNote(placedChords);
     return placedChords;
-  }
-
-  private randomlyPickChroma(chromaIndex: number, randomMethod: number): number {
-    if (RANDOM_METHOD.BONUS_TABLE == randomMethod) {
-      return this.randomlyPickChromaFromChromasPool(chromaIndex);
-    } else if (RANDOM_METHOD.HARMONY_BASE == randomMethod) {
-      return this.randomlyPickChromaFromChromasPool(chromaIndex);
-    } else {
-      throw new Error('The selected generation method does not exist.');
-    }
   }
 
   // The table of bonus per chroma
@@ -523,7 +513,7 @@ export class GeneratorService {
     return chromasPool;
   }
 
-  private randomlyPickChromaFromChromasPool(chromaIndex: number): number {
+  private randomlyPickChroma(chromaIndex: number): number {
     const chromasPool: Array<number> = this.buildUpChromasPoolFromBonuses(chromaIndex);
     const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, chromasPool.length - 1);
     return chromasPool[randomChromaIndex];
