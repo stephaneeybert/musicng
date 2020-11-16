@@ -494,7 +494,7 @@ export class GeneratorService {
   // The chromas are indexed in the chromas alphabetical array
   private getBonusTable(): Array<Array<number>> {
     const matrix: Array<Array<number>> = [
-    //  C  D  E  F  G  A  B
+    //  C  D   E  F   G  A  B
       [ 30, 0, 15, 5, 5, 10, 0 ],
       [ 0, 30, 0, 10, 0, 5, 10 ],
       [ 15, 0, 30, 0, 10, 0, 0 ],
