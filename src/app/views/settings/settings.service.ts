@@ -15,10 +15,6 @@ export class SettingsService {
     return this.settingsStore.getSettings();
   }
 
-  public setSettings(settings: Settings) {
-    this.settingsStore.setSettings(settings);
-  }
-
   public setAndStoreSettings(settings: Settings) {
     this.settingsStore.setAndStoreSettings(settings);
   }
