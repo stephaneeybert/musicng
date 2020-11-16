@@ -187,6 +187,20 @@ export class GeneratorService {
     return tonalityMajorC;
   }
 
+  private getRandomTonalityChromas(noteRange: NOTE_RANGE): Array<string> {
+    const noteRangeIntervals: Array<number> | undefined = NOTE_RANGE_INTERVALS.get(noteRange);
+    if (noteRangeIntervals) {
+      return this.getTonalityChromas(noteRange, this.getRandomTonalityFirstChroma());
+    } else {
+      throw new Error('The note range could not be found.');
+    }
+  }
+
+  private getRandomTonalityFirstChroma(): string {
+    const random: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_INTERVAL_NOTES.length);
+    return HALF_TONE_INTERVAL_NOTES[random];
+  }
+
   // Create all the shifted chromas arrays for a chord width
   private createAllShiftedChromas(): Array<Array<string>> {
     const shiftedChromas: Array<Array<string>> = new Array();
