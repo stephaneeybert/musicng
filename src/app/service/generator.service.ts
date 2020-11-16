@@ -83,29 +83,25 @@ export class GeneratorService {
     const melodyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityMelody);
     const melodyChords: Array<PlacedChord> = this.generateMelodyChords(harmonyChords, randomMethod, octave, chordDuration, melodyVelocity);
 
-    const generateMelody: boolean = this.settingsService.getSettings().generateMelody;
-    if (generateMelody) {
+    if (this.settingsService.getSettings().generateMelody) {
       const melodyTrack: Track = soundtrack.addTrack(this.createMeasures(melodyChords));
       melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
     }
 
-    const generateHarmony: boolean = this.settingsService.getSettings().generateHarmony;
-    if (generateHarmony) {
+    if (this.settingsService.getSettings().generateHarmony) {
       const harmonyTrack: Track = soundtrack.addTrack(this.createMeasures(harmonyChords));
       harmonyTrack.name = this.getTrackName(TRACK_TYPES.HARMONY);
       harmonyTrack.displayChordNames = true;
     }
 
-    const generateDrums: boolean = this.settingsService.getSettings().generateDrums;
-    if (generateDrums) {
+    if (this.settingsService.getSettings().generateDrums) {
       const drumsChords: Array<PlacedChord> = new Array();
       const drumsTrack: Track = soundtrack.addTrack(this.createMeasures(drumsChords));
       drumsTrack.name = this.getTrackName(TRACK_TYPES.DRUMS);
       drumsTrack.displayChordNames = true;
     }
 
-    const generateBass: boolean = this.settingsService.getSettings().generateBass;
-    if (generateBass) {
+    if (this.settingsService.getSettings().generateBass) {
       const bassChords: Array<PlacedChord> = new Array();
       const bassTrack: Track = soundtrack.addTrack(this.createMeasures(bassChords));
       bassTrack.name = this.getTrackName(TRACK_TYPES.BASS);
