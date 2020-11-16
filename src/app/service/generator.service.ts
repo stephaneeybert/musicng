@@ -214,7 +214,7 @@ export class GeneratorService {
   }
 
   // Create all the shifted chromas arrays for a chord width
-  private createAllShiftedChromas(): Array<Array<string>> {
+  private getTonalityShiftedChromas(tonalityChromas: Array<string>): Array<Array<string>> {
     const shiftedChromas: Array<Array<string>> = new Array();
     // Create shifted chromas, each starting some notes down the previous chroma
     // The number of shifted chromas is the width of the chord
@@ -225,7 +225,7 @@ export class GeneratorService {
     // 'G', 'A', 'B', 'C', 'D', 'E', 'F'
 
     // Build the shifted chromas
-    shiftedChromas[0] = this.getFirstMeasureTonalityChromas();
+    shiftedChromas[0] = tonalityChromas;
     const chordWidth: number = this.settingsService.getSettings().generateChordWidth;
     for (let index = 1; index < chordWidth; index++) {
       shiftedChromas[index] = this.createShiftedChromas(shiftedChromas[index - 1]);
@@ -431,7 +431,8 @@ export class GeneratorService {
       previousChromas = new Array();
     }
 
-    const shiftedChromas: Array<Array<string>> = this.createAllShiftedChromas();
+    const tonalityChromas: Array<string> = this.getFirstMeasureTonalityChromas();
+    const shiftedChromas: Array<Array<string>> = this.getTonalityShiftedChromas(tonalityChromas);
 
     const generateNbChords: number = this.settingsService.getSettings().generateNbChords > 0 ? this.settingsService.getSettings().generateNbChords : 1;
     while (placedChordIndex < generateNbChords) {
