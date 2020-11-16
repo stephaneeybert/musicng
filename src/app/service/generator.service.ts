@@ -473,19 +473,13 @@ export class GeneratorService {
   }
 
   private randomlyPickChroma(chromaIndex: number, randomMethod: number): number {
-    if (RANDOM_METHOD.BASE == randomMethod) {
-      return this.randomlyPickChromaFromBaseChromas(chromaIndex);
-    } else if (RANDOM_METHOD.BONUS_TABLE == randomMethod) {
+    if (RANDOM_METHOD.BONUS_TABLE == randomMethod) {
       return this.randomlyPickChromaFromChromasPool(chromaIndex);
     } else if (RANDOM_METHOD.HARMONY_BASE == randomMethod) {
       return this.randomlyPickChromaFromChromasPool(chromaIndex);
     } else {
       throw new Error('The selected generation method does not exist.');
     }
-  }
-
-  private randomlyPickChromaFromBaseChromas(chromaIndex: number): number {
-    return this.commonService.getRandomIntegerBetweenAndExcept(0, this.getFirstMeasureTonalityChromas().length - 1, [ chromaIndex ])
   }
 
   // The table of bonus per chroma

@@ -3,7 +3,6 @@ import { Subdivisions } from '@app/model/note/duration/subdivisions';
 import { Subdivision } from '@app/model/note/duration/subdivision';
 
 export enum RANDOM_METHOD {
-  BASE = 0,
   BONUS_TABLE = 1,
   HARMONY_BASE = 2
 }
@@ -33,9 +32,8 @@ export const CHORD_DURATION_UNITS: Map<TempoUnit, string> = new Map([
   [TempoUnit.MEASURE, 'm']
 ]);
 export const GENERATE_METHODS: Map<RANDOM_METHOD, string> = new Map([
-  [RANDOM_METHOD.BASE, '1. Base'],
-  [RANDOM_METHOD.BONUS_TABLE, '2. Bonus table'],
-  [RANDOM_METHOD.HARMONY_BASE, '3. Harmony base']
+  [RANDOM_METHOD.BONUS_TABLE, '1. Bonus table'],
+  [RANDOM_METHOD.HARMONY_BASE, '2. Harmony base']
 ]);
 
 // An interval represents the distance between two notes
