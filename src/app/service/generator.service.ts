@@ -165,7 +165,7 @@ export class GeneratorService {
     return chromas;
   }
 
-  public getTonality(noteRange: NOTE_RANGE, rangeFirstNote: string): Array<string> {
+  private getTonality(noteRange: NOTE_RANGE, rangeFirstNote: string): Array<string> {
     const tonality: Array<string> = new Array();
     const noteRangeIntervals: Array<number> | undefined = NOTE_RANGE_INTERVALS.get(noteRange);
     if (noteRangeIntervals) {
