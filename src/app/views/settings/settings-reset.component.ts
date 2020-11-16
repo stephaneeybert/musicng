@@ -28,10 +28,10 @@ export class SettingsResetComponent {
   ) { }
 
   ngOnDestroy() {
-    if (this.dialogSubscription) {
+    if (this.dialogSubscription != null) {
       this.dialogSubscription.unsubscribe();
     }
-    if (this.dialogEmitterSubscription) {
+    if (this.dialogEmitterSubscription != null) {
       this.dialogEmitterSubscription.unsubscribe();
     }
   }

@@ -43,7 +43,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
     if (this.midiAccessSubscription != null) {
       this.midiAccessSubscription.unsubscribe();
     }
-    if (this.midiInputSubscription) {
+    if (this.midiInputSubscription != null) {
       this.midiInputSubscription.unsubscribe();
     }
   }

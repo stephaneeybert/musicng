@@ -40,13 +40,13 @@ export class ThemeService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.customAndDarkSubscription) {
+    if (this.customAndDarkSubscription != null) {
       this.customAndDarkSubscription.unsubscribe();
     }
-    if (this.sensorAmbientDarkEnoughSubscription) {
+    if (this.sensorAmbientDarkEnoughSubscription != null) {
       this.sensorAmbientDarkEnoughSubscription.unsubscribe();
     }
-    if (this.sensorAmbientBrightEnoughSubscription) {
+    if (this.sensorAmbientBrightEnoughSubscription != null) {
       this.sensorAmbientBrightEnoughSubscription.unsubscribe();
     }
   }

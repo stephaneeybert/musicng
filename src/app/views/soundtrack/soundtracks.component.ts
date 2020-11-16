@@ -73,10 +73,10 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
     if (this.soundtracksSubscription != null) {
       this.soundtracksSubscription.unsubscribe();
     }
-    if (this.dialogSubscription) {
+    if (this.dialogSubscription != null) {
       this.dialogSubscription.unsubscribe();
     }
-    if (this.dialogEmitterSubscription) {
+    if (this.dialogEmitterSubscription != null) {
       this.dialogEmitterSubscription.unsubscribe();
     }
   }

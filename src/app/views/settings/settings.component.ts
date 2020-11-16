@@ -42,10 +42,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
     if (this.settingsSubscription != null) {
       this.settingsSubscription.unsubscribe();
     }
-    if (this.dialogSubscription) {
+    if (this.dialogSubscription != null) {
       this.dialogSubscription.unsubscribe();
     }
-    if (this.dialogEmitterSubscription) {
+    if (this.dialogEmitterSubscription != null) {
       this.dialogEmitterSubscription.unsubscribe();
     }
   }

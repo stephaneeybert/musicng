@@ -56,7 +56,7 @@ export class UserEditComponent implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.dialogSubscription) {
+    if (this.dialogSubscription != null) {
       this.dialogSubscription.unsubscribe();
     }
   }

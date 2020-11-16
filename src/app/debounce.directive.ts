@@ -40,7 +40,7 @@ export class DebounceDirective implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
+    if (this.subscription != null) {
       this.subscription.unsubscribe();
     }
   }
