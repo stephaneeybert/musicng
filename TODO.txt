@@ -38,3 +38,126 @@ Question: La série du refrain est elle alternée avec celle du couplet ?
 Question: C'est quoi une gamme ?
 Question: C'est quoi une phrase ?
 Question: C'est quoi un arpège ?
+
+Modulation
+Le changement de tonalité est la modulation
+Avoir une préf pour moduler ou non
+On peut choisr la première tonalité avec une préférence
+Changer de tonalité à chaque nouvelle mesure ou garder la même
+Les deux derniers accords de la mesure précédente permettent de choisir les tonalités à considérer, ce sont celles qui contiennent les deux accords, elles sont majeures ou mineures, ensuite on en choisit une parmis elles
+Les notes des accords sont augmentées d'un demi ton pour passer d'une ton à l'autre dans la matrice des 12 ton majeures
+Par exemple de la tonalité 0 Do à la 7 Sol il y a 7 demi ton de plus sur chaque accord
+Une gamme est une suite d'intervalles entre accords, chaque accord étant un degré, de l'accord de degré 1 au 7
+Une tonalité est une gamme dont les accords ont des altérations
+---
+Une altération est un signe qui, placé devant une note, va altérer, changer cette note :
+ ♯ le dièse augmente la note de ½ ton
+ ♭ le bémol diminue la note de ½ ton
+ ♮ Le bécarre annule le ♯ et le ♭
+Les altérations qui sont placées « à la clé » (au début de la pièce ou d’une partie de celle-ci) affectent l’ensemble des notes correspondantes, sans restriction de hauteur ( sauf celles précédées d’un bécarre bien sûr ).
+Les altérations qui se trouvent à la clé sont appellées l'armure.
+Les altérations placées devant les notes dans le courant du morceau affectent toutes notes correspondantes dans la limite de la mesure uniquement.
+La tonique est le 1er degré de la tonalité.
+La dominante est le 5ème accord d'une tonalité.
+---
+Une gamme est une séquence d'intervalles entre notes, qui débute par une note nommée tonique.
+Une gamme est constituée de plusieurs degrés, chacun correspondant à une hauteur précise dans la gamme.
+Une gamme majeure est constituée d’une séquence d’intervalles comprenant tons et demi-tons&nbsp;: 1 ton, 1 ton, 1/2 ton, 1 ton, 1 ton, 1 ton, 1/2 ton&nbsp;; soit en Do&nbsp;: <em>do, ré, mi, fa, sol, la, si</em>, (do).
+Chaque note de départ élabore une gamme majeure différente&nbsp;: Do majeur, Do # majeur, Ré majeur, etc.
+C’est la tonique (1er degré) d’une gamme majeure qui détermine la tonalité. Ex.&nbsp;: la gamme commence par la note ré = tonalité de Ré.
+Quand un morceau est dans une tonalité spécifique (ex.&nbsp;: Mi majeur), cela signifie que toutes les notes jouées appartiennent à cette tonalité (sauf indication contraire portée sur la partition&nbsp;: altération accidentelle, modulation dans une autre tonalité).
+L’armature est un espace réservé à l’écriture des dièses ou des bémols après la clé. Elle est renouvelée à chaque début de portée et indique la tonalité.
+---
+Une gamme est une série de notes dont les intervalles déterminent le type de la gamme
+Il existe plusieurs types de gammes (gamme majeure, gamme blues, gamme pentatonique mineure, gamme mineure harmonique, …)
+Chaque gamme peut être jouée dans toutes les tonalités (il existe 12 tonalités au total)
+---
+Une gamme est une suite d'intervalles ordonnés, de la note la plus grave à la note la plus aigüe.
+Il s'agit donc d'un enchaînement de sauts de note, nous faisant passer d'un son à l'autre de manière pré déterminée. On part d'une note, on enchaîne les sauts, jusqu'à l'octave de la note départ.
+On définit une gamme par les intervalles qui la composent.
+Dans le cas de la gamme majeure, les intervalles sont :
+1 ton - 1 ton - 1/2 ton - 1 ton - 1 ton - 1 ton - 1/2 ton
+Pour la tonalité de Do :
+Do + 1 ton = Ré + 1 ton = Mi + 1/2 ton = Fa + 1 ton = Sol + 1 ton = La + 1 ton = Si + 1/2 ton = Do
+En effet, je rappelle à ceux qui n'ont pas révisé qu'il n'y a qu'1/2 ton entre Mi et Fa, et entre Si et Do !
+J'arrive donc à : Do Ré Mi Fa Sol La Si Do
+Il s'agit de la gamme majeure dans la tonalité de Do.
+Une gamme est caractérisée par une suite d'intervalles, et on peut démarrer cette suite par n'importe quelle note. La note par laquelle on commence donne "la tonalité de la gamme". On l'appelle la tonique.
+Dans le cas de la gamme blues, les intervalles sont :
+1,5 tons - 1 ton - 1/2 ton - 1/2 ton - 1,5 tons - 1 ton
+Pour la tonalité de Do :
+Do Mib Fa Solb Sol Sib Do
+Il existe toutes sortes de gammes, avec plus ou moins de notes. Nous en verrons quelques-unes dans des articles ultérieurs.
+Chaque gamme a une "couleur" sonore qui lui est propre. La gamme blues ne sonne pas du tout comme la gamme majeure, qui ne sonne pas du tout comme la gamme mineure harmonique, etc. Dans le cadre d'une musique improvisée, nous allons choisir de jouer sur telle ou telle couleur, selon ce que l'on désire exprimer, et donc utiliser les notes de telle ou telle gamme.
+---
+Un intervalle représente tout simplement l'écart entre deux notes.
+Le plus petit intervalle existant entre 2 notes est le demi-ton.
+Il y a 12 demi-tons :
+1 demi-ton entre Do et Do#
+1 demi-ton entre Do# et Ré
+1 demi-ton entre Ré et Ré#
+1 demi-ton entre Ré# et Mi
+1 demi-ton entre Mi et Fa
+1 demi-ton entre Fa et Fa#
+1 demi-ton entre Fa# et Sol
+1 demi-ton entre Sol et Sol#
+1 demi-ton entre Sol# et La
+1 demi-ton entre La et La#
+1 demi-ton entre La# et Si
+1 demi-ton entre Si et Do
+---
+Do       Ré       Mi  Fa       Sol      La       Si  Do
+C   C#   D   D#   E   F   F#   G   G#   A   A#   B   C
+    Db       Eb           Gb       Ab       Bb
+---
+Au passage, remarquons que le sigle "#" (dièse) sert à augmenter une note d'un demi-ton.
+De même, le sigle "b" (bémol) sert à baisser une note d'un demi-ton.
+Du coup, Do# est un Do augmenté d'un demi-ton, et Réb est un Ré baissé d'un demi-ton.
+On voit sur la liste ci-dessus qu'il n'y a que 2 demi-tons entre Do et Ré. On en déduit que Do# et Réb représentent le même son !
+De même que Ré# et Mib, Fa# et Solb, Sol# et Ab, A# et Sib.
+---
+A l'aide de la gamme et des 12 intervals de demi-tons, on peut obtenir la tonalité (suite des accords) à partir du premier accord auquel on ajoute les intervalles.
+Dans le cas de la gamme majeure, les intervalles sont :
+1 ton - 1 ton - 1/2 ton - 1 ton - 1 ton - 1 ton - 1/2 ton
+Do + 1 ton = Ré + 1 ton = Mi + 1/2 ton = Fa + 1 ton = Sol + 1 ton = La + 1 ton = Si + 1/2 ton = Do
+soit Do Ré Mi Fa Sol La Si Do qui est la tonalité dd Do
+---
+LES 12 TONALITÉS MAJEURES, COMPRENANT CHACUNES 7 ACCORDS
+I II III IV V VI VII 
+Do C Dm Em F G Am Bdim 
+Réb Db Ebm Fm Gb Ab Bm Cdim 
+Ré D Em F#m G A Bm C#dim 
+Mib Eb Fm Gm Ab Bb Cm Ddim 
+Mi E F#m G#m A B C#m D#dim 
+Fa F Gm Am Bb C Dm Edim 
+Fa# F# G#m A#m B C# D#m E#dim 
+Sol G Am Bm C D Em F#dim
+Lab Ab Bbm Cm Db Eb Fm Gdim 
+La A Bm C#m D E F#m G#dim 
+Sib Bb Cm Dm Eb F Gm Adim 
+Si B C#m D#m E F# G#m A#dim
+---
+LES 12 TONALITÉS MINEURES
+I II III IV V VI VII 
+Do Cm Ddim Eb Fm Gm Ab Bb 
+Do# C#m D#dim E Gbm Abm A B 
+Ré Dm Edim F Gm Am Bb C 
+Mib D#m E#dim F# G#m A#m B C# 
+Mi Em F#dim G Am Bm C D 
+Fa Fm Gdim Ab Bbm Cm Db Eb 
+Fa# F#m G#dim A Bm C#m D E 
+Sol Gm Adim Bb Cm Dm Eb F 
+Lab Abm Bbdim B Dbm Ebm F F# 
+La Am Bdim C Dm Em F G 
+Sib Bbm Cdim Db Ebm Fm Gb Ab 
+Si Bm C#dim D Em F#m G A
+---
+Dans une même gamme, tous les degrés n'ont pas la même importance. Le degré I est le plus important car c'est le degré sur lequel la gamme est construite. Ensuite, c'est le degré V, puis le degré IV. Et enfin dans l’ordre, les degrés II, III, VI et VII qui ont un rapport de plus en plus éloigné avec la tonique ( degré I ).
+---
+Ne pas confondre la modulation qui est un changement de gamme à l’intérieur d’un morceau avec la transposition qui est un changement de l’ensemble du morceau.
+---
+Plus tard, on proposera le choix de la Tonalité de départ pour l’utilisateur final, et même l’accord de départ, appartenant à cette tonalité.
+---
+La principale différence entre les gammes majeures et mineures se trouve au niveau du deuxième intervalle. Avec une gamme majeure, la distance entre la tonique et la troisième note (Do et Mi, par exemple) est deux tons – c’est ce que l’on appelle une tierce majeure -, tandis que c’est un ton et demi dans le cas d’une gamme mineur – c’est ce que l’on appelle une tierce mineure (Do et Mib, par exemple). Cette différence d’intervalle rend non seulement une mélodie plus joyeuse ou plus triste, mais elle confère également un effet « euphorique » à un accord majeur et un effet « sombre » à un accord mineur. Voilà donc la grande différence entre la gamme mineure et la gamme majeure. Notez que les termes « majeur » et « mineur » viennent de « tierce majeure » et « tierce mineure ». En général, les marquages en majuscule désignent les gammes majeures et en minuscule, les gammes mineures.
+---
+Dans le système tonal, c’est-à-dire le système actuel d’écriture musicale, la gamme majeure constitue la gamme de référence absolue. Toutes les autres gammes en découlent.
