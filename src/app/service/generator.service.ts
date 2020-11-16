@@ -38,14 +38,18 @@ export class GeneratorService {
     return this.notationService.createPlacedChord(placedChordIndex, chordDuration, TempoUnit.DUPLE, velocity, notes);
   }
 
+  private createMeasure(index: number): Measure {
+    const tempoBpm: number = this.settingsService.getSettings().generateTempoBpm;
+    const timeSignatureNumerator: number = this.settingsService.getSettings().generateTimeSignatureNumerator;
+    const timeSignatureDenominator: number = this.settingsService.getSettings().generateTimeSignatureDenominator;
+    return this.notationService.createMeasure(index, tempoBpm, timeSignatureNumerator, timeSignatureDenominator);
+  }
+
   private createMeasures(generatedChords: Array<PlacedChord>): Array<Measure> {
     let measureIndex: number = 0;
     let chordIndex: number = 0;
     const measures: Array<Measure> = new Array<Measure>();
-    const tempoBpm: number = this.settingsService.getSettings().generateTempoBpm;
-    const timeSignatureNumerator: number = this.settingsService.getSettings().generateTimeSignatureNumerator;
-    const timeSignatureDenominator: number = this.settingsService.getSettings().generateTimeSignatureDenominator;
-    let measure: Measure = this.notationService.createMeasure(measureIndex, tempoBpm, timeSignatureNumerator, timeSignatureDenominator);
+    let measure: Measure = this.createMeasure(measureIndex);
     measure.placedChords = new Array<PlacedChord>();
     generatedChords
       .forEach((placedChord: PlacedChord) => {
@@ -53,7 +57,7 @@ export class GeneratorService {
           // The number of beats of the chords placed in a measure must equal the number of beats of the measure
           if (measure.getPlacedChordsNbBeats() >= measure.getNbBeats()) {
             measures.push(measure);
-            measure = this.notationService.createMeasure(measureIndex, tempoBpm, timeSignatureNumerator, timeSignatureDenominator);
+            measure = this.createMeasure(measureIndex);
             measure.placedChords = new Array<PlacedChord>();
             measureIndex++;
             chordIndex = 0;
