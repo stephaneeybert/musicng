@@ -422,7 +422,8 @@ export class GeneratorService {
   private generateHarmonyChords(randomMethod: number, octave: number, chordDuration: number, velocity: number, previousPlacedChord?: PlacedChord): Array<PlacedChord> {
     const placedChords: Array<PlacedChord> = new Array();
     let placedChordIndex: number = 0;
-    let previousChromaNoteIndex: number = 0;
+    let previousChromaIndex: number = 0;
+
     let previousChromas: Array<string>;
     if (previousPlacedChord) {
       previousChromas = previousPlacedChord.getNotesChromas();
@@ -437,14 +438,14 @@ export class GeneratorService {
       const chromas: Array<string> = new Array();
 
       // For each randomly picked chroma, add its chord to an array
-      const chromaNoteIndex: number = (placedChordIndex === 0) ? 0 : this.randomlyPickChroma(previousChromaNoteIndex, randomMethod);
+      const chromaIndex: number = (placedChordIndex === 0) ? 0 : this.randomlyPickChroma(previousChromaIndex, randomMethod);
       for (let noteIndex = 0; noteIndex < this.settingsService.getSettings().generateChordWidth; noteIndex++) {
-        chromas.push(shiftedChromas[noteIndex][chromaNoteIndex]);
+        chromas.push(shiftedChromas[noteIndex][chromaIndex]);
       }
 
       // Consider a chord only if it is similar to its previous one
       if (placedChords.length === 0 || this.isSimilarToPrevious(previousChromas, chromas)) {
-        previousChromaNoteIndex = chromaNoteIndex;
+        previousChromaIndex = chromaIndex;
         previousChromas = chromas;
         const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, placedChordIndex, chromas);
         placedChords.push(placedChord);
