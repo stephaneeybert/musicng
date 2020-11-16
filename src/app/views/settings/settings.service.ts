@@ -15,10 +15,6 @@ export class SettingsService {
     return this.settingsStore.getSettings();
   }
 
-  public setAndStoreSettings(settings: Settings) {
-    this.settingsStore.setAndStoreSettings(settings);
-  }
-
   public percentageToVelocity(percent: number): number {
     return percent / 100;
   }
