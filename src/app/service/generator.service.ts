@@ -187,6 +187,17 @@ export class GeneratorService {
     const firstChroma: string = HALF_TONE_INTERVAL_NOTES[firstChromaIndex];
     return this.getTonalityChromas(NOTE_RANGE.MAJOR, firstChroma);
   }
+
+  // The modulation by a randomised pick of another tonality can be tuned by a setting
+  private withModulation(): boolean {
+    const modulation: number = this.settingsService.getSettings().generateModulation;
+    if (modulation > 0) {
+      const randomModulation: number = this.commonService.getRandomIntegerBetween(0, 100);
+      if (randomModulation < modulation) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private getRandomTonalityChromas(noteRange: NOTE_RANGE): Array<string> {
