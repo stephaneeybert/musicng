@@ -183,8 +183,10 @@ export class GeneratorService {
   }
 
   private getFirstMeasureTonalityChromas(): Array<string> {
-    const tonalityMajorC: Array<string> = this.getTonalityChromas(NOTE_RANGE.MAJOR, 'C');
-    return tonalityMajorC;
+    const firstChromaIndex: number = this.settingsService.getSettings().generateTonality;
+    const firstChroma: string = HALF_TONE_INTERVAL_NOTES[firstChromaIndex];
+    return this.getTonalityChromas(NOTE_RANGE.MAJOR, firstChroma);
+  }
   }
 
   private getRandomTonalityChromas(noteRange: NOTE_RANGE): Array<string> {
