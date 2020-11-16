@@ -216,6 +216,7 @@ export class GeneratorService {
     const shiftedChromas: Array<Array<string>> = new Array();
     // Create shifted chromas, each starting some notes down the previous chroma
     // The number of shifted chromas is the width of the chord
+    // An example for the C tonality is:
     //  Do Re.m  Mi.m  Fa  Sol  La.m  Si-
     // 'C', 'D', 'E', 'F', 'G', 'A', 'B'
     // 'E', 'F', 'G', 'A', 'B', 'C', 'D'
