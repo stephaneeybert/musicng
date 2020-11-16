@@ -165,7 +165,7 @@ export class GeneratorService {
     return chromas;
   }
 
-  private getTonality(noteRange: NOTE_RANGE, rangeFirstNote: string): Array<string> {
+  private getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstNote: string): Array<string> {
     const tonality: Array<string> = new Array();
     const noteRangeIntervals: Array<number> | undefined = NOTE_RANGE_INTERVALS.get(noteRange);
     if (noteRangeIntervals) {
@@ -183,7 +183,7 @@ export class GeneratorService {
   }
 
   private getDefaultTonalityChromas(): Array<string> {
-    const tonalityMajorC: Array<string> = this.getTonality(NOTE_RANGE.MAJOR, 'C');
+    const tonalityMajorC: Array<string> = this.getTonalityChromas(NOTE_RANGE.MAJOR, 'C');
     return tonalityMajorC;
   }
 
