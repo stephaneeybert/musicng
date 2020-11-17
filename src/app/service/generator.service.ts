@@ -158,7 +158,7 @@ export class GeneratorService {
 
   // Create a chromas array shifted from another one
   private createShiftedChromas(chromas: Array<string>): Array<string> {
-    for (var i = 0; i < this.CHROMA_SHIFT_TIMES; i++) {
+    for (let i = 0; i < this.CHROMA_SHIFT_TIMES; i++) {
       chromas = this.createArrayShiftOnceLeft(chromas);
     }
     return chromas;
@@ -236,7 +236,7 @@ export class GeneratorService {
   // Check if the chord shares a minimum number of notes with its previous chord
   private isSimilarToPrevious(previousChord: Array<string>, chord: Array<string>): boolean {
     let nbSameNotes: number = 0;
-    for (var i = 0; i < this.settingsService.getSettings().generateChordWidth; i++) {
+    for (let i = 0; i < this.settingsService.getSettings().generateChordWidth; i++) {
       if (previousChord.includes(chord[i])) {
         nbSameNotes++;
       }
