@@ -5,6 +5,7 @@
   </button>
 </div>
 <div *ngIf="getNbSoundtracks() > 0" class="soundtracks">
+  <div *ngIf="showMe">Hello</div>
   <table>
     <thead>
     </thead>
@@ -26,6 +27,8 @@
               matTooltip="{{ 'soundtracks.replay' | translate }}" class="soundtrack-action">replay</mat-icon>
             <mat-icon *ngIf="!isNowPlaying(soundtrack)" (click)="openSoundtrackDialog(soundtrack)"
               matTooltip="{{ 'soundtracks.edit' | translate }}" class="soundtrack-action">edit</mat-icon>
+            <mat-icon (click)="downloadDemo()" matTooltip="{{ 'soundtracks.download.tip' | translate }}"
+              class="soundtrack-action">arrow_downward</mat-icon>
             <mat-icon (click)="downloadSoundtrack(soundtrack)" matTooltip="{{ 'soundtracks.download.tip' | translate }}"
               class="soundtrack-action">arrow_downward</mat-icon>
             <mat-icon (click)="deleteSoundtrack(soundtrack)" matTooltip="{{ 'soundtracks.delete' | translate }}"
