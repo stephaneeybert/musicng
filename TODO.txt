@@ -161,3 +161,30 @@ Plus tard, on proposera le choix de la Tonalité de départ pour l’utilisateur
 La principale différence entre les gammes majeures et mineures se trouve au niveau du deuxième intervalle. Avec une gamme majeure, la distance entre la tonique et la troisième note (Do et Mi, par exemple) est deux tons – c’est ce que l’on appelle une tierce majeure -, tandis que c’est un ton et demi dans le cas d’une gamme mineur – c’est ce que l’on appelle une tierce mineure (Do et Mib, par exemple). Cette différence d’intervalle rend non seulement une mélodie plus joyeuse ou plus triste, mais elle confère également un effet « euphorique » à un accord majeur et un effet « sombre » à un accord mineur. Voilà donc la grande différence entre la gamme mineure et la gamme majeure. Notez que les termes « majeur » et « mineur » viennent de « tierce majeure » et « tierce mineure ». En général, les marquages en majuscule désignent les gammes majeures et en minuscule, les gammes mineures.
 ---
 Dans le système tonal, c’est-à-dire le système actuel d’écriture musicale, la gamme majeure constitue la gamme de référence absolue. Toutes les autres gammes en découlent.
+---
+// major
+// do mi sol
+// sol si re
+// la do mi
+// si ré# sol
+// ré fa# la
+// TODO adding notes in a major tonality chord :
+// if M then drift 4 half tones to get the second note and then 3 half tones to get the third note of the chord
+// if m then drift 3 half tones to get the second note and then 4 half tones to get the third note of the chord
+// if dim then drift 3 half tones to get the second note and then 3 half tones to get the third note of the chord
+// M m m M M m dim
+// M 4 - 3
+// m 3 - 4
+// dim 3 - 3
+// 1. Get the tonality
+// 3. Get the index in the tonality of the first chord note (0 - 6)
+// 4. Add this index + 1 and use it in the array of m M to get which letter M or m or dim 
+// 5. Use this letter to get the second chord note and third chord note
+
+// Minor
+// m dim M m m M M
+
+// TODO
+// Select one tonality only, of 7 notes (not two with 14 notes) only one, major or minor
+// TODO
+// Before randomly picking a tonality, filter the tonalities by electing those which contain the base notes of the previous two chords
