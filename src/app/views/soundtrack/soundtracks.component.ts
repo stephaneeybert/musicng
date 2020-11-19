@@ -182,11 +182,26 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
       });
   }
 
+  showMe: boolean = false;
+
   downloadSoundtrack(soundtrack: Soundtrack): void {
     const fileName: string = soundtrack.name + '.' + MIDI_FILE_SUFFIX;
     const progress$: Observable<ProgressTask<Uint8Array>> = this.midiService.progressiveCreateSoundtrackMidi(soundtrack);
     this.download$ = this.downloadService.downloadObservableDataAsBlobWithProgressAndSaveInFile(progress$, fileName);
+    this.showMe = true;
+    this.download$.subscribe((download: Download) => {
+      console.log('Progress: ' + download.progress);
+    });
+    console.log('Call done');
+  }
 
+  downloadDemo(): void {
+    this.download$ = this.downloadService.downloadUrlAsBlobWithProgressAndSaveInFile('assets/skypeforlinux-64.deb', 'demo')
+    this.showMe = true;
+    this.download$.subscribe((download: Download) => {
+      console.log('Progress: ' + download.progress);
+    });
+    console.log('Call done');
   }
 
 }

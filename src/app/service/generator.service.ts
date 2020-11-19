@@ -164,55 +164,6 @@ export class GeneratorService {
     return chromas;
   }
 
-  private getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstNote: string): Array<string> {
-    const tonality: Array<string> = new Array();
-    const noteRangeIntervals: Array<number> | undefined = NOTE_RANGE_INTERVALS.get(noteRange);
-    if (noteRangeIntervals) {
-      tonality.push(rangeFirstNote);
-      let chromas: Array<string> = HALF_TONE_INTERVAL_NOTES;
-      let index: number = chromas.indexOf(rangeFirstNote);
-      for (var i = 0; i < noteRangeIntervals.length - 1; i++) {
-        for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
-          chromas = this.createArrayShiftOnceLeft(chromas);
-        }
-        tonality.push(chromas[index]);
-      }
-    }
-    return tonality;
-  }
-
-  private getFirstMeasureTonalityChromas(): Array<string> {
-    const firstChromaIndex: number = this.settingsService.getSettings().generateTonality;
-    const firstChroma: string = HALF_TONE_INTERVAL_NOTES[firstChromaIndex];
-    return this.getTonalityChromas(NOTE_RANGE.MAJOR, firstChroma);
-  }
-
-  // The modulation by a randomised pick of another tonality can be tuned by a setting
-  private withModulation(): boolean {
-    const modulation: number = this.settingsService.getSettings().generateModulation;
-    if (modulation > 0) {
-      const randomModulation: number = this.commonService.getRandomIntegerBetween(0, 100);
-      if (randomModulation < modulation) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private getRandomTonalityChromas(noteRange: NOTE_RANGE): Array<string> {
-    const noteRangeIntervals: Array<number> | undefined = NOTE_RANGE_INTERVALS.get(noteRange);
-    if (noteRangeIntervals) {
-      return this.getTonalityChromas(noteRange, this.getRandomTonalityFirstChroma());
-    } else {
-      throw new Error('The note range could not be found.');
-    }
-  }
-
-  private getRandomTonalityFirstChroma(): string {
-    const random: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_INTERVAL_NOTES.length);
-    return HALF_TONE_INTERVAL_NOTES[random];
-  }
-
   // Create all the shifted chromas arrays for a chord width
   private getTonalityShiftedChromas(tonalityChromas: Array<string>): Array<Array<string>> {
     const shiftedChromas: Array<Array<string>> = new Array();
@@ -353,6 +304,61 @@ export class GeneratorService {
     }
   }
 
+  private getFirstMeasureTonalityChromas(): Array<string> {
+    const firstChromaIndex: number = this.settingsService.getSettings().generateTonality;
+    const firstChroma: string = HALF_TONE_INTERVAL_NOTES[firstChromaIndex];
+    return this.getMajorAndMinorChromas(firstChroma);
+  }
+
+  private getMajorAndMinorChromas(firstChroma: string): Array<string> {
+    let chromas: Array<string> = this.getTonalityChromas(NOTE_RANGE.MAJOR, firstChroma);
+    const minorChromas: Array<string> = this.getTonalityChromas(NOTE_RANGE.MINOR_NATURAL, firstChroma);
+    if (minorChromas) {
+      chromas = chromas.concat(minorChromas);
+    }
+    return chromas;
+  }
+
+  // The modulation by a randomised pick of another tonality can be tuned by a setting
+  private withModulation(): boolean {
+    const modulation: number = this.settingsService.getSettings().generateModulation;
+    if (modulation > 0) {
+      const randomModulation: number = this.commonService.getRandomIntegerBetween(0, 100);
+      if (randomModulation < modulation) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstNote: string): Array<string> {
+    const tonality: Array<string> = new Array();
+    const noteRangeIntervals: Array<number> | undefined = NOTE_RANGE_INTERVALS.get(noteRange);
+    if (noteRangeIntervals) {
+      tonality.push(rangeFirstNote);
+      let chromas: Array<string> = HALF_TONE_INTERVAL_NOTES;
+      let index: number = chromas.indexOf(rangeFirstNote);
+      for (let i = 0; i < noteRangeIntervals.length - 1; i++) {
+        for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
+          chromas = this.createArrayShiftOnceLeft(chromas);
+        }
+        tonality.push(chromas[index]);
+      }
+    }
+    return tonality;
+  }
+
+  // Get the chromas of a tonality selected randomly among a given range
+  private getRandomTonalityChromas(): Array<string> {
+    return this.getMajorAndMinorChromas(this.getRandomTonalityFirstChroma());
+  }
+
+  // Select randomly a chroma among the possible chromas
+  private getRandomTonalityFirstChroma(): string {
+    const random: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_INTERVAL_NOTES.length);
+    return HALF_TONE_INTERVAL_NOTES[random];
+  }
+
   private generateMelodyChords(harmonyMeasures: Array<Measure>, randomMethod: number, octave: number, chordDuration: number, velocity: number): Array<PlacedChord> {
     const melodyChords: Array<PlacedChord> = new Array();
     let placedChordIndex: number = 0;
@@ -419,35 +425,20 @@ export class GeneratorService {
     return melodyChords;
   }
 
-  private generateHarmonyChords(octave: number, chordDuration: number, velocity: number, previousPlacedChord?: PlacedChord): Array<PlacedChord> {
+  private generateHarmonyChords(octave: number, chordDuration: number, velocity: number, previousChromas?: Array<string>): Array<PlacedChord> {
     const placedChords: Array<PlacedChord> = new Array();
     let placedChordIndex: number = 0;
-    let previousChromaIndex: number = 0;
+    let previousChromas2: Array<string> | undefined = previousChromas ? previousChromas : undefined;
 
-    let previousChromas: Array<string>;
-    if (previousPlacedChord) {
-      previousChromas = previousPlacedChord.getNotesChromas();
-    } else {
-      previousChromas = new Array();
-    }
-
-    const tonalityChromas: Array<string> = this.getFirstMeasureTonalityChromas();
-    const shiftedChromas: Array<Array<string>> = this.getTonalityShiftedChromas(tonalityChromas);
+    let tonalityChromas: Array<string> = this.getFirstMeasureTonalityChromas();
 
     const generateNbChords: number = this.settingsService.getSettings().generateNbChords > 0 ? this.settingsService.getSettings().generateNbChords : 1;
     while (placedChordIndex < generateNbChords) {
-      const chromas: Array<string> = new Array();
-
-      // For each randomly picked chroma, add its chord to an array
-      const chromaIndex: number = (placedChordIndex === 0) ? 0 : this.randomlyPickChroma(previousChromaIndex);
-      for (let noteIndex = 0; noteIndex < this.settingsService.getSettings().generateChordWidth; noteIndex++) {
-        chromas.push(shiftedChromas[noteIndex][chromaIndex]);
-      }
+      const chromas: Array<string> = this.buildChromas(tonalityChromas, previousChromas2);
 
       // Consider a chord only if it is similar to its previous one
-      if (placedChords.length === 0 || this.isSimilarToPrevious(previousChromas, chromas)) {
-        previousChromaIndex = chromaIndex;
-        previousChromas = chromas;
+      if (!previousChromas2 || this.isSimilarToPrevious(previousChromas2, chromas)) {
+        previousChromas2 = chromas;
         const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, placedChordIndex, chromas);
         placedChords.push(placedChord);
         placedChordIndex++;
@@ -461,62 +452,120 @@ export class GeneratorService {
         // If the current chord is too dissimilar from its previous one
         // then create a chord from a reversing of the previous one
         if (this.settingsService.getSettings().generateReverseDissimilarChord) {
-          const slidedNotes: Array<string> = this.createShiftedChord(previousChromas);
+          const slidedNotes: Array<string> = this.createShiftedChord(previousChromas2);
           const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, placedChordIndex, slidedNotes);
           placedChords.push(placedChord);
           placedChordIndex++;
         }
+      }
+      if (this.withModulation()) { // TODO Move this where there comes a new measure
+        tonalityChromas = this.getRandomTonalityChromas();
+        previousChromas2 = undefined;
       }
     }
     this.notationService.addEndOfTrackNote(placedChords);
     return placedChords;
   }
 
+  private buildChromas(tonalityChromas: Array<string>, previousChromas?: Array<string>): Array<string> {
+    const chromas: Array<string> = new Array();
+    const shiftedChromas: Array<Array<string>> = this.getTonalityShiftedChromas(tonalityChromas);
+
+    let chromaIndex: number;
+    if (previousChromas) {
+      const previousBaseChroma: string = previousChromas[0];
+      chromaIndex = this.randomlyPickChromaFromTonalityBonuses(tonalityChromas, previousBaseChroma);
+    } else {
+      chromaIndex = this.randomlyPickChromaFromTonality(tonalityChromas);
+    }
+
+    for (let noteIndex = 0; noteIndex < this.settingsService.getSettings().generateChordWidth; noteIndex++) {
+      chromas.push(shiftedChromas[noteIndex][chromaIndex]);
+    }
+    return chromas;
+  }
+
+  // Convert the chroma to its index in the tonality
+  // private tonalityChromaToIndex(tonalityChromas: Array<string>, chroma: string): number {
+  //   for (let index = 0; index < tonalityChromas.length; index++) {
+  //     if (tonalityChromas[index] == chroma) {
+  //       return index;
+  //     }
+  //   }
+  //   throw new Error('The chroma could not be found in the tonality.');
+  // }
+
+  private randomlyPickChromaFromTonality(tonalityChromas: Array<string>): number {
+    return this.commonService.getRandomIntegerBetween(0, tonalityChromas.length - 1);
+  }
+
+  // Based on the previous chroma bonuses pick one chroma
+  private randomlyPickChromaFromTonalityBonuses(tonalityChromas: Array<string>, previousChroma: string): number {
+    // The higher the randomliness, the more random the selection
+    const RANDOMLINESS: number = 0; // TODO Maybe have a settings
+    const MIN_BONUS: number = 3; // TODO Maybe have a settings
+
+    const previousChromaIndex: number = tonalityChromas.indexOf(previousChroma) % 7; // TODO Hard coded value
+    if (previousChromaIndex < 0) {
+      throw new Error('The tonality does not contain the chroma ' + previousChroma);
+    }
+    const chromaBonuses: Array<number> = this.getChromaBonuses(previousChromaIndex);
+    let bonusIndex: number = 0;
+    const electedChromas: Array<number> = new Array();
+    for (let index = 0; index < chromaBonuses.length; index++) {
+      let chromaBonus: number = chromaBonuses[index];
+      // If a minimum bonus is specified then do not consider the chromas that have a lower bonus
+      if ((MIN_BONUS > 0 && chromaBonus >= MIN_BONUS) || 0 === MIN_BONUS) {
+        chromaBonus += RANDOMLINESS;
+        for (let nb = 0; nb < chromaBonus; nb++) {
+          // Thanks to the matrix being mirror like, the chroma is retrieved from the bonus index in the keys array
+          electedChromas.push(bonusIndex);
+        }
+      }
+      bonusIndex++;
+    }
+
+    // Pick one chroma from the elected ones
+    const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, electedChromas.length - 1);
+    return electedChromas[randomChromaIndex];
+  }
+
+  // Get all the possible bonuses for one chroma
+  private getChromaBonuses(chromaIndex: number): Array<number> {
+    const bonuses: Array<number> | undefined = this.getBonusTable()[chromaIndex];
+    if (bonuses) {
+      return bonuses;
+    } else {
+      throw new Error('Unknown bonuses for the chroma: ' + chromaIndex);
+    }
+  }
+
   // The table of bonus per chroma
   // For a given chroma there is a series of bonus numbers
   // A bonus represents the level of harmony between a chroma and its following chroma
-  // The chromas are indexed in the chromas alphabetical array
+  // private getBonusTable(): Map<string, Array<number>> {
+  //   const bonuses: Map<string, Array<number>> = new Map([
+  //     [ 'C', [ 30, 0, 15, 5, 5, 10, 0 ] ],
+  //     [ 'D', [ 0, 30, 0, 10, 0, 5, 10 ] ],
+  //     [ 'E', [ 15, 0, 30, 0, 10, 0, 0 ] ],
+  //     [ 'F', [ 5, 10, 0, 30, 0, 15, 0 ] ],
+  //     [ 'G', [ 5, 0, 10, 0, 30, 0, 10 ] ],
+  //     [ 'A', [ 10, 5, 0, 15, 0, 30, 0 ] ],
+  //     [ 'B', [ 0, 10, 0, 0, 10, 0, 30 ] ]
+  //   ]);
+  //   return bonuses;
+  // }
   private getBonusTable(): Array<Array<number>> {
-    const matrix: Array<Array<number>> = [
-      [ 30, 0, 15, 5, 5, 10, 0 ], // C
-      [ 0, 30, 0, 10, 0, 5, 10 ], // D
-      [ 15, 0, 30, 0, 10, 0, 0 ], // E
-      [ 5, 10, 0, 30, 0, 15, 0 ], // F
-      [ 5, 0, 10, 0, 30, 0, 10 ], // G
-      [ 10, 5, 0, 15, 0, 30, 0 ], // A
-      [ 0, 10, 0, 0, 10, 0, 30 ]  // B
-    ];
-    return matrix;
-  }
-
-  private getChromaBonuses(chromaIndex: number): Array<number> {
-    return this.getBonusTable()[chromaIndex];
-  }
-
-  private buildUpChromasPoolFromBonuses(chromaIndex: number): Array<number> {
-    const RANDOMLINESS: number = 0;
-    const MIN_BONUS: number = 3;
-    const chromaBonuses: Array<number> = this.getChromaBonuses(chromaIndex);
-    let currentChromaIndex: number = 0;
-    const chromasPool: Array<number> = new Array();
-    chromaBonuses.forEach((chromaBonus: number) => {
-      // If a minimum bonus is specified then do not consider the chromas that have a lower bonus
-      if ((MIN_BONUS > 0 && chromaBonus >= MIN_BONUS) || 0 === MIN_BONUS) {
-        // The higher the more random
-        chromaBonus += RANDOMLINESS;
-        for (let nb = 0; nb < chromaBonus; nb++) {
-          chromasPool.push(currentChromaIndex);
-        }
-      }
-      currentChromaIndex++;
-    });
-    return chromasPool;
-  }
-
-  private randomlyPickChroma(chromaIndex: number): number {
-    const chromasPool: Array<number> = this.buildUpChromasPoolFromBonuses(chromaIndex);
-    const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, chromasPool.length - 1);
-    return chromasPool[randomChromaIndex];
+    const bonuses: Array<Array<number>> = new Array(
+      [ 30, 0, 15, 5, 5, 10, 0 ],
+      [ 0, 30, 0, 10, 0, 5, 10 ],
+      [ 15, 0, 30, 0, 10, 0, 0 ],
+      [ 5, 10, 0, 30, 0, 15, 0 ],
+      [ 5, 0, 10, 0, 30, 0, 10 ],
+      [ 10, 5, 0, 15, 0, 30, 0 ],
+      [ 0, 10, 0, 0, 10, 0, 30 ]
+    );
+    return bonuses;
   }
 
 }
