@@ -329,7 +329,7 @@ export class GeneratorService {
   private getFirstMeasureTonalityChromas(): Array<string> {
     const firstChromaIndex: number = this.settingsService.getSettings().generateTonality;
     const firstChroma: string = HALF_TONE_INTERVAL_NOTES[firstChromaIndex];
-    return this.getMajorAndMinorChromas(firstChroma);
+    return this.getMajorChromas(firstChroma);
   }
 
   private getMajorChromas(firstChroma: string): Array<string> {
