@@ -332,13 +332,16 @@ export class GeneratorService {
     return this.getMajorAndMinorChromas(firstChroma);
   }
 
+  private getMajorChromas(firstChroma: string): Array<string> {
+    return this.getTonalityChromas(NOTE_RANGE.MAJOR, firstChroma);
+  }
+
+  private getMinorChromas(firstChroma: string): Array<string> {
+    return this.getTonalityChromas(NOTE_RANGE.MINOR_NATURAL, firstChroma);
+  }
+
   private getMajorAndMinorChromas(firstChroma: string): Array<string> {
-    let chromas: Array<string> = this.getTonalityChromas(NOTE_RANGE.MAJOR, firstChroma);
-    const minorChromas: Array<string> = this.getTonalityChromas(NOTE_RANGE.MINOR_NATURAL, firstChroma);
-    if (minorChromas) {
-      chromas = chromas.concat(minorChromas);
-    }
-    return chromas;
+    return this.getMajorChromas(firstChroma).concat(this.getMinorChromas(firstChroma));
   }
 
   // The modulation by a randomised pick of another tonality can be tuned by a setting
