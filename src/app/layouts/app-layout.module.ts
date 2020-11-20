@@ -9,7 +9,6 @@ import { SecuredSidenavComponent } from '@app/layouts/secured/secured.sidenav.co
 import { UnsecuredLayoutComponent } from '@app/layouts/unsecured/unsecured.layout.component';
 import { UnsecuredSidenavComponent } from '@app/layouts/unsecured/unsecured.sidenav.component';
 import { MaterialModule } from '@app/material.module';
-import { MDBootstrapModule } from '@app/mdbootstrap.module';
 import { SettingsDialogComponent } from '@app/views/settings/settings-dialog.component';
 import { SettingsResetDialogComponent } from '@app/views/settings/settings-reset-dialog.component';
 import { SettingsResetComponent } from '@app/views/settings/settings-reset.component';
@@ -34,7 +33,6 @@ import { LibPwaModule } from '@stephaneeybert/lib-pwa';
     LayoutModule,
     AppUiModule,
     MaterialModule,
-    MDBootstrapModule,
     LibI18nModule,
     LibCoreModule,
     LibPwaModule,
@@ -45,8 +43,7 @@ import { LibPwaModule } from '@stephaneeybert/lib-pwa';
     AppRoutingModule,
     LayoutModule,
     AppUiModule,
-    MaterialModule,
-    MDBootstrapModule
+    MaterialModule
   ]
 })
 export class AppLayoutModule { }
