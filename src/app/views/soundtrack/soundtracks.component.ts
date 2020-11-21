@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output, OnDestroy } from '@angular/core';
-import { Observable, Subscription, ReplaySubject } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Soundtrack } from '@app/model/soundtrack';
 import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { GeneratorService } from '@app/service/generator.service';
@@ -12,6 +12,9 @@ import { SoundtrackEdition } from './soundtrack-edition';
 import { TranslateService } from '@ngx-translate/core';
 import { delay } from 'rxjs/operators';
 import { MaterialService } from '@app/core/service/material.service';
+import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faLayerPlus as farLayerPlus } from '@stephaneeybert/pro-regular-svg-icons';
+import { faLayerPlus as fasLayerPlus } from '@stephaneeybert/pro-solid-svg-icons';
 import { MidiService } from '@app/service/midi.service';
 import { MIDI_FILE_SUFFIX } from '@app/service/notation.constant ';
 import { DownloadService } from '@stephaneeybert/lib-core';
@@ -50,9 +53,11 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
     private materialService: MaterialService,
     private translateService: TranslateService,
     private matDialog: MatDialog,
+    private faIconLibrary: FaIconLibrary,
     private midiService: MidiService,
     private downloadService: DownloadService
   ) {
+    this.faIconLibrary.addIcons(farLayerPlus, fasLayerPlus);
   }
 
   ngOnInit() {
