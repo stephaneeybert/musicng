@@ -20,14 +20,8 @@
 typings/
 ├── midi-file
 │   └── index.d.ts
-├── nexusui
-│   └── index.d.ts
-└── tone
-    └── index.d.ts
-
-# Copy the following content:
-declare module 'tone';
-# into the typings/tone/index.d.ts file.
+└── nexusui
+    └── index.d.ts
 
 # Copy the following content:
 declare module 'nexusui';
