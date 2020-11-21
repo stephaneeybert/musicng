@@ -44,6 +44,8 @@ export const GENERATE_METHODS: Map<RANDOM_METHOD, string> = new Map([
 // C   C#   D   D#   E   F   F#   G   G#   A   A#   B
 //     Db       Eb           Gb       Ab       Bb
 export const HALF_TONE_CHROMAS: Array<string> = [ 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B' ];
+export const HALF_TONE_MAJOR_CHROMAS: Array<string> = [ 'C', 'D', 'E', 'F', 'G', 'A', 'B' ];
+export const HALF_TONE_MINOR_CHROMAS: Array<string> = [ 'C#', 'D#', 'F#', 'G#', 'A#' ];
 
 export const HALF_TONE: number = 0.5;
 
