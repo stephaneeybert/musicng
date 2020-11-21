@@ -43,7 +43,7 @@ export const GENERATE_METHODS: Map<RANDOM_METHOD, string> = new Map([
 // Do       Ré       Mi  Fa       Sol      La       Si
 // C   C#   D   D#   E   F   F#   G   G#   A   A#   B
 //     Db       Eb           Gb       Ab       Bb
-export const HALF_TONE_INTERVAL_NOTES: Array<string> = [ 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B' ];
+export const HALF_TONE_CHROMAS: Array<string> = [ 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B' ];
 
 export const HALF_TONE: number = 0.5;
 

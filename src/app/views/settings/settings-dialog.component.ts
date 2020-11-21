@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { DEFAULT_TIME_SIGNATURES, RANDOM_METHOD, CHORD_DURATION_UNITS, GENERATE_METHODS, TEMPO_SUBDIVISIONS, HALF_TONE_INTERVAL_NOTES } from '@app/service/notation.constant ';
+import { DEFAULT_TIME_SIGNATURES, RANDOM_METHOD, CHORD_DURATION_UNITS, GENERATE_METHODS, TEMPO_SUBDIVISIONS, HALF_TONE_CHROMAS } from '@app/service/notation.constant ';
 import { TempoUnitType } from '@app/model/tempo-unit';
 import { Settings } from '@app/model/settings';
 import { SettingsService } from './settings.service';
@@ -154,7 +154,7 @@ export class SettingsDialogComponent implements OnInit {
       this.tempoSubdivisions.push({ 'id': bpm, 'name': String(subdivision.left) + '/' + String(subdivision.right) });
     });
 
-    HALF_TONE_INTERVAL_NOTES.forEach((chroma: string, id: number) => {
+    HALF_TONE_CHROMAS.forEach((chroma: string, id: number) => {
       this.generateTonalities.push({ 'id': id, 'name': chroma });
     });
   }
