@@ -37,6 +37,7 @@
     "@stephaneeybert/pro-regular-svg-icons": "^5.15.1",
     "@stephaneeybert/pro-solid-svg-icons": "^5.15.1",
     "@tonejs/midi": "^2.0.24",
+    "@tonejs/ui": "^0.1.5",
     "@types/vexflow": "^1.2.33",
     "@types/webmidi": "^2.0.4",
     "angular-in-memory-web-api": "^0.11.0",
@@ -52,7 +53,10 @@
     "ng-environmenter": "^0.1.2",
     "rxjs": "~6.6.0",
     "rxjs-compat": "^6.6.3",
+    "tone": "^14.7.58",
     "tslib": "^2.0.0",
+    "vexflow": "^3.0.9",
+    "web-midi-api": "^2.0.8",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
