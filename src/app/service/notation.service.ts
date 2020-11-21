@@ -63,8 +63,9 @@ export class NotationService {
     let index: number = 0;
     return textMeasure.split(CHORD_SEPARATOR)
       .map((textChord: string) => {
-        return this.parseTextChord(index, textChord, velocity);
+        const placedChord: PlacedChord = this.parseTextChord(index, textChord, velocity);
         index++;
+        return placedChord;
       });
   }
 
@@ -91,8 +92,9 @@ export class NotationService {
     let index: number = 0;
     return textNotes.split(NOTE_SEPARATOR)
       .map((textNote: string) => {
-        return this.parseTextNote(index, textNote);
+        const note: Note = this.parseTextNote(index, textNote);
         index++;
+        return note;
       });
   }
 
