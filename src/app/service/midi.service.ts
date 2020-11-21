@@ -224,14 +224,7 @@ export class MidiService {
           let placedChordIndex: number = 0;
           const placedChords: Array<PlacedChord> = new Array<PlacedChord>();
           midiTrack.notes.forEach((midiNote: any) => {
-            const chromaAndOctave: Array<string> = this.notationService.noteToChromaOctave(midiNote.name);
-            const chroma: string = chromaAndOctave[0];
-            let octave: number = 0;
-            if (chromaAndOctave.length > 1) {
-              octave = Number(chromaAndOctave[1]);
-            } else {
-              throw new Error('Unspecified octave for the note: ' + midiNote.name + ' with chroma: ' + chroma);
-            }
+            const [chroma, octave]: [string, number] = this.notationService.noteToChromaOctave(midiNote.name);
             const noteIndex: number = 0; // TODO If the note has the same time than the previous note then add it to the previous chord instead of adding it into a new chord
             const note: Note = this.notationService.createNote(noteIndex, chroma, octave);
             const duration: Duration = midiNote.time; // TODO midiNote.durationTicks How to retrieve the note time and store it in the chord ?
@@ -429,14 +422,7 @@ export class MidiService {
 
   private buildNote(deltaInTicks: number, PPQ: number, tempoInMicroSecondsPerBeat: number, currentNoteOnEvent: IMidiNoteOnEvent): Note {
     const textNote: string = this.synthService.midiToTextNote(currentNoteOnEvent.noteOn.noteNumber);
-    const chromaAndOctave: Array<string> = this.notationService.noteToChromaOctave(textNote);
-    const chroma: string = chromaAndOctave[0];
-    let octave: number = 0;
-    if (chromaAndOctave.length > 1) {
-      octave = Number(chromaAndOctave[1]);
-    } else {
-      throw new Error('Unspecified octave for the note: ' + textNote + ' with chroma: ' + chroma);
-    }
+    const [chroma, octave]: [string, number] = this.notationService.noteToChromaOctave(textNote);
     const noteIndex: number = 0;
     const note: Note = this.notationService.createNote(noteIndex, chroma, octave);
     return note;

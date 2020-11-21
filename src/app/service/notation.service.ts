@@ -70,21 +70,17 @@ export class NotationService {
   }
 
   private parseTextNote(index: number, textNote: string): Note {
+    let note: Note;
     let chroma: string;
     let octave: number;
     if (this.abcNoteIsNotRest(textNote)) {
-      const chromaAndOctave: Array<string> = this.noteToChromaOctave(textNote);
-      chroma = chromaAndOctave[0];
-      if (chromaAndOctave.length > 1) {
-        octave = Number(chromaAndOctave[1]);
-      } else {
-        throw new Error('Unspecified octave for the note: ' + textNote + ' with chroma: ' + chroma);
-      }
+      const [chroma, octave]: [string, number] = this.noteToChromaOctave(textNote);
+      note = this.createNote(index, chroma, octave);
     } else {
       chroma = textNote;
       octave = 0;
+      note = this.createNote(index, chroma, octave);
     }
-    const note: Note = this.createNote(index, chroma, octave);
     return note;
   }
 
@@ -139,13 +135,19 @@ export class NotationService {
     return note;
   }
 
-  public noteToChromaOctave(note: string): Array<string> {
+  public noteToChromaOctave(note: string): [string, number] {
     const chromaOctave: Array<string> | null = note.match(CHROMA_OCTAVE_PATTERN);
     if (chromaOctave != null) {
-      return chromaOctave;
-    } else {
-      return [];
+      const chroma: string = chromaOctave[0];
+      let octave: number = 0;
+      if (chromaOctave.length > 1) {
+        octave = Number(chromaOctave[1]);
+      } else {
+        throw new Error('Unspecified octave for the note: ' + note + ' with chroma: ' + chroma);
+      }
+      return [chroma, octave];
     }
+    throw new Error('The note ' + note + ' is not of a chroma and octave pattern.');
   }
 
   public placedChordIsNotRest(placedChord: PlacedChord): boolean {
