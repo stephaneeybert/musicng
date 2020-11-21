@@ -44,13 +44,21 @@ export class PlacedChord {
     });
   }
 
-  public renderFirstNoteChroma(): string {
-    let abc: string = '';
+  public getFirstNote(): Note {
+    let abc: Note;
     if (this.notes != null && this.notes.length > 0) {
       const sortedNotes: Array<Note> = this.getSortedNotes();
-      abc = sortedNotes[0].renderChroma();
+      return sortedNotes[0];
     }
-    return abc;
+    throw new Error('The placed chord had no note.');
+  }
+
+  public renderFirstNoteChroma(): string {
+    return this.getFirstNote().renderChroma();
+  }
+
+  public renderFirstNoteOctavle(): number {
+    return this.getFirstNote().renderOctave();
   }
 
   public getNotesChromas(): Array<string> {
