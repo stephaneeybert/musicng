@@ -26,6 +26,17 @@
             "styles": [
               "src/styles.scss"
             ],
+            "allowedCommonJsDependencies": [
+              "rxjs/Subject",
+              "rxjs/add/operator/debounceTime",
+              "rxjs/add/operator/distinctUntilChanged",
+              "rxjs/add/operator/takeUntil",
+              "rxjs/BehaviorSubject",
+              "rxjs/Observable",
+              "@tonejs/midi",
+              "automation-events",
+              "file-saver"
+            ],
             "scripts": []
           },
           "configurations": {
