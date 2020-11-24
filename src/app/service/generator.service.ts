@@ -270,19 +270,20 @@ export class GeneratorService {
     }
 
     // If the previous melody note is bordered by two notes from the harmony chord
-    // then no near note can be obtained and the previous note is used again
-    if (nearNotes.length == 0) {
-      nearNotes.push(previousMelodyChroma + String(previousMelodyOctave));
-    }
+    // then no near note can be obtained and there are no returned near notes
 
     return nearNotes;
   }
 
-  private pickInpassingNote(harmonyChord: PlacedChord, previousMelodyChroma: string, previousMelodyOctave: number): string {
+  private pickInpassingNote(harmonyChord: PlacedChord, previousMelodyChroma: string, previousMelodyOctave: number): string | undefined {
     // Randomly pick a note from the near ones
     const nearNotes: Array<string> = this.getInpassingNearNotes(harmonyChord, previousMelodyChroma, previousMelodyOctave);
-    const nearNoteIndex: number = this.commonService.getRandomIntegerBetween(0, nearNotes.length - 1);
-    return nearNotes[nearNoteIndex];
+    if (nearNotes.length > 0) {
+      const nearNoteIndex: number = this.commonService.getRandomIntegerBetween(0, nearNotes.length - 1);
+      return nearNotes[nearNoteIndex];
+    } else {
+      return undefined;
+    }
   }
 
   // Get a note from the source chord that is near the previous melody note
@@ -425,8 +426,13 @@ export class GeneratorService {
         const halfDuration: number = chordDuration * 2;
         let placedChord: PlacedChord = this.createNotesAndPlacedChord(currentMelodyOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex, [firstMelodyChroma]);
         melodyChords.push(placedChord);
+
+        let inpassingTextNote: string | undefined;
         if (this.fromInpassingNote()) {
-          const inpassingTextNote: string = this.pickInpassingNote(harmonyChord, currentMelodyChroma, currentMelodyOctave);
+          inpassingTextNote = this.pickInpassingNote(harmonyChord, currentMelodyChroma, currentMelodyOctave);
+        }
+
+        if (inpassingTextNote) {
           const [inpassingNoteChroma, inpassingNoteOctave]: [string, number] = this.notationService.noteToChromaOctave(inpassingTextNote);
           placedChord = this.createNotesAndPlacedChord(inpassingNoteOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, [inpassingNoteChroma]);
           melodyChords.push(placedChord);
