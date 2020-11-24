@@ -81,7 +81,6 @@ export class SheetService {
     }
     soundtrack.sheetContext = this.renderSVGContext(id, sheetWidth, sheetHeight);
     const formatter: Vex.Flow.Formatter = new Vex.Flow.Formatter();
-    const voices: Array<Vex.Flow.Voice> = new Array<Vex.Flow.Voice>();
     const nbTracks: number = soundtrack.getNbTracks();
     if (soundtrack.hasTracks()) {
       soundtrack.tracks.forEach((track: Track) => {
@@ -128,7 +127,6 @@ export class SheetService {
                 if (soundtrack.sheetContext != null) {
                   voice.draw(soundtrack.sheetContext);
                 }
-                voices.push(voice);
                 measure.sheetVoice = voice;
 
                 measureWithVisibleNotesIndex++;
@@ -141,10 +139,6 @@ export class SheetService {
             const trackFirstMeasure: Measure = track.getSortedMeasures()[0];
             this.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, trackFirstMeasure.index);
             this.drawTrackFirstMeasure(track, soundtrack, animatedStave);
-            const staveX: number = this.getStaveX(animatedStave, track.index, 0);
-            const staveY: number = this.getStaveY(animatedStave, soundtrack.tracks.length, track.index, 0);
-            const stave: Vex.Flow.Stave = this.drawBareStave(trackFirstMeasure, soundtrack, displayWidth, staveX, staveY);
-            const voice: Vex.Flow.Voice = this.createBareVoice(trackFirstMeasure, stave);
             this.drawTrackNameOnFirstMeasure(track, soundtrack, animatedStave);
           }
         }
@@ -277,12 +271,7 @@ export class SheetService {
   }
 
   private getStaveX(animatedStave: boolean, trackIndex: number, measureIndex: number): number {
-    let staveX: number;
-    if (animatedStave) {
-      staveX = 0;
-    } else {
-      staveX = 0;
-    }
+    const staveX: number = 0;
     return staveX;
   }
 
@@ -467,7 +456,7 @@ export class SheetService {
             track.measures.forEach((measure: Measure) => {
               if (measure.placedChords) {
                 if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
-                  nbStaves++;;
+                  nbStaves++;
                 }
               } else {
                 throw new Error('The measure placed chords array has not been instantiated.');
