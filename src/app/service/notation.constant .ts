@@ -1,6 +1,7 @@
 import { TempoUnit } from '@app/model/tempo-unit';
 import { Subdivisions } from '@app/model/note/duration/subdivisions';
 import { Subdivision } from '@app/model/note/duration/subdivision';
+import { Tonality } from '@app/model/note/tonality';
 
 export enum RANDOM_METHOD {
   BONUS_TABLE = 1,
@@ -44,8 +45,6 @@ export const GENERATE_METHODS: Map<RANDOM_METHOD, string> = new Map([
 // C   C#   D   D#   E   F   F#   G   G#   A   A#   B
 //     Db       Eb           Gb       Ab       Bb
 export const HALF_TONE_CHROMAS: Array<string> = [ 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B' ];
-export const HALF_TONE_MAJOR_CHROMAS: Array<string> = [ 'C', 'D', 'E', 'F', 'G', 'A', 'B' ];
-export const HALF_TONE_MINOR_CHROMAS: Array<string> = [ 'C#', 'D#', 'F#', 'G#', 'A#' ];
 
 export const HALF_TONE: number = 0.5;
 
@@ -64,6 +63,8 @@ export const NOTE_RANGE_INTERVALS: Map<NOTE_RANGE, Array<number>> = new Map([
   [ NOTE_RANGE.MINOR_MELODIC, [ 1, 0.5, 1, 1, 1, 1, 0.5 ] ],
   [ NOTE_RANGE.BLUES, [ 1.5, 1, 0.5, 0.5, 1.5, 1 ] ]
 ]);
+
+export const DEFAULT_TONALITY_C_MAJOR: Tonality = new Tonality(NOTE_RANGE.MAJOR, 'C');
 
 export const MIDI_FILE_SUFFIX: string = 'mid';
 

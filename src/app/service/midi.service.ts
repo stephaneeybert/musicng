@@ -30,6 +30,7 @@ import { Duration } from '@app/model/note/duration/duration';
 import { SynthService } from './synth.service';
 import { CommonService, DownloadService } from '@stephaneeybert/lib-core';
 import { ProgressTask } from '@stephaneeybert/lib-core/lib/download/progress-task';
+import { DEFAULT_TONALITY_C_MAJOR } from './notation.constant ';
 
 const NOTE_ON: number = 144; // A command value of 144 is a "note on"
 const NOTE_OFF: number = 128; // A command value of 128 is a "note off"
@@ -228,7 +229,7 @@ export class MidiService {
             const noteIndex: number = 0; // TODO If the note has the same time than the previous note then add it to the previous chord instead of adding it into a new chord
             const note: Note = this.notationService.createNote(noteIndex, chroma, octave);
             const duration: Duration = midiNote.time; // TODO midiNote.durationTicks How to retrieve the note time and store it in the chord ?
-            const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, midiNote.velocity);
+            const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, midiNote.velocity, DEFAULT_TONALITY_C_MAJOR);
             placedChord.addNote(note);
             placedChords.push(placedChord);
             placedChordIndex++;

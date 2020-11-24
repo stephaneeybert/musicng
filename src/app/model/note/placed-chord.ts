@@ -2,6 +2,7 @@ import * as vexflow from 'vexflow';
 import { Note } from './note';
 import { Duration } from './duration/duration';
 import { TempoUnitType } from '../tempo-unit';
+import { Tonality } from './tonality';
 
 export class PlacedChord {
 
@@ -9,14 +10,16 @@ export class PlacedChord {
   notes: Array<Note>;
   duration: Duration;
   velocity: number;
+  tonality: Tonality;
   dottedAll: boolean;
   staveNote?: vexflow.Flow.StaveNote;
 
-  constructor(index: number, duration: Duration, velocity: number) {
+  constructor(index: number, duration: Duration, velocity: number, tonality: Tonality) {
     this.index = index;
     this.notes = new Array<Note>();
     this.duration = duration;
     this.velocity = velocity;
+    this.tonality = tonality;
     this.dottedAll = false;
   }
 
@@ -57,11 +60,11 @@ export class PlacedChord {
     return this.getFirstNote().renderChroma();
   }
 
-  public renderFirstNoteOctavle(): number {
+  public renderFirstNoteOctave(): number {
     return this.getFirstNote().renderOctave();
   }
 
-  public getNotesChromas(): Array<string> {
+  public getSortedNotesChromas(): Array<string> {
     return this.getSortedNotes()
     .map((note: Note) => {
       return note.renderChroma();

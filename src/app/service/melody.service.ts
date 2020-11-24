@@ -31,6 +31,10 @@ export class MelodyService {
   public addDummyMelody(): Soundtrack {
     const endOfTrackNote: string = this.notationService.buildEndOfTrackNote();
     const textMeasures: Array<string> = [
+      'C5/8 D5/8 E5/8 F5/8',
+      'G5/8 A5/8 B5/8 C6/8',
+      'D6/8 E6/8 F6/8 G6/8',
+      'A6/8 B6/8 C7/8',
       'C5/8 rest/8 D5/16 C5/16 B4/16 C5/16',
       'E5/8 rest/8 F5/16 E5/16 D#5/16 E5/16',
       'B5/16 A5/16 G#5/16 A5/16 B5/16 A5/16 G#5/16 A5/16',

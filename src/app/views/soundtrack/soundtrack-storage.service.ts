@@ -7,6 +7,8 @@ import { Note } from '@app/model/note/note';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { CommonService, LocalStorageService } from '@stephaneeybert/lib-core';
+import { Tonality } from '@app/model/note/tonality';
+import { DEFAULT_TONALITY_C_MAJOR } from '@app/service/notation.constant ';
 
 const PREFIX: string = 'musicng-soundtrack-';
 
@@ -87,7 +89,13 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                   const durationInBeats: number = Number(placedChordJson.duration.subdivision.left) + Number(placedChordJson.duration.subdivision.right);
                   const tempoUnit: TempoUnitType = placedChordJson.duration.unit as TempoUnitType;
                   const velocity: number = parseFloat(placedChordJson.velocity);
-                  const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, durationInBeats, tempoUnit, velocity, notes);
+                  let tonality: Tonality;
+                  if (placedChordJson.tonality) {
+                    tonality = new Tonality(Number(placedChordJson.tonality.range), placedChordJson.tonality.firstChroma);
+                  } else {
+                    tonality = DEFAULT_TONALITY_C_MAJOR;
+                  }
+                  const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, durationInBeats, tempoUnit, velocity, tonality, notes);
                   placedChord.dottedAll = placedChordJson.dottedAll;
                   if (!measure.placedChords) {
                     this.deleteSoundtrack(soundtrack.id);
