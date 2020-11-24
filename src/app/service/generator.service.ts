@@ -232,7 +232,6 @@ export class GeneratorService {
     // The maximum near distance to consider
     const NEAR_MAX: number = 2; // TODO Have this constant as a settings
 
-console.log('tonality: ' + tonalityChromas);
     // Consider the chromas above the previous melody note chroma
     if (previousMelodyOctave <= harmonyChord.getFirstNote().renderOctave()) {
       for (let chromaIndex: number = 0; chromaIndex < NEAR_MAX; chromaIndex++) {
