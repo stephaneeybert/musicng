@@ -496,9 +496,6 @@ export class GeneratorService {
       const oneOrTwoHarmonyChords: Array<PlacedChord> = this.generateOneOrTwoHarmonyChords(chordIndex, tonality, octave, chordDuration, velocity, previousChord);
       for (let i: number = 0; i < oneOrTwoHarmonyChords.length; i++) {
         // The number of beats of the chords placed in a measure must equal the number of beats of the measure
-        oneOrTwoHarmonyChords[i].index = measureChordIndex;
-        chordIndex++;
-        measureChordIndex++;
         previousChord = oneOrTwoHarmonyChords[i];
         if (measure.getPlacedChordsNbBeats() >= measure.getNbBeats()) {
           measures.push(measure);
@@ -506,7 +503,15 @@ export class GeneratorService {
           measure.placedChords = new Array<PlacedChord>();
           measureIndex++;
           measureChordIndex = 0;
+          if (this.withModulation()) {
+            const randomTonality: Tonality = this.getRandomTonality();
+            tonality = new Tonality(randomTonality.range, randomTonality.firstChroma);
+            previousChord = undefined;
+          }
         }
+        oneOrTwoHarmonyChords[i].index = measureChordIndex;
+        measureChordIndex++;
+        chordIndex++;
         measure.placedChords.push(oneOrTwoHarmonyChords[i]);
       }
     }
@@ -543,11 +548,6 @@ export class GeneratorService {
         placedChords.push(placedChord);
       }
     }
-    // if (this.withModulation()) { // TODO Move this where there comes a new measure
-    //   const randomTtonality: Tonality = this.getRandomTonality();
-    //   let tonalityChromas: Array<string> = this.getTonalityChromas(randomTtonality.range, randomTtonality.firstChroma);
-    //   // TODO We also need to have no previous chord
-    // }
     return placedChords;
   }
 
