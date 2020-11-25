@@ -83,8 +83,7 @@ export class GeneratorService {
     const chordDuration: number = this.settingsService.getSettings().generateChordDuration;
 
     const harmonyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityHarmony);
-    const harmonyChords: Array<PlacedChord> = this.generateHarmonyChords(octave, chordDuration, harmonyVelocity);
-    const harmonyMeasures: Array<Measure> = this.createMeasures(harmonyChords);
+    const harmonyMeasures: Array<Measure> = this.generateHarmonyChordInMeasures(octave, chordDuration, harmonyVelocity);
 
     if (this.settingsService.getSettings().generateHarmony) {
       const harmonyTrack: Track = soundtrack.addTrack(harmonyMeasures);
@@ -476,6 +475,44 @@ export class GeneratorService {
     }
     this.notationService.addEndOfTrackNote(placedChords);
     return placedChords;
+  }
+
+  private generateHarmonyChordInMeasures(octave: number, chordDuration: number, velocity: number): Array<Measure> {
+    let measureIndex: number = 0;
+    const measures: Array<Measure> = new Array<Measure>();
+    let measure: Measure = this.createMeasure(measureIndex);
+    measure.placedChords = new Array<PlacedChord>();
+    measures.push(measure);
+
+    const placedChords: Array<PlacedChord> = new Array();
+    let chordIndex: number = 0;
+    let measureChordIndex: number = 0;
+    let previousChord: PlacedChord | undefined;
+
+    let tonality: Tonality = this.getFirstMeasureTonality();
+
+    const generateNbChords: number = this.settingsService.getSettings().generateNbChords > 0 ? this.settingsService.getSettings().generateNbChords : 1;
+    while (chordIndex < generateNbChords) {
+      const oneOrTwoHarmonyChords: Array<PlacedChord> = this.generateOneOrTwoHarmonyChords(chordIndex, tonality, octave, chordDuration, velocity, previousChord);
+      for (let i: number = 0; i < oneOrTwoHarmonyChords.length; i++) {
+        // The number of beats of the chords placed in a measure must equal the number of beats of the measure
+        oneOrTwoHarmonyChords[i].index = measureChordIndex;
+        chordIndex++;
+        measureChordIndex++;
+        previousChord = oneOrTwoHarmonyChords[i];
+        if (measure.getPlacedChordsNbBeats() >= measure.getNbBeats()) {
+          measures.push(measure);
+          measure = this.createMeasure(measureIndex);
+          measure.placedChords = new Array<PlacedChord>();
+          measureIndex++;
+          measureChordIndex = 0;
+        }
+        measure.placedChords.push(oneOrTwoHarmonyChords[i]);
+      }
+    }
+    this.notationService.addEndOfTrackNote(placedChords);
+
+    return measures;
   }
 
   private generateOneOrTwoHarmonyChords(placedChordIndex: number, tonality: Tonality, octave: number, chordDuration: number, velocity: number, previousChord: PlacedChord | undefined): Array<PlacedChord> {
