@@ -135,14 +135,19 @@ export class SheetService {
               throw new Error('The measure placed chords array has not been instantiated.');
             }
           }
-          if (animatedStave) {
+        }
+      });
+      if (animatedStave) {
+        this.whitewashSheetContext(soundtrack.sheetContext);
+        soundtrack.tracks.forEach((track: Track) => {
+          if (track.hasMeasures()) {
             const trackFirstMeasure: Measure = track.getSortedMeasures()[0];
             this.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, trackFirstMeasure.index);
             this.drawTrackFirstMeasure(track, soundtrack, animatedStave);
             this.drawTrackNameOnFirstMeasure(track, soundtrack, animatedStave);
           }
-        }
-      });
+        });
+      }
     }
   }
 
