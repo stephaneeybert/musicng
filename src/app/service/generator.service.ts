@@ -358,25 +358,36 @@ export class GeneratorService {
     return new Tonality(NOTE_RANGE.MAJOR, firstChroma);
   }
 
-  // Get a tonality selected randomly among ones that include two previous notes
-  private getRandomTonality(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Tonality {
-    if (previousChord) {
-      const tonalities: Array<Tonality> = new Array();
-      for (let i: number = 0; i < HALF_TONE_CHROMAS.length; i++) {
-        const range: NOTE_RANGE = NOTE_RANGE.MAJOR;
-        const chroma: string = HALF_TONE_CHROMAS[i];
-        const tonalityChromas: Array<string> = this.getTonalityChromas(range, chroma);
-        if (tonalityChromas.includes(previousChord.getFirstNote().renderChroma())) {
+  private getTonalitiesContainingChromas(range: NOTE_RANGE, previousChroma: string, previousPreviousChroma: string | undefined): Array<Tonality> {
+    const tonalities: Array<Tonality> = new Array();
+    for (let i: number = 0; i < HALF_TONE_CHROMAS.length; i++) {
+      const chroma: string = HALF_TONE_CHROMAS[i];
+      const tonalityChromas: Array<string> = this.getTonalityChromas(range, chroma);
+      if (previousPreviousChroma) {
+        if (tonalityChromas.includes(previousPreviousChroma) && tonalityChromas.includes(previousChroma)) {
+          tonalities.push(new Tonality(range, chroma));
+        }
+      } else {
+        if (tonalityChromas.includes(previousChroma)) {
           tonalities.push(new Tonality(range, chroma));
         }
       }
-      for (let i: number = 0; i < HALF_TONE_CHROMAS.length; i++) {
-        const range: NOTE_RANGE = NOTE_RANGE.MINOR_NATURAL;
-        const chroma: string = HALF_TONE_CHROMAS[i];
-        const tonalityChromas: Array<string> = this.getTonalityChromas(range, chroma);
-        if (tonalityChromas.includes(previousChord.getFirstNote().renderChroma())) {
-          tonalities.push(new Tonality(range, chroma));
-        }
+    }
+    return tonalities;
+  }
+
+  // Get a tonality selected randomly among ones that include two previous notes
+  private getRandomTonality(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Tonality {
+    if (previousChord) {
+      let tonalities: Array<Tonality> = new Array();
+      if (previousPreviousChord) {
+        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, previousChord.getFirstNote().renderChroma(), previousPreviousChord.getFirstNote().renderChroma()));
+        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, previousChord.getFirstNote().renderChroma(), previousPreviousChord.getFirstNote().renderChroma()));
+      }
+      // If no tonality includes the two previous notes then pick the ones that contain the previous note only
+      if (tonalities.length == 0) {
+        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, previousChord.getFirstNote().renderChroma(), undefined));
+        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, previousChord.getFirstNote().renderChroma(), undefined));
       }
       const index: number = this.commonService.getRandomIntegerBetween(0, tonalities.length);
       return tonalities[index];
