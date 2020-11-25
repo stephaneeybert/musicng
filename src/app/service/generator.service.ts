@@ -199,7 +199,7 @@ export class GeneratorService {
     return this.createArrayShiftOnceRight(chord);
   }
 
-  // The randomised pick between a source chord note or an inpassing note can be tuned by a setting
+  // The randomised pick between a harmony chord note or an inpassing note can be tuned by a setting
   private fromInpassingNote(): boolean {
     const inpassingNote: number = this.settingsService.getSettings().generateInpassingNote;
     if (inpassingNote > 0) {
@@ -212,8 +212,8 @@ export class GeneratorService {
   }
 
   // Get an inpassing note that is near the previous melody note
-  // An inpassing note is one that is not in the source chord but that
-  // is between the previous melody note and another note of the source chord
+  // An inpassing note is one that is not in the harmony chord but that
+  // is between the previous melody note and another note of the harmony chord
   // even if of another octave
   private getInpassingNearNotes(harmonyChord: PlacedChord, previousMelodyChroma: string, previousMelodyOctave: number): Array<string> {
     const nearNotes: Array<string> = new Array<string>();
@@ -285,33 +285,37 @@ export class GeneratorService {
     }
   }
 
-  // Get a note from the source chord that is near the previous melody note
-  // The octave remains the same as the one from the source chord
+  // Get a note from the harmony chord that is near the previous melody note
+  // The octave remains the same as the one from the harmony chord
   private getNearNotesFromSourceChord(harmonyChord: PlacedChord, previousMelodyChroma: string, previousMelodyOctave: number): Array<[string, number]> {
     const nearNoteChromas: Array<[string, number]> = new Array<[string, number]>();
     const harmonyChordSortedChromas: Array<string> = harmonyChord.getSortedNotesChromas();
     let tonalityChromas: Array<string> = this.getTonalityChromas(harmonyChord.tonality.range, harmonyChord.tonality.firstChroma);
     const previousMelodyNoteIndex: number = tonalityChromas.indexOf(previousMelodyChroma);
+
+    // If the previous note was from a different tonality and is not found in the new tonality
+    // then pick any note from the harmony chord
     if (previousMelodyNoteIndex < 0) {
-      throw new Error('The previous melody chroma ' + previousMelodyChroma + ' could not be found in the tonality ' + tonalityChromas);
-    }
+      const chordNoteIndex: number = this.commonService.getRandomIntegerBetween(0, harmonyChordSortedChromas.length - 1);
+      nearNoteChromas.push([harmonyChordSortedChromas[chordNoteIndex], harmonyChord.getFirstNote().renderOctave()]);
+    } else {
+      // The maximum near distance to consider
+      const NEAR_MAX: number = 2; // TODO Have this constant as a settings
 
-    // The maximum near distance to consider
-    const NEAR_MAX: number = 2; // TODO Have this constant as a settings
-
-    for (let noteIndex = 0; noteIndex < harmonyChordSortedChromas.length; noteIndex++) {
-      const harmonyChordChroma: string = harmonyChordSortedChromas[noteIndex];
-      // Avoid the previous chroma
-      if (harmonyChordChroma != previousMelodyChroma) {
-        if (Math.abs(tonalityChromas.indexOf(harmonyChordChroma) - previousMelodyNoteIndex) <= NEAR_MAX) {
-          nearNoteChromas.push([harmonyChordChroma, previousMelodyOctave]);
+      for (let noteIndex = 0; noteIndex < harmonyChordSortedChromas.length; noteIndex++) {
+        const harmonyChordChroma: string = harmonyChordSortedChromas[noteIndex];
+        // Avoid the previous chroma
+        if (harmonyChordChroma != previousMelodyChroma) {
+          if (Math.abs(tonalityChromas.indexOf(harmonyChordChroma) - previousMelodyNoteIndex) <= NEAR_MAX) {
+            nearNoteChromas.push([harmonyChordChroma, previousMelodyOctave]);
+          }
         }
       }
-    }
 
-    // If no note was near enough to be added then use the previous note
-    if (nearNoteChromas.length == 0) {
-      nearNoteChromas.push([previousMelodyChroma, previousMelodyOctave]);
+      // If no note was near enough to be added then use the previous note
+      if (nearNoteChromas.length == 0) {
+        nearNoteChromas.push([previousMelodyChroma, previousMelodyOctave]);
+      }
     }
 
     return nearNoteChromas;
@@ -325,7 +329,7 @@ export class GeneratorService {
       const nearNoteIndex: number = this.commonService.getRandomIntegerBetween(0, nearNotes.length - 1);
       return nearNotes[nearNoteIndex];
     } else {
-      // If no previous note then pick any note from the source chord
+      // If no previous note then pick any note from the harmony chord
       const chordNoteIndex: number = this.commonService.getRandomIntegerBetween(0, harmonyChordSortedChromas.length - 1);
       return [harmonyChordSortedChromas[chordNoteIndex], previousMelodyOctave];
     }
@@ -380,12 +384,6 @@ export class GeneratorService {
     return false;
   }
 
-  // // Select randomly a chroma among the possible chromas
-  // private getRandomTonalityFirstChroma(): string {
-  //   const random: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_INTERVAL_NOTES.length);
-  //   return HALF_TONE_INTERVAL_NOTES[random];
-  // } TODO
-
   private generateMelodyChords(harmonyMeasures: Array<Measure>, randomMethod: number, octave: number, chordDuration: number, velocity: number): Array<PlacedChord> {
     const melodyChords: Array<PlacedChord> = new Array();
     let placedChordIndex: number = 0;
@@ -411,13 +409,13 @@ export class GeneratorService {
 
     if (!this.notationService.isEndOfTrackPlacedChord(harmonyChord)) {
       if (RANDOM_METHOD.HARMONY_BASE == randomMethod) {
-        // For each source chord of the harmony track, there are two single note chords of half duration in the melody track
-        // The first melody note is one of the source chord, and the second melody note is also a note from the same source chord or an inpassing note
-        // An inpassing note is one that is not in the source chord but that is between the previous melody note and another note of the source chord even if of another octave
-        // So an inpassing note cannot be followed by another inpassing note, but a source chord note can be followed by another source chord note
-        // A melody note of a source chord must also be near the previous melody note
+        // For each harmony chord of the harmony track, there are two single note chords of half duration in the melody track
+        // The first melody note is one of the harmony chord, and the second melody note is also a note from the same harmony chord or an inpassing note
+        // An inpassing note is one that is not in the harmony chord but that is between the previous melody note and another note of the harmony chord even if of another octave
+        // So an inpassing note cannot be followed by another inpassing note, but a harmony chord note can be followed by another harmony chord note
+        // A melody note of a harmony chord must also be near the previous melody note
 
-        // Get one of the source chord notes
+        // Get one of the harmony chord notes
         const [firstMelodyChroma, firstMelodyOctave]: [string, number] = this.pickNearNoteFromSourceChord(harmonyChord, currentMelodyChroma, currentMelodyOctave);
         currentMelodyChroma = firstMelodyChroma;
         currentMelodyOctave = firstMelodyOctave;
@@ -436,7 +434,7 @@ export class GeneratorService {
           placedChord = this.createNotesAndPlacedChord(inpassingNoteOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, [inpassingNoteChroma]);
           melodyChords.push(placedChord);
         } else {
-          // Get one of the source chord notes even the already picked one
+          // Get one of the harmony chord notes even the already picked one
           const [secondMelodyChroma, secondMelodyOctave]: [string, number] = this.pickNearNoteFromSourceChord(harmonyChord, currentMelodyChroma, currentMelodyOctave);
           if (secondMelodyChroma == firstMelodyChroma && secondMelodyOctave == firstMelodyOctave) {
             // If the second note is the same as the fisrt one then have only one chord
@@ -448,7 +446,7 @@ export class GeneratorService {
           }
         }
       } else {
-        // Get the first note of the source chord notes
+        // Get the first note of the harmony chord notes
         const melodyChroma: string = harmonyChord.renderFirstNoteChroma();
         const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, harmonyChord.tonality, placedChordIndex, [melodyChroma]);
         melodyChords.push(placedChord);
@@ -504,7 +502,7 @@ export class GeneratorService {
           measureIndex++;
           measureChordIndex = 0;
           if (this.withModulation()) {
-            const randomTonality: Tonality = this.getRandomTonality();
+            const randomTonality: Tonality = this.getRandomTonality(); // TODO Add the past two chord base notes to filter the tonalities containing them
             tonality = new Tonality(randomTonality.range, randomTonality.firstChroma);
             previousChord = undefined;
           }
