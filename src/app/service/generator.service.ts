@@ -358,17 +358,38 @@ export class GeneratorService {
     return new Tonality(NOTE_RANGE.MAJOR, firstChroma);
   }
 
-  // Get the chromas of a tonality selected randomly among a given range
-  // TODO Add two parameters, the previous chord base note and the previous previous chord base note
-  // private getRandomTonalityChromas(previousChroma: string, precedingPreviousChroma: string): Array<string> {
-  private getRandomTonality(): Tonality {
-    const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_CHROMAS.length);
-    const randomRangeIndex: number = this.commonService.getRandomIntegerBetween(0, 2); // TODO Hard coded value
-    const chroma: string = HALF_TONE_CHROMAS[randomChromaIndex];
-    if (randomRangeIndex == 0) {
-      return new Tonality(NOTE_RANGE.MAJOR, chroma);
+  // Get a tonality selected randomly among ones that include two previous notes
+  private getRandomTonality(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Tonality {
+    if (previousChord) {
+      const tonalities: Array<Tonality> = new Array();
+      for (let i: number = 0; i < HALF_TONE_CHROMAS.length; i++) {
+        const range: NOTE_RANGE = NOTE_RANGE.MAJOR;
+        const chroma: string = HALF_TONE_CHROMAS[i];
+        const tonalityChromas: Array<string> = this.getTonalityChromas(range, chroma);
+        if (tonalityChromas.includes(previousChord.getFirstNote().renderChroma())) {
+          tonalities.push(new Tonality(range, chroma));
+        }
+      }
+      for (let i: number = 0; i < HALF_TONE_CHROMAS.length; i++) {
+        const range: NOTE_RANGE = NOTE_RANGE.MINOR_NATURAL;
+        const chroma: string = HALF_TONE_CHROMAS[i];
+        const tonalityChromas: Array<string> = this.getTonalityChromas(range, chroma);
+        if (tonalityChromas.includes(previousChord.getFirstNote().renderChroma())) {
+          tonalities.push(new Tonality(range, chroma));
+        }
+      }
+      const index: number = this.commonService.getRandomIntegerBetween(0, tonalities.length);
+      return tonalities[index];
     } else {
-      return new Tonality(NOTE_RANGE.MINOR_NATURAL, chroma);
+      // If no previous chord is specified then randomly pick a tonality
+      const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_CHROMAS.length);
+      const randomRangeIndex: number = this.commonService.getRandomIntegerBetween(0, 2);
+      const chroma: string = HALF_TONE_CHROMAS[randomChromaIndex];
+      if (randomRangeIndex == 0) {
+        return new Tonality(NOTE_RANGE.MAJOR, chroma);
+      } else {
+        return new Tonality(NOTE_RANGE.MINOR_NATURAL, chroma);
+      }
     }
   }
 
@@ -485,6 +506,7 @@ export class GeneratorService {
     const placedChords: Array<PlacedChord> = new Array();
     let chordIndex: number = 0;
     let measureChordIndex: number = 0;
+    let previousPreviousChord: PlacedChord | undefined;
     let previousChord: PlacedChord | undefined;
 
     let tonality: Tonality = this.getFirstMeasureTonality();
@@ -494,6 +516,7 @@ export class GeneratorService {
       const oneOrTwoHarmonyChords: Array<PlacedChord> = this.generateOneOrTwoHarmonyChords(chordIndex, tonality, octave, chordDuration, velocity, previousChord);
       for (let i: number = 0; i < oneOrTwoHarmonyChords.length; i++) {
         // The number of beats of the chords placed in a measure must equal the number of beats of the measure
+        previousPreviousChord = previousChord;
         previousChord = oneOrTwoHarmonyChords[i];
         if (measure.getPlacedChordsNbBeats() >= measure.getNbBeats()) {
           measures.push(measure);
@@ -502,7 +525,7 @@ export class GeneratorService {
           measureIndex++;
           measureChordIndex = 0;
           if (this.withModulation()) {
-            const randomTonality: Tonality = this.getRandomTonality(); // TODO Add the past two chord base notes to filter the tonalities containing them
+            const randomTonality: Tonality = this.getRandomTonality(previousPreviousChord, previousChord);
             tonality = new Tonality(randomTonality.range, randomTonality.firstChroma);
             previousChord = undefined;
           }
