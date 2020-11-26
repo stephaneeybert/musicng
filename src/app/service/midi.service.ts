@@ -631,7 +631,6 @@ export class MidiService {
                     for (const note of placedChord.notes) {
                       if (!this.notationService.isEndOfTrackNote(note)) {
                         if (progressTask$) {
-                          this.commonService.sleep(50); // TODO Remove this sleep when the download progress is okay
                           progressTask$.next(this.downloadService.createProgressTask<Uint8Array>(soundtrack.getNbNotes(), noteIndex));
                         }
                         noteIndex++;
