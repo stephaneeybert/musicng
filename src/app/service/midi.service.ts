@@ -601,7 +601,6 @@ export class MidiService {
   public progressiveCreateSoundtrackMidi(soundtrack: Soundtrack): Observable<ProgressTask<Uint8Array>> {
     return Observable.create((progressTask$: ReplaySubject<ProgressTask<Uint8Array>>) => {
       this.createSoundtrackMidi(soundtrack, progressTask$);
-      progressTask$.complete();
       return { unsubscribe() { } };
     });
   }
@@ -671,6 +670,7 @@ export class MidiService {
     }
     if (progressTask$) {
       progressTask$.next(this.downloadService.createProgressTask<Uint8Array>(soundtrack.getNbNotes(), soundtrack.getNbNotes(), midi.toArray()));
+      progressTask$.complete();
     }
     return midi.toArray();
   }
