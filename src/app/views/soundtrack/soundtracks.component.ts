@@ -195,6 +195,9 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
     console.log('Call done');
   }
 
+  // <mat-icon (click)="downloadDemo()" matTooltip="{{ 'soundtracks.download.tip' | translate }}"
+  // class="soundtrack-action">arrow_downward</mat-icon>
+  // TODO See https://stackoverflow.com/q/64801947/958373
   downloadDemo(): void {
     this.download$ = this.downloadService.downloadUrlAsBlobWithProgressAndSaveInFile('assets/skypeforlinux-64.deb', 'demo')
     this.showMe = true;
