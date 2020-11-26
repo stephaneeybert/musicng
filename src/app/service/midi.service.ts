@@ -243,7 +243,7 @@ export class MidiService {
         }
         track.controls = new Array<Control>();
         if (midiTrack.controlChanges != null) {
-          Object.keys(midiTrack.controlChanges).map(key => {
+          Object.keys(midiTrack.controlChanges).forEach(key => {
             // TODO The control is not yet retrieved
             const midiControl: any = midiTrack.controlChanges[key];
             const control: Control = new Control(midiControl.number, midiControl.time, midiControl.ticks, midiControl.value);
