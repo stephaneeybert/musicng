@@ -228,7 +228,7 @@ export class MidiService {
             const [chroma, octave]: [string, number] = this.notationService.noteToChromaOctave(midiNote.name);
             const noteIndex: number = 0; // TODO If the note has the same time than the previous note then add it to the previous chord instead of adding it into a new chord
             const note: Note = this.notationService.createNote(noteIndex, chroma, octave);
-            const duration: Duration = midiNote.time; // TODO midiNote.durationTicks How to retrieve the note time and store it in the chord ?
+            // const duration: Duration = midiNote.time; // TODO midiNote.durationTicks How to retrieve the note time and store it in the chord ?
             const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, midiNote.velocity, DEFAULT_TONALITY_C_MAJOR);
             placedChord.addNote(note);
             placedChords.push(placedChord);
