@@ -416,7 +416,7 @@ export class MidiService {
   private getLastPlacedChord(measure: Measure): PlacedChord | undefined {
     let lastPlacedChord: PlacedChord | undefined;
     if (measure.placedChords && measure.placedChords.length > 0) {
-      measure.placedChords[measure.placedChords.length - 1];
+      lastPlacedChord = measure.placedChords[measure.placedChords.length - 1];
     }
     return lastPlacedChord;
   }
