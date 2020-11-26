@@ -189,10 +189,11 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
     const progress$: Observable<ProgressTask<Uint8Array>> = this.midiService.progressiveCreateSoundtrackMidi(soundtrack);
     this.download$ = this.downloadService.downloadObservableDataAsBlobWithProgressAndSaveInFile(progress$, fileName);
     this.showMe = true;
-    this.download$.subscribe((download: Download) => {
-      console.log('Progress: ' + download.progress);
-    });
-    console.log('Call done');
+    // TODO See https://stackoverflow.com/q/64801947/958373
+    // this.download$.subscribe((download: Download) => {
+    //   console.log('Progress: ' + download.progress);
+    // });
+    // console.log('Call done');
   }
 
   // <mat-icon (click)="downloadDemo()" matTooltip="{{ 'soundtracks.download.tip' | translate }}"
