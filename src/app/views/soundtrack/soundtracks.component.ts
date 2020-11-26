@@ -188,7 +188,6 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
     const fileName: string = soundtrack.name + '.' + MIDI_FILE_SUFFIX;
     const progress$: Observable<ProgressTask<Uint8Array>> = this.midiService.progressiveCreateSoundtrackMidi$(soundtrack);
     this.download$ = this.downloadService.downloadObservableDataAsBlobWithProgressAndSaveInFile(progress$, fileName);
-    this.showMe = true;
     // TODO See https://stackoverflow.com/q/64801947/958373
     // this.download$.subscribe((download: Download) => {
     //   console.log('Progress: ' + download.progress);
