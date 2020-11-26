@@ -1,3 +1,7 @@
+When doing another soundtrack download, init the progress baisser
+
+When playing the soundtrack, show a progress bar
+
 Add a date field
 // dateOfPublication: new FormControl(new Date()),
   <mat-dialog-content>
