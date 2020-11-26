@@ -1,7 +1,8 @@
-import { Injectable, Injector, NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs/Observable';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { Subscriber } from 'rxjs';
 
 declare let Keycloak: any;
 
@@ -14,7 +15,7 @@ export class KeycloakClientService {
 
   public init$(): Observable<any> {
     KeycloakClientService.auth.loggedIn = false;
-    return new Observable((observer) => {
+    return new Observable<string>((observer: Subscriber<string>) => {
       const keycloakConfig: any = {
         'url': environment.KEYCLOAK_URI,
         'realm': environment.KEYCLOAK_REALM,
@@ -78,7 +79,7 @@ export class KeycloakClientService {
 
   public getToken$(): Observable<string> {
     console.log('Getting the retrieved token');
-    return new Observable<string>((observer) => {
+    return new Observable<string>((observer: Subscriber<string>) => {
       if (KeycloakClientService.auth.authz && KeycloakClientService.auth.authz.token) {
         KeycloakClientService.auth.authz
           .updateToken(5) // Refresh the token if it will expire in n seconds or less
