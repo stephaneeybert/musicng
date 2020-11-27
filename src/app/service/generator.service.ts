@@ -29,10 +29,10 @@ export class GeneratorService {
 
   CHROMA_SHIFT_TIMES: number = 2;
 
-  private createNotesAndPlacedChord(octave: number, chordDuration: number, velocity: number, tonality: Tonality, placedChordIndex: number, chord: Array<string>): PlacedChord {
+  private createNotesAndPlacedChord(octave: number, chordDuration: number, velocity: number, tonality: Tonality, placedChordIndex: number, chromas: Array<string>): PlacedChord {
     let noteIndex: number = 0;
-    const notes: Array<Note> = chord.map((textNote: string) => {
-      const note: Note = this.notationService.createNote(noteIndex, textNote, octave);
+    const notes: Array<Note> = chromas.map((chroma: string) => {
+      const note: Note = this.notationService.createNote(noteIndex, chroma, octave);
       noteIndex++;
       return note;
     });
@@ -575,8 +575,8 @@ export class GeneratorService {
       // If the current chord is too dissimilar from its previous one
       // then create a chord from a reversing of the previous one
       if (this.settingsService.getSettings().generateReverseDissimilarChord) {
-        const slidedNotes: Array<string> = this.createShiftedChord(previousChordSortedChromas);
-        const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex, slidedNotes);
+        const slidedChromas: Array<string> = this.createShiftedChord(previousChordSortedChromas);
+        const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex, slidedChromas);
         placedChords.push(placedChord);
       }
     }
