@@ -364,7 +364,10 @@ export class GeneratorService {
   }
 
   private getFirstMeasureTonality(): Tonality {
-    const firstChromaIndex: number = this.settingsService.getSettings().generateTonality;
+    let firstChromaIndex: number = this.settingsService.getSettings().generateTonality;
+    if (!firstChromaIndex) {
+      firstChromaIndex = 0; // TODO Have getters instead
+    }
     const firstChroma: string = HALF_TONE_CHROMAS[firstChromaIndex];
     return new Tonality(NOTE_RANGE.MAJOR, firstChroma);
   }
