@@ -350,6 +350,9 @@ export class GeneratorService {
       tonality.push(rangeFirstNote);
       let chromas: Array<string> = HALF_TONE_CHROMAS;
       let index: number = chromas.indexOf(rangeFirstNote);
+      if (index < 0) {
+        throw new Error('The chroma ' + rangeFirstNote + ' could not be found in the intervals '+ chromas);
+      }
       for (let i = 0; i < noteRangeIntervals.length - 1; i++) {
         for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
           chromas = this.createArrayShiftOnceLeft(chromas);
