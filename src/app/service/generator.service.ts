@@ -139,7 +139,11 @@ export class GeneratorService {
 
     // Shift the copy and not the original
     const item: string | undefined = shiftedItems.shift();
-    shiftedItems.push(item!);
+    if (item) {
+      shiftedItems.push(item);
+    } else  {
+      throw new Error('The array could not be shifted left');
+    }
     return shiftedItems;
   }
 
@@ -152,7 +156,11 @@ export class GeneratorService {
 
     // Shift the copy and not the original
     const item: string | undefined = shiftedItems.pop();
-    shiftedItems.unshift(item!);
+    if (item) {
+      shiftedItems.unshift(item!);
+    } else  {
+      throw new Error('The array could not be shifted right');
+    }
     return shiftedItems;
   }
 
