@@ -63,7 +63,7 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.observeSoundtracks();
 
-    this.audioRunning$ = this.synthService.audioIsRunning$();
+    this.audioRunning$ = this.synthService.audioContextIsRunning$();
     this.audioTransportStarted$ = this.synthService.audioTransportIsStarted$();
 
     this.soundtrackStore.loadAllFromStorage();

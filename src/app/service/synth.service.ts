@@ -108,7 +108,7 @@ export class SynthService {
     return Tone.Transport.state === TRANSPORT_STATE_STARTED;
   }
 
-  public audioIsRunning$(): Observable<boolean> {
+  public audioContextIsRunning$(): Observable<boolean> {
     return interval(1000)
       .pipe(
         map((value: number) => {
