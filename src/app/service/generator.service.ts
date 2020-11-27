@@ -389,12 +389,12 @@ export class GeneratorService {
         tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, previousChord.getFirstNote().renderChroma(), undefined));
         tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, previousChord.getFirstNote().renderChroma(), undefined));
       }
-      const index: number = this.commonService.getRandomIntegerBetween(0, tonalities.length);
+      const index: number = this.commonService.getRandomIntegerBetween(0, tonalities.length - 1);
       return tonalities[index];
     } else {
       // If no previous chord is specified then randomly pick a tonality
-      const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_CHROMAS.length);
-      const randomRangeIndex: number = this.commonService.getRandomIntegerBetween(0, 2);
+      const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_CHROMAS.length - 1);
+      const randomRangeIndex: number = this.commonService.getRandomIntegerBetween(0, 1);
       const chroma: string = HALF_TONE_CHROMAS[randomChromaIndex];
       if (randomRangeIndex == 0) {
         return new Tonality(NOTE_RANGE.MAJOR, chroma);

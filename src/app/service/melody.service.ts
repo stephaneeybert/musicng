@@ -56,7 +56,7 @@ export class MelodyService {
   public getRandomMidiNotes$(): Observable<number> {
     return interval(MIDI_NOTE_DURATION)
       .pipe(
-        map(data => this.commonService.getRandomIntegerBetween(MIDI_NOTE_MIN, MIDI_NOTE_MAX))
+        map(data => this.commonService.getRandomIntegerBetween(MIDI_NOTE_MIN, MIDI_NOTE_MAX - 1))
       );
   }
 
