@@ -39,7 +39,7 @@ export class Settings {
     this.generateMethod = DEFAULT_RANDOM_METHOD;
     this.generateReverseDissimilarChord = false;
     this.generateInpassingNote = DEFAULT_RANDOM_INPASSING;
-    this.generateTonality = NOTE_RANGE.MAJOR;
+    this.generateTonality = 0;
     this.generateModulation = DEFAULT_RANDOM_MODULATION;
     this.generateNbChords = DEFAULT_NB_CHORDS;
     this.generateDoubleChord = false;
