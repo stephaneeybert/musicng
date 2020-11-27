@@ -120,7 +120,6 @@ export class SynthService {
   }
 
   private isAudioContextRunning(): boolean {
-    console.log('Audio Context: ' + Tone.context.state);
     return Tone.context.state === AUDIO_CONTEXT_RUNNING;
   }
 
