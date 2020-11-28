@@ -73,10 +73,13 @@
           </mat-form-field>
         </p>
         <p>
+          <mat-label>{{ 'settings.form.set.generate.timeSignature.label' | translate }}</mat-label>
+        </p>
+        <p>
           <mat-form-field>
-            <mat-label>{{ 'settings.form.set.generate.timeSignature.label' | translate }}</mat-label>
+            <mat-label>{{ 'settings.form.set.generate.timeSignatureNbOfTimeUnits.label' | translate }}</mat-label>
             <mat-select formControlName="generateTimeSignatureNumerator" [compareWith]="compareItemsById"
-              matTooltip="{{ 'settings.form.set.generate.timeSignature.tip' | translate }}">
+              matTooltip="{{ 'settings.form.set.generate.timeSignatureNbOfTimeUnits.tip' | translate }}">
               <mat-option *ngFor="let timeSignature of timeSignatures" value="{{ timeSignature.id }}">
                 {{ timeSignature.name }}
               </mat-option>
@@ -84,9 +87,9 @@
           </mat-form-field>
           /
           <mat-form-field>
-            <mat-label>{{ 'settings.form.set.generate.timeSignature.label' | translate }}</mat-label>
+            <mat-label>{{ 'settings.form.set.generate.timeSignatureTimeUnit.label' | translate }}</mat-label>
             <mat-select formControlName="generateTimeSignatureDenominator" [compareWith]="compareItemsById"
-              matTooltip="{{ 'settings.form.set.generate.timeSignature.tip' | translate }}">
+              matTooltip="{{ 'settings.form.set.generate.timeSignatureTimeUnit.tip' | translate }}">
               <mat-option *ngFor="let timeSignature of timeSignatures" value="{{ timeSignature.id }}">
                 {{ timeSignature.name }}
               </mat-option>

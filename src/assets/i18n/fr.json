@@ -59,8 +59,16 @@
             "tip": "Le tempo de la mesure."
           },
           "timeSignature": {
-            "label": "Signature de temps",
-            "tip": "La signature de temps de la mesure."
+            "label": "Chiffrage",
+            "tip": "Le chiffrage détermine l'unité de temps et la durée de la mesure."
+          },
+          "timeSignatureNbOfTimeUnits": {
+            "label": "Nombre d'unités",
+            "tip": "Le nombre d'unités de temps dans la mesure."
+          },
+          "timeSignatureTimeUnit": {
+            "label": "Unité de temps",
+            "tip": "La figure de note d'une pulsation."
           },
           "chordDuration": {
             "label": "Durée d'accord",

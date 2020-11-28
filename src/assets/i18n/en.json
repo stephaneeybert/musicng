@@ -60,7 +60,15 @@
           },
           "timeSignature": {
             "label": "Time signature",
-            "tip": "The time signature of the measure."
+            "tip": "The time signature specifies the unit of time and the duration of the measure."
+          },
+          "timeSignatureNbOfTimeUnits": {
+            "label": "Number of units",
+            "tip": "The number of time units in the measure."
+          },
+          "timeSignatureTimeUnit": {
+            "label": "Unité de temps",
+            "tip": "The note shape for a beat."
           },
           "chordDuration": {
             "label": "Chord duration",
