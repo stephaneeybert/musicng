@@ -16,7 +16,7 @@ export class SettingsStorageService extends LocalStorageService<Settings> {
   public getSettings(): Settings {
     const settings: Settings | null = this.get(PREFIX);
     // The settings may end up being stored with unset properties
-    if (settings && settings.generateMethod) {
+    if (settings) {
       return settings;
     } else {
       return new Settings();
