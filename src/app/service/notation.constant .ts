@@ -3,11 +3,6 @@ import { Subdivisions } from '@app/model/note/duration/subdivisions';
 import { Subdivision } from '@app/model/note/duration/subdivision';
 import { Tonality } from '@app/model/note/tonality';
 
-export enum RANDOM_METHOD {
-  BONUS_TABLE = 1,
-  HARMONY_BASE = 2
-}
-
 export const DEFAULT_VELOCITY_SOFTER: number = 10;
 export const DEFAULT_VELOCITY_MEDIUM: number = 50;
 export const DEFAULT_VELOCITY_LOUDER: number = 100;
@@ -19,7 +14,6 @@ export const DEFAULT_NOTE_OCTAVE: number = 5;
 export const DEFAULT_NB_CHORDS: number = 60;
 export const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 export const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
-export const DEFAULT_RANDOM_METHOD: RANDOM_METHOD = RANDOM_METHOD.HARMONY_BASE;
 export const DEFAULT_RANDOM_INPASSING: number = 50;
 export const DEFAULT_RANDOM_MODULATION: number = 50;
 
@@ -31,10 +25,6 @@ export const CHORD_DURATION_UNITS: Map<TempoUnit, string> = new Map([
   [TempoUnit.DUPLE, 'n'],
   [TempoUnit.TRIPLET, 't'],
   [TempoUnit.MEASURE, 'm']
-]);
-export const GENERATE_METHODS: Map<RANDOM_METHOD, string> = new Map([
-  [RANDOM_METHOD.BONUS_TABLE, '1. Bonus table'],
-  [RANDOM_METHOD.HARMONY_BASE, '2. Harmony base']
 ]);
 
 // An interval represents the distance between two notes

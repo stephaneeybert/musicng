@@ -1,10 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { DEFAULT_TIME_SIGNATURES, RANDOM_METHOD, CHORD_DURATION_UNITS, GENERATE_METHODS, TEMPO_SUBDIVISIONS, HALF_TONE_CHROMAS } from '@app/service/notation.constant ';
+import { DEFAULT_TIME_SIGNATURES, CHORD_DURATION_UNITS, TEMPO_SUBDIVISIONS, HALF_TONE_CHROMAS } from '@app/service/notation.constant ';
 import { TempoUnitType } from '@app/model/tempo-unit';
 import { Settings } from '@app/model/settings';
-import { SettingsService } from './settings.service';
 import { Subdivision } from '@app/model/note/duration/subdivision';
 
 type TimeSignatureType = {
@@ -14,11 +13,6 @@ type TimeSignatureType = {
 
 type ChordDurationUnitType = {
   id: TempoUnitType,
-  name: string
-};
-
-type GenerateMethodType = {
-  id: RANDOM_METHOD,
   name: string
 };
 
@@ -42,12 +36,10 @@ export class SettingsDialogComponent implements OnInit {
   form!: FormGroup;
   timeSignatures: Array<TimeSignatureType> = new Array();
   chordDurationUnits: Array<ChordDurationUnitType> = new Array();
-  generateMethods: Array<GenerateMethodType> = new Array();
   tempoSubdivisions: Array<TempoSubdivisionType> = new Array();
   generateTonalities: Array<GenerateTonalityType> = new Array();
 
   constructor(
-    private settingsService: SettingsService,
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<SettingsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any
@@ -62,7 +54,6 @@ export class SettingsDialogComponent implements OnInit {
       existingSettings.generateChordDurationUnit,
       existingSettings.generateNoteOctave,
       existingSettings.generateChordWidth,
-      existingSettings.generateMethod,
       existingSettings.generateReverseDissimilarChord,
       existingSettings.generateInpassingNote,
       existingSettings.generateTonality,
@@ -93,19 +84,18 @@ export class SettingsDialogComponent implements OnInit {
       generateChordDurationUnit: new FormControl(this.settingsEdition.generateChordDurationUnit),
       generateNoteOctave: new FormControl(this.settingsEdition.generateNoteOctave),
       generateChordWidth: new FormControl(this.settingsEdition.generateChordWidth),
-      generateMethod: new FormControl(this.settingsEdition.generateMethod),
       generateReverseDissimilarChord: new FormControl(this.settingsEdition.generateReverseDissimilarChord),
       generateInpassingNote: new FormControl({
         value: this.settingsEdition.generateInpassingNote,
-        disabled: !this.isHarmonyBaseMethod()
+        disabled: false
       }),
       generateTonality: new FormControl({
         value: this.settingsEdition.generateTonality,
-        disabled: !this.isHarmonyBaseMethod()
+        disabled: false
       }),
       generateModulation: new FormControl({
         value: this.settingsEdition.generateModulation,
-        disabled: !this.isHarmonyBaseMethod()
+        disabled: false
       }),
       generateNbChords: new FormControl(this.settingsEdition.generateNbChords),
       generateDoubleChord: new FormControl(this.settingsEdition.generateDoubleChord),
@@ -146,10 +136,6 @@ export class SettingsDialogComponent implements OnInit {
       this.chordDurationUnits.push({ 'id': id, 'name': name });
     });
 
-    GENERATE_METHODS.forEach((name: string, id: RANDOM_METHOD) => {
-      this.generateMethods.push({ 'id': id, 'name': name });
-    });
-
     TEMPO_SUBDIVISIONS.forEach((subdivision: Subdivision, bpm: number) => {
       this.tempoSubdivisions.push({ 'id': bpm, 'name': String(subdivision.left) + '/' + String(subdivision.right) });
     });
@@ -181,11 +167,6 @@ export class SettingsDialogComponent implements OnInit {
       return value  + '%';
     }
     return value;
-  }
-
-  private isHarmonyBaseMethod(): boolean {
-    const randomMethod: RANDOM_METHOD = this.settingsService.getSettings().generateMethod;
-    return RANDOM_METHOD.HARMONY_BASE == randomMethod;
   }
 
 }

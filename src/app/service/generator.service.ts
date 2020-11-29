@@ -11,7 +11,7 @@ import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { TRACK_TYPES } from './notation.service';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { RANDOM_METHOD, NOTE_RANGE, HALF_TONE_CHROMAS, NOTE_RANGE_INTERVALS, HALF_TONE } from './notation.constant ';
+import { NOTE_RANGE, HALF_TONE_CHROMAS, NOTE_RANGE_INTERVALS, HALF_TONE } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 @Injectable({
@@ -77,8 +77,6 @@ export class GeneratorService {
   public generateSoundtrack(): Soundtrack {
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.createNewSoundtrackId(), this.createNewSoundtrackName());
 
-    const randomMethod: RANDOM_METHOD = this.settingsService.getSettings().generateMethod;
-
     const octave: number = this.settingsService.getSettings().generateNoteOctave;
     const chordDuration: number = this.settingsService.getSettings().generateChordDuration;
 
@@ -93,7 +91,7 @@ export class GeneratorService {
 
     if (this.settingsService.getSettings().generateMelody) {
       const melodyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityMelody);
-      const melodyChords: Array<PlacedChord> = this.generateMelodyChords(harmonyMeasures, randomMethod, octave, chordDuration, melodyVelocity);
+      const melodyChords: Array<PlacedChord> = this.generateMelodyChords(harmonyMeasures, octave, chordDuration, melodyVelocity);
       const melodyMeasures: Array<Measure> = this.createMeasures(melodyChords);
 
       const melodyTrack: Track = soundtrack.addTrack(melodyMeasures);
@@ -427,14 +425,14 @@ export class GeneratorService {
     return false;
   }
 
-  private generateMelodyChords(harmonyMeasures: Array<Measure>, randomMethod: number, octave: number, chordDuration: number, velocity: number): Array<PlacedChord> {
+  private generateMelodyChords(harmonyMeasures: Array<Measure>, octave: number, chordDuration: number, velocity: number): Array<PlacedChord> {
     const melodyChords: Array<PlacedChord> = new Array();
     let placedChordIndex: number = 0;
 
     harmonyMeasures.forEach((measure: Measure) => {
       measure.getSortedChords().forEach((harmonyChord: PlacedChord) => {
         const previousMelodyChord: PlacedChord | undefined = melodyChords.length > 0 ? melodyChords[melodyChords.length - 1] : undefined;
-        const melodyChordsForOneHarmonyChord: Array<PlacedChord> = this.generateTwoMelodyChordsForOneHarmonyChord(placedChordIndex, previousMelodyChord, harmonyChord, randomMethod, octave, chordDuration, velocity);
+        const melodyChordsForOneHarmonyChord: Array<PlacedChord> = this.generateTwoMelodyChordsForOneHarmonyChord(placedChordIndex, previousMelodyChord, harmonyChord, octave, chordDuration, velocity);
         for (let i: number = 0; i < melodyChordsForOneHarmonyChord.length; i++) {
           melodyChords.push(melodyChordsForOneHarmonyChord[i]);
           placedChordIndex++;
@@ -445,54 +443,47 @@ export class GeneratorService {
     return melodyChords;
   }
 
-  private generateTwoMelodyChordsForOneHarmonyChord(placedChordIndex: number, previousMelodyChord: PlacedChord | undefined, harmonyChord: PlacedChord, randomMethod: number, octave: number, chordDuration: number, velocity: number): Array<PlacedChord> {
+  private generateTwoMelodyChordsForOneHarmonyChord(placedChordIndex: number, previousMelodyChord: PlacedChord | undefined, harmonyChord: PlacedChord, octave: number, chordDuration: number, velocity: number): Array<PlacedChord> {
     const melodyChords: Array<PlacedChord> = new Array();
     let currentMelodyChroma: string | undefined = previousMelodyChord ? previousMelodyChord.renderFirstNoteChroma() : undefined;
     let currentMelodyOctave: number = previousMelodyChord ? previousMelodyChord.renderFirstNoteOctave() : octave;
 
     if (!this.notationService.isEndOfTrackPlacedChord(harmonyChord)) {
-      if (RANDOM_METHOD.HARMONY_BASE == randomMethod) {
-        // For each harmony chord of the harmony track, there are two single note chords of half duration in the melody track
-        // The first melody note is one of the harmony chord, and the second melody note is also a note from the same harmony chord or an inpassing note
-        // An inpassing note is one that is not in the harmony chord but that is between the previous melody note and another note of the harmony chord even if of another octave
-        // So an inpassing note cannot be followed by another inpassing note, but a harmony chord note can be followed by another harmony chord note
-        // A melody note of a harmony chord must also be near the previous melody note
+      // For each harmony chord of the harmony track, there are two single note chords of half duration in the melody track
+      // The first melody note is one of the harmony chord, and the second melody note is also a note from the same harmony chord or an inpassing note
+      // An inpassing note is one that is not in the harmony chord but that is between the previous melody note and another note of the harmony chord even if of another octave
+      // So an inpassing note cannot be followed by another inpassing note, but a harmony chord note can be followed by another harmony chord note
+      // A melody note of a harmony chord must also be near the previous melody note
 
-        // Get one of the harmony chord notes
-        const [firstMelodyChroma, firstMelodyOctave]: [string, number] = this.pickNearNoteFromSourceChord(harmonyChord, currentMelodyChroma, currentMelodyOctave);
-        currentMelodyChroma = firstMelodyChroma;
-        currentMelodyOctave = firstMelodyOctave;
-        // The duration is a quotient base and is thus multiplied by 2 to cut it in half
-        const halfDuration: number = chordDuration * 2;
-        let placedChord: PlacedChord = this.createNotesAndPlacedChord(currentMelodyOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex, [firstMelodyChroma]);
+      // Get one of the harmony chord notes
+      const [firstMelodyChroma, firstMelodyOctave]: [string, number] = this.pickNearNoteFromSourceChord(harmonyChord, currentMelodyChroma, currentMelodyOctave);
+      currentMelodyChroma = firstMelodyChroma;
+      currentMelodyOctave = firstMelodyOctave;
+      // The duration is a quotient base and is thus multiplied by 2 to cut it in half
+      const halfDuration: number = chordDuration * 2;
+      let placedChord: PlacedChord = this.createNotesAndPlacedChord(currentMelodyOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex, [firstMelodyChroma]);
+      melodyChords.push(placedChord);
+
+      let inpassingTextNote: string | undefined;
+      if (this.fromInpassingNote()) {
+        inpassingTextNote = this.pickInpassingNote(harmonyChord, currentMelodyChroma, currentMelodyOctave);
+      }
+
+      if (inpassingTextNote) {
+        const [inpassingNoteChroma, inpassingNoteOctave]: [string, number] = this.notationService.noteToChromaOctave(inpassingTextNote);
+        placedChord = this.createNotesAndPlacedChord(inpassingNoteOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, [inpassingNoteChroma]);
         melodyChords.push(placedChord);
-
-        let inpassingTextNote: string | undefined;
-        if (this.fromInpassingNote()) {
-          inpassingTextNote = this.pickInpassingNote(harmonyChord, currentMelodyChroma, currentMelodyOctave);
-        }
-
-        if (inpassingTextNote) {
-          const [inpassingNoteChroma, inpassingNoteOctave]: [string, number] = this.notationService.noteToChromaOctave(inpassingTextNote);
-          placedChord = this.createNotesAndPlacedChord(inpassingNoteOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, [inpassingNoteChroma]);
-          melodyChords.push(placedChord);
-        } else {
-          // Get one of the harmony chord notes even the already picked one
-          const [secondMelodyChroma, secondMelodyOctave]: [string, number] = this.pickNearNoteFromSourceChord(harmonyChord, currentMelodyChroma, currentMelodyOctave);
-          if (secondMelodyChroma == firstMelodyChroma && secondMelodyOctave == firstMelodyOctave) {
-            // If the second note is the same as the fisrt one then have only one chord
-            // but with a duration that is twice as long
-            melodyChords[melodyChords.length - 1].duration = this.notationService.createDuration(chordDuration, TempoUnit.DUPLE);
-          } else {
-            placedChord = this.createNotesAndPlacedChord(secondMelodyOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, [secondMelodyChroma]);
-            melodyChords.push(placedChord);
-          }
-        }
       } else {
-        // Get the first note of the harmony chord notes
-        const melodyChroma: string = harmonyChord.renderFirstNoteChroma();
-        const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, harmonyChord.tonality, placedChordIndex, [melodyChroma]);
-        melodyChords.push(placedChord);
+        // Get one of the harmony chord notes even the already picked one
+        const [secondMelodyChroma, secondMelodyOctave]: [string, number] = this.pickNearNoteFromSourceChord(harmonyChord, currentMelodyChroma, currentMelodyOctave);
+        if (secondMelodyChroma == firstMelodyChroma && secondMelodyOctave == firstMelodyOctave) {
+          // If the second note is the same as the fisrt one then have only one chord
+          // but with a duration that is twice as long
+          melodyChords[melodyChords.length - 1].duration = this.notationService.createDuration(chordDuration, TempoUnit.DUPLE);
+        } else {
+          placedChord = this.createNotesAndPlacedChord(secondMelodyOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, [secondMelodyChroma]);
+          melodyChords.push(placedChord);
+        }
       }
     }
     return melodyChords;

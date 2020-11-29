@@ -57,9 +57,6 @@ export class SettingsStorageService extends LocalStorageService<Settings> {
     if (this.commonService.isSet(settingJson.generateChordWidth)) {
       settings.generateChordWidth = Number(settingJson.generateChordWidth);
     }
-    if (this.commonService.isSet(settingJson.generateMethod)) {
-      settings.generateMethod = settingJson.generateMethod;
-    }
     if (this.commonService.isSet(settingJson.generateReverseDissimilarChord)) {
       settings.generateReverseDissimilarChord = settingJson.generateReverseDissimilarChord;
     }

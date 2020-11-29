@@ -96,16 +96,11 @@
             </mat-select>
           </mat-form-field>
         </p>
-        <p>
-          <mat-slide-toggle formControlName="generateDoubleChord"
-            matTooltip="{{ 'settings.form.set.generate.doubleChord.tip' | translate }}">
-            {{ 'settings.form.set.generate.doubleChord.label' | translate }}</mat-slide-toggle>
-        </p>
-        <p>
-          <mat-slide-toggle formControlName="generateReverseDissimilarChord"
-            matTooltip="{{ 'settings.form.set.generate.reverseDissimilarChord.tip' | translate }}">
-            {{ 'settings.form.set.generate.reverseDissimilarChord.label' | translate }}</mat-slide-toggle>
-        </p>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">tune</mat-icon>
+        </ng-template>
         <p>
           <mat-label>{{ 'settings.form.set.generate.inpassingNote.label' | translate }} </mat-label>
           <mat-slider thumbLabel [displayWith]="formatAsPercentage" min="0" max="100" step="5" formControlName="generateInpassingNote"
@@ -127,21 +122,15 @@
           <mat-slider thumbLabel [displayWith]="formatAsPercentage" min="0" max="100" step="5" formControlName="generateModulation"
             matTooltip="{{ 'settings.form.set.generate.modulation.tip' | translate }}"></mat-slider>
         </p>
-      </mat-tab>
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">tune</mat-icon>
-        </ng-template>
         <p>
-          <mat-form-field>
-            <mat-label>{{ 'settings.form.set.generate.method.label' | translate }}</mat-label>
-            <mat-select formControlName="generateMethod" [compareWith]="compareItemsById"
-              matTooltip="{{ 'settings.form.set.generate.method.tip' | translate }}">
-              <mat-option *ngFor="let generateMethod of generateMethods" value="{{ generateMethod.id }}">
-                {{ generateMethod.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <mat-slide-toggle formControlName="generateDoubleChord"
+            matTooltip="{{ 'settings.form.set.generate.doubleChord.tip' | translate }}">
+            {{ 'settings.form.set.generate.doubleChord.label' | translate }}</mat-slide-toggle>
+        </p>
+        <p>
+          <mat-slide-toggle formControlName="generateReverseDissimilarChord"
+            matTooltip="{{ 'settings.form.set.generate.reverseDissimilarChord.tip' | translate }}">
+            {{ 'settings.form.set.generate.reverseDissimilarChord.label' | translate }}</mat-slide-toggle>
         </p>
       </mat-tab>
       <mat-tab>

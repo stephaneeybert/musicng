@@ -76,7 +76,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
             existingSettings.generateChordDurationUnit = settingsEdition.generateChordDurationUnit;
             existingSettings.generateNoteOctave = settingsEdition.generateNoteOctave;
             existingSettings.generateChordWidth = settingsEdition.generateChordWidth;
-            existingSettings.generateMethod = settingsEdition.generateMethod;
             existingSettings.generateReverseDissimilarChord = settingsEdition.generateReverseDissimilarChord;
             existingSettings.generateInpassingNote = settingsEdition.generateInpassingNote;
             existingSettings.generateTonality = settingsEdition.generateTonality;
