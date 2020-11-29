@@ -8,15 +8,15 @@ export enum RANDOM_METHOD {
   HARMONY_BASE = 2
 }
 
-export const DEFAULT_VELOCITY_SOFTER: number = 1;
+export const DEFAULT_VELOCITY_SOFTER: number = 10;
 export const DEFAULT_VELOCITY_MEDIUM: number = 50;
 export const DEFAULT_VELOCITY_LOUDER: number = 100;
 export const DEFAULT_TIME_SIGNATURES: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-export const DEFAULT_TEMPO_BPM: number = 128;
+export const DEFAULT_TEMPO_BPM: number = 16;
 export const DEFAULT_CHORD_WIDTH: number = 3;
 export const DEFAULT_CHORD_DURATION: number = 4;
 export const DEFAULT_NOTE_OCTAVE: number = 5;
-export const DEFAULT_NB_CHORDS: number = 120;
+export const DEFAULT_NB_CHORDS: number = 60;
 export const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 export const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
 export const DEFAULT_RANDOM_METHOD: RANDOM_METHOD = RANDOM_METHOD.HARMONY_BASE;

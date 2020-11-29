@@ -35,22 +35,6 @@
         </p>
         <p>
           <mat-form-field>
-            <mat-label>{{ 'settings.form.set.generate.chordDuration.label' | translate }}</mat-label>
-            <input formControlName="generateChordDuration" matInput
-              matTooltip="{{ 'settings.form.set.generate.chordDuration.tip' | translate }}">
-          </mat-form-field>
-          <!-- <mat-form-field>
-            <mat-label>{{ 'settings.form.set.generate.chordDurationUnit.label' | translate }}</mat-label>
-            <mat-select formControlName="generateChordDurationUnit" [compareWith]="compareItemsById"
-              matTooltip="{{ 'settings.form.set.generate.chordDurationUnit.tip' | translate }}">
-              <mat-option *ngFor="let chordDurationUnit of chordDurationUnits" value="{{ chordDurationUnit.id }}">
-                {{ chordDurationUnit.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field> -->
-        </p>
-        <p>
-          <mat-form-field>
             <mat-label>{{ 'settings.form.set.generate.noteOctave.label' | translate }}</mat-label>
             <input formControlName="generateNoteOctave" matInput
               matTooltip="{{ 'settings.form.set.generate.noteOctave.tip' | translate }}">
@@ -61,6 +45,22 @@
         <ng-template mat-tab-label>
           <mat-icon class="example-tab-icon">speed</mat-icon>
         </ng-template>
+        <p>
+          <mat-form-field>
+            <mat-label>{{ 'settings.form.set.generate.chordDuration.label' | translate }}</mat-label>
+            <input formControlName="generateChordDuration" matInput
+              matTooltip="{{ 'settings.form.set.generate.chordDuration.tip' | translate }}">
+          </mat-form-field>
+          <!-- <mat-form-field> TODO
+            <mat-label>{{ 'settings.form.set.generate.chordDurationUnit.label' | translate }}</mat-label>
+            <mat-select formControlName="generateChordDurationUnit" [compareWith]="compareItemsById"
+              matTooltip="{{ 'settings.form.set.generate.chordDurationUnit.tip' | translate }}">
+              <mat-option *ngFor="let chordDurationUnit of chordDurationUnits" value="{{ chordDurationUnit.id }}">
+                {{ chordDurationUnit.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> -->
+        </p>
         <p>
           <mat-form-field>
             <mat-label>{{ 'settings.form.set.generate.tempoBpm.label' | translate }}</mat-label>
@@ -130,6 +130,22 @@
       </mat-tab>
       <mat-tab>
         <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">tune</mat-icon>
+        </ng-template>
+        <p>
+          <mat-form-field>
+            <mat-label>{{ 'settings.form.set.generate.method.label' | translate }}</mat-label>
+            <mat-select formControlName="generateMethod" [compareWith]="compareItemsById"
+              matTooltip="{{ 'settings.form.set.generate.method.tip' | translate }}">
+              <mat-option *ngFor="let generateMethod of generateMethods" value="{{ generateMethod.id }}">
+                {{ generateMethod.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </p>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
           <mat-icon class="example-tab-icon">equalizer</mat-icon>
         </ng-template>
         <mat-label matTooltip="{{ 'settings.form.set.tracks.tip' | translate }}">{{ 'settings.form.set.tracks.label' | translate }} </mat-label>
@@ -180,22 +196,6 @@
           <mat-label>{{ 'settings.form.set.generate.velocity.bass.label' | translate }} </mat-label>
           <mat-slider thumbLabel [displayWith]="formatAsPercentage" min="0" max="100" step="5" formControlName="generateVelocityBass"
            matTooltip="{{ 'settings.form.set.generate.velocity.bass.tip' | translate }}"></mat-slider>
-        </p>
-      </mat-tab>
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">tune</mat-icon>
-        </ng-template>
-        <p>
-          <mat-form-field>
-            <mat-label>{{ 'settings.form.set.generate.method.label' | translate }}</mat-label>
-            <mat-select formControlName="generateMethod" [compareWith]="compareItemsById"
-              matTooltip="{{ 'settings.form.set.generate.method.tip' | translate }}">
-              <mat-option *ngFor="let generateMethod of generateMethods" value="{{ generateMethod.id }}">
-                {{ generateMethod.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
         </p>
       </mat-tab>
     </mat-tab-group>
