@@ -8,7 +8,8 @@ import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { CommonService, LocalStorageService } from '@stephaneeybert/lib-core';
 import { Tonality } from '@app/model/note/tonality';
-import { DEFAULT_TONALITY_C_MAJOR } from '@app/service/notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR, DEFAULT_VELOCITY_MEDIUM } from '@app/service/notation.constant ';
+import { Subdivisions } from '@app/model/note/duration/subdivisions';
 
 const PREFIX: string = 'musicng-soundtrack-';
 
@@ -42,77 +43,106 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
 
   public cleanUpInstance(soundtrackJson: any): Soundtrack {
     const soundtrack: Soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
-    soundtrack.id = soundtrackJson.id;
-    soundtrack.name = soundtrackJson.name;
-    soundtrack.copyright = soundtrackJson.copyright;
-    soundtrack.lyrics = soundtrackJson.lyrics;
-    soundtrack.tracks = new Array();
-    if (soundtrackJson.tracks && soundtrackJson.tracks.length > 0) {
-      let trackIndex: number = 0;
-      soundtrackJson.tracks.forEach((trackJson: any) => {
+
+    // The settings may end up being stored with unset properties
+    if (this.commonService.isSet(soundtrackJson.id)) {
+      soundtrack.id = soundtrackJson.id;
+    }
+    if (this.commonService.isSet(soundtrackJson.name)) {
+      soundtrack.name = soundtrackJson.name;
+    }
+    if (this.commonService.isSet(soundtrackJson.copyright)) {
+      soundtrack.copyright = soundtrackJson.copyright;
+    }
+    if (this.commonService.isSet(soundtrackJson.lyrics)) {
+      soundtrack.lyrics = soundtrackJson.lyrics;
+    }
+    if (this.commonService.isSet(soundtrackJson.tracks) && soundtrackJson.tracks.length > 0) {
+      for (let trackIndex: number = 0; trackIndex < soundtrackJson.tracks.length; trackIndex++) {
+        const trackJson: any = soundtrackJson.tracks[trackIndex];
         const track: Track = new Track(trackIndex);
-        track.name = trackJson.name;
-        track.displayChordNames = trackJson.displayChordNames;
-        track.channel = Number(trackJson.channel);
-        track.measures = new Array();
-        if (trackJson.measures && trackJson.measures.length > 0) {
-          let measureIndex: number = 0;
-          trackJson.measures.forEach((measureJson: any) => {
-            if (measureJson.placedChords && measureJson.placedChords.length > 0) {
-              if (!measureJson.tempo || !measureJson.tempo.subdivision || !this.is(measureJson.tempo.subdivision.left) || !this.is(measureJson.tempo.subdivision.right) || !measureJson.tempo.unit) {
-                this.deleteSoundtrack(soundtrack.id);
-                throw new Error('The measure duration subdivision or unit could not be accessed from the untyped soundtrack.');
-              }
-              const measureDurationInBpm: number = Number(measureJson.tempo.subdivision.left) + Number(measureJson.tempo.subdivision.right);
-              const measure: Measure = this.notationService.createMeasure(measureIndex, measureDurationInBpm, Number(measureJson.timeSignature.numerator), Number(measureJson.timeSignature.denominator));
-              measure.placedChords = new Array();
-              measure.tempo = this.notationService.createDuration(measureDurationInBpm, measureJson.tempo.unit);
-              measure.timeSignature = this.notationService.createTimeSignature(Number(measureJson.timeSignature.numerator), Number(measureJson.timeSignature.denominator));
-              let placedChordIndex: number = 0;
-              measureJson.placedChords.forEach((placedChordJson: any) => {
-                if (placedChordJson.notes && placedChordJson.notes.length > 0) {
-                  const notes: Array<Note> = new Array();
-                  let noteIndex: number = 0;
-                  placedChordJson.notes.forEach((noteJson: any) => {
-                    if (noteJson.pitch) {
-                      const note: Note = this.notationService.createNote(noteIndex, noteJson.pitch.chroma.value, Number(noteJson.pitch.octave.value));
-                      note.pitch.accidental = noteJson.pitch.accidental;
-                      note.dotted = noteJson.dotted;
-                      notes.push(note);
-                      noteIndex++;
-                    }
-                  });
-                  if (!placedChordJson.duration || !placedChordJson.duration.subdivision || !this.is(placedChordJson.duration.subdivision.left) || !this.is(placedChordJson.duration.subdivision.right) || !placedChordJson.duration.unit) {
-                    this.deleteSoundtrack(soundtrack.id);
-                    throw new Error('The placed chord duration subdivistion or unit could not be accessed from the untyped soundtrack.');
-                  }
-                  const durationInBeats: number = Number(placedChordJson.duration.subdivision.left) + Number(placedChordJson.duration.subdivision.right);
-                  const tempoUnit: TempoUnitType = placedChordJson.duration.unit as TempoUnitType;
-                  const velocity: number = parseFloat(placedChordJson.velocity);
-                  let tonality: Tonality;
-                  if (placedChordJson.tonality) {
-                    tonality = new Tonality(Number(placedChordJson.tonality.range), placedChordJson.tonality.firstChroma);
-                  } else {
-                    tonality = DEFAULT_TONALITY_C_MAJOR;
-                  }
-                  const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, durationInBeats, tempoUnit, velocity, tonality, notes);
-                  placedChord.dottedAll = placedChordJson.dottedAll;
-                  if (!measure.placedChords) {
-                    this.deleteSoundtrack(soundtrack.id);
-                    throw new Error('The measure placed chords array could not be accessed from the untyped soundtrack.');
-                  }
-                  measure.placedChords.push(placedChord);
-                  placedChordIndex++;
-                }
-              });
-              measureIndex++;
-              track.measures.push(measure);
-            }
-          });
+        if (this.commonService.isSet(trackJson.name)) {
+          track.name = trackJson.name;
         }
-        trackIndex++;
+        if (this.commonService.isSet(trackJson.displayChordNames)) {
+          track.displayChordNames = trackJson.displayChordNames;
+        }
+        if (this.commonService.isSet(trackJson.channel)) {
+          track.channel = Number(trackJson.channel);
+        }
+        track.measures = new Array();
+        if (this.commonService.isSet(trackJson.measures) && trackJson.measures.length > 0) {
+          for (let measureIndex: number = 0; measureIndex < trackJson.measures.length; measureIndex++) {
+            const measureJson: any = trackJson.measures[measureIndex];
+            if (measureJson.placedChords && measureJson.placedChords.length > 0) {
+              if (this.commonService.isSet(measureJson.tempo) && this.commonService.isSet(measureJson.tempo.subdivision) && this.commonService.isSet(measureJson.tempo.subdivision.left) && this.commonService.isSet(measureJson.tempo.subdivision.right)) {
+                const measureDurationInBpm: number = Number(measureJson.tempo.subdivision.left) + Number(measureJson.tempo.subdivision.right);
+                if (this.commonService.isSet(measureJson.timeSignature) && this.commonService.isSet(measureJson.timeSignature.numerator) && this.commonService.isSet(measureJson.timeSignature.denominator)) {
+                  const measure: Measure = this.notationService.createMeasure(measureIndex, measureDurationInBpm, Number(measureJson.timeSignature.numerator), Number(measureJson.timeSignature.denominator));
+                  if (this.commonService.isSet(measureJson.tempo) && this.commonService.isSet(measureJson.tempo.unit)) {
+                    measure.tempo = this.notationService.createDuration(measureDurationInBpm, measureJson.tempo.unit);
+                  }
+                  measure.timeSignature = this.notationService.createTimeSignature(Number(measureJson.timeSignature.numerator), Number(measureJson.timeSignature.denominator));
+                  measure.placedChords = new Array();
+                  if (this.commonService.isSet(measureJson.placedChords) && measureJson.placedChords.length > 0) {
+                    for (let placedChordIndex: number = 0; placedChordIndex < measureJson.placedChords.length; placedChordIndex++) {
+                      const placedChordJson: any = measureJson.placedChords[placedChordIndex];
+                      if (this.commonService.isSet(placedChordJson.notes) && placedChordJson.notes.length > 0) {
+                        const notes: Array<Note> = new Array();
+                        let noteIndex: number = 0;
+                        for (let noteIndex: number = 0; noteIndex < placedChordJson.notes.length; noteIndex++) {
+                          const noteJson: any = placedChordJson.notes[noteIndex];
+                          if (this.commonService.isSet(noteJson.pitch) && this.commonService.isSet(noteJson.pitch.chroma) && this.commonService.isSet(noteJson.pitch.chroma.value) && this.commonService.isSet(noteJson.pitch.octave) && this.commonService.isSet(noteJson.pitch.octave.value)) {
+                            const note: Note = this.notationService.createNote(noteIndex, noteJson.pitch.chroma.value, Number(noteJson.pitch.octave.value));
+                            if (this.commonService.isSet(noteJson.pitch.accidental)) {
+                              note.pitch.accidental = noteJson.pitch.accidental;
+                            }
+                            if (this.commonService.isSet(noteJson.dotted)) {
+                              note.dotted = noteJson.dotted;
+                            }
+                            notes.push(note);
+                          }
+                        }
+                        let durationInBeats: number;
+                        if (this.commonService.isSet(placedChordJson.duration) && this.commonService.isSet(placedChordJson.duration.subdivision) && this.commonService.isSet(placedChordJson.duration.subdivision.left) && this.commonService.isSet(placedChordJson.duration.subdivision.right)) {
+                          durationInBeats = Number(placedChordJson.duration.subdivision.left) + Number(placedChordJson.duration.subdivision.right);
+                        } else {
+                          durationInBeats = Subdivisions.HUNDERD_TWENTY_EIGHTH;
+                        }
+                        let tempoUnit: TempoUnitType;
+                        if (this.commonService.isSet(placedChordJson.duration) && this.commonService.isSet(placedChordJson.duration.unit)) {
+                          tempoUnit = placedChordJson.duration.unit as TempoUnitType;
+                        } else {
+                          tempoUnit = TempoUnit.DUPLE;
+                        }
+                        let velocity: number;
+                        if (this.commonService.isSet(placedChordJson.velocity)) {
+                          velocity = parseFloat(placedChordJson.velocity);
+                        } else {
+                          velocity = DEFAULT_VELOCITY_MEDIUM;
+                        }
+                        let tonality: Tonality;
+                        if (this.commonService.isSet(placedChordJson.tonality) && this.commonService.isSet(placedChordJson.tonality.range) && this.commonService.isSet(placedChordJson.tonality.firstChroma)) {
+                          tonality = new Tonality(Number(placedChordJson.tonality.range), placedChordJson.tonality.firstChroma);
+                        } else {
+                          tonality = DEFAULT_TONALITY_C_MAJOR;
+                        }
+                        const placedChord: PlacedChord = this.notationService.createPlacedChord(placedChordIndex, durationInBeats, tempoUnit, velocity, tonality, notes);
+                        placedChord.dottedAll = placedChordJson.dottedAll;
+                        if (measure.placedChords) {
+                          measure.placedChords.push(placedChord);
+                        }
+                      }
+                    }
+                  }
+                  track.measures.push(measure);
+                }
+              }
+            }
+          }
+        }
         soundtrack.tracks.push(track);
-      });
+      }
     }
     return soundtrack;
   }
