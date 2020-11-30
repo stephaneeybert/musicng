@@ -18,7 +18,7 @@ const NAME_PREFIX_SOUNDTRACK: string = 'sheet-soundtrack-';
 const NAME_PREFIX_DEVICE: string = 'sheet-device-';
 
 const VEXFLOW_SHEET_WIDTH_RATIO: number = 0.9;
-const VEXFLOW_STAVE_HEIGHT: number = 120;
+const VEXFLOW_STAVE_HEIGHT: number = 140;
 const VEXFLOW_OCTAVE_SEPARATOR: string = '/';
 const VEXFLOW_REST_NOTE: string = 'B/4';
 const VEXFLOW_ACCIDENTAL_SHARP: string = '#';
