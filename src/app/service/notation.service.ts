@@ -239,7 +239,7 @@ export class NotationService {
   }
 
   private createSubdivision(duration: number): Subdivision {
-    const subdivision: Subdivision | undefined = TEMPO_SUBDIVISIONS.get(Number(duration));
+    const subdivision: Subdivision | undefined = TEMPO_SUBDIVISIONS.get(duration);
     if (subdivision) {
       return subdivision;
     } else {
