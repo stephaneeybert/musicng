@@ -12,4 +12,12 @@ export class Chroma {
     }
   }
 
+  public getChromaIndex(): number {
+    const index: number = Chroma.CHROMAS_ALPHABETICAL.indexOf(this.value);
+    if (index < 0) {
+      throw new Error('A chroma could not be found witht the value ' + this.value);
+    }
+    return index;
+  }
+
 }

@@ -12,6 +12,7 @@ import { Track } from '@app/model/track';
 import { TranslateService } from '@ngx-translate/core';
 import { MaterialService } from '@app/core/service/material.service';
 import { TempoUnitType } from '@app/model/tempo-unit';
+import { SettingsService } from '@app/views/settings/settings.service';
 
 const NAME_PREFIX_SOUNDTRACK: string = 'sheet-soundtrack-';
 const NAME_PREFIX_DEVICE: string = 'sheet-device-';
@@ -56,6 +57,7 @@ export class SheetService {
   constructor(
     private notationService: NotationService,
     private translateService: TranslateService,
+    private settingsService: SettingsService,
     private materialService: MaterialService
   ) { }
 
@@ -75,6 +77,8 @@ export class SheetService {
     let sheetHeight: number;
     sheetWidth = displayWidth;
     sheetHeight = this.getNbStaves(animatedStave, soundtrack) * VEXFLOW_STAVE_HEIGHT;
+
+    const showAllNotes: boolean = this.settingsService.getSettings().showAllNotes;
 
     if (soundtrack.sheetContext != null) {
       this.clearSVGContext(soundtrack);
@@ -112,9 +116,16 @@ export class SheetService {
                     this.addDotOnNotes(placedChord);
                     this.styleNotes(placedChord);
 
-                    if (track.displayChordNames) {
-                      const noteName: string = this.renderChordName(placedChord, previousNoteName);
+                    if (showAllNotes) {
+                      const noteNames: Array<string> = this.renderAllChordNoteNamesInSyllabic(placedChord);
+                      if (noteNames.length > 0) {
+                        this.addAllChordNames(placedChord, noteNames);
+                        previousNoteName = noteNames[noteNames.length - 1];
+                      }
+                    } else if (track.displayChordNames) {
+                      const noteName: string = this.renderChordNoteNameInSyllabic(placedChord);
                       if (noteName !== previousNoteName) {
+                        this.addChordName(placedChord, noteName);
                         previousNoteName = noteName;
                       }
                     }
@@ -379,8 +390,19 @@ export class SheetService {
     }
   }
 
-  private renderChordNoteInSyllabic(placedChord: PlacedChord): string {
+  private renderChordNoteNameInSyllabic(placedChord: PlacedChord): string {
     return this.notationService.chromaLetterToChromaSyllabic(placedChord.renderFirstNoteChroma());
+  }
+
+  private renderAllChordNoteNamesInSyllabic(placedChord: PlacedChord): Array<string> {
+    const noteNames: Array<string> = new Array();
+    const sortedNotes: Array<Note> = placedChord.getNotesSortedByChromaAndOctave();
+    for (let i: number = 0; i < sortedNotes.length; i++) {
+      const reverse: number = placedChord.notes.length - i - 1;
+      const note: Note = sortedNotes[reverse];
+      noteNames.push(this.notationService.chromaLetterToChromaSyllabic(note.renderChroma()));
+    }
+    return noteNames;
   }
 
   private getNoteFrequency(note: Note): number {
@@ -474,14 +496,18 @@ export class SheetService {
     return nbStaves;
   }
 
-  private renderChordName(placedChord: PlacedChord, previousNoteName: string): string {
-    const noteName: string = this.renderChordNoteInSyllabic(placedChord);
-    if (noteName !== previousNoteName) {
-      if (placedChord.staveNote) {
-        placedChord.staveNote.addAnnotation(0, this.renderAnnotation(noteName));
+  private addChordName(placedChord: PlacedChord, noteName: string): void {
+    if (placedChord.staveNote) {
+      placedChord.staveNote.addAnnotation(0, this.renderAnnotation(noteName));
+    }
+  }
+
+  private addAllChordNames(placedChord: PlacedChord, noteNames: Array<string>): void {
+    if (placedChord.staveNote) {
+      for (let i: number = 0; i < noteNames.length; i++) {
+        placedChord.staveNote.addAnnotation(0, this.renderAnnotation(noteNames[i]));
       }
     }
-    return noteName;
   }
 
   private addAccidentalOnNotes(placedChord: PlacedChord): void {

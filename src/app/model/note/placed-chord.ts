@@ -41,16 +41,26 @@ export class PlacedChord {
     }
   }
 
-  public getSortedNotes(): Array<Note> {
+  public getNotesSortedByIndex(): Array<Note> {
     return this.notes.sort((noteA: Note, noteB: Note) => {
       return noteA.index - noteB.index;
+    });
+  }
+
+  public getNotesSortedByChromaAndOctave(): Array<Note> {
+    return this.notes.sort((noteA: Note, noteB: Note) => {
+      if (noteA.pitch.octave.value != noteB.pitch.octave.value) {
+        return noteA.pitch.octave.value - noteB.pitch.octave.value;
+      } else {
+        return noteA.pitch.chroma.getChromaIndex() - noteB.pitch.chroma.getChromaIndex();
+      }
     });
   }
 
   public getFirstNote(): Note {
     let abc: Note;
     if (this.notes != null && this.notes.length > 0) {
-      const sortedNotes: Array<Note> = this.getSortedNotes();
+      const sortedNotes: Array<Note> = this.getNotesSortedByIndex();
       return sortedNotes[0];
     }
     throw new Error('The placed chord had no note.');
@@ -65,14 +75,14 @@ export class PlacedChord {
   }
 
   public getSortedNotesChromas(): Array<string> {
-    return this.getSortedNotes()
+    return this.getNotesSortedByIndex()
     .map((note: Note) => {
       return note.renderChroma();
     });
   }
 
   public renderAbc(): Array<string> {
-    const sortedNotes: Array<string> = this.getSortedNotes()
+    const sortedNotes: Array<string> = this.getNotesSortedByIndex()
     .map((note: Note) => {
       return note.renderAbc();
     });

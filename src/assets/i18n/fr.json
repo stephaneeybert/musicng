@@ -178,6 +178,10 @@
         "showKeyboard": {
           "label": "Afficher le clavier",
           "tip": "Un clavier peut être affiché au dessus de la partition de la piste."
+        },
+        "showAllNotes": {
+          "label": "Afficher toutes les notes",
+          "tip": "Afficher toutes les notes avec leurs noms sur la partition."
         }
       }
     },

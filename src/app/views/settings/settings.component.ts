@@ -92,6 +92,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
             existingSettings.generateVelocityBass = settingsEdition.generateVelocityBass;
             existingSettings.animatedStave = settingsEdition.animatedStave;
             existingSettings.showKeyboard = settingsEdition.showKeyboard;
+            existingSettings.showAllNotes = settingsEdition.showAllNotes;
             this.settingsStore.setAndStoreSettings(existingSettings);
 
             const message: string = this.translateService.instant('settings.message.saved');

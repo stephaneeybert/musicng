@@ -105,6 +105,9 @@ export class SettingsStorageService extends LocalStorageService<Settings> {
     if (this.commonService.isSet(settingJson.showKeyboard)) {
       settings.showKeyboard = settingJson.showKeyboard;
     }
+    if (this.commonService.isSet(settingJson.showAllNotes)) {
+      settings.showAllNotes = settingJson.showAllNotes;
+    }
     return settings;
   }
 
