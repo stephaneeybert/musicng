@@ -180,7 +180,7 @@
           "tip": "A keyboard can be showed above the track stave."
         },
         "showAllNotes": {
-          "label": "Show all the notes",
+          "label": "Show the names of all the notes",
           "tip": "Show all the notes with their names on the stave."
         }
       }
