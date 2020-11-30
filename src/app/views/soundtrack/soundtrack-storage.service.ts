@@ -8,7 +8,7 @@ import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { CommonService, LocalStorageService } from '@stephaneeybert/lib-core';
 import { Tonality } from '@app/model/note/tonality';
-import { DEFAULT_TONALITY_C_MAJOR, DEFAULT_VELOCITY_MEDIUM } from '@app/service/notation.constant ';
+import { DEFAULT_CHORD_DURATION, DEFAULT_TONALITY_C_MAJOR, DEFAULT_VELOCITY_MEDIUM } from '@app/service/notation.constant ';
 import { Subdivisions } from '@app/model/note/duration/subdivisions';
 
 const PREFIX: string = 'musicng-soundtrack-';
@@ -106,7 +106,7 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                         if (this.commonService.isSet(placedChordJson.duration) && this.commonService.isSet(placedChordJson.duration.value)) {
                           durationInBeats = Number(placedChordJson.duration.value);
                         } else {
-                          durationInBeats = Subdivisions.HUNDERD_TWENTY_EIGHTH;
+                          durationInBeats = DEFAULT_CHORD_DURATION;
                         }
                         let tempoUnit: TempoUnitType;
                         if (this.commonService.isSet(placedChordJson.duration) && this.commonService.isSet(placedChordJson.duration.unit)) {

@@ -1,6 +1,4 @@
 import { TempoUnit } from '@app/model/tempo-unit';
-import { Subdivisions } from '@app/model/note/duration/subdivisions';
-import { Subdivision } from '@app/model/note/duration/subdivision';
 import { Tonality } from '@app/model/note/tonality';
 
 export const DEFAULT_VELOCITY_SOFTER: number = 10;
@@ -59,22 +57,3 @@ export const NOTE_RANGE_INTERVALS: Map<NOTE_RANGE, Array<number>> = new Map([
 export const DEFAULT_TONALITY_C_MAJOR: Tonality = new Tonality(NOTE_RANGE.MAJOR, 'C');
 
 export const MIDI_FILE_SUFFIX: string = 'mid';
-
-export const TEMPO_SUBDIVISIONS: Map<string, Subdivision> = new Map([
-  [String(Subdivisions.HUNDERD_TWENTY_EIGHTH) + CHORD_DURATION_DOTTED, Subdivision.DOTTED_HUNDERD_TWENTY_EIGHTH],
-  [String(Subdivisions.HUNDERD_TWENTY_EIGHTH), Subdivision.HUNDERD_TWENTY_EIGHTH],
-  [String(Subdivisions.SIXTY_FOURTH) + CHORD_DURATION_DOTTED, Subdivision.DOTTED_SIXTY_FOURTH],
-  [String(Subdivisions.SIXTY_FOURTH), Subdivision.SIXTY_FOURTH],
-  [String(Subdivisions.THIRTY_SECONDTH) + CHORD_DURATION_DOTTED, Subdivision.DOTTED_THIRTY_SECOND],
-  [String(Subdivisions.THIRTY_SECONDTH), Subdivision.THIRTY_SECONDTH],
-  [String(Subdivisions.SIXTEENTH) + CHORD_DURATION_DOTTED, Subdivision.DOTTED_SIXTEENTH],
-  [String(Subdivisions.SIXTEENTH), Subdivision.SIXTEENTH],
-  [String(Subdivisions.EIGHTH) + CHORD_DURATION_DOTTED, Subdivision.DOTTED_EIGHTH],
-  [String(Subdivisions.EIGHTH), Subdivision.EIGHTH],
-  [String(Subdivisions.QUARTER) + CHORD_DURATION_DOTTED, Subdivision.DOTTED_QUARTER],
-  [String(Subdivisions.QUARTER), Subdivision.QUARTER],
-  [String(Subdivisions.HALF) + CHORD_DURATION_DOTTED, Subdivision.DOTTED_HALF],
-  [String(Subdivisions.HALF), Subdivision.HALF],
-  [String(Subdivisions.WHOLE), Subdivision.WHOLE],
-  [String(Subdivisions.NONE), Subdivision.NONE]
-]);

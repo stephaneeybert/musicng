@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Chroma } from '@app/model/note/pitch/chroma';
 import { Octave } from '@app/model/note/pitch/octave';
-import { Subdivision } from '@app/model/note/duration/subdivision';
 import { Duration } from '@app/model/note/duration/duration';
 import { Note } from '@app/model/note/note';
 import { Pitch } from '@app/model/note/pitch/pitch';
@@ -9,7 +8,7 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { DEFAULT_TONALITY_C_MAJOR, TEMPO_SUBDIVISIONS } from './notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 const CHORD_SEPARATOR: string = ' ';
@@ -235,15 +234,6 @@ export class NotationService {
 
   private createOctave(value: number): Octave {
     return new Octave(value);
-  }
-
-  private createSubdivision(duration: string): Subdivision {
-    const subdivision: Subdivision | undefined = TEMPO_SUBDIVISIONS.get(duration);
-    if (subdivision) {
-      return subdivision;
-    } else {
-      throw new Error('Unknown subdivision for the duration: ' + duration);
-    }
   }
 
   public createDuration(duration: number, tempoUnit: TempoUnitType): Duration {
