@@ -21,6 +21,12 @@ const VEXFLOW_SHEET_WIDTH_RATIO: number = 0.9;
 const VEXFLOW_STAVE_HEIGHT: number = 120;
 const VEXFLOW_OCTAVE_SEPARATOR: string = '/';
 const VEXFLOW_REST_NOTE: string = 'B/4';
+const VEXFLOW_ACCIDENTAL_SHARP: string = '#';
+const VEXFLOW_ACCIDENTAL_DOUBLE_SHARP: string = '##';
+const VEXFLOW_ACCIDENTAL_TRIPLE_SHARP: string = '###'; // TODO See if Vexflow now supports triples
+const VEXFLOW_ACCIDENTAL_FLAT: string = 'b';
+const VEXFLOW_ACCIDENTAL_DOUBLE_FLAT: string = 'bb';
+const VEXFLOW_ACCIDENTAL_TRIPLE_FLAT: string = 'bbb'; // TODO See if Vexflow now supports triples
 const VEXFLOW_REST_SUFFIX: string = 'r';
 const VEXFLOW_TIME_SIGNATURE_SEPARATOR: string = '/';
 const VEXFLOW_NOTE_COLOR: string = 'black';
@@ -515,6 +521,23 @@ export class SheetService {
       const staveNote: Vex.Flow.StaveNote = placedChord.staveNote;
       let i: number = 0;
       placedChord.notes.forEach((note: Note) => {
+        if (note.isTripleSharp()) {
+          // TODO See if Vexflow now supports triples
+          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_DOUBLE_SHARP));
+          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_SHARP));
+        } else if (note.isDoubleSharp()) {
+          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_DOUBLE_SHARP));
+        } else if (note.isSharp()) {
+          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_SHARP));
+        } else if (note.isTripleFlat()) {
+          // TODO See if Vexflow now supports triples
+          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_DOUBLE_FLAT));
+          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_FLAT));
+        } else if (note.isDoubleFlat()) {
+          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_DOUBLE_FLAT));
+        } else if (note.isFlat()) {
+          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_FLAT));
+        }
         if (note.pitch.accidental) {
           staveNote.addAccidental(i, new Vex.Flow.Accidental(note.pitch.accidental));
         }
