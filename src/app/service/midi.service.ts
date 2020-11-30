@@ -340,7 +340,7 @@ export class MidiService {
                 if (currentNoteOnEvent != null) {
                   const deltaInTicks: number = this.delta(controlChangeEvent.time, currentNoteOnEvent.time);
                   if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, currentTicksPerMeasure, measureIndex)) {
-                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicroSecondsPerBeat), TempoUnit.DUPLE);
+                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicroSecondsPerBeat), TempoUnit.NOTE);
                     currentMeasure = new Measure(measureIndex, tempo, currentTimeSignature);
                     currentMeasure.placedChords = new Array<PlacedChord>();
                     measures.push(currentMeasure);
@@ -373,7 +373,7 @@ export class MidiService {
                 if (currentNoteOnEvent != null) {
                   const deltaInTicks: number = this.delta(noteOffEvent.time, currentNoteOnEvent.time);
                   if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, currentTicksPerMeasure, measureIndex)) {
-                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicroSecondsPerBeat), TempoUnit.DUPLE);
+                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicroSecondsPerBeat), TempoUnit.NOTE);
                     currentMeasure = new Measure(measureIndex, tempo, currentTimeSignature);
                     currentMeasure.placedChords = new Array<PlacedChord>();
                     measures.push(currentMeasure);

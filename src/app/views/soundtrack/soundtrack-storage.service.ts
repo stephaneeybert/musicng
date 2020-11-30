@@ -113,7 +113,7 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                         if (this.commonService.isSet(placedChordJson.duration) && this.commonService.isSet(placedChordJson.duration.unit)) {
                           tempoUnit = placedChordJson.duration.unit as TempoUnitType;
                         } else {
-                          tempoUnit = TempoUnit.DUPLE;
+                          tempoUnit = TempoUnit.NOTE;
                         }
                         let velocity: number;
                         if (this.commonService.isSet(placedChordJson.velocity)) {

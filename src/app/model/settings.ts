@@ -33,7 +33,7 @@ export class Settings {
     this.generateTimeSignatureNumerator = DEFAULT_TIME_SIGNATURE_NUMERATOR;
     this.generateTimeSignatureDenominator = DEFAULT_TIME_SIGNATURE_DENOMINATOR;
     this.generateChordDuration = DEFAULT_CHORD_DURATION;
-    this.generateChordDurationUnit = TempoUnit.DUPLE;
+    this.generateChordDurationUnit = TempoUnit.NOTE;
     this.generateNoteOctave = DEFAULT_NOTE_OCTAVE;
     this.generateChordWidth = DEFAULT_CHORD_WIDTH;
     this.generateReverseDissimilarChord = false;

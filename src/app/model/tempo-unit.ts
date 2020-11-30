@@ -3,7 +3,7 @@ export enum TempoUnit {
   HERTZ = 'hz',
   TICK = 'i',
   SECOND = 's',
-  DUPLE = 'n',
+  NOTE = 'n',
   TRIPLET = 't',
   MEASURE = 'm'
 

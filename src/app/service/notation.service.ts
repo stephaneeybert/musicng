@@ -57,7 +57,7 @@ export class NotationService {
 
   public createMeasure(index: number, tempoInBpm: number, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
     const timeSignature: TimeSignature = this.createTimeSignature(timeSignatureNumerator, timeSignatureDenominator);
-    const measure: Measure = new Measure(index, this.createDuration(tempoInBpm, TempoUnit.DUPLE), timeSignature);
+    const measure: Measure = new Measure(index, this.createDuration(tempoInBpm, TempoUnit.NOTE), timeSignature);
     return measure;
   }
 
@@ -101,7 +101,7 @@ export class NotationService {
     const chordNotes: string = chordAndDuration[0];
     const chordDurationInBeats: number = Number(chordAndDuration[1]);
     const notes: Array<Note> = this.parseTextNotes(chordNotes);
-    const placedChord: PlacedChord = this.createPlacedChord(index, chordDurationInBeats, TempoUnit.DUPLE, velocity, DEFAULT_TONALITY_C_MAJOR, notes);
+    const placedChord: PlacedChord = this.createPlacedChord(index, chordDurationInBeats, TempoUnit.NOTE, velocity, DEFAULT_TONALITY_C_MAJOR, notes);
     return placedChord;
   }
 
@@ -211,7 +211,7 @@ export class NotationService {
 
   public createLastOfTrackPlacedChord(index: number): PlacedChord {
     const endNote: Note = this.createNote(index, NOTE_END_OF_TRACK, NOTE_END_OF_TRACK_OCTAVE);
-    return this.createPlacedChord(index, NOTE_END_OF_TRACK_DURATION, TempoUnit.DUPLE, NOTE_END_OF_TRACK_VELOCITY, DEFAULT_TONALITY_C_MAJOR, [endNote]);
+    return this.createPlacedChord(index, NOTE_END_OF_TRACK_DURATION, TempoUnit.NOTE, NOTE_END_OF_TRACK_VELOCITY, DEFAULT_TONALITY_C_MAJOR, [endNote]);
   }
 
   public buildEndOfTrackNote(): string {
@@ -219,7 +219,7 @@ export class NotationService {
   }
 
   public createDefaultTempo(): Duration {
-    return this.createDuration(DEFAULT_TEMPO_BPM_VALUE, TempoUnit.DUPLE);
+    return this.createDuration(DEFAULT_TEMPO_BPM_VALUE, TempoUnit.NOTE);
   }
 
   public createDefaultTimeSignature(): TimeSignature {
@@ -227,7 +227,7 @@ export class NotationService {
   }
 
   public isBpmTempoUnit(duration: Duration) {
-    return duration && duration.unit === TempoUnit.DUPLE;
+    return duration && duration.unit === TempoUnit.NOTE;
   }
 
   private createChroma(value: string): Chroma {

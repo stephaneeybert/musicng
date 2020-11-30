@@ -36,7 +36,7 @@ export class GeneratorService {
       noteIndex++;
       return note;
     });
-    return this.notationService.createPlacedChord(placedChordIndex, chordDuration, TempoUnit.DUPLE, velocity, tonality, notes);
+    return this.notationService.createPlacedChord(placedChordIndex, chordDuration, TempoUnit.NOTE, velocity, tonality, notes);
   }
 
   private createMeasure(index: number): Measure {
@@ -479,7 +479,7 @@ export class GeneratorService {
         if (secondMelodyChroma == firstMelodyChroma && secondMelodyOctave == firstMelodyOctave) {
           // If the second note is the same as the fisrt one then have only one chord
           // but with a duration that is twice as long
-          melodyChords[melodyChords.length - 1].duration = this.notationService.createDuration(chordDuration, TempoUnit.DUPLE);
+          melodyChords[melodyChords.length - 1].duration = this.notationService.createDuration(chordDuration, TempoUnit.NOTE);
         } else {
           placedChord = this.createNotesAndPlacedChord(secondMelodyOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, [secondMelodyChroma]);
           melodyChords.push(placedChord);
