@@ -1,6 +1,10 @@
-When doing another soundtrack download, init the progress baisser
+When doing another soundtrack download, reinit the progress bar
 
-When playing the soundtrack, show a progress bar
+When playing the soundtrack show a progress bar
+
+Pouvoir changer la tonalité d'une mesure en cliquant sur la partition
+
+
 
 Add a date field
 // dateOfPublication: new FormControl(new Date()),
