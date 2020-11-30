@@ -7,7 +7,7 @@ export const DEFAULT_VELOCITY_SOFTER: number = 10;
 export const DEFAULT_VELOCITY_MEDIUM: number = 50;
 export const DEFAULT_VELOCITY_LOUDER: number = 100;
 export const DEFAULT_TIME_SIGNATURES: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-export const DEFAULT_TEMPO_BPM: number = 16;
+export const DEFAULT_TEMPO_BPM: number = 120;
 export const DEFAULT_CHORD_WIDTH: number = 3;
 export const DEFAULT_CHORD_DURATION: number = 4;
 export const DEFAULT_NOTE_OCTAVE: number = 5;
@@ -26,6 +26,8 @@ export const CHORD_DURATION_UNITS: Map<TempoUnit, string> = new Map([
   [TempoUnit.TRIPLET, 't'],
   [TempoUnit.MEASURE, 'm']
 ]);
+
+export const CHORD_DURATION_DOTTED: string = '.';
 
 // An interval represents the distance between two notes
 // The interval between two notes is a half-tone
@@ -58,21 +60,21 @@ export const DEFAULT_TONALITY_C_MAJOR: Tonality = new Tonality(NOTE_RANGE.MAJOR,
 
 export const MIDI_FILE_SUFFIX: string = 'mid';
 
-export const TEMPO_SUBDIVISIONS: Map<number, Subdivision> = new Map([
-  [Subdivisions.HUNDERD_TWENTY_EIGHTH + Subdivisions.TWO_HUNDRED_FIFTY_SIXTH, Subdivision.DOTTED_HUNDERD_TWENTY_EIGHTH],
-  [Subdivisions.HUNDERD_TWENTY_EIGHTH, Subdivision.HUNDERD_TWENTY_EIGHTH],
-  [Subdivisions.SIXTY_FOURTH + Subdivisions.HUNDERD_TWENTY_EIGHTH, Subdivision.DOTTED_SIXTY_FOURTH],
-  [Subdivisions.SIXTY_FOURTH, Subdivision.SIXTY_FOURTH],
-  [Subdivisions.THIRTY_SECONDTH + Subdivisions.SIXTY_FOURTH, Subdivision.DOTTED_THIRTY_SECOND],
-  [Subdivisions.THIRTY_SECONDTH, Subdivision.THIRTY_SECONDTH],
-  [Subdivisions.SIXTEENTH + Subdivisions.THIRTY_SECONDTH, Subdivision.DOTTED_SIXTEENTH],
-  [Subdivisions.SIXTEENTH, Subdivision.SIXTEENTH],
-  [Subdivisions.EIGHTH + Subdivisions.SIXTEENTH, Subdivision.DOTTED_EIGHTH],
-  [Subdivisions.EIGHTH, Subdivision.EIGHTH],
-  [Subdivisions.QUARTER + Subdivisions.EIGHTH, Subdivision.DOTTED_QUARTER],
-  [Subdivisions.QUARTER, Subdivision.QUARTER],
-  [Subdivisions.HALF + Subdivisions.QUARTER, Subdivision.DOTTED_HALF],
-  [Subdivisions.HALF, Subdivision.HALF],
-  [Subdivisions.WHOLE, Subdivision.WHOLE],
-  [Subdivisions.NONE, Subdivision.NONE]
+export const TEMPO_SUBDIVISIONS: Map<string, Subdivision> = new Map([
+  [String(Subdivisions.HUNDERD_TWENTY_EIGHTH) + CHORD_DURATION_DOTTED, Subdivision.DOTTED_HUNDERD_TWENTY_EIGHTH],
+  [String(Subdivisions.HUNDERD_TWENTY_EIGHTH), Subdivision.HUNDERD_TWENTY_EIGHTH],
+  [String(Subdivisions.SIXTY_FOURTH) + CHORD_DURATION_DOTTED, Subdivision.DOTTED_SIXTY_FOURTH],
+  [String(Subdivisions.SIXTY_FOURTH), Subdivision.SIXTY_FOURTH],
+  [String(Subdivisions.THIRTY_SECONDTH) + CHORD_DURATION_DOTTED, Subdivision.DOTTED_THIRTY_SECOND],
+  [String(Subdivisions.THIRTY_SECONDTH), Subdivision.THIRTY_SECONDTH],
+  [String(Subdivisions.SIXTEENTH) + CHORD_DURATION_DOTTED, Subdivision.DOTTED_SIXTEENTH],
+  [String(Subdivisions.SIXTEENTH), Subdivision.SIXTEENTH],
+  [String(Subdivisions.EIGHTH) + CHORD_DURATION_DOTTED, Subdivision.DOTTED_EIGHTH],
+  [String(Subdivisions.EIGHTH), Subdivision.EIGHTH],
+  [String(Subdivisions.QUARTER) + CHORD_DURATION_DOTTED, Subdivision.DOTTED_QUARTER],
+  [String(Subdivisions.QUARTER), Subdivision.QUARTER],
+  [String(Subdivisions.HALF) + CHORD_DURATION_DOTTED, Subdivision.DOTTED_HALF],
+  [String(Subdivisions.HALF), Subdivision.HALF],
+  [String(Subdivisions.WHOLE), Subdivision.WHOLE],
+  [String(Subdivisions.NONE), Subdivision.NONE]
 ]);

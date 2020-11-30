@@ -7,8 +7,8 @@ import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
+import { DEFAULT_TEMPO_BPM } from './notation.constant ';
 
-const DEFAULT_TEMPO_BPM_VALUE: number = 128;
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 2;
 const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 const DEFAULT_VELOCITY: number = 1;
@@ -45,7 +45,7 @@ export class MelodyService {
       'E5/4' + ' ' + endOfTrackNote];
 
     const soundtrackName: string = 'Demo soundtrack';
-    const measures: Array<Measure> = this.notationService.parseMeasures(textMeasures, DEFAULT_TEMPO_BPM_VALUE, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_VELOCITY);
+    const measures: Array<Measure> = this.notationService.parseMeasures(textMeasures, DEFAULT_TEMPO_BPM, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_VELOCITY);
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(soundtrackName, soundtrackName);
     const melodyTrack: Track = soundtrack.addTrack(measures);
     melodyTrack.displayChordNames = true;

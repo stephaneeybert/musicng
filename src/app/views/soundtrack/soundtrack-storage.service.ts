@@ -75,12 +75,12 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
           for (let measureIndex: number = 0; measureIndex < trackJson.measures.length; measureIndex++) {
             const measureJson: any = trackJson.measures[measureIndex];
             if (measureJson.placedChords && measureJson.placedChords.length > 0) {
-              if (this.commonService.isSet(measureJson.tempo) && this.commonService.isSet(measureJson.tempo.subdivision) && this.commonService.isSet(measureJson.tempo.subdivision.left) && this.commonService.isSet(measureJson.tempo.subdivision.right)) {
-                const measureDurationInBpm: number = Number(measureJson.tempo.subdivision.left) + Number(measureJson.tempo.subdivision.right);
+              if (this.commonService.isSet(measureJson.tempo) && this.commonService.isSet(measureJson.tempo)) {
+                const measureDurationInBpm: number = Number(measureJson.tempo);
                 if (this.commonService.isSet(measureJson.timeSignature) && this.commonService.isSet(measureJson.timeSignature.numerator) && this.commonService.isSet(measureJson.timeSignature.denominator)) {
                   const measure: Measure = this.notationService.createMeasure(measureIndex, measureDurationInBpm, Number(measureJson.timeSignature.numerator), Number(measureJson.timeSignature.denominator));
-                  if (this.commonService.isSet(measureJson.tempo) && this.commonService.isSet(measureJson.tempo.unit)) {
-                    measure.tempo = this.notationService.createDuration(measureDurationInBpm, measureJson.tempo.unit);
+                  if (this.commonService.isSet(measureJson.tempo)) {
+                    measure.tempo = measureDurationInBpm;
                   }
                   measure.timeSignature = this.notationService.createTimeSignature(Number(measureJson.timeSignature.numerator), Number(measureJson.timeSignature.denominator));
                   measure.placedChords = new Array();
@@ -103,8 +103,8 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                           }
                         }
                         let durationInBeats: number;
-                        if (this.commonService.isSet(placedChordJson.duration) && this.commonService.isSet(placedChordJson.duration.subdivision) && this.commonService.isSet(placedChordJson.duration.subdivision.left) && this.commonService.isSet(placedChordJson.duration.subdivision.right)) {
-                          durationInBeats = Number(placedChordJson.duration.subdivision.left) + Number(placedChordJson.duration.subdivision.right);
+                        if (this.commonService.isSet(placedChordJson.duration) && this.commonService.isSet(placedChordJson.duration.value)) {
+                          durationInBeats = Number(placedChordJson.duration.value);
                         } else {
                           durationInBeats = Subdivisions.HUNDERD_TWENTY_EIGHTH;
                         }

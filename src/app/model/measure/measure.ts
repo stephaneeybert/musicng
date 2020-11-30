@@ -7,13 +7,13 @@ export class Measure {
 
   index: number;
   // The tempo is the speed usually expressed as the number of beats in a minute
-  tempo: Duration;
+  tempo: number;
   timeSignature: TimeSignature;
   placedChords?: Array<PlacedChord>;
   sheetStave?: vexflow.Flow.Stave;
   sheetVoice?: vexflow.Flow.Voice;
 
-  constructor(index: number, tempo: Duration, timeSignature: TimeSignature) {
+  constructor(index: number, tempo: number, timeSignature: TimeSignature) {
     this.index = index;
     this.tempo = tempo;
     this.timeSignature = timeSignature;
@@ -42,7 +42,7 @@ export class Measure {
   }
 
   public getTempo(): number {
-    return this.tempo.renderValue();
+    return this.tempo;
   }
 
   public getNbBeats(): number {
@@ -62,7 +62,7 @@ export class Measure {
   }
 
   public createWithNewTimeSignature(index: number, numerator: number, denominator: number): Measure {
-    return new Measure(index, new Duration(this.tempo.subdivision, this.tempo.unit), new TimeSignature(numerator, denominator));
+    return new Measure(index, this.tempo, new TimeSignature(numerator, denominator));
   }
 
   public createWithNewNumerator(index: number, numerator: number): Measure {

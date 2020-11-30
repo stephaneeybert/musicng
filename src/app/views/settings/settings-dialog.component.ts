@@ -1,10 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { DEFAULT_TIME_SIGNATURES, CHORD_DURATION_UNITS, TEMPO_SUBDIVISIONS, HALF_TONE_CHROMAS } from '@app/service/notation.constant ';
+import { DEFAULT_TIME_SIGNATURES, CHORD_DURATION_UNITS, HALF_TONE_CHROMAS } from '@app/service/notation.constant ';
 import { TempoUnitType } from '@app/model/tempo-unit';
 import { Settings } from '@app/model/settings';
-import { Subdivision } from '@app/model/note/duration/subdivision';
 
 type TimeSignatureType = {
   id: number,
@@ -13,11 +12,6 @@ type TimeSignatureType = {
 
 type ChordDurationUnitType = {
   id: TempoUnitType,
-  name: string
-};
-
-type TempoSubdivisionType = {
-  id: number,
   name: string
 };
 
@@ -36,7 +30,6 @@ export class SettingsDialogComponent implements OnInit {
   form!: FormGroup;
   timeSignatures: Array<TimeSignatureType> = new Array();
   chordDurationUnits: Array<ChordDurationUnitType> = new Array();
-  tempoSubdivisions: Array<TempoSubdivisionType> = new Array();
   generateTonalities: Array<GenerateTonalityType> = new Array();
 
   constructor(
@@ -136,10 +129,6 @@ export class SettingsDialogComponent implements OnInit {
 
     CHORD_DURATION_UNITS.forEach((name: string, id: TempoUnitType) => {
       this.chordDurationUnits.push({ 'id': id, 'name': name });
-    });
-
-    TEMPO_SUBDIVISIONS.forEach((subdivision: Subdivision, bpm: number) => {
-      this.tempoSubdivisions.push({ 'id': bpm, 'name': String(subdivision.left) + '/' + String(subdivision.right) });
     });
 
     HALF_TONE_CHROMAS.forEach((chroma: string, id: number) => {

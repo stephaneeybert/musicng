@@ -1,22 +1,21 @@
 import { Subdivision } from './subdivision';
 import { TempoUnitType } from '@app/model/tempo-unit';
+import { CHORD_DURATION_DOTTED } from '@app/service/notation.constant ';
 
 export class Duration {
 
-  subdivision: Subdivision;
+  value: number;
+  dotted: boolean;
   unit: TempoUnitType;
 
-  constructor(subdivision: Subdivision, tempoUnit: TempoUnitType) {
-    this.subdivision = subdivision;
+  constructor(value: number, tempoUnit: TempoUnitType) {
+    this.value = value;
     this.unit = tempoUnit;
+    this.dotted = false;
   }
 
   public renderValue(): number {
-    if (this.subdivision.left > 0) {
-      return (this.subdivision.left + this.subdivision.right);
-    } else {
-      throw new Error('The subdivision left value was not defined.');
-    }
+    return this.value;
   }
 
   public renderUnit(): TempoUnitType {
@@ -24,11 +23,15 @@ export class Duration {
   }
 
   public renderValueInUnit(): string {
+    let duration: string = String(this.renderValue());
     if (this.unit) {
-      return this.renderValue() + this.unit;
-    } else {
-      return String(this.renderValue());
+      duration += this.unit;
     }
+    // ToneJS considers a dotted note as having the dot after the unit '8n.'
+    if (this.dotted) {
+      duration += CHORD_DURATION_DOTTED;
+    }
+    return duration;
   }
 
 }

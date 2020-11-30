@@ -282,10 +282,9 @@ export class SynthService {
    * @param boolean ramp If true, the tempo will ramp up or down, otherwise it will change instantly.
    */
   private updateTempo(previousMeasure: Measure, measure: Measure): void {
-    if (previousMeasure == null || previousMeasure.tempo.subdivision.left !== measure.tempo.subdivision.left || previousMeasure.tempo.subdivision.right !== measure.tempo.subdivision.right && this.notationService.isBpmTempoUnit(measure.tempo)) {
+    if (previousMeasure == null || previousMeasure.tempo !== measure.tempo) {
       if (previousMeasure != null) {
-        console.log(previousMeasure.tempo.subdivision.left);
-        console.log(measure.tempo.subdivision.left);
+        console.log(previousMeasure.tempo);
         console.log('Ramp up tempo ' + measure.getTempo());
       }
       Tone.Transport.bpm.rampTo(measure.getTempo(), TEMPO_RAMP_TO_IN_SECONDS);

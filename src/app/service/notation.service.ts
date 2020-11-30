@@ -22,7 +22,7 @@ const NOTE_END_OF_TRACK_DURATION: number = 8;
 const NOTE_END_OF_TRACK_VELOCITY: number = 0;
 const CHROMA_OCTAVE_PATTERN: RegExp = /[a-z#]+|[^a-z#]+/gi;
 
-const DEFAULT_TEMPO_BPM_VALUE: number = 128;
+const DEFAULT_CHORD_DURATION: number = 4;
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
 const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 
@@ -57,7 +57,7 @@ export class NotationService {
 
   public createMeasure(index: number, tempoInBpm: number, timeSignatureNumerator: number, timeSignatureDenominator: number): Measure {
     const timeSignature: TimeSignature = this.createTimeSignature(timeSignatureNumerator, timeSignatureDenominator);
-    const measure: Measure = new Measure(index, this.createDuration(tempoInBpm, TempoUnit.NOTE), timeSignature);
+    const measure: Measure = new Measure(index, tempoInBpm, timeSignature);
     return measure;
   }
 
@@ -218,10 +218,9 @@ export class NotationService {
     return NOTE_END_OF_TRACK + NOTE_END_OF_TRACK_OCTAVE + CHORD_DURATION_SEPARATOR + NOTE_END_OF_TRACK_DURATION;
   }
 
-  public createDefaultTempo(): Duration {
-    return this.createDuration(DEFAULT_TEMPO_BPM_VALUE, TempoUnit.NOTE);
+  public getDefaultChordDuration(): Duration {
+    return this.createDuration(DEFAULT_CHORD_DURATION, TempoUnit.NOTE);
   }
-
   public createDefaultTimeSignature(): TimeSignature {
     return new TimeSignature(DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR);
   }
@@ -238,7 +237,7 @@ export class NotationService {
     return new Octave(value);
   }
 
-  private createSubdivision(duration: number): Subdivision {
+  private createSubdivision(duration: string): Subdivision {
     const subdivision: Subdivision | undefined = TEMPO_SUBDIVISIONS.get(duration);
     if (subdivision) {
       return subdivision;
@@ -248,7 +247,7 @@ export class NotationService {
   }
 
   public createDuration(duration: number, tempoUnit: TempoUnitType): Duration {
-    return new Duration(this.createSubdivision(duration), tempoUnit);
+    return new Duration(duration, tempoUnit);
   }
 
   private createPitch(chroma: Chroma, octave: Octave): Pitch {

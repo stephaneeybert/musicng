@@ -69,12 +69,8 @@
         <p>
           <mat-form-field>
             <mat-label>{{ 'settings.form.set.generate.tempoBpm.label' | translate }}</mat-label>
-            <mat-select formControlName="generateTempoBpm" [compareWith]="compareItemsById"
+            <input formControlName="generateTempoBpm" matInput
               matTooltip="{{ 'settings.form.set.generate.tempoBpm.tip' | translate }}">
-              <mat-option *ngFor="let tempoSubdivision of tempoSubdivisions" value="{{ tempoSubdivision.id }}">
-                {{ tempoSubdivision.name }}
-              </mat-option>
-            </mat-select>
           </mat-form-field>
         </p>
         <p>

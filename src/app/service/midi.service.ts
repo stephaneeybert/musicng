@@ -30,7 +30,7 @@ import { Duration } from '@app/model/note/duration/duration';
 import { SynthService } from './synth.service';
 import { CommonService, DownloadService } from '@stephaneeybert/lib-core';
 import { ProgressTask } from '@stephaneeybert/lib-core/lib/download/progress-task';
-import { DEFAULT_TONALITY_C_MAJOR } from './notation.constant ';
+import { DEFAULT_TEMPO_BPM, DEFAULT_TONALITY_C_MAJOR } from './notation.constant ';
 
 const NOTE_ON: number = 144; // A command value of 144 is a "note on"
 const NOTE_OFF: number = 128; // A command value of 128 is a "note off"
@@ -217,7 +217,8 @@ export class MidiService {
             midiTrack.instrument.percussion
           );
         }
-        const duration: Duration = this.notationService.createDefaultTempo();
+        const measureTempo: number = DEFAULT_TEMPO_BPM;
+        const noteDuration: Duration = this.notationService.getDefaultChordDuration();
         const timeSignature: TimeSignature = this.notationService.createDefaultTimeSignature();
         if (midiTrack.notes != null) {
           let measureIndex: number = 0;
@@ -229,12 +230,12 @@ export class MidiService {
             const noteIndex: number = 0; // TODO If the note has the same time than the previous note then add it to the previous chord instead of adding it into a new chord
             const note: Note = this.notationService.createNote(noteIndex, chroma, octave);
             // const duration: Duration = midiNote.time; // TODO midiNote.durationTicks How to retrieve the note time and store it in the chord ?
-            const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, duration, midiNote.velocity, DEFAULT_TONALITY_C_MAJOR);
+            const placedChord: PlacedChord = this.notationService.createEmptyChord(placedChordIndex, noteDuration, midiNote.velocity, DEFAULT_TONALITY_C_MAJOR);
             placedChord.addNote(note);
             placedChords.push(placedChord);
             placedChordIndex++;
           });
-          const measure: Measure = new Measure(measureIndex, duration, timeSignature);
+          const measure: Measure = new Measure(measureIndex, measureTempo, timeSignature);
           measure.placedChords = placedChords;
           measures.push(measure);
           measureIndex++
@@ -340,7 +341,7 @@ export class MidiService {
                 if (currentNoteOnEvent != null) {
                   const deltaInTicks: number = this.delta(controlChangeEvent.time, currentNoteOnEvent.time);
                   if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, currentTicksPerMeasure, measureIndex)) {
-                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicroSecondsPerBeat), TempoUnit.NOTE);
+                    const tempo: number = this.microSecondsToBpm(currentTempoInMicroSecondsPerBeat);
                     currentMeasure = new Measure(measureIndex, tempo, currentTimeSignature);
                     currentMeasure.placedChords = new Array<PlacedChord>();
                     measures.push(currentMeasure);
@@ -373,7 +374,7 @@ export class MidiService {
                 if (currentNoteOnEvent != null) {
                   const deltaInTicks: number = this.delta(noteOffEvent.time, currentNoteOnEvent.time);
                   if (this.placeEventOnNewMeasure(currentNoteOnEvent.time, currentTicksPerMeasure, measureIndex)) {
-                    const tempo: Duration = this.notationService.createDuration(this.microSecondsToBpm(currentTempoInMicroSecondsPerBeat), TempoUnit.NOTE);
+                    const tempo: number = this.microSecondsToBpm(currentTempoInMicroSecondsPerBeat);
                     currentMeasure = new Measure(measureIndex, tempo, currentTimeSignature);
                     currentMeasure.placedChords = new Array<PlacedChord>();
                     measures.push(currentMeasure);
