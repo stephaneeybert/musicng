@@ -13,6 +13,7 @@ import { Observable, interval, timer, Subscription } from 'rxjs';
 import { map, filter, take } from 'rxjs/operators';
 import { SettingsService } from '@app/views/settings/settings.service';
 import { WakelockService } from '@stephaneeybert/lib-core';
+import { NOTE_SHARP } from '@app/model/note/note';
 
 // Observation has shown that a delay between creating the service
 // and starting the transport is required for the transport to work
@@ -22,6 +23,7 @@ const AUDIO_CONTEXT_RUNNING: string = 'running';
 const WHITEWASH_DELAY: number = 3000;
 const TEMPO_RAMP_TO_IN_SECONDS: number = 2;
 const VELOCITY_MIDI_MAX: number = 127;
+const TONEJS_NOTE_SHARP: string = 'x';
 
 // The rest note for the synth is the empty string
 const SYNTH_REST_NOTE: string = '';
@@ -234,7 +236,7 @@ export class SynthService {
             const releaseTime = triggerTime + durationInSeconds;
 
             if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
-              const textNotes: Array<string> = this.restToSynthRest(placedChord.renderAbc());
+              const textNotes: Array<string> = this.noteToSynthNote(placedChord.renderAbc());
               track.synth!.triggerAttack(textNotes, triggerTime, placedChord.velocity);
               track.synth!.triggerRelease(textNotes, releaseTime);
               Tone.Draw.schedule(() => {
@@ -339,13 +341,15 @@ export class SynthService {
       });
   }
 
-  private restToSynthRest(textNotes: Array<string>): Array<string> {
+  private noteToSynthNote(textNotes: Array<string>): Array<string> {
     return textNotes
       .map((textNote: string) => {
         if (!this.notationService.abcNoteIsNotRest(textNote)) {
           return SYNTH_REST_NOTE;
         } else {
-          return textNote;
+          // Replace all sharp accidentals by x characters
+          let synthTextNote: string = textNote.split(NOTE_SHARP).join(TONEJS_NOTE_SHARP);
+          return synthTextNote;
         }
       });
   }
