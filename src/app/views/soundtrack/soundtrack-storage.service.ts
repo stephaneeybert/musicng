@@ -89,7 +89,6 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                       const placedChordJson: any = measureJson.placedChords[placedChordIndex];
                       if (this.commonService.isSet(placedChordJson.notes) && placedChordJson.notes.length > 0) {
                         const notes: Array<Note> = new Array();
-                        let noteIndex: number = 0;
                         for (let noteIndex: number = 0; noteIndex < placedChordJson.notes.length; noteIndex++) {
                           const noteJson: any = placedChordJson.notes[noteIndex];
                           if (this.commonService.isSet(noteJson.pitch) && this.commonService.isSet(noteJson.pitch.chroma) && this.commonService.isSet(noteJson.pitch.chroma.value) && this.commonService.isSet(noteJson.pitch.octave) && this.commonService.isSet(noteJson.pitch.octave.value)) {
