@@ -1,11 +1,11 @@
 import { Pitch } from './pitch/pitch';
 
-const SHARP: string = '#';
-const DOUBLE_SHARP: string = '##';
-const TRIPLE_SHARP: string = '###';
-const FLAT: string = 'b';
-const DOUBLE_FLAT: string = 'bb';
-const TRIPLE_FLAT: string = 'bbb';
+export const NOTE_SHARP: string = '#';
+export const NOTE_DOUBLE_SHARP: string = '##';
+export const NOTE_TRIPLE_SHARP: string = '###';
+export const NOTE_FLAT: string = 'b';
+export const NOTE_DOUBLE_FLAT: string = 'bb';
+export const NOTE_TRIPLE_FLAT: string = 'bbb';
 
 export class Note {
 
@@ -42,27 +42,27 @@ export class Note {
   }
 
   public isSharp(): boolean {
-    return this.renderChroma().includes(SHARP);
+    return this.renderChroma().includes(NOTE_SHARP);
   }
 
   public isDoubleSharp(): boolean {
-    return this.renderChroma().includes(DOUBLE_SHARP);
+    return this.renderChroma().includes(NOTE_DOUBLE_SHARP);
   }
 
   public isTripleSharp(): boolean {
-    return this.renderChroma().includes(TRIPLE_SHARP);
+    return this.renderChroma().includes(NOTE_TRIPLE_SHARP);
   }
 
   public isFlat(): boolean {
-    return this.renderChroma().includes(FLAT);
+    return this.renderChroma().includes(NOTE_FLAT);
   }
 
   public isDoubleFlat(): boolean {
-    return this.renderChroma().includes(DOUBLE_FLAT);
+    return this.renderChroma().includes(NOTE_DOUBLE_FLAT);
   }
 
   public isTripleFlat(): boolean {
-    return this.renderChroma().includes(TRIPLE_FLAT);
+    return this.renderChroma().includes(NOTE_TRIPLE_FLAT);
   }
 
 }
