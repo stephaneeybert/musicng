@@ -4,6 +4,8 @@ When playing the soundtrack show a progress bar
 
 Pouvoir changer la tonalité d'une mesure en cliquant sur la partition
 
+Avoir les paramètres par morceau
+
 
 
 Add a date field
