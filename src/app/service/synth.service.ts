@@ -13,7 +13,7 @@ import { Observable, interval, timer, Subscription } from 'rxjs';
 import { map, filter, take } from 'rxjs/operators';
 import { SettingsService } from '@app/views/settings/settings.service';
 import { WakelockService } from '@stephaneeybert/lib-core';
-import { NOTE_SHARP } from '@app/model/note/note';
+import { NOTE_DOUBLE_SHARP } from '@app/model/note/note';
 
 // Observation has shown that a delay between creating the service
 // and starting the transport is required for the transport to work
@@ -346,8 +346,8 @@ export class SynthService {
         if (!this.notationService.abcNoteIsNotRest(textNote)) {
           return SYNTH_REST_NOTE;
         } else {
-          // Replace all sharp accidentals by x characters
-          let synthTextNote: string = textNote.split(NOTE_SHARP).join(TONEJS_NOTE_SHARP);
+          // Replace all double sharp accidentals by x characters
+          let synthTextNote: string = textNote.replace(NOTE_DOUBLE_SHARP, TONEJS_NOTE_SHARP);
           return synthTextNote;
         }
       });
