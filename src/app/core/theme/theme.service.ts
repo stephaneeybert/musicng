@@ -87,10 +87,10 @@ export class ThemeService implements OnDestroy {
   }
 
   public getTheme$(): Observable<[string, boolean]> {
-    return combineLatest(
+    return combineLatest([
       this.themeId$,
       this.themeIsDark$
-    );
+    ]);
   }
 
   private observeTheme(): void {
