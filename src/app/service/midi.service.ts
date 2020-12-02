@@ -19,7 +19,6 @@ import { Soundtrack } from '@app/model/soundtrack';
 import { Track } from '@app/model/track';
 import { Control } from '@app/model/control';
 import { Instrument } from '@app/model/instrument';
-import { TempoUnit } from '@app/model/tempo-unit';
 import { DeviceStore } from '@app/store/device-store';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
