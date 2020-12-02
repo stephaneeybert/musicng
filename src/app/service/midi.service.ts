@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable, from, Subscription, empty, ReplaySubject } from 'rxjs';
+import { Subject, Observable, from, Subscription, ReplaySubject, EMPTY } from 'rxjs';
 import { map, filter, switchMap, catchError, delay } from 'rxjs/operators';
 import { parseArrayBuffer } from 'midi-json-parser';
 import {
@@ -92,7 +92,7 @@ export class MidiService {
         catchError((error: any) => {
           console.log('Your browser is not compatible with MIDI access. Try using the Chrome browser.');
           console.log(error);
-          return empty();
+          return EMPTY;
         })
       );
   }
