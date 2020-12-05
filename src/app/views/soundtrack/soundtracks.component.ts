@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, interval, Observable, ReplaySubject, Subscription } from 'rxjs';
 import { Soundtrack } from '@app/model/soundtrack';
 import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { GeneratorService } from '@app/service/generator.service';
@@ -10,7 +10,7 @@ import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dial
 import { SoundtrackDialogComponent } from './soundtrack-dialog.component';
 import { SoundtrackEdition } from './soundtrack-edition';
 import { TranslateService } from '@ngx-translate/core';
-import { delay } from 'rxjs/operators';
+import { delay, tap } from 'rxjs/operators';
 import { MaterialService } from '@app/core/service/material.service';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faLayerPlus as farLayerPlus } from '@stephaneeybert/pro-regular-svg-icons';
@@ -39,6 +39,7 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
   soundtrackEditedEvent: EventEmitter<Soundtrack> = new EventEmitter<Soundtrack>();
 
   download$?: Observable<Download>;
+  download?: Download; // TODO
 
   private dialogEmitterSubscription?: Subscription;
   private dialogSubscription?: Subscription;
@@ -182,29 +183,86 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
       });
   }
 
-  showMe: boolean = false;
+  progressSubject$: BehaviorSubject<number> = new BehaviorSubject(0);
+  testProgress(): void {
+    console.log('Called the testProgress method');
+    interval(1000)
+    .subscribe((value: number) => {
+      this.progressSubject$.next(value);
+      this.detectChanges();
+      console.log('The progress: ' + value);
+    });
+  }
 
+  pg$: Observable<number> = this.progressSubject$.asObservable();
   downloadSoundtrack(soundtrack: Soundtrack): void {
     const fileName: string = soundtrack.name + '.' + MIDI_FILE_SUFFIX;
     const progress$: Observable<ProgressTask<Uint8Array>> = this.midiService.progressiveCreateSoundtrackMidi$(soundtrack);
-    this.download$ = this.downloadService.downloadObservableDataAsBlobWithProgressAndSaveInFile(progress$, fileName);
-    // TODO See https://stackoverflow.com/q/64801947/958373
-    // this.download$.subscribe((download: Download) => {
-    //   console.log('Progress: ' + download.progress);
+    // const progress$: BehaviorSubject<ProgressTask<Uint8Array>> = this.midiService.progressiveCreateSoundtrackMidiRS$(soundtrack);  // With BehaviorSubject - not working
+    console.log('Created the observable');
+
+    // progress$
+    // .subscribe((progressTask: ProgressTask<Uint8Array>) => {
+    //   this.progressSubject$.next(progressTask.loaded);
+    //   this.detectChanges();
+    //   console.log('Loaded: ' + progressTask.loaded);
     // });
-    // console.log('Call done');
+
+    const piper$: Observable<ProgressTask<Uint8Array>> = progress$
+    .pipe(
+      tap((pTask: ProgressTask<Uint8Array>) => {
+        this.progressSubject$.next(pTask.loaded);
+        // this.detectChanges();
+        console.log('Loaded: ' + pTask.loaded);
+      })
+    );
+
+    // piper$
+    // .subscribe((pTask: ProgressTask<Uint8Array>) => {
+    //   this.progressSubject$.next(pTask.loaded);
+    //   this.detectChanges();
+    //   console.log('Subscribing: ' + pTask.loaded);
+    // });
+    this.download$ = this.downloadService.downloadObservableDataAsBlobWithProgressAndSaveInFile(piper$, fileName);
+
+    // this.midiService.createSoundtrackMidi(soundtrack, progress$); // With BehaviorSubject - not working
+
+    console.log('Controller method call complete');
   }
+
+  // downloadSoundtrack(soundtrack: Soundtrack): void {
+  //   const fileName: string = soundtrack.name + '.' + MIDI_FILE_SUFFIX;
+
+  //   const progress$: Observable<ProgressTask<Uint8Array>> = this.midiService.progressiveCreateSoundtrackMidi$(soundtrack);
+  //   console.log('Created the observable');
+  //   // progress$.pipe(
+  //   //   tap((progressTask: ProgressTask<Uint8Array>) => {
+  //   //     console.log('Loaded: ' + progressTask.loaded);
+  //   //   })
+  //   // );
+  //   this.downloadService.downloadObservableDataAsBlobWithProgressAndSaveInFile(progress$, fileName)
+  //   .subscribe((download: Download) => {
+  //     this.download = download;
+  //     this.progress = download.progress;
+  //     console.log('Progress: ' + download.progress);
+  //     this.detectChanges();
+  //   });
+
+    // TODO See https://stackoverflow.com/q/64801947/958373
+  //   console.log('Controller method call complete');
+  // }
 
   // <mat-icon (click)="downloadDemo()" matTooltip="{{ 'soundtracks.download.tip' | translate }}"
   // class="soundtrack-action">arrow_downward</mat-icon>
   // TODO See https://stackoverflow.com/q/64801947/958373
-  downloadDemo(): void {
-    this.download$ = this.downloadService.downloadUrlAsBlobWithProgressAndSaveInFile('assets/skypeforlinux-64.deb', 'demo')
-    this.showMe = true;
-    this.download$.subscribe((download: Download) => {
-      console.log('Progress: ' + download.progress);
-    });
-    console.log('Call done');
-  }
+  // showMe: boolean = false;
+  // downloadDemo(): void {
+  //   this.download$ = this.downloadService.downloadUrlAsBlobWithProgressAndSaveInFile('assets/skypeforlinux-64.deb', 'demo')
+  //   this.showMe = true;
+  //   this.download$.subscribe((download: Download) => {
+  //     console.log('Progress: ' + download.progress);
+  //   });
+  //   console.log('Call done');
+  // }
 
 }

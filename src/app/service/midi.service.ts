@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable, from, Subscription, ReplaySubject, EMPTY } from 'rxjs';
+import { Subject, Observable, from, Subscription, ReplaySubject, EMPTY, Subscriber, interval, of, asapScheduler, asyncScheduler, BehaviorSubject } from 'rxjs';
 import { map, filter, switchMap, catchError, delay } from 'rxjs/operators';
 import { parseArrayBuffer } from 'midi-json-parser';
 import {
@@ -599,12 +599,82 @@ export class MidiService {
   }
 
   public progressiveCreateSoundtrackMidi$(soundtrack: Soundtrack): Observable<ProgressTask<Uint8Array>> {
-      this.createSoundtrackMidi(soundtrack, progressTask$);
+    // const max: number = 200;
+
+    // return new Observable((observer$: Subscriber<ProgressTask<Uint8Array>>) => {
+    //   asyncScheduler.schedule(() => {
+    //     for (let index: number = 0; index < max; index++) {
+    //       this.commonService.sleep(10);
+    //       observer$.next(this.downloadService.createProgressTask<Uint8Array>(max, index));
+    //     }
+    //     observer$.next(this.downloadService.createProgressTask<Uint8Array>(max, max));
+    //     observer$.complete();
+    //   }, max);
+    // });
+
+    // return new Observable((observer$: Subscriber<ProgressTask<Uint8Array>>) => {
+    //   let index = 0;
+    //   const handler = setInterval(() => {
+    //     observer$.next(this.downloadService.createProgressTask<Uint8Array>(max, index));
+    //     index++;
+    //   }, max);
+    //   // observer$.next(this.downloadService.createProgressTask<Uint8Array>(max, max));
+    //   // observer$.complete();
+    //   return () => clearInterval(handler);
+    //   // return { unsubscribe() { } };
+    // });
+
+    // return new Observable((observer$: Subscriber<ProgressTask<Uint8Array>>) => {
+    //   for (let index: number = 0; index < max; index++) {
+    //     this.commonService.sleep(10);
+    //     observer$.next(this.downloadService.createProgressTask<Uint8Array>(max, index));
+    //   }
+    //   observer$.next(this.downloadService.createProgressTask<Uint8Array>(max, max));
+    //   observer$.complete();
+    //   return { unsubscribe() { } };
+    // });
+
+    // // return interval(max)
+    // return this.interval(max)
+    // .pipe(
+    //   map((value: number) => {
+    //     return this.downloadService.createProgressTask<Uint8Array>(max, value);
+    //   })
+    // );
+
+    return new Observable((subscriber$ : Subscriber<ProgressTask<Uint8Array>>) => {
+      this.createSoundtrackMidi(soundtrack, subscriber$);
       return { unsubscribe() { } };
     });
   }
 
-  public createSoundtrackMidi(soundtrack: Soundtrack, progressTask$?: ReplaySubject<ProgressTask<Uint8Array>>): Uint8Array {
+   // With BehaviorSubject - not working
+  public progressiveCreateSoundtrackMidiRS$(soundtrack: Soundtrack): BehaviorSubject<ProgressTask<Uint8Array>> {
+    return new BehaviorSubject<ProgressTask<Uint8Array>>(this.downloadService.createProgressTask<Uint8Array>(soundtrack.getNbNotes(), 0));
+  }
+
+  private interval(period: number): Observable<number> {
+    return new Observable((subscriber$: Subscriber<number>) => {
+      let i = 0;
+      const handler = setInterval(() => subscriber$.next(i++), period);
+      return () => clearInterval(handler);
+    });
+  }
+
+  public createSoundtrackMidiFake(soundtrack: Soundtrack, progressTask$?: Subscriber<ProgressTask<Uint8Array>>): Uint8Array {
+    const midi: Midi = new Midi();
+    if (progressTask$) {
+      for (let index: number = 0; index < 1000; index++) {
+        this.commonService.sleep(10);
+        progressTask$.next(this.downloadService.createProgressTask<Uint8Array>(1000, index));
+      }
+      progressTask$.next(this.downloadService.createProgressTask<Uint8Array>(1000, 1000));
+      progressTask$.complete();
+    }
+    return midi.toArray();
+  }
+
+  public createSoundtrackMidi(soundtrack: Soundtrack, progressTask$?: Subscriber<ProgressTask<Uint8Array>>): Uint8Array {
     const midi: Midi = new Midi();
     midi.name = soundtrack.name;
     midi.header.name = soundtrack.name;
@@ -629,6 +699,7 @@ export class MidiService {
                     for (const note of placedChord.notes) {
                       if (!this.notationService.isEndOfTrackNote(note)) {
                         if (progressTask$) {
+                          this.commonService.sleep(10); // TODO Remove this sleep when the download progress is okay
                           progressTask$.next(this.downloadService.createProgressTask<Uint8Array>(soundtrack.getNbNotes(), noteIndex));
                         }
                         noteIndex++;
