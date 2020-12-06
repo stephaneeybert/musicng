@@ -108,6 +108,10 @@ export class NotationService {
     });
   }
 
+  public tonalityFirstChromaLetterToChromaSyllabic(placedChord: PlacedChord): string {
+    return this.chromaLetterToChromaSyllabic(NOTE_CHROMAS_SYLLABIC, placedChord.tonality.firstChroma);
+  }
+
   public chordChromaLetterToChromaSyllabic(chroma: string): string {
     return this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chroma);
   }

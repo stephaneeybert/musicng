@@ -108,6 +108,8 @@ export class SheetService {
                 const stave: Vex.Flow.Stave = this.drawBareStave(measure, soundtrack, displayWidth, staveX, staveY);
                 measure.sheetStave = stave;
 
+                this.drawTonalityNameOnStave(measure, track, soundtrack, animatedStave);
+
                 const voice: Vex.Flow.Voice = this.createBareVoice(measure, stave);
 
                 const staveNotes: Array<Vex.Flow.StaveNote> = new Array<Vex.Flow.StaveNote>();
@@ -163,6 +165,7 @@ export class SheetService {
             this.whitewashStave(soundtrack.sheetContext, soundtrack.getNbTracks(), track.index, trackFirstMeasure.index);
             this.drawTrackFirstMeasure(track, soundtrack, animatedStave);
             this.drawTrackNameOnFirstMeasure(track, soundtrack, animatedStave);
+            this.drawTonalityNameOnStave(track.measures[0], track, soundtrack, animatedStave);
           }
         });
       }
@@ -215,6 +218,19 @@ export class SheetService {
     const staveX: number = this.getStaveX(animatedStave, track.index, 0);
     const staveY: number = this.getStaveY(animatedStave, soundtrack.tracks.length, track.index, 0);
     this.drawTrackNameOnMeasure(track, soundtrack, staveX, staveY);
+  }
+
+  private drawTonalityNameOnStave(measure: Measure, track: Track, soundtrack: Soundtrack, animatedStave: boolean): void {
+    if (!measure.placedChords) {
+      throw new Error('The tonality name could not be drawn as the measure contained no chords.');
+    }
+    if (!measure.sheetStave) {
+      throw new Error('The tonality name could not be drawn as the measure had no stave.');
+    }
+    const tonalityFirstChroma: string = this.notationService.tonalityFirstChromaLetterToChromaSyllabic(measure.placedChords[0]);
+    const staveX: number = this.getStaveX(animatedStave, track.index, 0);
+    const staveY: number = measure.sheetStave.getYForBottomText();
+    this.drawText(soundtrack.sheetContext, tonalityFirstChroma, staveX, staveY);
   }
 
   private drawTrackNameOnMeasure(track: Track, soundtrack: Soundtrack, staveX: number, staveY: number): void {
@@ -282,6 +298,7 @@ export class SheetService {
           this.noCanvasContextError(error);
         }
         this.drawTrackNameOnFirstMeasure(track, soundtrack, animatedStave);
+        this.drawTonalityNameOnStave(measure, track, soundtrack, animatedStave);
       }
       if (measure.sheetVoice) {
         try {
