@@ -128,8 +128,9 @@ export class SheetService {
                         this.addAllChordNames(placedChord, noteNames);
                         previousNoteName = noteNames[noteNames.length - 1];
                       }
-                    } else if (track.displayChordNames) {
-                      const noteName: string = this.renderChordNoteNameInSyllabic(placedChord);
+                    }
+                    if (track.displayChordNames) {
+                      const noteName: string = this.renderChordNameInSyllabic(placedChord);
                       if (noteName !== previousNoteName) {
                         this.addChordName(placedChord, noteName);
                         previousNoteName = noteName;
@@ -396,8 +397,8 @@ export class SheetService {
     }
   }
 
-  private renderChordNoteNameInSyllabic(placedChord: PlacedChord): string {
-    return this.notationService.chromaLetterToChromaSyllabic(placedChord.renderFirstNoteChroma());
+  private renderChordNameInSyllabic(placedChord: PlacedChord): string {
+    return this.notationService.chordChromaLetterToChromaSyllabic(placedChord.renderFirstNoteChroma());
   }
 
   private renderAllChordNoteNamesInSyllabic(placedChord: PlacedChord): Array<string> {
@@ -406,7 +407,7 @@ export class SheetService {
     for (let i: number = 0; i < sortedNotes.length; i++) {
       const reverse: number = placedChord.notes.length - i - 1;
       const note: Note = sortedNotes[reverse];
-      noteNames.push(this.notationService.chromaLetterToChromaSyllabic(note.renderChroma()));
+      noteNames.push(this.notationService.noteChromaLetterToChromaSyllabic(note.renderChroma()));
     }
     return noteNames;
   }

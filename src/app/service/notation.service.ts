@@ -27,7 +27,8 @@ const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 
 // TODO
 const CHROMAS_GERMAN_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'H'];
-const CHROMAS_SYLLABIC: Map<string, string> = new Map([['rest', 'rest'], ['C', 'Do'], ['C#', 'Do#'], ['D', 'Rém'], ['D#', 'Rém#'], ['E', 'Mim'], ['F', 'Fa'], ['F#', 'Fa#'], ['G', 'Sol'], ['G#', 'Sol#'], ['A', 'Lam'], ['A#', 'Lam#'], ['B', 'Si-']]);
+const CHORD_CHROMAS_SYLLABIC: Map<string, string> = new Map([['rest', 'rest'], ['C', 'Do'], ['C#', 'Do#'], ['D', 'Rém'], ['D#', 'Rém#'], ['E', 'Mim'], ['F', 'Fa'], ['F#', 'Fa#'], ['G', 'Sol'], ['G#', 'Sol#'], ['A', 'Lam'], ['A#', 'Lam#'], ['B', 'Si-']]);
+const NOTE_CHROMAS_SYLLABIC: Map<string, string> = new Map([['rest', 'rest'], ['C', 'do'], ['C#', 'do#'], ['D', 'ré'], ['D#', 'ré#'], ['E', 'mi'], ['F', 'fa'], ['F#', 'fa#'], ['G', 'sol'], ['G#', 'sol#'], ['A', 'la'], ['A#', 'la#'], ['B', 'si']]);
 const OCTAVES: Array<number> = [1, 2, 3, 4, 5, 6];
 export enum TRACK_TYPES {
   MELODY = 'melody',
@@ -110,16 +111,24 @@ export class NotationService {
     });
   }
 
-  public chromaLetterToChromaSyllabic(chroma: string): string {
-    if (CHROMAS_SYLLABIC.has(chroma)) {
-      const latinChroma: string | undefined = CHROMAS_SYLLABIC.get(chroma);
+  public chordChromaLetterToChromaSyllabic(chroma: string): string {
+    return this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chroma);
+  }
+
+  public noteChromaLetterToChromaSyllabic(chroma: string): string {
+    return this.chromaLetterToChromaSyllabic(NOTE_CHROMAS_SYLLABIC, chroma);
+  }
+
+  private chromaLetterToChromaSyllabic(chromas_syllabic: Map<string, string>, chroma: string): string {
+    if (chromas_syllabic.has(chroma)) {
+      const latinChroma: string | undefined = chromas_syllabic.get(chroma);
       if (latinChroma) {
         return latinChroma;
       } else {
         throw new Error('The alphabetical chromas array has not been instantiated.');
       }
     } else {
-      throw new Error('No alphabetical chroma could be found for the chroma letter ' + chroma);
+      throw new Error('The chroma letter ' + chroma + ' could not be found in the chromas syllabic ' + chromas_syllabic);
     }
   }
 
