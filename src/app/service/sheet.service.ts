@@ -480,14 +480,6 @@ export class SheetService {
     }
   }
 
-  private renderDurationInDuple(placedChord: PlacedChord): string {
-    const duration: number = placedChord.getDuration();
-    const unit: TempoUnitType = placedChord.getUnit();
-    const time: Tone.TimeClass = Tone.Time(duration, unit);
-    const durationInNotation: string = time.toNotation();
-    return durationInNotation;
-  }
-
   private renderClef(measure: Measure): string {
     return Clef.TREBLE;
   }
