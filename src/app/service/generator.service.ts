@@ -83,12 +83,6 @@ export class GeneratorService {
     const harmonyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityHarmony);
     const harmonyMeasures: Array<Measure> = this.generateHarmonyChordInMeasures(octave, chordDuration, harmonyVelocity);
 
-    if (this.settingsService.getSettings().generateHarmony) {
-      const harmonyTrack: Track = soundtrack.addTrack(harmonyMeasures);
-      harmonyTrack.name = this.getTrackName(TRACK_TYPES.HARMONY);
-      harmonyTrack.displayChordNames = true;
-    }
-
     if (this.settingsService.getSettings().generateMelody) {
       const melodyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityMelody);
       const melodyChords: Array<PlacedChord> = this.generateMelodyChords(harmonyMeasures, octave, chordDuration, melodyVelocity);
@@ -96,6 +90,12 @@ export class GeneratorService {
 
       const melodyTrack: Track = soundtrack.addTrack(melodyMeasures);
       melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
+    }
+
+    if (this.settingsService.getSettings().generateHarmony) {
+      const harmonyTrack: Track = soundtrack.addTrack(harmonyMeasures);
+      harmonyTrack.name = this.getTrackName(TRACK_TYPES.HARMONY);
+      harmonyTrack.displayChordNames = true;
     }
 
     if (this.settingsService.getSettings().generateDrums) {
