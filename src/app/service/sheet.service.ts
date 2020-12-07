@@ -424,7 +424,10 @@ export class SheetService {
     for (let i: number = 0; i < sortedNotes.length; i++) {
       const reverse: number = placedChord.notes.length - i - 1;
       const note: Note = sortedNotes[reverse];
-      noteNames.push(this.notationService.noteChromaLetterToChromaSyllabic(note.renderChroma()));
+      const name: string = this.notationService.noteChromaLetterToChromaSyllabic(note.renderChroma())
+      + ' ' + note.renderChroma();
+
+      noteNames.push(name);
     }
     return noteNames;
   }
