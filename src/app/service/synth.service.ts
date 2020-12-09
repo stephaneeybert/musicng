@@ -236,7 +236,7 @@ export class SynthService {
             const releaseTime = triggerTime + durationInSeconds;
 
             if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
-              const textNotes: Array<string> = this.noteToSynthNote(placedChord.renderAbc());
+              const textNotes: Array<string> = this.noteToSynthNote(placedChord.renderIntlChromaOctave());
               track.synth!.triggerAttack(textNotes, triggerTime, placedChord.velocity);
               track.synth!.triggerRelease(textNotes, releaseTime);
               Tone.Draw.schedule(() => {
@@ -247,11 +247,11 @@ export class SynthService {
                   }
                 }
                 this.sheetService.highlightStaveNote(placedChord, soundtrack);
-                this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
+                this.keyboardService.pressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderIntlChromaOctave()));
               }, triggerTime);
               Tone.Draw.schedule(() => {
                 this.sheetService.unhighlightStaveNote(placedChord, soundtrack);
-                this.keyboardService.unpressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderAbc()));
+                this.keyboardService.unpressKey(soundtrack.keyboard, this.textToMidiNotes(placedChord.renderIntlChromaOctave()));
               }, releaseTime);
             } else {
               Tone.Draw.schedule(() => {

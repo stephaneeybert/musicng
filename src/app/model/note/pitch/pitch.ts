@@ -21,7 +21,7 @@ export class Pitch {
     return this.octave.value;
   }
 
-  public renderAbc(): string {
+  public renderIntlChromaOctave(): string {
     let abc: string = this.chroma.value;
     if (this.octave != null) {
       abc += this.octave.value;

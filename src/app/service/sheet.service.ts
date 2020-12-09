@@ -434,7 +434,7 @@ export class SheetService {
 
   private getNoteFrequency(note: Note): number {
     // The accidental must not be present in the note when getting the frequency
-    return Tone.Frequency(note.renderAbc()).toFrequency();
+    return Tone.Frequency(note.renderIntlChromaOctave()).toFrequency();
   }
 
   private sortNotesByPitch(notes: Array<Note>): Array<Note> {

@@ -704,10 +704,10 @@ export class MidiService {
                         }
                         noteIndex++;
                         midiTrack.addNote({
-                          midi: this.synthService.textToMidiNote(note.renderAbc()),
+                          midi: this.synthService.textToMidiNote(note.renderIntlChromaOctave()),
                           time: totalDurationInSeconds,
                           // ticks: ticks,
-                          name: note.renderAbc(),
+                          name: note.renderIntlChromaOctave(),
                           pitch: note.renderChroma(),
                           octave: note.renderOctave(),
                           velocity: velocity,

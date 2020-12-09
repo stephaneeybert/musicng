@@ -81,10 +81,10 @@ export class PlacedChord {
     });
   }
 
-  public renderAbc(): Array<string> {
+  public renderIntlChromaOctave(): Array<string> {
     const sortedNotes: Array<string> = this.getNotesSortedByIndex()
     .map((note: Note) => {
-      return note.renderAbc();
+      return note.renderIntlChromaOctave();
     });
     return sortedNotes;
   }

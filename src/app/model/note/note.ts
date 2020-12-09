@@ -33,8 +33,8 @@ export class Note {
     return this.pitch.renderOctave();
   }
 
-  public renderAbc(): string {
-    return this.pitch.renderAbc();
+  public renderIntlChromaOctave(): string {
+    return this.pitch.renderIntlChromaOctave();
   }
 
   public render(): string {
