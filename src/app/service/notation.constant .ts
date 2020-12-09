@@ -35,12 +35,12 @@ export const CHORD_DURATION_DOTTED: string = '.';
 // C   C#   D   D#   E   F   F#   G   G#   A   A#   B
 //     Db       Eb           Gb       Ab       Bb
 export const HALF_TONE_SHARP_CHROMAS: Array<string> = [ 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B' ];
-export const HALF_TONE_FLAT_CHROMAS: Array<string> = [ 'C', 'Db', 'D', 'Eb', 'Fb', 'F', 'Gb', 'G', 'Ab', 'A', 'B', 'C' ];
+export const HALF_TONE_FLAT_CHROMAS: Array<string> = [ 'C', 'Db', 'D', 'Eb', 'Fb', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B' ];
 
 export const HALF_TONE: number = 0.5;
 
 export const CHORD_SHARP_CHROMAS_SYLLABIC: Map<string, string> = new Map([['rest', 'rest'], ['C', 'Do'], ['C#', 'Do#'], ['D', 'Rém'], ['D#', 'Ré#m'], ['E', 'Mim'], ['F', 'Fa'], ['F#', 'Fa#'], ['G', 'Sol'], ['G#', 'Sol#'], ['A', 'Lam'], ['A#', 'La#m'], ['B', 'Si-']]);
-export const CHORD_FLAT_CHROMAS_SYLLABIC: Map<string, string> = new Map([['rest', 'rest'], ['C', 'Do'], ['Db', 'Dom'], ['D', 'Rém'], ['Eb', 'Ré#m'], ['Fb', 'Mim'], ['F', 'Fa'], ['Gb', 'Fa#'], ['G', 'Sol'], ['Ab', 'Sol#'], ['A', 'Lam'], ['B', 'La#m'], ['C', 'Si-']]);
+export const CHORD_FLAT_CHROMAS_SYLLABIC: Map<string, string> = new Map([['rest', 'rest'], ['C', 'Do'], ['Db', 'Dom'], ['D', 'Rém'], ['Eb', 'Ré#m'], ['Fb', 'Mim'], ['F', 'Fa'], ['Gb', 'Fa#'], ['G', 'Sol'], ['Ab', 'Sol#'], ['A', 'Lam'], ['Bb', 'La#m'], ['B', 'Si-']]);
 export const NOTE_SHARP_CHROMAS_SYLLABIC: Map<string, string> = new Map([['rest', 'rest'], ['C', 'do'], ['C#', 'do#'], ['D', 'ré'], ['D#', 'ré#'], ['E', 'mi'], ['F', 'fa'], ['F#', 'fa#'], ['G', 'sol'], ['G#', 'sol#'], ['A', 'la'], ['A#', 'la#'], ['B', 'si']]);
 
 export enum TRACK_TYPES {
