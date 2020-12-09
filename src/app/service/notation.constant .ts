@@ -35,6 +35,7 @@ export const CHORD_DURATION_DOTTED: string = '.';
 // C   C#   D   D#   E   F   F#   G   G#   A   A#   B
 //     Db       Eb           Gb       Ab       Bb
 export const HALF_TONE_SHARP_CHROMAS: Array<string> = [ 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B' ];
+export const HALF_TONE_FLAT_CHROMAS: Array<string> = [ 'C', 'Db', 'D', 'Eb', 'Fb', 'F', 'Gb', 'G', 'Ab', 'A', 'B', 'C' ];
 
 export const HALF_TONE: number = 0.5;
 
