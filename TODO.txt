@@ -1,4 +1,45 @@
-When doing another soundtrack download, reinit the progress bar
+Have chord names depending on the range
+Make sure the rendered chroma considers the range
+Do not pick diminished chords -
+Display Reb instead of its equivalent Do#
+
+Une autre façon de construire un accord, est de prendre non pas les notes n, n+2, n+4
+mais les notes n, n+(4 demi-tons), n+(7 demi-tons)
+In fact there are several ways:
+- Major triad is defined as the first, third and fifth note of a major scale.
+MajorTriad = [0,4,7]
+- Minor triad is created by lowering the third a half step.
+MinorTriad = [0,3,7]
+- Diminished triad is created by lowering the fifth of a minor triad.
+DiminishedTriad = [0,3,6]
+- Augmented Triad is defined raising the fifth of a major triad.
+AugmentedTriad = [0,4,8]
+
+Inversions
+Triads and other chords can be played in the basic voicing from low to high: root, third, fifth (known as root position). But they also can be voiced with either the third or the fifth as the lowest note. These addition voicings are known as inversions of the triad.
+https://www.guitarland.com/MusicTheoryWithToneJS/PlayChords.html
+
+Use a sharp # except when that reuses a chroma letter, then use the next letter with a flat b
+(even though Gb and F# are the same sound, for Db major the correct name is Gb (not F#), because the letter F has already been used)
+https://www.guitarland.com/MusicTheoryWithToneJS/Enharmonics/EnharmonicPicker.html
+use all of the letter names of the music alphabet in some form (natural, sharp or flat) but only use each letter once per octave. For
+
+For major scales there is never a mixture of sharps and flats in the same scale i.e.
+D major = D E F# G A B C# (D) (no flat names used)
+Db major = Db Eb F Gb Ab Bb C (Db) (no sharp names used)
+
+Rename tonality to scale
+
+Do not start any major tonality with these letters
+The illegal root names for major scales
+G#, D#, A#, E#, B# and Fb
+are NOT used as the starting note for major scales
+due to overly complex note names when following the rules
+(they result in double sharps or double flats)
+Instead use the following enharmonic keys respectively. 
+(Ab, Eb, Bb, F, C, E)
+
+When doing another soundtrack download, re-init the progress bar
 
 When playing the soundtrack show a progress bar
 
