@@ -13,7 +13,11 @@ export class Note {
   // TODO note.humanize = "32n"; // "Humanization" let's you adjust how rigid the callback timing is. If humanize is set to true, the passed-in time parameter will drift back and forth slightly to make the part feel a little more "human". You can also set humanize to a Time value, which will make it drift by that amount.
   index: number;
   pitch: Pitch;
-  dotted: boolean;
+  dotted: boolean; // TODO Use it in the synth ?
+  // sharp (#) TODO Use it in synth ?
+  // double sharp (#) TODO Use it in synth ?
+  // flat (b) TODO Use it in synth ?
+  // double flat (b) TODO Use it in synth ?
 
   constructor(index: number, pitch: Pitch) {
     this.index = index;

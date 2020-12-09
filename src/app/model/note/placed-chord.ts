@@ -11,7 +11,7 @@ export class PlacedChord {
   duration: Duration;
   velocity: number;
   tonality: Tonality;
-  dottedAll: boolean;
+  dottedAll: boolean; // TODO Use it in the synth ?
   staveNote?: vexflow.Flow.StaveNote;
 
   constructor(index: number, duration: Duration, velocity: number, tonality: Tonality) {
