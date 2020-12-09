@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { DEFAULT_TIME_SIGNATURES, CHORD_DURATION_UNITS, HALF_TONE_CHROMAS } from '@app/service/notation.constant ';
+import { DEFAULT_TIME_SIGNATURES, CHORD_DURATION_UNITS, HALF_TONE_SHARP_CHROMAS } from '@app/service/notation.constant ';
 import { TempoUnitType } from '@app/model/tempo-unit';
 import { Settings } from '@app/model/settings';
 
@@ -131,7 +131,7 @@ export class SettingsDialogComponent implements OnInit {
       this.chordDurationUnits.push({ 'id': id, 'name': name });
     });
 
-    HALF_TONE_CHROMAS.forEach((chroma: string, id: number) => {
+    HALF_TONE_SHARP_CHROMAS.forEach((chroma: string, id: number) => {
       this.generateTonalities.push({ 'id': id, 'name': chroma });
     });
   }
