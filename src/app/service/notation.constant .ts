@@ -38,6 +38,13 @@ export const HALF_TONE_SHARP_CHROMAS: Array<string> = [ 'C', 'C#', 'D', 'D#', 'E
 
 export const HALF_TONE: number = 0.5;
 
+export enum TRACK_TYPES {
+  MELODY = 'melody',
+  HARMONY = 'harmony',
+  DRUMS = 'drums',
+  BASS = 'bass'
+}
+
 // A range is an ordered sequence of intervals, from a lower note to an higher note
 export enum NOTE_RANGE {
   MAJOR = 0,

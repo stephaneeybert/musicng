@@ -9,9 +9,8 @@ import { Soundtrack } from '@app/model/soundtrack';
 import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
-import { TRACK_TYPES } from './notation.service';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { NOTE_RANGE, HALF_TONE_CHROMAS, NOTE_RANGE_INTERVALS, HALF_TONE } from './notation.constant ';
+import { NOTE_RANGE, HALF_TONE_SHARP_CHROMAS, NOTE_RANGE_INTERVALS, HALF_TONE, TRACK_TYPES } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 @Injectable({
