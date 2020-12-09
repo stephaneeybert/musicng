@@ -25,8 +25,8 @@ const DEFAULT_CHORD_DURATION: number = 4;
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
 const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 
-const CHORD_CHROMAS_SYLLABIC: Map<string, string> = new Map([['rest', 'rest'], ['C', 'Do'], ['C#', 'Do#'], ['D', 'Rém'], ['D#', 'Ré#m'], ['E', 'Mim'], ['F', 'Fa'], ['F#', 'Fa#'], ['G', 'Sol'], ['G#', 'Sol#'], ['A', 'Lam'], ['A#', 'La#m'], ['B', 'Si-']]);
-const NOTE_CHROMAS_SYLLABIC: Map<string, string> = new Map([['rest', 'rest'], ['C', 'do'], ['C#', 'do#'], ['D', 'ré'], ['D#', 'ré#'], ['E', 'mi'], ['F', 'fa'], ['F#', 'fa#'], ['G', 'sol'], ['G#', 'sol#'], ['A', 'la'], ['A#', 'la#'], ['B', 'si']]);
+const CHORD_SHARP_CHROMAS_SYLLABIC: Map<string, string> = new Map([['rest', 'rest'], ['C', 'Do'], ['C#', 'Do#'], ['D', 'Rém'], ['D#', 'Ré#m'], ['E', 'Mim'], ['F', 'Fa'], ['F#', 'Fa#'], ['G', 'Sol'], ['G#', 'Sol#'], ['A', 'Lam'], ['A#', 'La#m'], ['B', 'Si-']]);
+const NOTE_SHARP_CHROMAS_SYLLABIC: Map<string, string> = new Map([['rest', 'rest'], ['C', 'do'], ['C#', 'do#'], ['D', 'ré'], ['D#', 'ré#'], ['E', 'mi'], ['F', 'fa'], ['F#', 'fa#'], ['G', 'sol'], ['G#', 'sol#'], ['A', 'la'], ['A#', 'la#'], ['B', 'si']]);
 export enum TRACK_TYPES {
   MELODY = 'melody',
   HARMONY = 'harmony',
@@ -109,15 +109,15 @@ export class NotationService {
   }
 
   public tonalityFirstChromaLetterToChromaSyllabic(placedChord: PlacedChord): string {
-    return this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, placedChord.tonality.firstChroma);
+    return this.chromaLetterToChromaSyllabic(CHORD_SHARP_CHROMAS_SYLLABIC, placedChord.tonality.firstChroma);
   }
 
   public chordChromaLetterToChromaSyllabic(chroma: string): string {
-    return this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chroma);
+    return this.chromaLetterToChromaSyllabic(CHORD_SHARP_CHROMAS_SYLLABIC, chroma);
   }
 
   public noteChromaLetterToChromaSyllabic(chroma: string): string {
-    return this.chromaLetterToChromaSyllabic(NOTE_CHROMAS_SYLLABIC, chroma);
+    return this.chromaLetterToChromaSyllabic(NOTE_SHARP_CHROMAS_SYLLABIC, chroma);
   }
 
   private chromaLetterToChromaSyllabic(chromas_syllabic: Map<string, string>, chroma: string): string {
