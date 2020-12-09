@@ -346,7 +346,7 @@ export class GeneratorService {
     const noteRangeIntervals: Array<number> | undefined = NOTE_RANGE_INTERVALS.get(noteRange);
     if (noteRangeIntervals) {
       tonality.push(rangeFirstNote);
-      let chromas: Array<string> = HALF_TONE_CHROMAS;
+      let chromas: Array<string> = HALF_TONE_SHARP_CHROMAS;
       let index: number = chromas.indexOf(rangeFirstNote);
       if (index < 0) {
         throw new Error('The chroma ' + rangeFirstNote + ' could not be found in the intervals '+ chromas);
@@ -363,14 +363,14 @@ export class GeneratorService {
 
   private getFirstMeasureTonality(): Tonality {
     let firstChromaIndex: number = this.settingsService.getSettings().generateTonality;
-    const firstChroma: string = HALF_TONE_CHROMAS[firstChromaIndex];
+    const firstChroma: string = HALF_TONE_SHARP_CHROMAS[firstChromaIndex];
     return new Tonality(NOTE_RANGE.MAJOR, firstChroma);
   }
 
   private getTonalitiesContainingChromas(range: NOTE_RANGE, previousChroma: string, previousPreviousChroma: string | undefined): Array<Tonality> {
     const tonalities: Array<Tonality> = new Array();
-    for (let i: number = 0; i < HALF_TONE_CHROMAS.length; i++) {
-      const chroma: string = HALF_TONE_CHROMAS[i];
+    for (let i: number = 0; i < HALF_TONE_SHARP_CHROMAS.length; i++) {
+      const chroma: string = HALF_TONE_SHARP_CHROMAS[i];
       const tonalityChromas: Array<string> = this.getTonalityChromas(range, chroma);
       if (previousPreviousChroma) {
         if (tonalityChromas.includes(previousPreviousChroma) && tonalityChromas.includes(previousChroma)) {
@@ -402,9 +402,9 @@ export class GeneratorService {
       return tonalities[index];
     } else {
       // If no previous chord is specified then randomly pick a tonality
-      const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_CHROMAS.length - 1);
+      const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_SHARP_CHROMAS.length - 1);
       const randomRangeIndex: number = this.commonService.getRandomIntegerBetween(0, 1);
-      const chroma: string = HALF_TONE_CHROMAS[randomChromaIndex];
+      const chroma: string = HALF_TONE_SHARP_CHROMAS[randomChromaIndex];
       if (randomRangeIndex == 0) {
         return new Tonality(NOTE_RANGE.MAJOR, chroma);
       } else {
