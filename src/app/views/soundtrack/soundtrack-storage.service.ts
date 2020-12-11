@@ -37,7 +37,7 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
     return this.getAll(PREFIX);
   }
 
-  public deleteSoundtrack(soundtrackId: string) {
+  public deleteSoundtrack(soundtrackId: string): void {
     this.delete(PREFIX + soundtrackId);
   }
 
