@@ -4,7 +4,7 @@ import * as Tone from 'tone';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Device } from '@app/model/device';
 import { NotationService } from './notation.service';
-import { Note } from '@app/model/note/note';
+import { Note, NOTE_FLAT, NOTE_SHARP } from '@app/model/note/note';
 import { Measure } from '@app/model/measure/measure';
 import { Clef } from '@app/model/clef';
 import { PlacedChord } from '@app/model/note/placed-chord';
@@ -433,7 +433,8 @@ export class SheetService {
 
   private getNoteFrequency(note: Note): number {
     // The accidental must not be present in the note when getting the frequency
-    return Tone.Frequency(note.renderIntlChromaOctave()).toFrequency();
+    const chroma: string = this.chromaToSheetChroma(note.renderIntlChromaOctave());
+    return Tone.Frequency(chroma).toFrequency();
   }
 
   private sortNotesByPitch(notes: Array<Note>): Array<Note> {
@@ -466,12 +467,18 @@ export class SheetService {
     if (!this.notationService.noteIsNotRest(note)) {
       vexflowNote = VEXFLOW_REST_NOTE;
     } else {
-      vexflowNote = note.renderChroma();
+      // The accidental must not be present in the note
+      vexflowNote = this.chromaToSheetChroma(note.renderChroma());
       if (note.renderOctave() != null) {
         vexflowNote += VEXFLOW_OCTAVE_SEPARATOR + note.renderOctave();
       }
     }
     return vexflowNote;
+  }
+
+  private chromaToSheetChroma(chroma: string): string {
+    // Replace sharps and all flats
+    return chroma.replace(NOTE_SHARP, '').replace(NOTE_FLAT, '');
   }
 
   private renderDuration(placedChord: PlacedChord): string {
