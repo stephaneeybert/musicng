@@ -16,7 +16,7 @@ type ChordDurationUnitType = {
 };
 
 type GenerateTonalityType = {
-  id: number,
+  id: string,
   name: string
 };
 
@@ -131,8 +131,8 @@ export class SettingsDialogComponent implements OnInit {
       this.chordDurationUnits.push({ 'id': id, 'name': name });
     });
 
-    HALF_TONE_CHROMAS.forEach((chroma: string, id: number) => {
-      this.generateTonalities.push({ 'id': id, 'name': chroma });
+    HALF_TONE_CHROMAS.forEach((chroma: string) => {
+      this.generateTonalities.push({ 'id': chroma, 'name': chroma });
     });
   }
 
