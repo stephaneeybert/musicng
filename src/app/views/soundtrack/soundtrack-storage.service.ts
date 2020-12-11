@@ -152,8 +152,4 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
     return soundtrack;
   }
 
-  private is(value: any): boolean {
-    return this.commonService.is(value);
-  }
-
 }
