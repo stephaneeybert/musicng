@@ -62,6 +62,19 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     }
   }
 
+  public deleteAll(): boolean {
+    this.soundtrackStorageService.deleteAll();
+
+    let allDeleted: boolean = true;
+    for (let soundtrack of this.getSoundtracks()) {
+      const deleted: boolean = this.delete(soundtrack);
+      if (!deleted) {
+        allDeleted = false;
+      }
+    }
+    return allDeleted;
+  }
+
   public setSoundtrackKeyboard(soundtrack: Soundtrack, keyboard: any) {
     soundtrack.keyboard = keyboard;
     this.setSoundtrack(soundtrack);
