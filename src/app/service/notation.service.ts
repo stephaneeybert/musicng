@@ -8,14 +8,12 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { CHORD_SHARP_CHROMAS_SYLLABIC, DEFAULT_TONALITY_C_MAJOR, NOTE_SHARP_CHROMAS_SYLLABIC } from './notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_SHARP_CHROMAS, HALF_TONE_FLAT_CHROMAS } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 const CHORD_SEPARATOR: string = ' ';
 const CHORD_DURATION_SEPARATOR: string = '/';
 const NOTE_SEPARATOR: string = '|';
-const NOTE_REST: string = 'rest';
-const NOTE_END_OF_TRACK: string = 'end';
 const NOTE_END_OF_TRACK_OCTAVE: number = 0;
 const NOTE_END_OF_TRACK_DURATION: number = 8;
 const NOTE_END_OF_TRACK_VELOCITY: number = 0;
@@ -100,15 +98,15 @@ export class NotationService {
   }
 
   public tonalityFirstChromaLetterToChromaSyllabic(placedChord: PlacedChord): string {
-    return this.chromaLetterToChromaSyllabic(CHORD_SHARP_CHROMAS_SYLLABIC, placedChord.tonality.firstChroma);
+    return this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, placedChord.tonality.firstChroma);
   }
 
   public chordChromaLetterToChromaSyllabic(chroma: string): string {
-    return this.chromaLetterToChromaSyllabic(CHORD_SHARP_CHROMAS_SYLLABIC, chroma);
+    return this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chroma);
   }
 
   public noteChromaLetterToChromaSyllabic(chroma: string): string {
-    return this.chromaLetterToChromaSyllabic(NOTE_SHARP_CHROMAS_SYLLABIC, chroma);
+    return this.chromaLetterToChromaSyllabic(NOTE_CHROMAS_SYLLABIC, chroma);
   }
 
   private chromaLetterToChromaSyllabic(chromas_syllabic: Map<string, string>, chroma: string): string {
@@ -121,6 +119,16 @@ export class NotationService {
       }
     } else {
       throw new Error('The chroma letter ' + chroma + ' could not be found in the chromas syllabic ' + chromas_syllabic.keys.toString());
+    }
+  }
+
+  public selectHalfToneChromasFromFirstChroma(chroma: string): Array<string> {
+    if (HALF_TONE_SHARP_CHROMAS.includes(chroma)) {
+      return HALF_TONE_SHARP_CHROMAS;
+    } else if (HALF_TONE_FLAT_CHROMAS.includes(chroma)) {
+      return HALF_TONE_FLAT_CHROMAS;
+    }else {
+      throw new Error('No chromas array was found containing the chroma ' + chroma);
     }
   }
 

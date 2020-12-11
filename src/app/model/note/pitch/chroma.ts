@@ -1,11 +1,11 @@
-export class Chroma {
+import { ALLOWED_CHROMAS } from '@app/service/notation.constant ';
 
-  public static CHROMAS_ALPHABETICAL = ['rest', 'end', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+export class Chroma {
 
   value: string;
 
   constructor(value: string) {
-    if (Chroma.CHROMAS_ALPHABETICAL.includes(value)) {
+    if (ALLOWED_CHROMAS.includes(value)) {
       this.value = value;
     } else {
       throw new Error('A chroma could not be instantiated witht the value ' + value);
@@ -13,7 +13,7 @@ export class Chroma {
   }
 
   public getChromaIndex(): number {
-    const index: number = Chroma.CHROMAS_ALPHABETICAL.indexOf(this.value);
+    const index: number = ALLOWED_CHROMAS.indexOf(this.value);
     if (index < 0) {
       throw new Error('A chroma could not be found witht the value ' + this.value);
     }

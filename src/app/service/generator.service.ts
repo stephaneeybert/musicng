@@ -10,7 +10,7 @@ import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { NOTE_RANGE, HALF_TONE_SHARP_CHROMAS, NOTE_RANGE_INTERVALS, HALF_TONE, TRACK_TYPES } from './notation.constant ';
+import { NOTE_RANGE, HALF_TONE_CHROMAS, NOTE_RANGE_INTERVALS, HALF_TONE, TRACK_TYPES } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 @Injectable({
@@ -345,11 +345,8 @@ export class GeneratorService {
     const noteRangeIntervals: Array<number> | undefined = NOTE_RANGE_INTERVALS.get(noteRange);
     if (noteRangeIntervals) {
       tonality.push(rangeFirstNote);
-      let chromas: Array<string> = HALF_TONE_SHARP_CHROMAS;
+      let chromas: Array<string> = this.notationService.selectHalfToneChromasFromFirstChroma(rangeFirstNote);
       let index: number = chromas.indexOf(rangeFirstNote);
-      if (index < 0) {
-        throw new Error('The chroma ' + rangeFirstNote + ' could not be found in the intervals '+ chromas);
-      }
       for (let i = 0; i < noteRangeIntervals.length - 1; i++) {
         for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
           chromas = this.createArrayShiftOnceLeft(chromas);
@@ -362,14 +359,15 @@ export class GeneratorService {
 
   private getFirstMeasureTonality(): Tonality {
     let firstChromaIndex: number = this.settingsService.getSettings().generateTonality;
-    const firstChroma: string = HALF_TONE_SHARP_CHROMAS[firstChromaIndex];
+    const halfToneChromas: Array<string> = this.notationService.selectHalfToneChromasFromFirstChroma('C'); // TODO
+    const firstChroma: string = halfToneChromas[firstChromaIndex];
     return new Tonality(NOTE_RANGE.MAJOR, firstChroma);
   }
 
   private getTonalitiesContainingChromas(range: NOTE_RANGE, previousChroma: string, previousPreviousChroma: string | undefined): Array<Tonality> {
     const tonalities: Array<Tonality> = new Array();
-    for (let i: number = 0; i < HALF_TONE_SHARP_CHROMAS.length; i++) {
-      const chroma: string = HALF_TONE_SHARP_CHROMAS[i];
+    for (let i: number = 0; i < HALF_TONE_CHROMAS.length; i++) {
+      const chroma: string = HALF_TONE_CHROMAS[i];
       const tonalityChromas: Array<string> = this.getTonalityChromas(range, chroma);
       if (previousPreviousChroma) {
         if (tonalityChromas.includes(previousPreviousChroma) && tonalityChromas.includes(previousChroma)) {
@@ -401,9 +399,9 @@ export class GeneratorService {
       return tonalities[index];
     } else {
       // If no previous chord is specified then randomly pick a tonality
-      const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_SHARP_CHROMAS.length - 1);
+      const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_CHROMAS.length - 1);
       const randomRangeIndex: number = this.commonService.getRandomIntegerBetween(0, 1);
-      const chroma: string = HALF_TONE_SHARP_CHROMAS[randomChromaIndex];
+      const chroma: string = HALF_TONE_CHROMAS[randomChromaIndex];
       if (randomRangeIndex == 0) {
         return new Tonality(NOTE_RANGE.MAJOR, chroma);
       } else {
