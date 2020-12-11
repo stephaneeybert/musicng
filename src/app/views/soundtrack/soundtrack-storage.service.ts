@@ -41,6 +41,12 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
     this.delete(PREFIX + soundtrackId);
   }
 
+  public deleteAll(): void {
+    this.getAllSoundtracks().forEach((soundtrack: Soundtrack) => {
+      this.deleteSoundtrack(soundtrack.id);
+    });
+  }
+
   public cleanUpInstance(soundtrackJson: any): Soundtrack {
     const soundtrack: Soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
 
