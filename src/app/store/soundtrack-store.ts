@@ -49,13 +49,13 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
   }
 
   public delete(soundtrack: Soundtrack): boolean {
+    this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
+
     const index: number = this.getSoundtrackIndex(soundtrack.id);
     if (index !== -1) {
       const soundtracks: Array<Soundtrack> = this.getState();
       soundtracks.splice(index, 1);
       this.setState(soundtracks);
-
-      this.soundtrackStorageService.deleteSoundtrack(soundtrack.id);
       return true;
     } else {
       return false;
