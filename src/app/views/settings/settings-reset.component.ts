@@ -6,6 +6,7 @@ import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dial
 import { TranslateService } from '@ngx-translate/core';
 import { MaterialService } from '@app/core/service/material.service';
 import { SettingsResetDialogComponent } from './settings-reset-dialog.component';
+import { SoundtrackStore } from '@app/store/soundtrack-store';
 
 @Component({
   selector: 'app-settings-reset',
@@ -22,6 +23,7 @@ export class SettingsResetComponent {
 
   constructor(
     private settingsStore: SettingsStore,
+    private soundtrackStore: SoundtrackStore,
     private materialService: MaterialService,
     private translateService: TranslateService,
     private matDialog: MatDialog
@@ -49,6 +51,7 @@ export class SettingsResetComponent {
       .subscribe((reset: boolean) => {
         if (reset) {
           this.settingsStore.delete();
+          this.soundtrackStore.deleteAll();
 
           const message: string = this.translateService.instant('settings.message.reset-ed');
           this.materialService.showSnackBar(message);
