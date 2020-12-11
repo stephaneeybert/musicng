@@ -11,7 +11,6 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Track } from '@app/model/track';
 import { TranslateService } from '@ngx-translate/core';
 import { MaterialService } from '@app/core/service/material.service';
-import { TempoUnitType } from '@app/model/tempo-unit';
 import { SettingsService } from '@app/views/settings/settings.service';
 
 const NAME_PREFIX_SOUNDTRACK: string = 'sheet-soundtrack-';
