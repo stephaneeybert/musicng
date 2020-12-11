@@ -127,7 +127,7 @@ export class NotationService {
       return HALF_TONE_SHARP_CHROMAS;
     } else if (HALF_TONE_FLAT_CHROMAS.includes(chroma)) {
       return HALF_TONE_FLAT_CHROMAS;
-    }else {
+    } else {
       throw new Error('No chromas array was found containing the chroma ' + chroma);
     }
   }
