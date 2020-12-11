@@ -41,8 +41,8 @@ export const CHORD_DURATION_DOTTED: string = '.';
 export const HALF_TONE: number = 0.5;
 
 // export const HALF_TONE_CHROMAS: Array<string> = [ 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B' ];
-export const HALF_TONE_SHARP_CHROMAS: Array<string> = ['B#', 'C#', 'C##', 'D#', 'E', 'E#', 'F#', 'F##', 'G#', 'G##', 'A#', 'B'];
-export const HALF_TONE_FLAT_CHROMAS: Array<string> = ['C', 'Db', 'D', 'Eb', 'Fb', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'Cb'];
+export const HALF_TONE_SHARP_CHROMAS: Array<string> = [ 'B#', 'C#', 'C##', 'D#', 'E', 'E#', 'F#', 'F##', 'G#', 'G##', 'A#', 'B' ];
+export const HALF_TONE_FLAT_CHROMAS: Array<string> = [ 'C', 'Db', 'D', 'Eb', 'Fb', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'Cb' ];
 export const HALF_TONE_CHROMAS: Array<string> = HALF_TONE_SHARP_CHROMAS
 .concat(HALF_TONE_FLAT_CHROMAS);
 export const ALLOWED_CHROMAS: Array<string> = META_CHROMAS
