@@ -64,7 +64,7 @@ export class NotationService {
     let chroma: string;
     let octave: number;
     if (this.abcNoteIsNotRest(textNote)) {
-      const [chroma, octave]: [string, number] = this.noteToChromaOctave(textNote);
+      [chroma, octave] = this.noteToChromaOctave(textNote);
       note = this.createNote(index, chroma, octave);
     } else {
       chroma = textNote;
