@@ -115,7 +115,7 @@ export class NotationService {
       if (latinChroma) {
         return latinChroma;
       } else {
-        throw new Error('The alphabetical chromas array has not been instantiated.');
+        throw new Error('The chroma letter ' + chroma + ' could not be retrieved in the chromas syllabic ' + chromas_syllabic.keys.toString());
       }
     } else {
       throw new Error('The chroma letter ' + chroma + ' could not be found in the chromas syllabic ' + chromas_syllabic.keys.toString());
