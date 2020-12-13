@@ -155,7 +155,7 @@ export class GeneratorService {
     const item: string | undefined = shiftedItems.pop();
     if (item) {
       shiftedItems.unshift(item!);
-    } else  {
+    } else {
       throw new Error('The array could not be shifted right');
     }
     return shiftedItems;
