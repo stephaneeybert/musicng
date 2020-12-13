@@ -10,7 +10,7 @@ import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { NOTE_RANGE, HALF_TONE_CHROMAS, NOTE_RANGE_INTERVALS, HALF_TONE, TRACK_TYPES } from './notation.constant ';
+import { NOTE_RANGE, HALF_TONE_CHROMAS, NOTE_RANGE_INTERVALS, HALF_TONE, TRACK_TYPES, CHROMA_ENHARMONICS, ENHARMONICS_MAJOR, ENHARMONICS_MINOR, ALPHABETICAL_CHROMAS, SCALE_BASE_CHROMAS_1, SCALE_BASE_CHROMAS_2 } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 @Injectable({
@@ -127,6 +127,131 @@ export class GeneratorService {
     return this.translateService.instant('soundtracks.assignedName') + '_' + this.commonService.getRandomString(4);
   }
 
+  private getRangeChromas(noteRange: NOTE_RANGE): Array<string> {
+    if (noteRange == NOTE_RANGE.MAJOR) {
+      return ENHARMONICS_MAJOR;
+    } else {
+      return ENHARMONICS_MINOR;
+    }
+  }
+
+  private getChromaEnharmonic(chroma: string): string {
+    if (CHROMA_ENHARMONICS.has(chroma)) {
+      const enharmonic: string | undefined = CHROMA_ENHARMONICS.get(chroma);
+      if (enharmonic) {
+        return enharmonic;
+      } else {
+        throw new Error('The chroma ' + chroma + ' could not be retrieved in the enharmonics.');
+      }
+    } else {
+      throw new Error('The chroma ' + chroma + ' could not be found in the enharmonics.');
+    }
+  }
+
+  private buildScale(startChroma: string): Array<string> {
+    let chromas: Array<string> = new Array();
+    for (let i: number = 0; i < SCALE_BASE_CHROMAS_1.length; i++) {
+      if (startChroma == SCALE_BASE_CHROMAS_1[i]) {
+        for (let j: number = i; j < SCALE_BASE_CHROMAS_1.length + i; j++) {
+          chromas.push(SCALE_BASE_CHROMAS_1[j % SCALE_BASE_CHROMAS_1.length]);
+        }
+        break;
+      } else if (startChroma == SCALE_BASE_CHROMAS_2[i]) {
+        for (let j: number = i; j < SCALE_BASE_CHROMAS_1.length + i; j++) {
+          chromas.push(SCALE_BASE_CHROMAS_2[j % SCALE_BASE_CHROMAS_1.length]);
+        }
+        break;
+      }
+    }
+    return chromas;
+  }
+
+  private buildTonality(scale: Array<string>, noteRangeIntervals: Array<number>): Array<string> {
+    const tonality: Array<string> = new Array();
+    let chromas: Array<string> = scale;
+    tonality.push(chromas[0]);
+    let index: number = chromas.indexOf(chromas[0]);
+    for (let i = 0; i < noteRangeIntervals.length - 1; i++) {
+      for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
+        chromas = this.createArrayShiftOnceLeft(chromas);
+      }
+      tonality.push(chromas[index]);
+    }
+    return tonality;
+  }
+
+  private buildSourceScale(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
+    const chromas: Array<string> = this.getRangeChromas(noteRange);
+    if (!chromas.includes(rangeFirstChroma)) {
+      throw new Error('The chroma ' + rangeFirstChroma + ' could not be found in the enharmonic source chromas ' + chromas);
+    }
+    return this.buildScale(rangeFirstChroma);
+  }
+
+  private buildEnharmonicScale(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
+    const chromas: Array<string> = this.getRangeChromas(noteRange);
+    if (!chromas.includes(rangeFirstChroma)) {
+      throw new Error('The chroma ' + rangeFirstChroma + ' could not be found in the enharmonic source chromas ' + chromas);
+    }
+    const enharmonicChroma: string = this.getChromaEnharmonic(rangeFirstChroma);
+    return this.buildScale(enharmonicChroma);
+  }
+
+  private shiftChromas(startChroma: string): Array<string> {
+    var shiftedChromas: Array<string> = new Array();
+    for (let i: number = 0; i < ALPHABETICAL_CHROMAS.length; i++) {
+      if (startChroma.includes(ALPHABETICAL_CHROMAS[i])) {
+        for (let j = i; j < ALPHABETICAL_CHROMAS.length + i; j++) {
+          shiftedChromas.push(ALPHABETICAL_CHROMAS[j % ALPHABETICAL_CHROMAS.length]);
+        }
+        break;
+      }
+    }
+    if (shiftedChromas.length == 0) {
+      throw new Error('The chroma ' + startChroma + ' could not be found in the alphabetical chromas ' + ALPHABETICAL_CHROMAS);
+    }
+    return shiftedChromas;
+  }
+
+  private intervalsToStructure(noteRangeIntervals: Array<number>): Array<number> {
+    let noteRangeStructure: Array<number> = new Array();
+    let total: number = 0;
+    for (let index: number = 0; index < noteRangeIntervals.length; index++) {
+      total += noteRangeIntervals[index];
+      noteRangeStructure.push(total);
+    }
+    return noteRangeStructure;
+  }
+
+  // For a specific note range
+  //   get the array of intervals as a structure
+  //   get the array of source chromas, either ENHARMONICS_MAJOR or ENHARMONICS_MINOR
+  // For a specific source chroma
+  //   build the "source scale" from the source chroma
+  //   get its corresponding enharmonic chroma
+  //   build the "enharmonic scale" from the enharmonic chroma
+  //   build the tonality from the source and enharmonic scales and the structure
+  private buildTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
+    let tonality: Array<string> = new Array();
+    const sourceScale: Array<string> = this.buildSourceScale(noteRange, rangeFirstChroma);
+    const enharmonicScale: Array<string> = this.buildEnharmonicScale(noteRange, rangeFirstChroma);
+    const alphaScale: Array<string> = this.shiftChromas(rangeFirstChroma);
+    const noteRangeStructure: Array<number> = this.intervalsToStructure(this.getNoteRangeIntervals(noteRange));
+
+    let structureIndex: number = 0;
+    for (let index = 0; index < sourceScale.length; index++) {
+      if (noteRangeStructure[structureIndex] == index) {
+        if (sourceScale[index].includes(alphaScale[structureIndex])) {
+          tonality.push(sourceScale[index]);
+        } else if (enharmonicScale[index].includes(alphaScale[structureIndex])) {
+          tonality.push(enharmonicScale[index]);
+        }
+        structureIndex++;
+      }
+    }
+    return tonality;
+  }
+
   private createArrayShiftOnceLeft(items: Array<string>): Array<string> {
     // Make a deep copy
     let shiftedItems: Array<string> = new Array();
@@ -138,7 +263,7 @@ export class GeneratorService {
     const item: string | undefined = shiftedItems.shift();
     if (item) {
       shiftedItems.push(item);
-    } else  {
+    } else {
       throw new Error('The array could not be shifted left');
     }
     return shiftedItems;

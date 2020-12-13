@@ -31,6 +31,42 @@ export const CHORD_DURATION_UNITS: Map<TempoUnit, string> = new Map([
 
 export const CHORD_DURATION_DOTTED: string = '.';
 
+export const CHROMA_ENHARMONICS: Map<string, string> = new Map([
+  ['Cb', 'B'],
+  ['B', 'Cb'],
+  ['B#', 'C'],
+  ['C', 'B#'],
+  ['C#', 'Db'],
+  ['Db', 'C#'],
+  ['D', 'C##'],
+  ['C##', 'D'],
+  ['Eb', 'D#'],
+  ['D#', 'Eb'],
+  ['E', 'Fb'],
+  ['Fb', 'E'],
+  ['F', 'E#'],
+  ['E#', 'F'],
+  ['F#', 'Gb'],
+  ['Gb', 'F#'],
+  ['G', 'F##'],
+  ['F##', 'G'],
+  ['G#', 'Ab'],
+  ['Ab', 'G#'],
+  ['A', 'G##'],
+  ['G##', 'A'],
+  ['A#', 'Bb'],
+  ['Bb', 'A#']
+]);
+export const ENHARMONICS_MAJOR: Array<string> = ['C', 'Cb', 'C#', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+export const ENHARMONICS_MINOR: Array<string> = ['A', 'Ab', 'A#', 'Bb', 'B', 'C', 'C#', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'G', 'G#'];
+export const ALPHABETICAL_CHROMAS: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+export const SCALE_BASE_CHROMAS_1: Array<string> = ['C', 'C#', 'C##', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+export const SCALE_BASE_CHROMAS_2: Array<string> = ['B#', 'Db', 'D', 'D#', 'Fb', 'E#', 'F#', 'F##', 'G#', 'G##', 'A#', 'Cb'];
+export const TODO_NOT_USED_ROOT_CHROMAS: Array<string> = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+export const TODO_NOT_USED_CHROMA_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+// export const HALF_TONE_CHROMAS: Array<string> = ENHARMONICS_MAJOR
+//   .concat(ENHARMONICS_MINOR);
+
 // An interval represents the distance between two notes
 // The interval between two notes is a half-tone
 // The # sign raises the note by a half-tone and the b lowers it by a half-tone
