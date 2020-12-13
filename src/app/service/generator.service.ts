@@ -340,19 +340,26 @@ export class GeneratorService {
     }
   }
 
-  private getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstNote: string): Array<string> {
-    const tonality: Array<string> = new Array();
+  private getNoteRangeIntervals(noteRange: NOTE_RANGE): Array<number> {
     const noteRangeIntervals: Array<number> | undefined = NOTE_RANGE_INTERVALS.get(noteRange);
     if (noteRangeIntervals) {
-      tonality.push(rangeFirstNote);
-      let chromas: Array<string> = this.notationService.selectHalfToneChromasFromFirstChroma(rangeFirstNote);
-      let index: number = chromas.indexOf(rangeFirstNote);
-      for (let i = 0; i < noteRangeIntervals.length - 1; i++) {
-        for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
-          chromas = this.createArrayShiftOnceLeft(chromas);
-        }
-        tonality.push(chromas[index]);
+      return noteRangeIntervals;
+    } else {
+      throw new Error('No intervals could be found for the note range ' + noteRange);
+    }
+  }
+
+  private getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstNote: string): Array<string> {
+    const tonality: Array<string> = new Array();
+    const noteRangeIntervals: Array<number> = this.getNoteRangeIntervals(noteRange);
+    tonality.push(rangeFirstNote);
+    let chromas: Array<string> = this.notationService.selectHalfToneChromasFromFirstChroma(rangeFirstNote);
+    let index: number = chromas.indexOf(rangeFirstNote);
+    for (let i = 0; i < noteRangeIntervals.length - 1; i++) {
+      for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
+        chromas = this.createArrayShiftOnceLeft(chromas);
       }
+      tonality.push(chromas[index]);
     }
     return tonality;
   }
