@@ -349,12 +349,12 @@ export class GeneratorService {
     }
   }
 
-  private getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstNote: string): Array<string> {
+  private getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
     const tonality: Array<string> = new Array();
     const noteRangeIntervals: Array<number> = this.getNoteRangeIntervals(noteRange);
-    tonality.push(rangeFirstNote);
-    let chromas: Array<string> = this.notationService.selectHalfToneChromasFromFirstChroma(rangeFirstNote);
-    let index: number = chromas.indexOf(rangeFirstNote);
+    tonality.push(rangeFirstChroma);
+    let chromas: Array<string> = this.notationService.selectHalfToneChromasFromFirstChroma(rangeFirstChroma);
+    let index: number = chromas.indexOf(rangeFirstChroma);
     for (let i = 0; i < noteRangeIntervals.length - 1; i++) {
       for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
         chromas = this.createArrayShiftOnceLeft(chromas);
