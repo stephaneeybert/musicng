@@ -47,16 +47,6 @@ export class PlacedChord {
     });
   }
 
-  public getNotesSortedByChromaAndOctave(): Array<Note> {
-    return this.notes.sort((noteA: Note, noteB: Note) => {
-      if (noteA.pitch.octave.value != noteB.pitch.octave.value) {
-        return noteA.pitch.octave.value - noteB.pitch.octave.value;
-      } else {
-        return noteA.pitch.chroma.getChromaIndex() - noteB.pitch.chroma.getChromaIndex();
-      }
-    });
-  }
-
   public getFirstNote(): Note {
     let abc: Note;
     if (this.notes != null && this.notes.length > 0) {
