@@ -8,7 +8,7 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_SHARP_CHROMAS, HALF_TONE_FLAT_CHROMAS } from './notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_SHARP_CHROMAS, HALF_TONE_FLAT_CHROMAS, HALF_TONE_MAJOR_CHROMAS, HALF_TONE_MINOR_CHROMAS } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 const CHORD_SEPARATOR: string = ' ';
@@ -122,11 +122,20 @@ export class NotationService {
     }
   }
 
+  // public selectHalfToneChromasFromFirstChroma(chroma: string): Array<string> {
+  //   if (HALF_TONE_SHARP_CHROMAS.includes(chroma)) {
+  //     return HALF_TONE_SHARP_CHROMAS;
+  //   } else if (HALF_TONE_FLAT_CHROMAS.includes(chroma)) {
+  //     return HALF_TONE_FLAT_CHROMAS;
+  //   } else {
+  //     throw new Error('No chromas array was found containing the chroma ' + chroma);
+  //   }
+  // } TODO
   public selectHalfToneChromasFromFirstChroma(chroma: string): Array<string> {
-    if (HALF_TONE_SHARP_CHROMAS.includes(chroma)) {
-      return HALF_TONE_SHARP_CHROMAS;
-    } else if (HALF_TONE_FLAT_CHROMAS.includes(chroma)) {
-      return HALF_TONE_FLAT_CHROMAS;
+    if (HALF_TONE_MAJOR_CHROMAS.includes(chroma)) {
+      return HALF_TONE_MAJOR_CHROMAS;
+    } else if (HALF_TONE_MINOR_CHROMAS.includes(chroma)) {
+      return HALF_TONE_MINOR_CHROMAS;
     } else {
       throw new Error('No chromas array was found containing the chroma ' + chroma);
     }

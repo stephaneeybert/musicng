@@ -76,10 +76,14 @@ export const TODO_NOT_USED_CHROMA_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#',
 //     Db       Eb           Gb       Ab       Bb   Cb
 export const HALF_TONE: number = 0.5;
 
+export const HALF_TONE_MAJOR_CHROMAS: Array<string> = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+export const HALF_TONE_MINOR_CHROMAS: Array<string> = ['Cm', 'C#m', 'Dm', 'D#m', 'Em', 'Fm', 'F#m', 'Gm', 'Abm', 'Am', 'Bbm', 'Bm'];
+export const HALF_TONE_CHROMAS: Array<string> = HALF_TONE_MAJOR_CHROMAS
+  .concat(HALF_TONE_MINOR_CHROMAS);
 export const HALF_TONE_SHARP_CHROMAS: Array<string> = ['B#', 'C#', 'C##', 'D#', 'E', 'E#', 'F#', 'F##', 'G#', 'G##', 'A#', 'B'];
 export const HALF_TONE_FLAT_CHROMAS: Array<string> = ['C', 'Db', 'D', 'Eb', 'Fb', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'Cb'];
-export const HALF_TONE_CHROMAS: Array<string> = HALF_TONE_SHARP_CHROMAS
-  .concat(HALF_TONE_FLAT_CHROMAS);
+// export const HALF_TONE_CHROMAS: Array<string> = HALF_TONE_SHARP_CHROMAS
+//   .concat(HALF_TONE_FLAT_CHROMAS);
 export const ALLOWED_CHROMAS: Array<string> = META_CHROMAS
   .concat(HALF_TONE_CHROMAS);
 export const CHORD_CHROMAS_SYLLABIC: Map<string, string> = new Map([
