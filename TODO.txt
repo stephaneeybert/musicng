@@ -1,8 +1,3 @@
-Have chord names depending on the range
-Make sure the rendered chroma considers the range
-Do not pick diminished chords -
-Display Reb instead of its equivalent Do#
-
 Une autre façon de construire un accord, est de prendre non pas les notes n, n+2, n+4
 mais les notes n, n+(4 demi-tons), n+(7 demi-tons)
 In fact there are several ways:
@@ -15,16 +10,25 @@ DiminishedTriad = [0,3,6]
 - Augmented Triad is defined raising the fifth of a major triad.
 AugmentedTriad = [0,4,8]
 
-Inversions
-Triads and other chords can be played in the basic voicing from low to high: root, third, fifth (known as root position). But they also can be voiced with either the third or the fifth as the lowest note. These addition voicings are known as inversions of the triad.
+Reversed chord
+Rename it to Chord inversion
+Triads and other chords can be played in the basic voicing
+from low to high: root, third, fifth (known as root position).
+But they also can be voiced with either the third or the fifth as the lowest note.
+These addition voicings are known as inversions of the triad.
 https://www.guitarland.com/MusicTheoryWithToneJS/PlayChords.html
 
-Use a sharp # except when that reuses a chroma letter, then use the next letter with a flat b
-(even though Gb and F# are the same sound, for Db major the correct name is Gb (not F#), because the letter F has already been used)
+Use a sharp # except when that RE-uses a chroma letter,
+then use the next letter with a flat b.
+For example, even though Gb and F# are the same sound,
+for Db major the correct name is Gb (not F#),
+because the letter F has already been used.
+Use all of the letter names of the music alphabet
+in some form(natural, sharp or flat)
+but only use each letter once per octave.
 https://www.guitarland.com/MusicTheoryWithToneJS/Enharmonics/EnharmonicPicker.html
-use all of the letter names of the music alphabet in some form (natural, sharp or flat) but only use each letter once per octave. For
 
-For major scales there is never a mixture of sharps and flats in the same scale i.e.
+For major and minor scales there is never a mixture of sharps and flats in the same scale i.e.
 D major = D E F# G A B C# (D) (no flat names used)
 Db major = Db Eb F Gb Ab Bb C (Db) (no sharp names used)
 
