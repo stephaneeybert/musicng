@@ -84,8 +84,6 @@ export const HALF_TONE_SHARP_CHROMAS: Array<string> = ['B#', 'C#', 'C##', 'D#', 
 export const HALF_TONE_FLAT_CHROMAS: Array<string> = ['C', 'Db', 'D', 'Eb', 'Fb', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'Cb'];
 // export const HALF_TONE_CHROMAS: Array<string> = HALF_TONE_SHARP_CHROMAS
 //   .concat(HALF_TONE_FLAT_CHROMAS);
-export const ALLOWED_CHROMAS: Array<string> = META_CHROMAS
-  .concat(HALF_TONE_CHROMAS);
 export const CHORD_CHROMAS_SYLLABIC: Map<string, string> = new Map([
   ['rest', 'rest'],
   ['B#', 'Do'], ['C#', 'Do#'], ['C##', 'Rém'], ['D#', 'Ré#m'], ['E', 'Mim'], ['E#', 'Fa'], ['F#', 'Fa#'], ['F##', 'Sol'], ['G#', 'Sol#'], ['G##', 'Lam'], ['A#', 'La#m'], ['B', 'Si-'],
