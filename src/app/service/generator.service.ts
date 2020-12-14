@@ -412,7 +412,7 @@ export class GeneratorService {
 
     let shiftedChromas: Array<string> = new Array();
     for (let i: number = 0; i < chromas.length; i++) {
-      if (startChroma.includes(chromas[i])) {
+      if (startChroma == chromas[i]) {
         for (let j = i; j < chromas.length + i; j++) {
           shiftedChromas.push(chromas[j % chromas.length]);
         }
@@ -432,11 +432,11 @@ export class GeneratorService {
     return this.pickContainingEnharmonics(sameSoundingChroma);
   }
 
-  private getShiftedAlphaScale(startChroma: string): Array<string> {
+  private getAlphaScale(startChroma: string, length: number): Array<string> {
     var shiftedChromas: Array<string> = new Array();
-    for (let i: number = 0; i < CHROMAS_ALPHABETICAL.length; i++) {
+    for (let i: number = 0; i < length; i++) {
       if (startChroma.includes(CHROMAS_ALPHABETICAL[i])) {
-        for (let j = i; j < CHROMAS_ALPHABETICAL.length + i; j++) {
+        for (let j = i; j < length + i; j++) {
           shiftedChromas.push(CHROMAS_ALPHABETICAL[j % CHROMAS_ALPHABETICAL.length]);
         }
         break;
@@ -452,8 +452,8 @@ export class GeneratorService {
     let noteRangeStructure: Array<number> = new Array();
     let total: number = 0;
     for (let index: number = 0; index < noteRangeIntervals.length; index++) {
-      total += noteRangeIntervals[index];
       noteRangeStructure.push(total);
+      total += (2 * noteRangeIntervals[index]);
     }
     return noteRangeStructure;
   }
@@ -467,34 +467,11 @@ export class GeneratorService {
     }
   }
 
-  private getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
-    const tonality: Array<string> = new Array();
-    const noteRangeIntervals: Array<number> = this.getNoteRangeIntervals(noteRange);
-    tonality.push(rangeFirstChroma);
-    let chromas: Array<string> = this.notationService.selectHalfToneChromasFromFirstChroma(rangeFirstChroma);
-    let index: number = chromas.indexOf(rangeFirstChroma);
-    for (let i = 0; i < noteRangeIntervals.length - 1; i++) {
-      for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
-        chromas = this.createArrayShiftOnceLeft(chromas);
-      }
-      tonality.push(chromas[index]);
-    }
-    return tonality;
-  }
-
-  // For a specific note range
-  //   get the array of intervals as a structure
-  //   get the array of source chromas, either ENHARMONICS_MAJOR or ENHARMONICS_MINOR
-  // For a specific source chroma
-  //   build the "source scale" from the source chroma
-  //   get its corresponding enharmonic chroma
-  //   build the "enharmonic scale" from the enharmonic chroma
-  //   build the tonality from the source and enharmonic scales and the structure
-  private buildTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
+  private TODOgetTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
     let tonality: Array<string> = new Array();
     const sourceScale: Array<string> = this.buildSourceScale(noteRange, rangeFirstChroma);
     const enharmonicScale: Array<string> = this.buildEnharmonicScale(noteRange, rangeFirstChroma);
-    const alphaScale: Array<string> = this.getShiftedAlphaScale(rangeFirstChroma);
+    const alphaScale: Array<string> = this.getAlphaScale(rangeFirstChroma, sourceScale.length);
     const noteRangeStructure: Array<number> = this.intervalsToStructure(this.getNoteRangeIntervals(noteRange));
 
     let structureIndex: number = 0;
@@ -507,6 +484,21 @@ export class GeneratorService {
         }
         structureIndex++;
       }
+    }
+    return tonality;
+  }
+
+  private getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
+    const tonality: Array<string> = new Array();
+    const noteRangeIntervals: Array<number> = this.getNoteRangeIntervals(noteRange);
+    tonality.push(rangeFirstChroma);
+    let chromas: Array<string> = this.notationService.selectHalfToneChromasFromFirstChroma(rangeFirstChroma);
+    let index: number = chromas.indexOf(rangeFirstChroma);
+    for (let i = 0; i < noteRangeIntervals.length - 1; i++) {
+      for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
+        chromas = this.createArrayShiftOnceLeft(chromas);
+      }
+      tonality.push(chromas[index]);
     }
     return tonality;
   }
