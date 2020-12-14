@@ -57,8 +57,8 @@ export const CHROMA_ENHARMONICS: Map<string, string> = new Map([
   ['A#', 'Bb'],
   ['Bb', 'A#']
 ]);
-export const ENHARMONICS_MAJOR: Array<string> = ['C', 'Cb', 'C#', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-export const ENHARMONICS_MINOR: Array<string> = ['A', 'Ab', 'A#', 'Bb', 'B', 'C', 'C#', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'G', 'G#'];
+export const KEYS_MAJOR: Array<string> = ['C', 'Cb', 'C#', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+export const KEYS_MINOR: Array<string> = ['A', 'Ab', 'A#', 'Bb', 'B', 'C', 'C#', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'G', 'G#'];
 export const ALPHABETICAL_CHROMAS: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 export const SCALE_BASE_CHROMAS_1: Array<string> = ['C', 'C#', 'C##', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 export const SCALE_BASE_CHROMAS_2: Array<string> = ['B#', 'Db', 'D', 'D#', 'Fb', 'E#', 'F#', 'F##', 'G#', 'G##', 'A#', 'Cb'];

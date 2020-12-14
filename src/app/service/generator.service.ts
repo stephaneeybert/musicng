@@ -10,7 +10,7 @@ import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { NOTE_RANGE, HALF_TONE_CHROMAS, NOTE_RANGE_INTERVALS, HALF_TONE, TRACK_TYPES, CHROMA_ENHARMONICS, ENHARMONICS_MAJOR, ENHARMONICS_MINOR, ALPHABETICAL_CHROMAS, SCALE_BASE_CHROMAS_1, SCALE_BASE_CHROMAS_2 } from './notation.constant ';
+import { NOTE_RANGE, HALF_TONE_CHROMAS, NOTE_RANGE_INTERVALS, HALF_TONE, TRACK_TYPES, CHROMA_ENHARMONICS, KEYS_MAJOR, KEYS_MINOR, ALPHABETICAL_CHROMAS, SCALE_BASE_CHROMAS_1, SCALE_BASE_CHROMAS_2 } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 @Injectable({
@@ -129,9 +129,9 @@ export class GeneratorService {
 
   private getRangeChromas(noteRange: NOTE_RANGE): Array<string> {
     if (noteRange == NOTE_RANGE.MAJOR) {
-      return ENHARMONICS_MAJOR;
+      return KEYS_MAJOR;
     } else {
-      return ENHARMONICS_MINOR;
+      return KEYS_MINOR;
     }
   }
 
