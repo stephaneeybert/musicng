@@ -31,6 +31,17 @@ export const CHORD_DURATION_UNITS: Map<TempoUnit, string> = new Map([
 
 export const CHORD_DURATION_DOTTED: string = '.';
 
+// Tonality rules:
+
+// Use all of the letter names in natural, sharp or flat, but only use each letter once.
+// For example, even though Db major can be written Gb or F# with both having the same sound,
+// the correct name is Gb (not F#) because the letter F has already been used.
+// So use a sharp # except when that re-uses a chroma then use the enharmonic chroma with a flat.
+
+// For major and minor scales there is never a mixture of sharps and flats in the same scale.
+// D major = D E F# G A B C# (D) (no flat names used)
+// Db major = Db Eb F Gb Ab Bb C (Db) (no sharp names used)
+
 export const CHROMA_ENHARMONICS: Map<string, string> = new Map([
   ['C', 'B#'],
   ['C#', 'Db'],
@@ -45,6 +56,11 @@ export const CHROMA_ENHARMONICS: Map<string, string> = new Map([
   ['Bb', 'A#'],
   ['B', 'Cb']
 ]);
+
+// Do not start any major tonality with these chromas: G#, D#, A#, E#, B# and Fb
+// They are illegal root chromas for major scales thus cannot cannot be used as starting chromas for major scales
+// This is due to overly complex resulting note names, giving double sharps or double flats
+// Instead use the following enharmonic keys respectively: Ab, Eb, Bb, F, C, E
 export const CHROMAS_MAJOR: Array<string> = ['C', 'Cb', 'C#', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 export const CHROMAS_MINOR: Array<string> = ['A', 'Ab', 'A#', 'Bb', 'B', 'C', 'C#', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'G', 'G#'];
 export const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];

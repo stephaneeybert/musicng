@@ -19,30 +19,7 @@ But they also can be voiced with either the third or the fifth as the lowest not
 These addition voicings are known as inversions of the triad.
 https://www.guitarland.com/MusicTheoryWithToneJS/PlayChords.html
 
-Use a sharp # except when that RE-uses a chroma letter,
-then use the next letter with a flat b.
-For example, even though Gb and F# are the same sound,
-for Db major the correct name is Gb (not F#),
-because the letter F has already been used.
-Use all of the letter names of the music alphabet
-in some form(natural, sharp or flat)
-but only use each letter once per octave.
-https://www.guitarland.com/MusicTheoryWithToneJS/Enharmonics/EnharmonicPicker.html
 
-For major and minor scales there is never a mixture of sharps and flats in the same scale i.e.
-D major = D E F# G A B C# (D) (no flat names used)
-Db major = Db Eb F Gb Ab Bb C (Db) (no sharp names used)
-
-Rename tonality to scale
-
-Do not start any major tonality with these letters
-The illegal root names for major scales
-G#, D#, A#, E#, B# and Fb
-are NOT used as the starting note for major scales
-due to overly complex note names when following the rules
-(they result in double sharps or double flats)
-Instead use the following enharmonic keys respectively. 
-(Ab, Eb, Bb, F, C, E)
 
 When doing another soundtrack download, re-init the progress bar
 
