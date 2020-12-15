@@ -9,6 +9,7 @@ MinorTriad = [0,3,7]
 DiminishedTriad = [0,3,6]
 - Augmented Triad is defined raising the fifth of a major triad.
 AugmentedTriad = [0,4,8]
+Fix the CHORD_CHROMAS_SYLLABIC and NOTE_CHROMAS_SYLLABIC values
 
 Reversed chord
 Rename it to Chord inversion
