@@ -51,17 +51,17 @@ export const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A'
 export const TODO_NOT_USED_ROOT_CHROMAS: Array<string> = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 export const TODO_NOT_USED_CHROMA_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 /* ENHARMONICS
+*/
 export const HALF_TONE_CHROMAS: Array<string> = CHROMAS_MAJOR
   .concat(CHROMAS_MINOR);
-  export const CHORD_CHROMAS_SYLLABIC: Map<string, string> = new Map([
-    ['B#', 'Do'], ['C#', 'Do#'], ['C##', 'Rém'], ['D#', 'Ré#m'], ['E', 'Mim'], ['E#', 'Fa'], ['F#', 'Fa#'], ['F##', 'Sol'], ['G#', 'Sol#'], ['G##', 'Lam'], ['A#', 'La#m'], ['B', 'Si-'],
-    ['C', 'Do'], ['Db', 'Dom'], ['D', 'Rém'], ['Eb', 'Ré#m'], ['Fb', 'Mim'], ['F', 'Fa'], ['Gb', 'Fa#'], ['G', 'Sol'], ['Ab', 'Sol#'], ['A', 'Lam'], ['Bb', 'La#m'], ['Cb', 'Si-']
-  ]);
-  export const NOTE_CHROMAS_SYLLABIC: Map<string, string> = new Map([
-    ['B#', 'do'], ['C#', 'do#'], ['C##', 'ré'], ['D#', 'ré#'], ['E', 'mi'], ['E#', 'fa'], ['F#', 'fa#'], ['F##', 'sol'], ['G#', 'sol#'], ['G##', 'la'], ['A#', 'la#'], ['B', 'si'],
-    ['C', 'do'], ['Db', 'do'], ['D', 'ré'], ['Eb', 'ré#'], ['Fb', 'mi'], ['F', 'fa'], ['Gb', 'fa#'], ['G', 'sol'], ['Ab', 'sol#'], ['A', 'la'], ['Bb', 'la#'], ['Cb', 'si']
-  ]);
-*/
+export const CHORD_CHROMAS_SYLLABIC: Map<string, string> = new Map([
+  ['B#', 'Do'], ['C#', 'Do#'], ['C##', 'Rém'], ['D#', 'Ré#m'], ['E', 'Mim'], ['E#', 'Fa'], ['F#', 'Fa#'], ['F##', 'Sol'], ['G#', 'Sol#'], ['G##', 'Lam'], ['A#', 'La#m'], ['B', 'Si-'],
+  ['C', 'Do'], ['Db', 'Dom'], ['D', 'Rém'], ['Eb', 'Ré#m'], ['Fb', 'Mim'], ['F', 'Fa'], ['Gb', 'Fa#'], ['G', 'Sol'], ['Ab', 'Sol#'], ['A', 'Lam'], ['Bb', 'La#m'], ['Cb', 'Si-']
+]);
+export const NOTE_CHROMAS_SYLLABIC: Map<string, string> = new Map([
+  ['B#', 'do'], ['C#', 'do#'], ['C##', 'ré'], ['D#', 'ré#'], ['E', 'mi'], ['E#', 'fa'], ['F#', 'fa#'], ['F##', 'sol'], ['G#', 'sol#'], ['G##', 'la'], ['A#', 'la#'], ['B', 'si'],
+  ['C', 'do'], ['Db', 'do'], ['D', 'ré'], ['Eb', 'ré#'], ['Fb', 'mi'], ['F', 'fa'], ['Gb', 'fa#'], ['G', 'sol'], ['Ab', 'sol#'], ['A', 'la'], ['Bb', 'la#'], ['Cb', 'si']
+]);
 
 // An interval represents the distance between two notes
 // The interval between two notes is a half-tone
@@ -81,9 +81,8 @@ export const HALF_TONE_CHROMAS: Array<string> = HALF_TONE_SHARP_CHROMAS
 export const HALF_TONE_MAJOR_CHROMAS: Array<string> = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
 export const HALF_TONE_MINOR_CHROMAS: Array<string> = ['Cm', 'C#m', 'Dm', 'D#m', 'Em', 'Fm', 'F#m', 'Gm', 'Abm', 'Am', 'Bbm', 'Bm'];
 /*
-*/
 export const HALF_TONE_CHROMAS: Array<string> = HALF_TONE_MAJOR_CHROMAS
-  .concat(HALF_TONE_MINOR_CHROMAS);
+.concat(HALF_TONE_MINOR_CHROMAS);
 export const CHORD_CHROMAS_SYLLABIC: Map<string, string> = new Map([
   ['B#', 'Do'], ['C#', 'Do#'], ['C##', 'Rém'], ['D#', 'Ré#m'], ['E', 'Mim'], ['E#', 'Fa'], ['F#', 'Fa#'], ['F##', 'Sol'], ['G#', 'Sol#'], ['G##', 'Lam'], ['A#', 'La#m'], ['B', 'Si-'],
   ['C', 'Do'], ['Db', 'Dom'], ['D', 'Rém'], ['Eb', 'Ré#m'], ['Fb', 'Mim'], ['F', 'Fa'], ['Gb', 'Fa#'], ['G', 'Sol'], ['Ab', 'Sol#'], ['A', 'Lam'], ['Bb', 'La#m'], ['Cb', 'Si-']
@@ -92,6 +91,7 @@ export const NOTE_CHROMAS_SYLLABIC: Map<string, string> = new Map([
   ['B#', 'do'], ['C#', 'do#'], ['C##', 'ré'], ['D#', 'ré#'], ['E', 'mi'], ['E#', 'fa'], ['F#', 'fa#'], ['F##', 'sol'], ['G#', 'sol#'], ['G##', 'la'], ['A#', 'la#'], ['B', 'si'],
   ['C', 'do'], ['Db', 'do'], ['D', 'ré'], ['Eb', 'ré#'], ['Fb', 'mi'], ['F', 'fa'], ['Gb', 'fa#'], ['G', 'sol'], ['Ab', 'sol#'], ['A', 'la'], ['Bb', 'la#'], ['Cb', 'si']
 ]);
+*/
 
 export enum TRACK_TYPES {
   MELODY = 'melody',
