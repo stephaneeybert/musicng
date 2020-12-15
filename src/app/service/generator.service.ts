@@ -362,7 +362,7 @@ export class GeneratorService {
     }
   }
 
-  private bidirectionalEnharmonics(): Map<string, string> {
+  private getBidirectionalEnharmonics(): Map<string, string> {
     const bidirectional: Map<string, string> = new Map();
     CHROMA_ENHARMONICS.forEach((value: string, key: string) => {
       bidirectional.set(key, value);
@@ -371,7 +371,7 @@ export class GeneratorService {
     return bidirectional;
   }
 
-  private reversedEnharmonics(): Map<string, string> {
+  private getReversedEnharmonics(): Map<string, string> {
     const reversed: Map<string, string> = new Map();
     CHROMA_ENHARMONICS.forEach((value: string, key: string) => {
       reversed.set(value, key);
@@ -380,7 +380,7 @@ export class GeneratorService {
   }
 
   private getChromaEnharmonic(chroma: string): string {
-    const bidirectional: Map<string, string> = this.bidirectionalEnharmonics();
+    const bidirectional: Map<string, string> = this.getBidirectionalEnharmonics();
     if (bidirectional.has(chroma)) {
       const enharmonic: string | undefined = bidirectional.get(chroma);
       if (enharmonic) {
@@ -400,7 +400,7 @@ export class GeneratorService {
         chromas.push(key);
       });
     } else {
-      const reversedEnharmonics: Map<string, string> = this.reversedEnharmonics();
+      const reversedEnharmonics: Map<string, string> = this.getReversedEnharmonics();
       if (reversedEnharmonics.has(startChroma)) {
         reversedEnharmonics.forEach((value: string, key: string) => {
           chromas.push(key);
