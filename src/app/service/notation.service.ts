@@ -109,16 +109,16 @@ export class NotationService {
     return this.chromaLetterToChromaSyllabic(NOTE_CHROMAS_SYLLABIC, chroma);
   }
 
-  private chromaLetterToChromaSyllabic(chromas_syllabic: Map<string, string>, chroma: string): string {
-    if (chromas_syllabic.has(chroma)) {
-      const latinChroma: string | undefined = chromas_syllabic.get(chroma);
-      if (latinChroma) {
-        return latinChroma;
+  private chromaLetterToChromaSyllabic(chromasSyllabic: Map<string, string>, chroma: string): string {
+    if (chromasSyllabic.has(chroma)) {
+      const syllabic: string | undefined = chromasSyllabic.get(chroma);
+      if (syllabic) {
+        return syllabic;
       } else {
-        throw new Error('The chroma letter ' + chroma + ' could not be retrieved in the chromas syllabic ' + chromas_syllabic.keys.toString());
+        throw new Error('The chroma letter ' + chroma + ' could not be retrieved in the chromas syllabic ' + chromasSyllabic.keys.toString());
       }
     } else {
-      throw new Error('The chroma letter ' + chroma + ' could not be found in the chromas syllabic ' + chromas_syllabic.keys.toString());
+      throw new Error('The chroma letter ' + chroma + ' could not be found in the chromas syllabic ' + chromasSyllabic.keys.toString());
     }
   }
 
