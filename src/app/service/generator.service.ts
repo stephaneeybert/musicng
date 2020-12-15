@@ -430,11 +430,11 @@ export class GeneratorService {
     return shiftedChromas;
   }
 
-  private buildSourceScale(rangeFirstChroma: string): Array<string> {
+  private getSourceScale(rangeFirstChroma: string): Array<string> {
     return this.pickContainingEnharmonics(rangeFirstChroma);
   }
 
-  private buildEnharmonicScale(rangeFirstChroma: string): Array<string> {
+  private getEnharmonicScale(rangeFirstChroma: string): Array<string> {
     const sameSoundingChroma: string = this.getChromaEnharmonic(rangeFirstChroma);
     return this.pickContainingEnharmonics(sameSoundingChroma);
   }
@@ -476,8 +476,8 @@ export class GeneratorService {
 
   private TODOgetTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
     let tonality: Array<string> = new Array();
-    const sourceScale: Array<string> = this.buildSourceScale(rangeFirstChroma);
-    const enharmonicScale: Array<string> = this.buildEnharmonicScale(rangeFirstChroma);
+    const sourceScale: Array<string> = this.getSourceScale(rangeFirstChroma);
+    const enharmonicScale: Array<string> = this.getEnharmonicScale(rangeFirstChroma);
     const alphaScale: Array<string> = this.getAlphaScale(rangeFirstChroma, sourceScale.length);
     const noteRangeStructure: Array<number> = this.intervalsToStructure(this.getNoteRangeIntervals(noteRange));
 
