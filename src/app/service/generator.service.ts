@@ -362,6 +362,8 @@ export class GeneratorService {
     }
   }
 
+  // Add to the map of enharmonics some new mappings with their original values as keys
+  // so as to get a map with the original mappings plus the reversed mappings
   private getBidirectionalEnharmonics(): Map<string, string> {
     const bidirectional: Map<string, string> = new Map();
     CHROMA_ENHARMONICS.forEach((value: string, key: string) => {
@@ -371,6 +373,8 @@ export class GeneratorService {
     return bidirectional;
   }
 
+  // Create a new map of enharmonics from mappings with their orginal values as keys
+  // so as to get a map of enharmonics containing only the reversed mappings
   private getReversedEnharmonics(): Map<string, string> {
     const reversed: Map<string, string> = new Map();
     CHROMA_ENHARMONICS.forEach((value: string, key: string) => {
@@ -379,6 +383,7 @@ export class GeneratorService {
     return reversed;
   }
 
+  // Get the matching enharmonic from a chroma
   private getChromaEnharmonic(chroma: string): string {
     const bidirectional: Map<string, string> = this.getBidirectionalEnharmonics();
     if (bidirectional.has(chroma)) {
@@ -393,6 +398,8 @@ export class GeneratorService {
     }
   }
 
+  // Get the one enharmonic mappings array that contains a chroma
+  // and shift the array so as to start it with the chroma
   private pickContainingEnharmonics(startChroma: string): Array<string> {
     let chromas: Array<string> = new Array();
     if (CHROMA_ENHARMONICS.has(startChroma)) {
