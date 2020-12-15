@@ -474,7 +474,7 @@ export class GeneratorService {
     }
   }
 
-  private TODOgetTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
+  private TODOENHARMONICSgetTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
     let tonality: Array<string> = new Array();
     const sourceScale: Array<string> = this.getSourceScale(rangeFirstChroma);
     const enharmonicScale: Array<string> = this.getEnharmonicScale(rangeFirstChroma);

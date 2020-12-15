@@ -8,7 +8,7 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_SHARP_CHROMAS, HALF_TONE_FLAT_CHROMAS, HALF_TONE_MAJOR_CHROMAS, HALF_TONE_MINOR_CHROMAS, CHROMA_ENHARMONICS, META_CHROMAS } from './notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_SHARP_CHROMAS, HALF_TONE_FLAT_CHROMAS, HALF_TONE_MAJOR_CHROMAS, HALF_TONE_MINOR_CHROMAS, CHROMA_ENHARMONICS, META_CHROMAS, HALF_TONE_CHROMAS } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 const CHORD_SEPARATOR: string = ' ';
@@ -245,7 +245,7 @@ export class NotationService {
   public isBpmTempoUnit(duration: Duration) {
     return duration && duration.unit === TempoUnit.NOTE;
   }
-
+/* ENHARMONICS
   private allowedChromas(): Array<string> {
     const bidirectional: Array<string> = new Array();
     CHROMA_ENHARMONICS.forEach((value: string, key: string) => {
@@ -253,6 +253,10 @@ export class NotationService {
       bidirectional.push(value);
     });
     return META_CHROMAS.concat(bidirectional);
+  }
+*/
+  private allowedChromas(): Array<string> {
+    return META_CHROMAS.concat(HALF_TONE_CHROMAS);
   }
 
   private createChroma(value: string): Chroma {

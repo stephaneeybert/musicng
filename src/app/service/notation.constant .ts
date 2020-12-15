@@ -50,7 +50,7 @@ export const CHROMAS_MINOR: Array<string> = ['A', 'Ab', 'A#', 'Bb', 'B', 'C', 'C
 export const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 export const TODO_NOT_USED_ROOT_CHROMAS: Array<string> = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 export const TODO_NOT_USED_CHROMA_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-/*
+/* ENHARMONICS
 export const HALF_TONE_CHROMAS: Array<string> = CHROMAS_MAJOR
   .concat(CHROMAS_MINOR);
   export const CHORD_CHROMAS_SYLLABIC: Map<string, string> = new Map([
