@@ -38,7 +38,7 @@ export const CHORD_DURATION_DOTTED: string = '.';
 // the correct name is Gb (not F#) because the letter F has already been used.
 // So use a sharp # except when that re-uses a chroma then use the enharmonic chroma with a flat.
 
-// For major and minor scales there is never a mixture of sharps and flats in the same scale.
+// For major and minor scales there is never a mixture of sharps and flats in the same octave.
 // D major = D E F# G A B C# (D) (no flat names used)
 // Db major = Db Eb F Gb Ab Bb C (Db) (no sharp names used)
 
