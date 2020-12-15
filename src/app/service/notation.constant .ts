@@ -78,7 +78,7 @@ export const CHORD_CHROMAS_SYLLABIC: Map<string, string> = new Map([
 export const NOTE_CHROMAS_SYLLABIC: Map<string, string> = new Map([
   ['rest', 'rest'],
   ['B#', 'do'], ['C#', 'do#'], ['C##', 'ré'], ['D#', 'ré#'], ['E', 'mi'], ['E#', 'fa'], ['F#', 'fa#'], ['F##', 'sol'], ['G#', 'sol#'], ['G##', 'la'], ['A#', 'la#'], ['B', 'si'],
-  ['C', 'Do'], ['Db', 'Dom'], ['D', 'Rém'], ['Eb', 'Ré#m'], ['Fb', 'Mim'], ['F', 'Fa'], ['Gb', 'Fa#'], ['G', 'Sol'], ['Ab', 'Sol#'], ['A', 'Lam'], ['Bb', 'La#m'], ['Cb', 'Si-']
+  ['C', 'do'], ['Db', 'do'], ['D', 'ré'], ['Eb', 'ré#'], ['Fb', 'mi'], ['F', 'fa'], ['Gb', 'fa#'], ['G', 'sol'], ['Ab', 'sol#'], ['A', 'la'], ['Bb', 'la#'], ['Cb', 'si']
 ]);
 
 export enum TRACK_TYPES {
