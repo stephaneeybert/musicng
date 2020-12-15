@@ -743,16 +743,6 @@ export class GeneratorService {
     return chromas;
   }
 
-  // Convert the chroma to its index in the tonality TODO Remove
-  // private tonalityChromaToIndex(tonalityChromas: Array<string>, chroma: string): number {
-  //   for (let index = 0; index < tonalityChromas.length; index++) {
-  //     if (tonalityChromas[index] == chroma) {
-  //       return index;
-  //     }
-  //   }
-  //   throw new Error('The chroma could not be found in the tonality ' + tonalityChromas);
-  // }
-
   private randomlyPickChromaFromTonality(tonalityChromas: Array<string>): number {
     return this.commonService.getRandomIntegerBetween(0, tonalityChromas.length - 1);
   }
