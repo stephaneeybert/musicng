@@ -71,12 +71,12 @@ export const TODO_NOT_USED_CHROMA_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#',
 export const HALF_TONE_CHROMAS: Array<string> = CHROMAS_MAJOR
   .concat(CHROMAS_MINOR);
 export const CHORD_CHROMAS_SYLLABIC: Map<string, string> = new Map([
-  ['B#', 'Do'], ['C#', 'Do#'], ['C##', 'Rém'], ['D#', 'Ré#m'], ['E', 'Mim'], ['E#', 'Fa'], ['F#', 'Fa#'], ['F##', 'Sol'], ['G#', 'Sol#'], ['G##', 'Lam'], ['A#', 'La#m'], ['B', 'Si-'],
-  ['C', 'Do'], ['Db', 'Dom'], ['D', 'Rém'], ['Eb', 'Ré#m'], ['Fb', 'Mim'], ['F', 'Fa'], ['Gb', 'Fa#'], ['G', 'Sol'], ['Ab', 'Sol#'], ['A', 'Lam'], ['Bb', 'La#m'], ['Cb', 'Si-']
+  ['B#', 'Si#'], ['C#', 'Do#'], ['C##', 'Ré'], ['D', 'Ré'], ['D#', 'Ré#'], ['E', 'Mi'], ['E#', 'Mi#'], ['F#', 'Fa#'], ['F##', 'Sol'], ['G', 'Sol'], ['G#', 'Sol#'], ['G##', 'La'], ['A', 'La'], ['A#', 'La#'], ['B', 'Si'],
+  ['C', 'Do'], ['Db', 'Réb'], ['D', 'Ré'], ['E', 'Mi'], ['Eb', 'Mib'], ['Fb', 'Mi'], ['F', 'Fa'], ['Gb', 'Fa#'], ['G', 'Sol'], ['Ab', 'Sol#'], ['A', 'La'], ['Bb', 'La#'], ['Cb', 'Si']
 ]);
 export const NOTE_CHROMAS_SYLLABIC: Map<string, string> = new Map([
-  ['B#', 'do'], ['C#', 'do#'], ['C##', 'ré'], ['D#', 'ré#'], ['E', 'mi'], ['E#', 'fa'], ['F#', 'fa#'], ['F##', 'sol'], ['G#', 'sol#'], ['G##', 'la'], ['A#', 'la#'], ['B', 'si'],
-  ['C', 'do'], ['Db', 'do'], ['D', 'ré'], ['Eb', 'ré#'], ['Fb', 'mi'], ['F', 'fa'], ['Gb', 'fa#'], ['G', 'sol'], ['Ab', 'sol#'], ['A', 'la'], ['Bb', 'la#'], ['Cb', 'si']
+  ['B#', 'si#'], ['C#', 'do#'], ['C##', 'ré'], ['D', 'ré'], ['D#', 'ré#'], ['E', 'mi'], ['E#', 'mi#'], ['F#', 'fa#'], ['F##', 'sol'], ['G', 'Sol'], ['G#', 'sol#'], ['G##', 'la'], ['A', 'La'], ['A#', 'la#'], ['B', 'si'],
+  ['C', 'do'], ['Db', 'réb'], ['D', 'ré'], ['E', 'mi'], ['Eb', 'mib'], ['Fb', 'mi'], ['F', 'fa'], ['Gb', 'fa#'], ['G', 'sol'], ['Ab', 'sol#'], ['A', 'la'], ['Bb', 'la#'], ['Cb', 'si']
 ]);
 
 // An interval represents the distance between two notes
