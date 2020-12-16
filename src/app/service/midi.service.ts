@@ -599,7 +599,7 @@ export class MidiService {
   }
 
   public progressiveCreateSoundtrackMidi$(soundtrack: Soundtrack): Observable<ProgressTask<Uint8Array>> {
-    // const max: number = 200;
+    const max: number = 200;
 
     // return new Observable((observer$: Subscriber<ProgressTask<Uint8Array>>) => {
     //   asyncScheduler.schedule(() => {
@@ -634,8 +634,8 @@ export class MidiService {
     //   return { unsubscribe() { } };
     // });
 
-    // // return interval(max)
-    // return this.interval(max)
+    // return interval(max)
+    // // return this.interval(max)
     // .pipe(
     //   map((value: number) => {
     //     return this.downloadService.createProgressTask<Uint8Array>(max, value);
@@ -643,7 +643,7 @@ export class MidiService {
     // );
 
     return new Observable((subscriber$ : Subscriber<ProgressTask<Uint8Array>>) => {
-      this.createSoundtrackMidi(soundtrack, subscriber$);
+      // this.createSoundtrackMidi(soundtrack, subscriber$);
       return { unsubscribe() { } };
     });
   }
@@ -674,8 +674,9 @@ export class MidiService {
     return midi.toArray();
   }
 
-  public createSoundtrackMidi(soundtrack: Soundtrack, progressTask$?: Subscriber<ProgressTask<Uint8Array>>): Uint8Array {
+  public createSoundtrackMidi(soundtrack: Soundtrack, progressTask$?: BehaviorSubject<ProgressTask<Uint8Array>>): Uint8Array {
     const midi: Midi = new Midi();
+    asyncScheduler.schedule(() => {
     midi.name = soundtrack.name;
     midi.header.name = soundtrack.name;
     let noteIndex: number = 0;
@@ -699,8 +700,9 @@ export class MidiService {
                     for (const note of placedChord.notes) {
                       if (!this.notationService.isEndOfTrackNote(note)) {
                         if (progressTask$) {
-                          this.commonService.sleep(10); // TODO Remove this sleep when the download progress is okay
+                          this.commonService.sleep(50); // TODO Remove this sleep when the download progress is okay
                           progressTask$.next(this.downloadService.createProgressTask<Uint8Array>(soundtrack.getNbNotes(), noteIndex));
+                          console.log('Added note ' + noteIndex);
                         }
                         noteIndex++;
                         midiTrack.addNote({
@@ -742,6 +744,7 @@ export class MidiService {
       progressTask$.next(this.downloadService.createProgressTask<Uint8Array>(soundtrack.getNbNotes(), soundtrack.getNbNotes(), midi.toArray()));
       progressTask$.complete();
     }
+    }, 0);
     return midi.toArray();
   }
 

@@ -197,8 +197,8 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
   pg$: Observable<number> = this.progressSubject$.asObservable();
   downloadSoundtrack(soundtrack: Soundtrack): void {
     const fileName: string = soundtrack.name + '.' + MIDI_FILE_SUFFIX;
-    const progress$: Observable<ProgressTask<Uint8Array>> = this.midiService.progressiveCreateSoundtrackMidi$(soundtrack);
-    // const progress$: BehaviorSubject<ProgressTask<Uint8Array>> = this.midiService.progressiveCreateSoundtrackMidiRS$(soundtrack);  // With BehaviorSubject - not working
+    // const progress$: Observable<ProgressTask<Uint8Array>> = this.midiService.progressiveCreateSoundtrackMidi$(soundtrack);
+    const progress$: BehaviorSubject<ProgressTask<Uint8Array>> = this.midiService.progressiveCreateSoundtrackMidiRS$(soundtrack);  // With BehaviorSubject - not working
     console.log('Created the observable');
 
     // progress$
@@ -212,7 +212,7 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
     .pipe(
       tap((pTask: ProgressTask<Uint8Array>) => {
         this.progressSubject$.next(pTask.loaded);
-        // this.detectChanges();
+        this.detectChanges();
         console.log('Loaded: ' + pTask.loaded);
       })
     );
@@ -225,9 +225,12 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
     // });
     this.download$ = this.downloadService.downloadObservableDataAsBlobWithProgressAndSaveInFile(piper$, fileName);
 
-    // this.midiService.createSoundtrackMidi(soundtrack, progress$); // With BehaviorSubject - not working
-
-    console.log('Controller method call complete');
+    // const promise: Promise<Uint8Array> = this.midiService.createSoundtrackMidi(soundtrack, progress$);
+    // console.log('Controller method call complete');
+    // promise.then((uint8Array: Uint8Array) => {
+    //   console.log('Then is done');
+    // });
+    this.midiService.createSoundtrackMidi(soundtrack, progress$);
   }
 
   // downloadSoundtrack(soundtrack: Soundtrack): void {
