@@ -176,7 +176,7 @@ export class GeneratorService {
     // Shift the copy and not the original
     const item: string | undefined = shiftedItems.pop();
     if (item) {
-      shiftedItems.unshift(item!);
+      shiftedItems.unshift(item);
     } else {
       throw new Error('The array could not be shifted right');
     }
