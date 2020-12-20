@@ -478,7 +478,7 @@ export class SheetService {
   }
 
   private chromaToSheetChroma(chroma: string): string {
-    // Replace sharps and all flats
+    // Remove sharps and all flats
     return chroma.replace(NOTE_SHARP, '').replace(NOTE_FLAT, '');
   }
 
