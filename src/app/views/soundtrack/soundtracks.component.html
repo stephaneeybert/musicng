@@ -19,11 +19,11 @@
               volume_up</mat-icon>
             <mat-icon *ngIf="(audioRunning$ | async) && (audioTransportStarted$ | async) && !isNowPlaying(soundtrack)"
               (click)="playSoundtrack(soundtrack)" matTooltip="{{ 'soundtracks.play' | translate }}"
-              class="soundtrack-action">play_circle_outline</mat-icon>
+              class="soundtrack-action-play soundtrack-action">play_circle_outline</mat-icon>
             <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="stopSoundtrack(soundtrack)"
-              matTooltip="{{ 'soundtracks.stop' | translate }}" class="soundtrack-action">stop</mat-icon>
+              matTooltip="{{ 'soundtracks.stop' | translate }}" class="soundtrack-action-play soundtrack-action">stop</mat-icon>
             <mat-icon *ngIf="isNowPlaying(soundtrack)" (click)="replaySoundtrack(soundtrack)"
-              matTooltip="{{ 'soundtracks.replay' | translate }}" class="soundtrack-action">replay</mat-icon>
+              matTooltip="{{ 'soundtracks.replay' | translate }}" class="soundtrack-action-play soundtrack-action">replay</mat-icon>
             <mat-icon *ngIf="!isNowPlaying(soundtrack)" (click)="openSoundtrackDialog(soundtrack)"
               matTooltip="{{ 'soundtracks.edit' | translate }}" class="soundtrack-action">edit</mat-icon>
             <mat-icon (click)="downloadSoundtrack(soundtrack)" matTooltip="{{ 'soundtracks.download.tip' | translate }}"

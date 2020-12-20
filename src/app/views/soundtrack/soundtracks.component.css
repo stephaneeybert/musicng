@@ -7,8 +7,12 @@
   justify-content: center;
 }
 
+.soundtrack-action-play {
+  padding-right: 45px;
+}
+
 .soundtrack-action {
-  padding-left: 45px;
+  padding-left: 30px;
 }
 
 .soundtrack {
