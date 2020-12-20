@@ -469,7 +469,7 @@ export class SheetService {
       vexflowNote = VEXFLOW_REST_NOTE;
     } else {
       // The accidental must not be present in the note
-      vexflowNote = this.chromaToSheetChroma(note.renderChroma());
+      vexflowNote = this.removeSharpsAndFlats(note.renderChroma());
       if (note.renderOctave() != null) {
         vexflowNote += VEXFLOW_OCTAVE_SEPARATOR + note.renderOctave();
       }
@@ -477,7 +477,7 @@ export class SheetService {
     return vexflowNote;
   }
 
-  private chromaToSheetChroma(chroma: string): string {
+  private removeSharpsAndFlats(chroma: string): string {
     // Remove sharps and all flats
     return chroma.replace(NOTE_SHARP, '').replace(NOTE_FLAT, '');
   }
