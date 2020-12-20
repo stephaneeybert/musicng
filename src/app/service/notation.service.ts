@@ -8,7 +8,7 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_SHARP_CHROMAS, HALF_TONE_FLAT_CHROMAS, HALF_TONE_MAJOR_CHROMAS, HALF_TONE_MINOR_CHROMAS, CHROMA_ENHARMONICS, META_CHROMAS, HALF_TONE_CHROMAS } from './notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_SHARP_CHROMAS, HALF_TONE_FLAT_CHROMAS, HALF_TONE_MAJOR_CHROMAS, HALF_TONE_MINOR_CHROMAS, CHROMA_ENHARMONICS, META_CHROMAS, HALF_TONE_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 const CHORD_SEPARATOR: string = ' ';
