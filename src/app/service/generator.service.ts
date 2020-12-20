@@ -127,14 +127,6 @@ export class GeneratorService {
     return this.translateService.instant('soundtracks.assignedName') + '_' + this.commonService.getRandomString(4);
   }
 
-  private getRangeChromas(noteRange: NOTE_RANGE): Array<string> {
-    if (noteRange == NOTE_RANGE.MAJOR) {
-      return CHROMAS_MAJOR;
-    } else {
-      return CHROMAS_MINOR;
-    }
-  }
-
   private buildTonality(scale: Array<string>, noteRangeIntervals: Array<number>): Array<string> {
     const tonality: Array<string> = new Array();
     let chromas: Array<string> = scale;
