@@ -641,11 +641,18 @@ export class GeneratorService {
 
     const generateNbChords: number = this.settingsService.getSettings().generateNbChords > 0 ? this.settingsService.getSettings().generateNbChords : 1;
     while (placedChordIndex < generateNbChords) {
-      const oneOrTwoHarmonyChords: Array<PlacedChord> = this.generateOneOrTwoHarmonyChords(placedChordIndex, tonality, octave, chordDuration, velocity, previousChord);
-      for (let i: number = 0; i < oneOrTwoHarmonyChords.length; i++) {
-        placedChords.push(oneOrTwoHarmonyChords[i]);
-        placedChordIndex++;
-        previousChord = oneOrTwoHarmonyChords[i];
+      const placedChord: PlacedChord | undefined = this.generateHarmonyChord(placedChordIndex, tonality, octave, chordDuration, velocity, previousChord);
+      if (placedChord) {
+        placedChords.push(placedChord);
+        // Add twice the same chord
+        if (previousChord && this.settingsService.getSettings().generateDoubleChord) {
+          placedChordIndex++;
+          if (placedChordIndex < generateNbChords) {
+            const clonedChord: PlacedChord = this.notationService.createSameChord(previousChord);
+            placedChords.push(clonedChord);
+            placedChordIndex++;
+          }
+        }
       }
     }
     this.notationService.addEndOfTrackNote(placedChords);
@@ -667,29 +674,39 @@ export class GeneratorService {
 
     let tonality: Tonality = this.getFirstMeasureTonality();
 
+    let harmonyChord: PlacedChord | undefined;
     const generateNbChords: number = this.settingsService.getSettings().generateNbChords > 0 ? this.settingsService.getSettings().generateNbChords : 1;
     while (chordIndex < generateNbChords) {
-      const oneOrTwoHarmonyChords: Array<PlacedChord> = this.generateOneOrTwoHarmonyChords(chordIndex, tonality, octave, chordDuration, velocity, previousChord);
-      for (let i: number = 0; i < oneOrTwoHarmonyChords.length; i++) {
-        previousPreviousChord = previousChord;
-        previousChord = oneOrTwoHarmonyChords[i];
-        // The number of beats of the chords placed in a measure must equal the number of beats of the measure
-        if (measure.getPlacedChordsNbBeats() >= measure.getNbBeats()) {
-          measure = this.createMeasure(measureIndex);
-          measure.placedChords = new Array<PlacedChord>();
-          measures.push(measure);
-          measureIndex++;
-          measureChordIndex = 0;
-          if (this.withModulation()) {
-            const randomTonality: Tonality = this.getRandomTonality(previousPreviousChord, previousChord);
-            tonality = new Tonality(randomTonality.range, randomTonality.firstChroma);
-            previousChord = undefined;
-          }
+      previousPreviousChord = previousChord;
+      previousChord = harmonyChord;
+
+      // The number of beats of the chords placed in a measure must equal the number of beats of the measure
+      if (measure.getPlacedChordsNbBeats() >= measure.getNbBeats()) {
+        measure = this.createMeasure(measureIndex);
+        measure.placedChords = new Array<PlacedChord>();
+        measures.push(measure);
+        measureIndex++;
+        measureChordIndex = 0;
+        if (this.withModulation()) {
+          const randomTonality: Tonality = this.getRandomTonality(previousPreviousChord, previousChord);
+          tonality = new Tonality(randomTonality.range, randomTonality.firstChroma);
+          previousChord = undefined;
         }
-        oneOrTwoHarmonyChords[i].index = measureChordIndex;
+      }
+      harmonyChord = this.generateHarmonyChord(measureChordIndex, tonality, octave, chordDuration, velocity, previousChord);
+      if (harmonyChord) {
         measureChordIndex++;
         chordIndex++;
-        measure.placedChords.push(oneOrTwoHarmonyChords[i]);
+        measure.placedChords.push(harmonyChord);
+        // Add twice the same chord
+        if (previousChord && this.settingsService.getSettings().generateDoubleChord) {
+          if (chordIndex < generateNbChords && measure.getPlacedChordsNbBeats() < measure.getNbBeats()) {
+            const clonedChord: PlacedChord = this.notationService.createSameChord(previousChord);
+            placedChords.push(clonedChord);
+            measureChordIndex++;
+            chordIndex++;
+          }
+        }
       }
     }
     this.notationService.addEndOfTrackNote(placedChords);
@@ -697,9 +714,7 @@ export class GeneratorService {
     return measures;
   }
 
-  private generateOneOrTwoHarmonyChords(placedChordIndex: number, tonality: Tonality, octave: number, chordDuration: number, velocity: number, previousChord: PlacedChord | undefined): Array<PlacedChord> {
-    const placedChords: Array<PlacedChord> = new Array();
-
+  private generateHarmonyChord(placedChordIndex: number, tonality: Tonality, octave: number, chordDuration: number, velocity: number, previousChord: PlacedChord | undefined): PlacedChord | undefined {
     let previousChordSortedChromas: Array<string> = previousChord ? previousChord.getSortedNotesChromas() : [];
     const firstNoteChroma: string | undefined = previousChord ? previousChord.renderFirstNoteChroma() : undefined;
     const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
@@ -708,24 +723,15 @@ export class GeneratorService {
 
     // Consider a chord only if it is similar to its previous one
     if (!previousChord || this.isSimilarToPrevious(previousChordSortedChromas, chromas)) {
-      const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex, chromas);
-      placedChords.push(placedChord);
-      placedChordIndex++;
-      // Add twice the same chord
-      if (this.settingsService.getSettings().generateDoubleChord) { // TODO Should we keep this ? Ask Norbert.
-        const placedChordBis: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex + 1, chromas);
-        placedChords.push(placedChordBis);
-      }
+      return this.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex, chromas);
     } else {
       // If the current chord is too dissimilar from its previous one
       // then create a chord from a reversing of the previous one
       if (this.settingsService.getSettings().generateReverseDissimilarChord) {
         const slidedChromas: Array<string> = this.createShiftedChord(previousChordSortedChromas);
-        const placedChord: PlacedChord = this.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex, slidedChromas);
-        placedChords.push(placedChord);
+        return this.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex, slidedChromas);
       }
     }
-    return placedChords;
   }
 
   private buildChromas(tonalityChromas: Array<string>, previousBaseChroma?: string): Array<string> {
