@@ -688,8 +688,11 @@ export class GeneratorService {
         measureIndex++;
         measureChordIndex = 0;
         if (this.withModulation()) {
-          const randomTonality: Tonality = this.getRandomTonality(previousPreviousChord, previousChord);
-          tonality = new Tonality(randomTonality.range, randomTonality.firstChroma);
+          // Do not overwrite the first tonality
+          if (chordIndex > 0) {
+            const randomTonality: Tonality = this.getRandomTonality(previousPreviousChord, previousChord);
+            tonality = new Tonality(randomTonality.range, randomTonality.firstChroma);
+          }
           previousChord = undefined;
         }
       }
