@@ -48,7 +48,6 @@ export class PlacedChord {
   }
 
   public getFirstNote(): Note {
-    let abc: Note;
     if (this.notes != null && this.notes.length > 0) {
       const sortedNotes: Array<Note> = this.getNotesSortedByIndex();
       return sortedNotes[0];
