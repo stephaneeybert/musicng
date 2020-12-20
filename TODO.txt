@@ -1,3 +1,11 @@
+Try using a TSMap
+https://www.npmjs.com/package/typescript-map
+at
+private chromaLetterToChromaSyllabic
+in the error messages
+instead of the
+keys.toString()
+
 The minor harmonic G scale is spelled G A Bb C D Eb F# G
 The harmonic minor D scale D E F G A Bb C# D
 The melodic minor G scale G A Bb C D E F# G
