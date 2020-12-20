@@ -297,6 +297,17 @@ private allowedChromas(): Array<string> {
     return new PlacedChord(index, duration, velocity, tonality);
   }
 
+  public createSameChord(chord: PlacedChord): PlacedChord {
+    const chordIndex: number = chord.index + 1;
+    const sameChord: PlacedChord = this.createEmptyChord(chordIndex, chord.duration, chord.velocity, chord.tonality)
+    sameChord.dottedAll = chord.dottedAll;
+    chord.getNotesSortedByIndex()
+    .map((note: Note) => {
+      sameChord.addNote(note);
+    });
+    return sameChord;
+  }
+
   public createTimeSignature(numerator: number, denominator: number): TimeSignature {
     return new TimeSignature(numerator, denominator);
   }
