@@ -683,9 +683,9 @@ export class GeneratorService {
         previousPreviousChord = previousChord;
         previousChord = oneOrTwoHarmonyChords[i];
         if (measure.getPlacedChordsNbBeats() >= measure.getNbBeats()) {
-          measures.push(measure);
           measure = this.createMeasure(measureIndex);
           measure.placedChords = new Array<PlacedChord>();
+          measures.push(measure);
           measureIndex++;
           measureChordIndex = 0;
           if (this.withModulation()) {
