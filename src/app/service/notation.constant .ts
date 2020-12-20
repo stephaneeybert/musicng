@@ -134,6 +134,7 @@ export const NOTE_RANGE_INTERVALS: Map<NOTE_RANGE, Array<number>> = new Map([
 ]);
 
 export const NOTE_C: string = 'C';
+export const NOTE_ACCIDENTAL_MINOR: string = 'm';
 export const DEFAULT_TONALITY_C_MAJOR: Tonality = new Tonality(NOTE_RANGE.MAJOR, NOTE_C);
 
 export const MIDI_FILE_SUFFIX: string = 'mid';

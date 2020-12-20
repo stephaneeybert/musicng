@@ -97,8 +97,20 @@ export class NotationService {
     });
   }
 
+  private isRangeMinor(noteRange: NOTE_RANGE): boolean {
+    if (noteRange == NOTE_RANGE.MINOR_NATURAL || noteRange == NOTE_RANGE.MINOR_HARMONIC || noteRange == NOTE_RANGE.MINOR_MELODIC) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public tonalityFirstChromaLetterToChromaSyllabic(placedChord: PlacedChord): string {
-    return this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, placedChord.tonality.firstChroma);
+    let chroma: string = this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, placedChord.tonality.firstChroma);
+    if (this.isRangeMinor(placedChord.tonality.range)) {
+      chroma += NOTE_ACCIDENTAL_MINOR;
+    }
+    return chroma;
   }
 
   public chordChromaLetterToChromaSyllabic(chroma: string): string {
