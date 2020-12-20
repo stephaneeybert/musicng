@@ -671,9 +671,9 @@ export class GeneratorService {
     while (chordIndex < generateNbChords) {
       const oneOrTwoHarmonyChords: Array<PlacedChord> = this.generateOneOrTwoHarmonyChords(chordIndex, tonality, octave, chordDuration, velocity, previousChord);
       for (let i: number = 0; i < oneOrTwoHarmonyChords.length; i++) {
-        // The number of beats of the chords placed in a measure must equal the number of beats of the measure
         previousPreviousChord = previousChord;
         previousChord = oneOrTwoHarmonyChords[i];
+        // The number of beats of the chords placed in a measure must equal the number of beats of the measure
         if (measure.getPlacedChordsNbBeats() >= measure.getNbBeats()) {
           measure = this.createMeasure(measureIndex);
           measure.placedChords = new Array<PlacedChord>();
