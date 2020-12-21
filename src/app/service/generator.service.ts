@@ -251,7 +251,7 @@ export class GeneratorService {
     const NEAR_MAX: number = 2; // TODO Have this constant as a settings
 
     // Consider the chromas above the previous melody note chroma
-    if (previousMelodyOctave <= harmonyChord.getFirstNote().renderOctave()) {
+    if (previousMelodyOctave <= this.notationService.getFirstNoteSortedByPitch(harmonyChord).renderOctave()) {
       for (let chromaIndex: number = 0; chromaIndex < NEAR_MAX; chromaIndex++) {
         chromas = this.createArrayShiftOnceLeft(chromas);
         // Consider only notes before the next harmony chord note
@@ -269,7 +269,7 @@ export class GeneratorService {
     }
 
     // Consider the chromas below the previous melody note chroma
-    if (previousMelodyOctave >= harmonyChord.getFirstNote().renderOctave()) {
+    if (previousMelodyOctave >= this.notationService.getFirstNoteSortedByPitch(harmonyChord).renderOctave()) {
       chromas = tonalityChromas;
       for (let chromaIndex: number = 0; chromaIndex < NEAR_MAX; chromaIndex++) {
         chromas = this.createArrayShiftOnceRight(chromas);
@@ -316,7 +316,7 @@ export class GeneratorService {
     // then pick any note from the harmony chord
     if (previousMelodyNoteIndex < 0) {
       const chordNoteIndex: number = this.commonService.getRandomIntegerBetween(0, harmonyChordSortedChromas.length - 1);
-      nearNoteChromas.push([harmonyChordSortedChromas[chordNoteIndex], harmonyChord.getFirstNote().renderOctave()]);
+      nearNoteChromas.push([harmonyChordSortedChromas[chordNoteIndex], this.notationService.getFirstNoteSortedByPitch(harmonyChord).renderOctave()]);
     } else {
       // The maximum near distance to consider
       const NEAR_MAX: number = 2; // TODO Have this constant as a settings
@@ -533,13 +533,13 @@ export class GeneratorService {
     if (previousChord) {
       let tonalities: Array<Tonality> = new Array();
       if (previousPreviousChord) {
-        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, previousChord.getFirstNote().renderChroma(), previousPreviousChord.getFirstNote().renderChroma()));
-        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, previousChord.getFirstNote().renderChroma(), previousPreviousChord.getFirstNote().renderChroma()));
+        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, this.notationService.getFirstNoteSortedByPitch(previousChord).renderChroma(), this.notationService.getFirstNoteSortedByPitch(previousPreviousChord).renderChroma()));
+        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstNoteSortedByPitch(previousChord).renderChroma(), this.notationService.getFirstNoteSortedByPitch(previousPreviousChord).renderChroma()));
       }
       // If no tonality includes the two previous notes then pick the ones that contain the previous note only
       if (tonalities.length == 0) {
-        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, previousChord.getFirstNote().renderChroma(), undefined));
-        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, previousChord.getFirstNote().renderChroma(), undefined));
+        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, this.notationService.getFirstNoteSortedByPitch(previousChord).renderChroma(), undefined));
+        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstNoteSortedByPitch(previousChord).renderChroma(), undefined));
       }
       const index: number = this.commonService.getRandomIntegerBetween(0, tonalities.length - 1);
       return tonalities[index];
@@ -588,8 +588,8 @@ export class GeneratorService {
 
   private generateTwoMelodyChordsForOneHarmonyChord(placedChordIndex: number, previousMelodyChord: PlacedChord | undefined, harmonyChord: PlacedChord, octave: number, chordDuration: number, velocity: number): Array<PlacedChord> {
     const melodyChords: Array<PlacedChord> = new Array();
-    let currentMelodyChroma: string | undefined = previousMelodyChord ? previousMelodyChord.renderFirstNoteChroma() : undefined;
-    let currentMelodyOctave: number = previousMelodyChord ? previousMelodyChord.renderFirstNoteOctave() : octave;
+    let currentMelodyChroma: string | undefined = previousMelodyChord ? this.notationService.getFirstNoteSortedByPitch(previousMelodyChord).renderChroma() : undefined;
+    let currentMelodyOctave: number = previousMelodyChord ? this.notationService.getFirstNoteSortedByPitch(previousMelodyChord).renderOctave() : octave;
 
     if (!this.notationService.isEndOfTrackPlacedChord(harmonyChord)) {
       // For each harmony chord of the harmony track, there are two single note chords of half duration in the melody track
@@ -719,7 +719,7 @@ export class GeneratorService {
 
   private generateHarmonyChord(placedChordIndex: number, tonality: Tonality, octave: number, chordDuration: number, velocity: number, previousChord: PlacedChord | undefined): PlacedChord | undefined {
     let previousChordSortedChromas: Array<string> = previousChord ? previousChord.getSortedNotesChromas() : [];
-    const firstNoteChroma: string | undefined = previousChord ? previousChord.renderFirstNoteChroma() : undefined;
+    const firstNoteChroma: string | undefined = previousChord ? this.notationService.getFirstNoteSortedByPitch(previousChord).renderChroma() : undefined;
     const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
 
     const chromas: Array<string> = this.buildChromas(tonalityChromas, firstNoteChroma);

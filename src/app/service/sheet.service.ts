@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import Vex from 'vexflow';
-import * as Tone from 'tone';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Device } from '@app/model/device';
 import { NotationService } from './notation.service';
-import { Note, NOTE_FLAT, NOTE_SHARP } from '@app/model/note/note';
+import { Note } from '@app/model/note/note';
 import { Measure } from '@app/model/measure/measure';
 import { Clef } from '@app/model/clef';
 import { PlacedChord } from '@app/model/note/placed-chord';
@@ -414,13 +413,13 @@ export class SheetService {
   }
 
   private renderChordNameInSyllabic(placedChord: PlacedChord): string {
-    const sortedNotes: Array<Note> = this.sortNotesByPitch(placedChord.getNotesSortedByIndex());
-    return this.notationService.chordChromaLetterToChromaSyllabic(sortedNotes[0].renderChroma());
+    const note: Note = this.notationService.getFirstNoteSortedByPitch(placedChord);
+    return this.notationService.chordChromaLetterToChromaSyllabic(note.renderChroma());
   }
 
   private renderAllChordNoteNamesInSyllabic(placedChord: PlacedChord): Array<string> {
     const noteNames: Array<string> = new Array();
-    const sortedNotes: Array<Note> = this.sortNotesByPitch(placedChord.getNotesSortedByIndex());
+    const sortedNotes: Array<Note> = this.notationService.sortNotesByPitch(placedChord.getNotesSortedByIndex());
     for (let i: number = 0; i < sortedNotes.length; i++) {
       const reverse: number = placedChord.notes.length - i - 1;
       const note: Note = sortedNotes[reverse];
@@ -432,23 +431,11 @@ export class SheetService {
     return noteNames;
   }
 
-  private getNoteFrequency(note: Note): number {
-    // The accidental must not be present in the note when getting the frequency
-    const chroma: string = this.chromaToSheetChroma(note.renderIntlChromaOctave());
-    return Tone.Frequency(chroma).toFrequency();
-  }
-
-  private sortNotesByPitch(notes: Array<Note>): Array<Note> {
-    return notes.sort((noteA: Note, noteB: Note) => {
-      return this.getNoteFrequency(noteA) - this.getNoteFrequency(noteB);
-    });
-  }
-
   // The Vexflow API requires that notes be sorted in ascending order before
   // being added as keys to a stave
   private renderNotesSortedByFrequency(notes: Array<Note>): Array<string> {
     const vexflowNotes: Array<string> = new Array<string>();
-    this.sortNotesByPitch(notes)
+    this.notationService.sortNotesByPitch(notes)
       .forEach((note: Note) => {
         vexflowNotes.push(this.renderNote(note));
       });
@@ -469,17 +456,12 @@ export class SheetService {
       vexflowNote = VEXFLOW_REST_NOTE;
     } else {
       // The accidental must not be present in the note
-      vexflowNote = this.removeSharpsAndFlats(note.renderChroma());
+      vexflowNote = this.notationService.removeSharpsAndFlats(note.renderChroma());
       if (note.renderOctave() != null) {
         vexflowNote += VEXFLOW_OCTAVE_SEPARATOR + note.renderOctave();
       }
     }
     return vexflowNote;
-  }
-
-  private removeSharpsAndFlats(chroma: string): string {
-    // Remove sharps and all flats
-    return chroma.replace(NOTE_SHARP, '').replace(NOTE_FLAT, '');
   }
 
   private renderDuration(placedChord: PlacedChord): string {

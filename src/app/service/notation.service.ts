@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import * as Tone from 'tone';
 import { Chroma } from '@app/model/note/pitch/chroma';
 import { Octave } from '@app/model/note/pitch/octave';
 import { Duration } from '@app/model/note/duration/duration';
-import { Note } from '@app/model/note/note';
+import { Note, NOTE_FLAT, NOTE_SHARP } from '@app/model/note/note';
 import { Pitch } from '@app/model/note/pitch/pitch';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
@@ -103,6 +104,31 @@ export class NotationService {
     } else {
       return false;
     }
+  }
+
+  public removeSharpsAndFlats(chroma: string): string {
+    return chroma.replace(NOTE_SHARP, '').replace(NOTE_FLAT, '');
+  }
+
+  private getNoteFrequency(note: Note): number {
+    // The accidental must not be present in the note when getting the frequency
+    const chroma: string = this.removeSharpsAndFlats(note.renderIntlChromaOctave());
+    return Tone.Frequency(chroma).toFrequency();
+  }
+
+  public sortNotesByPitch(notes: Array<Note>): Array<Note> {
+    return notes.sort((noteA: Note, noteB: Note) => {
+      return this.getNoteFrequency(noteA) - this.getNoteFrequency(noteB);
+    });
+  }
+
+  public getFirstNoteSortedByPitch(placedChord: PlacedChord): Note {
+    const sortedNotes: Array<Note> = this.sortNotesByPitch(placedChord.notes);
+    if (!sortedNotes || sortedNotes.length == 0) {
+      throw new Error('The placed chord had no notes to sort by pitch.');
+    }
+    const lastIsLowest: number = sortedNotes.length - 1;
+    return sortedNotes[lastIsLowest];
   }
 
   public tonalityFirstChromaLetterToChromaSyllabic(placedChord: PlacedChord): string {
@@ -270,7 +296,7 @@ export class NotationService {
 /*
 private allowedChromas(): Array<string> {
   return META_CHROMAS.concat(HALF_TONE_CHROMAS);
-}
+} TODO
 */
 
   private createChroma(value: string): Chroma {

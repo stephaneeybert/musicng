@@ -47,22 +47,6 @@ export class PlacedChord {
     });
   }
 
-  public getFirstNote(): Note {
-    if (this.notes != null && this.notes.length > 0) {
-      const sortedNotes: Array<Note> = this.getNotesSortedByIndex();
-      return sortedNotes[0];
-    }
-    throw new Error('The placed chord had no note.');
-  }
-
-  public renderFirstNoteChroma(): string {
-    return this.getFirstNote().renderChroma();
-  }
-
-  public renderFirstNoteOctave(): number {
-    return this.getFirstNote().renderOctave();
-  }
-
   public getSortedNotesChromas(): Array<string> {
     return this.getNotesSortedByIndex()
     .map((note: Note) => {
