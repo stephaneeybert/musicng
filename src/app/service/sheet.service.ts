@@ -414,7 +414,7 @@ export class SheetService {
 
   private renderChordNameInSyllabic(placedChord: PlacedChord): string {
     const note: Note = this.notationService.getFirstNoteSortedByPitch(placedChord);
-    return this.notationService.chordChromaLetterToChromaSyllabic(note.renderChroma());
+    return this.notationService.chordChromaLetterToChromaSyllabic(note.renderChroma(), placedChord.tonality.range);
   }
 
   private renderAllChordNoteNamesInSyllabic(placedChord: PlacedChord): Array<string> {

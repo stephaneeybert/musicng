@@ -139,8 +139,12 @@ export class NotationService {
     return chroma;
   }
 
-  public chordChromaLetterToChromaSyllabic(chroma: string): string {
-    return this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chroma);
+  public chordChromaLetterToChromaSyllabic(chroma: string, range: NOTE_RANGE): string {
+    let syllabicChroma: string = this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chroma);
+    if (this.isRangeMinor(range)) {
+      syllabicChroma += NOTE_ACCIDENTAL_MINOR;
+    }
+    return syllabicChroma;
   }
 
   public noteChromaLetterToChromaSyllabic(chroma: string): string {
