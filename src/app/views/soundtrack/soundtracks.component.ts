@@ -37,12 +37,11 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
   dialogRef!: MatDialogRef<SoundtrackDialogComponent>;
   @Output()
   soundtrackEditedEvent: EventEmitter<Soundtrack> = new EventEmitter<Soundtrack>();
+  private dialogEmitterSubscription?: Subscription;
+  private dialogSubscription?: Subscription;
 
   download$?: Observable<Download>;
   download?: Download; // TODO
-
-  private dialogEmitterSubscription?: Subscription;
-  private dialogSubscription?: Subscription;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
