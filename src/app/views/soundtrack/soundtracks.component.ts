@@ -153,9 +153,9 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
             this.soundtrackService.setAndStoreSoundtrack(existingSoundtrack);
 
             this.soundtrackEditedEvent.emit(existingSoundtrack);
-            const message: string = this.translateService.instant('soundtracks.message.updated', { name: existingSoundtrack.name });
-            this.materialService.showSnackBar(message);
           }
+          const message: string = this.translateService.instant('soundtracks.message.updated', { name: soundtrackEdition.name });
+          this.materialService.showSnackBar(message);
         }
       });
 
