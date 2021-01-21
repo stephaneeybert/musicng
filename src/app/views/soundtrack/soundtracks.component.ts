@@ -149,6 +149,7 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
             existingSoundtrack.name = soundtrackEdition.name;
             existingSoundtrack.copyright = soundtrackEdition.copyright;
             existingSoundtrack.lyrics = soundtrackEdition.lyrics;
+            // TODO The soundtrackEdition should be saved
             this.soundtrackService.setAndStoreSoundtrack(existingSoundtrack);
 
             this.soundtrackEditedEvent.emit(existingSoundtrack);
