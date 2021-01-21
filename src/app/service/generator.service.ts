@@ -78,7 +78,6 @@ export class GeneratorService {
 
     const octave: number = this.settingsService.getSettings().generateNoteOctave;
     const chordDuration: number = this.settingsService.getSettings().generateChordDuration;
-
     const harmonyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityHarmony);
     const harmonyMeasures: Array<Measure> = this.generateHarmonyChordInMeasures(octave, chordDuration, harmonyVelocity);
 
