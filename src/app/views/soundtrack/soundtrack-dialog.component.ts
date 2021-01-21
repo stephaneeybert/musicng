@@ -7,7 +7,7 @@ import { SoundtrackValidator } from './soundtrack-validator';
 const NAME_MAX_LENGTH: number = 15;
 
 @Component({
-  templateUrl: './soundtrack-dialog.component.html',
+  templateUrl: './soundtrack-dialog.component.html'
 })
 export class SoundtrackDialogComponent implements OnInit {
 
