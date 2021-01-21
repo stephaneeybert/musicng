@@ -26,7 +26,7 @@ export class SoundtrackDialogComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      name: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.name : '', [ Validators.required, Validators.maxLength(NAME_MAX_LENGTH), this.soundtrackValidator.validateNamePattern(), this.soundtrackValidator.validateNameIsNotAlreadyUsed( this.soundtrackEdition.id) ]),
+      name: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.name : '', [ Validators.required, Validators.maxLength(NAME_MAX_LENGTH), this.soundtrackValidator.validateNamePattern(), this.soundtrackValidator.validateNameIsNotAlreadyUsed(this.soundtrackEdition.id) ]),
       copyright: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.copyright : ''),
       lyrics: new FormControl(this.soundtrackEdition ? this.soundtrackEdition.lyrics : ''),
     });
