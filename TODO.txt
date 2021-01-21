@@ -9,8 +9,9 @@ keys.toString()
 Les noms syllabiques des accords en mineur doivent avoir
 un suffixe mineur m ou diminué -
 
-Pouvoir activer le random avec les gammes mineures par un paramètre
-pour le choix d'une tonalité
+Modulation
+pour le choix d'une tonalité,
+pouvoir activer le random avec les gammes mineures par un paramètre
 
 The modulation Do to Sol to Fa is atonal
 It should have been Do to Sol to Do
