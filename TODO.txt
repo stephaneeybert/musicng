@@ -1,3 +1,11 @@
+let chromaIndex: number;
+if (previousBaseChroma) {
+  chromaIndex = this.randomlyPickChromaFromTonalityBonuses(tonalityChromas, previousBaseChroma);
+} else {
+  // TODO If in major then take within the 0, 2, 4 ones and ignore the others in the 7
+  chromaIndex = this.randomlyPickChromaFromTonality(tonalityChromas);
+}
+
 Try using a TSMap
 https://www.npmjs.com/package/typescript-map
 at
