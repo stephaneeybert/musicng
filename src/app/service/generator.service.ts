@@ -718,10 +718,10 @@ export class GeneratorService {
 
   private generateHarmonyChord(placedChordIndex: number, tonality: Tonality, octave: number, chordDuration: number, velocity: number, previousChord: PlacedChord | undefined): PlacedChord | undefined {
     let previousChordSortedChromas: Array<string> = previousChord ? previousChord.getSortedNotesChromas() : [];
-    const firstNoteChroma: string | undefined = previousChord ? this.notationService.getFirstNoteSortedByPitch(previousChord).renderChroma() : undefined;
+    const previousBaseChroma: string | undefined = previousChord ? this.notationService.getFirstNoteSortedByPitch(previousChord).renderChroma() : undefined;
     const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
 
-    const chromas: Array<string> = this.buildChromas(tonalityChromas, firstNoteChroma);
+    const chromas: Array<string> = this.buildChromas(tonalityChromas, previousBaseChroma);
 
     // Consider a chord only if it is similar to its previous one
     if (!previousChord || this.isSimilarToPrevious(previousChordSortedChromas, chromas)) {
