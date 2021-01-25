@@ -27,6 +27,7 @@ export class Settings {
   animatedStave: boolean;
   showKeyboard: boolean;
   showAllNotes: boolean;
+  allowDarkTheme: boolean;
 
   constructor() {
     this.generateTempoBpm = DEFAULT_TEMPO_BPM;
@@ -53,6 +54,7 @@ export class Settings {
     this.animatedStave = false;
     this.showKeyboard = false;
     this.showAllNotes = false;
+    this.allowDarkTheme = false;
   }
 
   public set(
@@ -79,7 +81,8 @@ export class Settings {
     generateVelocityBass: number,
     animatedStave: boolean,
     showKeyboard: boolean,
-    showAllNotes: boolean
+    showAllNotes: boolean,
+    allowDarkTheme: boolean
     ) {
     this.generateTempoBpm = generateTempoBpm;
     this.generateTimeSignatureNumerator = generateTimeSignatureNumerator;
@@ -105,6 +108,7 @@ export class Settings {
     this.animatedStave = animatedStave;
     this.showKeyboard = showKeyboard;
     this.showAllNotes = showAllNotes;
+    this.allowDarkTheme = allowDarkTheme;
   }
 
 }

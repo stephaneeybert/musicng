@@ -63,7 +63,8 @@ export class SettingsDialogComponent implements OnInit {
       existingSettings.generateVelocityBass,
       existingSettings.animatedStave,
       existingSettings.showKeyboard,
-      existingSettings.showAllNotes
+      existingSettings.showAllNotes,
+      existingSettings.allowDarkTheme
     );
   }
 
@@ -115,7 +116,8 @@ export class SettingsDialogComponent implements OnInit {
       }),
       animatedStave: new FormControl(this.settingsEdition.animatedStave),
       showKeyboard: new FormControl(this.settingsEdition.showKeyboard),
-      showAllNotes: new FormControl(this.settingsEdition.showAllNotes)
+      showAllNotes: new FormControl(this.settingsEdition.showAllNotes),
+      allowDarkTheme: new FormControl(this.settingsEdition.allowDarkTheme)
     });
 
     // Have the form fields error messages shown on keystroke

@@ -108,6 +108,9 @@ export class SettingsStorageService extends LocalStorageService<Settings> {
     if (this.commonService.isSet(settingJson.showAllNotes)) {
       settings.showAllNotes = settingJson.showAllNotes;
     }
+    if (this.commonService.isSet(settingJson.allowDarkTheme)) {
+      settings.showAllNotes = settingJson.allowDarkTheme;
+    }
     return settings;
   }
 

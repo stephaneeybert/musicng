@@ -182,6 +182,10 @@
         "showAllNotes": {
           "label": "Show the names of all the notes",
           "tip": "Show all the notes with their names on the stave."
+        },
+        "allowDarkTheme": {
+          "label": "Allow the dark theme",
+          "tip": "Allow the automatic switch to the dark theme depending on the ambiant light."
         }
       }
     },
