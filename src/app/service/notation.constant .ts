@@ -13,7 +13,7 @@ export const DEFAULT_NB_CHORDS: number = 60;
 export const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 export const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
 export const DEFAULT_RANDOM_INPASSING: number = 50;
-export const DEFAULT_RANDOM_MODULATION: number = 50;
+export const DEFAULT_RANDOM_MODULATION: number = 100;
 
 export const NOTE_REST: string = 'rest';
 export const NOTE_END_OF_TRACK: string = 'end';
