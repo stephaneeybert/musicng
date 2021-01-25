@@ -8,6 +8,7 @@ import { ThemeStorageService } from './theme-storage.service';
 import { Theme } from './theme';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { AmbientLightSensorService } from '../sensor/ambient-light-sensor.service';
+import { SettingsService } from '@app/views/settings/settings.service';
 
 const DEFAULT_THEME: string = 'indigo';
 const THEME_MENU_OPTIONS_PATH: string = 'assets/themes/options.json';
@@ -33,10 +34,14 @@ export class ThemeService implements OnDestroy {
     private httpClient: HttpClient,
     private overlayContainer: OverlayContainer,
     private themeStorageService: ThemeStorageService,
+    private settingsService: SettingsService,
     private ambientLightSensorService: AmbientLightSensorService
   ) {
     this.observeTheme();
-    this.observeAmbientlightSensor();
+    const allowDarkTheme: boolean = this.settingsService.getSettings().allowDarkTheme;
+    if (allowDarkTheme) {
+      this.observeAmbientlightSensor();
+    }
   }
 
   ngOnDestroy() {

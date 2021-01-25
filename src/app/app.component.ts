@@ -4,7 +4,6 @@ import { Subscription, Observable } from 'rxjs';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 import { PwaService } from '@stephaneeybert/lib-pwa';
 import { ThemeService } from './core/theme/theme.service';
-import { SettingsService } from './views/settings/settings.service';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +21,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private screenDeviceService: ScreenDeviceService,
     private pwaService: PwaService,
-    private settingsService: SettingsService,
     private themeService: ThemeService
   ) {}
 
@@ -32,11 +30,8 @@ export class AppComponent implements OnInit, OnDestroy {
       subscription.unsubscribe();
     });
 
-    const allowDarkTheme: boolean = this.settingsService.getSettings().allowDarkTheme;
-    if (allowDarkTheme) {
-      this.observeTheme();
-      this.themeService.initTheme();
-    }
+    this.observeTheme();
+    this.themeService.initTheme();
   }
 
   ngOnDestroy() {
