@@ -744,7 +744,7 @@ export class GeneratorService {
     if (previousBaseChroma) {
       chromaIndex = this.randomlyPickChromaFromTonalityBonuses(tonalityChromas, previousBaseChroma);
     } else {
-      chromaIndex = this.randomlyPickChromaFromTonality(tonalityChromas);
+      chromaIndex = 0; // TODO this.randomlyPickChromaFromSomeTonalityChromas(tonalityChromas);
     }
 
     for (let noteIndex = 0; noteIndex < this.settingsService.getSettings().generateChordWidth; noteIndex++) {
