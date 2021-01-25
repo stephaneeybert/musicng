@@ -116,10 +116,25 @@ export class NotationService {
     return Tone.Frequency(chroma).toFrequency();
   }
 
+  public sortNotesByIndex(notes: Array<Note>): Array<Note> {
+    return notes.sort((noteA: Note, noteB: Note) => {
+      return noteA.index - noteB.index;
+    });
+  }
+
   public sortNotesByPitch(notes: Array<Note>): Array<Note> {
     return notes.sort((noteA: Note, noteB: Note) => {
       return this.getNoteFrequency(noteA) - this.getNoteFrequency(noteB);
     });
+  }
+
+  public getFirstNoteSortedByIndex(placedChord: PlacedChord): Note {
+    const sortedNotes: Array<Note> = this.sortNotesByIndex(placedChord.notes);
+    if (!sortedNotes || sortedNotes.length == 0) {
+      throw new Error('The placed chord had no notes to sort by index.');
+    }
+    const lastIsLowest: number = sortedNotes.length - 1;
+    return sortedNotes[lastIsLowest];
   }
 
   public getFirstNoteSortedByPitch(placedChord: PlacedChord): Note {
