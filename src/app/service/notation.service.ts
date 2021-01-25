@@ -133,8 +133,7 @@ export class NotationService {
     if (!sortedNotes || sortedNotes.length == 0) {
       throw new Error('The placed chord had no notes to sort by index.');
     }
-    const lastIsLowest: number = sortedNotes.length - 1;
-    return sortedNotes[lastIsLowest];
+    return sortedNotes[0];
   }
 
   public getFirstNoteSortedByPitch(placedChord: PlacedChord): Note {

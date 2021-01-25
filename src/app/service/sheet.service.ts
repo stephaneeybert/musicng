@@ -421,7 +421,7 @@ export class SheetService {
 
   private renderAllChordNoteNamesInSyllabic(placedChord: PlacedChord): Array<string> {
     const noteNames: Array<string> = new Array();
-    const sortedNotes: Array<Note> = this.notationService.sortNotesByPitch(placedChord.getNotesSortedByIndex());
+    const sortedNotes: Array<Note> = placedChord.getNotesSortedByIndex();
     for (let i: number = 0; i < sortedNotes.length; i++) {
       const reverse: number = placedChord.notes.length - i - 1;
       const note: Note = sortedNotes[reverse];
