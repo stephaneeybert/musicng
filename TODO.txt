@@ -6,21 +6,11 @@ in the error messages
 instead of the
 keys.toString()
 
-Les noms syllabiques des accords en mineur doivent avoir
-un suffixe mineur m ou diminué -
-
 Modulation
 pour le choix d'une tonalité,
-pouvoir activer le random avec les gammes mineures par un paramètre
-
-The modulation Do to Sol to Fa is atonal
-It should have been Do to Sol to Do
-Why the getTonalitiesContainingChromas method did not find the Do tonality ?
-The two chords in Sol were C and Em and these two could give a Do tonality again or again a Sol
-It could be that the issue comes from the previous chord chroma argument to the getTonalitiesContainingChromas method,
-indeed, I pass in the previousChord.getFirstNote() but this first note is first by its index, its adding index,
-which is not the pitch index
-Norbert : De la tonalité de Do tu peux aller en Sol, pas en Solm
+pouvoir considérer les gammes mineures par un paramètre range aléatoire
+See
+tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstNoteSortedByPitch(previousChord).renderChroma(), this.notationService.getFirstNoteSortedByPitch(previousPreviousChord).renderChroma()));
 
 The minor harmonic G scale is spelled G A Bb C D Eb F# G
 The harmonic minor D scale D E F G A Bb C# D
