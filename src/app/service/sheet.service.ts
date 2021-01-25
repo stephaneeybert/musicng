@@ -413,7 +413,9 @@ export class SheetService {
   }
 
   private renderChordNameInSyllabic(placedChord: PlacedChord): string {
-    const note: Note = this.notationService.getFirstNoteSortedByPitch(placedChord);
+    // The international name of the chord is the chroma picked in the tonality
+    // This chroma picked in the tonality is the first note added in the chord
+    const note: Note = this.notationService.getFirstNoteSortedByIndex(placedChord);
     return this.notationService.chordChromaLetterToChromaSyllabic(note.renderChroma(), placedChord.tonality.range);
   }
 
