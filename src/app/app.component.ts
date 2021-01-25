@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription, Observable, combineLatest } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 import { PwaService } from '@stephaneeybert/lib-pwa';
 import { ThemeService } from './core/theme/theme.service';
