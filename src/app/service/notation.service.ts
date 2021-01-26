@@ -112,8 +112,8 @@ export class NotationService {
 
   private getNoteFrequency(note: Note): number {
     // The accidental must not be present in the note when getting the frequency
-    const chroma: string = this.removeSharpsAndFlats(note.renderIntlChromaOctave());
-    return Tone.Frequency(chroma).toFrequency();
+    const chromaOctave: string = this.removeSharpsAndFlats(note.renderIntlChromaOctave());
+    return Tone.Frequency(chromaOctave).toFrequency();
   }
 
   public sortNotesByIndex(notes: Array<Note>): Array<Note> {
