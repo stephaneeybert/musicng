@@ -545,23 +545,32 @@ export class GeneratorService {
           tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), undefined));
         }
       }
-      const index: number = this.commonService.getRandomIntegerBetween(0, tonalities.length - 1);
-      return tonalities[index];
+      // If no tonality includes the previous note then pick a random one
+      if (tonalities.length > 0) {
+        const index: number = this.commonService.getRandomIntegerBetween(0, tonalities.length - 1);
+        return tonalities[index];
+      } else {
+        return this.getRandomTonality(onlyMajor);
+      }
     } else {
       // If no previous chord is specified then randomly pick a tonality
-      const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_CHROMAS.length - 1);
-      if (!onlyMajor) { // TODO Add a setting to consider minor tonalities
-        const randomRangeIndex: number = this.commonService.getRandomIntegerBetween(0, 1);
-        const chroma: string = HALF_TONE_CHROMAS[randomChromaIndex];
-        if (randomRangeIndex == 0) {
-          return new Tonality(NOTE_RANGE.MAJOR, chroma);
-        } else {
-          return new Tonality(NOTE_RANGE.MINOR_NATURAL, chroma);
-        }
-      } else {
-        const chroma: string = HALF_TONE_CHROMAS[randomChromaIndex];
+      return this.getRandomTonality(onlyMajor);
+    }
+  }
+
+  private getRandomTonality(onlyMajor: boolean): Tonality {
+    const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_CHROMAS.length - 1);
+    if (!onlyMajor) { // TODO Add a setting to consider minor tonalities
+      const randomRangeIndex: number = this.commonService.getRandomIntegerBetween(0, 1);
+      const chroma: string = HALF_TONE_CHROMAS[randomChromaIndex];
+      if (randomRangeIndex == 0) {
         return new Tonality(NOTE_RANGE.MAJOR, chroma);
+      } else {
+        return new Tonality(NOTE_RANGE.MINOR_NATURAL, chroma);
       }
+    } else {
+      const chroma: string = HALF_TONE_CHROMAS[randomChromaIndex];
+      return new Tonality(NOTE_RANGE.MAJOR, chroma);
     }
   }
 
