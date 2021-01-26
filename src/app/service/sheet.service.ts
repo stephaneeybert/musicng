@@ -444,6 +444,15 @@ export class SheetService {
     return vexflowNotes;
   }
 
+  private renderNotesSortedByIndex(notes: Array<Note>): Array<string> {
+    const vexflowNotes: Array<string> = new Array<string>();
+    this.notationService.sortNotesByIndex(notes)
+      .forEach((note: Note) => {
+        vexflowNotes.push(this.renderNote(note));
+      });
+    return vexflowNotes;
+  }
+
   private renderAnnotation(textNote: string): Vex.Flow.Annotation {
     return (
       new Vex.Flow.Annotation(textNote))
