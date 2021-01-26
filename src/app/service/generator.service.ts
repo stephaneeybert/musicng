@@ -528,7 +528,7 @@ export class GeneratorService {
   }
 
   // Get a tonality selected randomly among ones that include two previous notes
-  private getRandomTonality(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Tonality {
+  private getSibblingTonality(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Tonality {
     const onlyMajor: boolean = true;
     if (previousChord) {
       let tonalities: Array<Tonality> = new Array();
@@ -699,7 +699,7 @@ export class GeneratorService {
         if (this.withModulation()) {
           // Do not overwrite the first tonality
           if (chordIndex > 0) {
-            const randomTonality: Tonality = this.getRandomTonality(previousPreviousChord, previousChord);
+            const randomTonality: Tonality = this.getSibblingTonality(previousPreviousChord, previousChord);
             tonality = new Tonality(randomTonality.range, randomTonality.firstChroma);
           }
           previousChord = undefined;
