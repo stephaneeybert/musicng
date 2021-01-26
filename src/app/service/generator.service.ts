@@ -529,28 +529,38 @@ export class GeneratorService {
 
   // Get a tonality selected randomly among ones that include two previous notes
   private getRandomTonality(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Tonality {
+    const onlyMajor: boolean = true;
     if (previousChord) {
       let tonalities: Array<Tonality> = new Array();
       if (previousPreviousChord) {
         tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), this.notationService.getFirstNoteSortedByIndex(previousPreviousChord).renderChroma()));
-        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), this.notationService.getFirstNoteSortedByIndex(previousPreviousChord).renderChroma()));
+        if (!onlyMajor) { // TODO Add a setting to consider minor tonalities
+          tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), this.notationService.getFirstNoteSortedByIndex(previousPreviousChord).renderChroma()));
+        }
       }
       // If no tonality includes the two previous notes then pick the ones that contain the previous note only
       if (tonalities.length == 0) {
         tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), undefined));
-        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), undefined));
+        if (!onlyMajor) { // TODO Add a setting to consider minor tonalities
+          tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), undefined));
+        }
       }
       const index: number = this.commonService.getRandomIntegerBetween(0, tonalities.length - 1);
       return tonalities[index];
     } else {
       // If no previous chord is specified then randomly pick a tonality
       const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_CHROMAS.length - 1);
-      const randomRangeIndex: number = this.commonService.getRandomIntegerBetween(0, 1);
-      const chroma: string = HALF_TONE_CHROMAS[randomChromaIndex];
-      if (randomRangeIndex == 0) {
-        return new Tonality(NOTE_RANGE.MAJOR, chroma);
+      if (!onlyMajor) { // TODO Add a setting to consider minor tonalities
+        const randomRangeIndex: number = this.commonService.getRandomIntegerBetween(0, 1);
+        const chroma: string = HALF_TONE_CHROMAS[randomChromaIndex];
+        if (randomRangeIndex == 0) {
+          return new Tonality(NOTE_RANGE.MAJOR, chroma);
+        } else {
+          return new Tonality(NOTE_RANGE.MINOR_NATURAL, chroma);
+        }
       } else {
-        return new Tonality(NOTE_RANGE.MINOR_NATURAL, chroma);
+        const chroma: string = HALF_TONE_CHROMAS[randomChromaIndex];
+        return new Tonality(NOTE_RANGE.MAJOR, chroma);
       }
     }
   }
