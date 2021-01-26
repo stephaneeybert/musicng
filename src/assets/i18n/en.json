@@ -184,7 +184,7 @@
           "tip": "Show all the notes with their names on the stave."
         },
         "allowDarkTheme": {
-          "label": "Allow the dark theme",
+          "label": "Automatic dark theme",
           "tip": "Allow the automatic switch to the dark theme depending on the ambiant light."
         }
       }

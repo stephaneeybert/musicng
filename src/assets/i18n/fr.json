@@ -184,7 +184,7 @@
           "tip": "Afficher toutes les notes avec leurs noms sur la partition."
         },
         "allowDarkTheme": {
-          "label": "Permettre le thème sombre",
+          "label": "Thème sombre automatique",
           "tip": "Permettre le changement automatique vers le thème sombre en fonction de la luminosité ambiante."
         }
       }
