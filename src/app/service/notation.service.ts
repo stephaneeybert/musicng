@@ -124,6 +124,16 @@ export class NotationService {
 
   public sortNotesByPitch(notes: Array<Note>): Array<Note> {
     return notes.sort((noteA: Note, noteB: Note) => {
+      if (noteA.renderOctave() == noteB.renderOctave()) {
+        return noteA.renderChroma().charCodeAt(0) - noteB.renderChroma().charCodeAt(0);
+      } else {
+        return noteA.renderOctave() - noteB.renderOctave();
+      }
+    });
+  }
+
+  public sortNotesByFrequency(notes: Array<Note>): Array<Note> {
+    return notes.sort((noteA: Note, noteB: Note) => {
       return this.getNoteFrequency(noteA) - this.getNoteFrequency(noteB);
     });
   }
@@ -137,7 +147,7 @@ export class NotationService {
   }
 
   public getFirstNoteSortedByPitch(placedChord: PlacedChord): Note {
-    const sortedNotes: Array<Note> = this.sortNotesByPitch(placedChord.notes);
+    const sortedNotes: Array<Note> = this.sortNotesByFrequency(placedChord.notes);
     if (!sortedNotes || sortedNotes.length == 0) {
       throw new Error('The placed chord had no notes to sort by pitch.');
     }

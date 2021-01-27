@@ -437,7 +437,7 @@ export class SheetService {
   // being added as keys to a stave
   private renderNotesSortedByPitch(notes: Array<Note>): Array<string> {
     const vexflowNotes: Array<string> = new Array<string>();
-    this.notationService.sortNotesByPitch(notes)
+    this.notationService.sortNotesByFrequency(notes)
       .forEach((note: Note) => {
         vexflowNotes.push(this.renderNote(note));
       });
