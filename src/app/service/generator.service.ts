@@ -529,47 +529,76 @@ export class GeneratorService {
 
   // Get a tonality selected randomly among ones that include two previous notes
   private getSibblingTonality(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Tonality {
-    const onlyMajor: boolean = true;
+    const onlyMajor: boolean = true; // TODO Have a settings to default false
+    const dontRepeat: boolean = true // TODO Have a settings to default false
     if (previousChord) {
       let tonalities: Array<Tonality> = new Array();
       if (previousPreviousChord) {
         tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), this.notationService.getFirstNoteSortedByIndex(previousPreviousChord).renderChroma()));
-        if (!onlyMajor) { // TODO Add a setting to consider minor tonalities
+        if (!onlyMajor) {
           tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), this.notationService.getFirstNoteSortedByIndex(previousPreviousChord).renderChroma()));
         }
       }
       // If no tonality includes the two previous notes then pick the ones that contain the previous note only
       if (tonalities.length == 0) {
         tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), undefined));
-        if (!onlyMajor) { // TODO Add a setting to consider minor tonalities
+        if (!onlyMajor) {
           tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), undefined));
         }
+      }
+      if (dontRepeat) {
+        tonalities = this.stripTonality(tonalities, previousChord.tonality);
       }
       // If no tonality includes the previous note then pick a random one
       if (tonalities.length > 0) {
         const index: number = this.commonService.getRandomIntegerBetween(0, tonalities.length - 1);
         return tonalities[index];
       } else {
-        return this.getRandomTonality(onlyMajor);
+        return this.getRandomTonality(previousChord.tonality, onlyMajor, dontRepeat);
       }
     } else {
       // If no previous chord is specified then randomly pick a tonality
-      return this.getRandomTonality(onlyMajor);
+      return this.getRandomTonality(undefined, onlyMajor, dontRepeat);
     }
   }
+  private stripTonality(tonalities: Array<Tonality>, previousTonality: Tonality | undefined): Array<Tonality> {
+    if (previousTonality) {
+      let index: number = tonalities.findIndex(tonality => tonality.firstChroma === previousTonality.firstChroma);
+      if (index != -1) {
+        tonalities.splice(index, 1);
+      }
+    }
+    return tonalities;
+  }
 
-  private getRandomTonality(onlyMajor: boolean): Tonality {
-    const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, HALF_TONE_CHROMAS.length - 1);
-    if (!onlyMajor) { // TODO Add a setting to consider minor tonalities
+  private stripTonalityChroma(tonalityChromas: Array<string>, previousTonality: Tonality | undefined, dontRepeat: boolean): Array<string> {
+    if (previousTonality && dontRepeat) {
+      let index: number = tonalityChromas.findIndex(chroma => chroma === previousTonality.firstChroma);
+      if (index != -1) {
+        tonalityChromas.splice(index, 1);
+      }
+    }
+    return tonalityChromas;
+  }
+
+  private getRandomTonality(previousTonality: Tonality | undefined, onlyMajor: boolean, dontRepeat: boolean): Tonality {
+    if (!onlyMajor) {
       const randomRangeIndex: number = this.commonService.getRandomIntegerBetween(0, 1);
-      const chroma: string = HALF_TONE_CHROMAS[randomChromaIndex];
       if (randomRangeIndex == 0) {
+        const tonalityChromas = this.stripTonalityChroma(CHROMAS_MAJOR, previousTonality, dontRepeat);
+        const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, tonalityChromas.length - 1);
+        const chroma: string = tonalityChromas[randomChromaIndex];
         return new Tonality(NOTE_RANGE.MAJOR, chroma);
       } else {
+        const tonalityChromas = this.stripTonalityChroma(CHROMAS_MINOR, previousTonality, dontRepeat);
+        const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, tonalityChromas.length - 1);
+        const chroma: string = tonalityChromas[randomChromaIndex];
         return new Tonality(NOTE_RANGE.MINOR_NATURAL, chroma);
       }
     } else {
-      const chroma: string = HALF_TONE_CHROMAS[randomChromaIndex];
+      const tonalityChromas = this.stripTonalityChroma(CHROMAS_MAJOR, previousTonality, dontRepeat);
+      const randomChromaIndex: number = this.commonService.getRandomIntegerBetween(0, tonalityChromas.length - 1);
+      const chroma: string = tonalityChromas[randomChromaIndex];
       return new Tonality(NOTE_RANGE.MAJOR, chroma);
     }
   }
