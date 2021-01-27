@@ -173,7 +173,7 @@ export class SheetService {
   private createStaveNoteKeys(placedChord: PlacedChord): Vex.Flow.StaveNote {
     const chordDuration: string = this.renderDuration(placedChord);
     const staveNote: Vex.Flow.StaveNote = new Vex.Flow.StaveNote({
-      keys: this.renderNotesSortedByFrequency(placedChord.notes),
+      keys: this.renderNotesSortedByPitch(placedChord.notes),
       duration: chordDuration,
       auto_stem: true,
       clef: Clef.TREBLE
@@ -435,7 +435,7 @@ export class SheetService {
 
   // The Vexflow API requires that notes be sorted in ascending order before
   // being added as keys to a stave
-  private renderNotesSortedByFrequency(notes: Array<Note>): Array<string> {
+  private renderNotesSortedByPitch(notes: Array<Note>): Array<string> {
     const vexflowNotes: Array<string> = new Array<string>();
     this.notationService.sortNotesByPitch(notes)
       .forEach((note: Note) => {
