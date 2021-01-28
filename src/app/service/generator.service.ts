@@ -188,7 +188,6 @@ export class GeneratorService {
     // Create shifted chromas, each starting some notes down the previous chroma
     // The number of shifted chromas is the width of the chord
     // An example for the C tonality is:
-    //  Do Rem  Mim  Fa  Sol  Lam  Si-
     // 'G', 'A', 'B', 'C', 'D', 'E', 'F'
     // 'E', 'F', 'G', 'A', 'B', 'C', 'D'
     // 'C', 'D', 'E', 'F', 'G', 'A', 'B'
