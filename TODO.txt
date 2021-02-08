@@ -1,11 +1,3 @@
-let chromaIndex: number;
-if (previousBaseChroma) {
-  chromaIndex = this.randomlyPickChromaFromTonalityBonuses(tonalityChromas, previousBaseChroma);
-} else {
-  // TODO If in major then take within the 0, 2, 4 ones and ignore the others in the 7
-  chromaIndex = this.randomlyPickChromaFromTonality(tonalityChromas);
-}
-
 Try using a TSMap
 https://www.npmjs.com/package/typescript-map
 at
@@ -13,12 +5,6 @@ private chromaLetterToChromaSyllabic
 in the error messages
 instead of the
 keys.toString()
-
-Modulation
-pour le choix d'une tonalité,
-pouvoir considérer les gammes mineures par un paramètre range aléatoire
-See
-tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstNoteSortedByPitch(previousChord).renderChroma(), this.notationService.getFirstNoteSortedByPitch(previousPreviousChord).renderChroma()));
 
 The minor harmonic G scale is spelled G A Bb C D Eb F# G
 The harmonic minor D scale D E F G A Bb C# D
