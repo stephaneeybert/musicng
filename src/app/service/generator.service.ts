@@ -30,12 +30,32 @@ export class GeneratorService {
 
   private createNotesAndPlacedChord(octave: number, chordDuration: number, velocity: number, tonality: Tonality, placedChordIndex: number, chromas: Array<string>): PlacedChord {
     let noteIndex: number = 0;
-    const notes: Array<Note> = chromas.map((chroma: string) => {
+    let previousChroma: string = '';
+    const nextUpperOctave: number = octave + 1;
+    const notes: Array<Note> = new Array();
+    for (let i = 0; i < chromas.length; i++) {
+      const chroma: string = chromas[i];
+      if (noteIndex > 0 && this.chordChromaBelongsToNextUpperOctave(previousChroma, chroma, tonality)) {
+        octave = nextUpperOctave;
+      }
+      console.log(octave);
+      console.log(' ');
       const note: Note = this.notationService.createNote(noteIndex, chroma, octave);
       noteIndex++;
-      return note;
-    });
+      previousChroma = chroma;
+      notes.push(note);
+    }
     return this.notationService.createPlacedChord(placedChordIndex, chordDuration, TempoUnit.NOTE, velocity, tonality, notes);
+  }
+
+  // If a current chord chroma is lower than the previous chord chroma
+  // then the current chroma belong to the next upper octave
+  private chordChromaBelongsToNextUpperOctave(previousChroma: string, currentChroma: string, tonality: Tonality): boolean {
+    const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
+    console.log(tonalityChromas);
+    console.log(previousChroma + ' ' + currentChroma);
+    console.log(tonalityChromas.indexOf(currentChroma) < tonalityChromas.indexOf(previousChroma));
+    return tonalityChromas.indexOf(currentChroma) < tonalityChromas.indexOf(previousChroma);
   }
 
   private createMeasure(index: number): Measure {
@@ -791,6 +811,8 @@ export class GeneratorService {
     if (previousBaseChroma) {
       chromaIndex = this.randomlyPickChromaFromTonalityBonuses(tonalityChromas, previousBaseChroma);
     } else {
+      // TODO If in major then take within the 0, 2, 4 ones and ignore the others in the 7
+      // TODO Implement the randomlyPickChromaFromSomeTonalityChromas method
       chromaIndex = 0; // TODO this.randomlyPickChromaFromSomeTonalityChromas(tonalityChromas);
     }
 
