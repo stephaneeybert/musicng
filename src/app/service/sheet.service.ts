@@ -426,7 +426,7 @@ export class SheetService {
       const reverse: number = placedChord.notes.length - i - 1;
       const note: Note = sortedNotes[reverse];
       const name: string = this.notationService.noteChromaLetterToChromaSyllabic(note.renderChroma())
-      + ' ' + note.renderChroma();
+      + ' ' + note.renderChroma() + VEXFLOW_OCTAVE_SEPARATOR + note.renderOctave();
 
       noteNames.push(name);
     }
