@@ -10,7 +10,7 @@ import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { NOTE_RANGE, HALF_TONE_CHROMAS, NOTE_RANGE_INTERVALS, HALF_TONE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, CHROMAS_ALPHABETICAL, CHROMA_ENHARMONICS } from './notation.constant ';
+import { NOTE_RANGE, HALF_TONE_CHROMAS, NOTE_RANGE_INTERVALS, HALF_TONE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, CHROMAS_ALPHABETICAL, CHROMA_ENHARMONICS, DEFAULT_TONALITY_C_MAJOR } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 @Injectable({
@@ -35,11 +35,9 @@ export class GeneratorService {
     const notes: Array<Note> = new Array();
     for (let i = 0; i < chromas.length; i++) {
       const chroma: string = chromas[i];
-      if (noteIndex > 0 && this.chordChromaBelongsToNextUpperOctave(previousChroma, chroma, tonality)) {
+      if (noteIndex > 0 && this.chordChromaBelongsToNextUpperOctave(previousChroma, chroma)) {
         octave = nextUpperOctave;
       }
-      console.log(octave);
-      console.log(' ');
       const note: Note = this.notationService.createNote(noteIndex, chroma, octave);
       noteIndex++;
       previousChroma = chroma;
@@ -50,12 +48,11 @@ export class GeneratorService {
 
   // If a current chord chroma is lower than the previous chord chroma
   // then the current chroma belong to the next upper octave
-  private chordChromaBelongsToNextUpperOctave(previousChroma: string, currentChroma: string, tonality: Tonality): boolean {
-    const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
-    console.log(tonalityChromas);
-    console.log(previousChroma + ' ' + currentChroma);
-    console.log(tonalityChromas.indexOf(currentChroma) < tonalityChromas.indexOf(previousChroma));
-    return tonalityChromas.indexOf(currentChroma) < tonalityChromas.indexOf(previousChroma);
+  private chordChromaBelongsToNextUpperOctave(previousChroma: string, currentChroma: string): boolean {
+    const tonalityChromas: Array<string> = this.getTonalityChromas(DEFAULT_TONALITY_C_MAJOR.range, DEFAULT_TONALITY_C_MAJOR.firstChroma);
+    const previousAlphaChroma: string = previousChroma.substr(0, 1);
+    const currentAlphaChroma: string = currentChroma.substr(0, 1);
+    return tonalityChromas.indexOf(currentAlphaChroma) < tonalityChromas.indexOf(previousAlphaChroma);
   }
 
   private createMeasure(index: number): Measure {
