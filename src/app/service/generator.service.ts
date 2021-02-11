@@ -420,7 +420,7 @@ export class GeneratorService {
           chromas.push(key);
         });
       } else {
-        throw new Error('The chroma ' + startChroma + ' could not be found in the enharmonics.');
+        throw new Error('The chroma ' + startChroma + ' could not be found in the reversed enharmonics.');
       }
     }
 
