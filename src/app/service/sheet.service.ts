@@ -412,10 +412,15 @@ export class SheetService {
     }
   }
 
-  private renderChordNameInSyllabic(placedChord: PlacedChord): string {
+  private renderChordNameInIntl(placedChord: PlacedChord): string {
     // The international name of the chord is the chroma picked in the tonality
     // This chroma picked in the tonality is the first note added in the chord
     // This is valid if the chord is not reversed
+    const note: Note = this.notationService.getFirstNoteSortedByIndex(placedChord);
+    return note.renderChroma();
+  }
+
+  private renderChordNameInSyllabic(placedChord: PlacedChord): string {
     const note: Note = this.notationService.getFirstNoteSortedByIndex(placedChord);
     return this.notationService.chordChromaLetterToChromaSyllabic(note.renderChroma(), placedChord.tonality.range);
   }
