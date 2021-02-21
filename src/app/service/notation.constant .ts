@@ -57,6 +57,14 @@ export const CHROMA_ENHARMONICS: Map<string, string> = new Map([
   ['B', 'Cb']
 ]);
 
+// Tonality names and syllabics
+export const TONALITY_MAJOR_NAMES: Array<string> = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+export const TONALITY_MINOR_NAMES: Array<string> = ['Am', 'Bbm', 'Bm', 'Cm', 'C#m', 'Dm', 'D#m', 'Em', 'Fm', 'F#m', 'Gm', 'Abm'];
+export const TONALITY_SYLLABIC: Map<string, string> = new Map([
+  ['C', 'Do'], ['Db', 'Réb'], ['D', 'Ré'], ['Eb', 'Mib'], ['E', 'Mi'], ['F', 'Fa'], ['F#', 'Fa#'], ['G', 'Sol'], ['Ab', 'Lab'], ['A', 'La'], ['Bb', 'Sib'], ['B', 'Si'],
+  ['Cm', 'Do'], ['C#m', 'Do#'], ['Dm', 'Ré'], ['D#m', 'Mib'], ['Em', 'Mi'], ['Fm', 'Fa'], ['F#m', 'Fa#'], ['Gm', 'Sol'], ['Abm', 'Lab'], ['Am', 'La'], ['Bbm', 'Sib'], ['Bm', 'Si']
+]);
+
 // Do not start any major tonality with these chromas: G#, D#, A#, E#, B# and Fb
 // They are illegal root chromas for major scales thus cannot be used as starting chromas for major scales
 // This is due to overly complex resulting note names, giving double sharps or double flats
