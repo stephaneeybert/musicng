@@ -601,6 +601,7 @@ export class GeneratorService {
       return this.getRandomTonality(undefined, onlyMajor, dontRepeat);
     }
   }
+
   private stripTonality(tonalities: Array<Tonality>, previousTonality: Tonality | undefined): Array<Tonality> {
     if (previousTonality) {
       let index: number = tonalities.findIndex(tonality => tonality.firstChroma === previousTonality.firstChroma);
