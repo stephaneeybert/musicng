@@ -519,6 +519,30 @@ export class GeneratorService {
     return tonality;
   }
 */
+  private getAllTonalities(): Array<Tonality> {
+    const tonalities: Array<Tonality> = new Array();
+    CHROMAS_MAJOR.forEach((chroma: string) => {
+      tonalities.push(new Tonality(NOTE_RANGE.MAJOR, chroma));
+    });
+    CHROMAS_MINOR.forEach((chroma: string) => {
+      tonalities.push(new Tonality(NOTE_RANGE.MINOR_NATURAL, chroma));
+    });
+    return tonalities;
+  }
+
+  public logAllTonalities(): void {
+    this.getAllTonalities().forEach((tonality: Tonality) => {
+      const tonalitySyllabics: Array<string> = new Array();
+      const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
+      tonalityChromas.forEach((chroma: string) => {
+        const syllabic: string = this.notationService.chordChromaLetterToChromaSyllabic(chroma, tonality.range);
+        // const syllabic: string = this.notationService.noteChromaLetterToChromaSyllabic(chroma);
+        tonalitySyllabics.push(syllabic);
+      });
+      console.log(tonalityChromas);
+      // console.log(tonalitySyllabics);
+    });
+  }
 
   private getFirstMeasureTonality(): Tonality {
     const firstChroma: string = this.settingsService.getSettings().generateTonality;
