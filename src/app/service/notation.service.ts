@@ -275,7 +275,8 @@ export class NotationService {
 
   public addEndOfTrackNote(chords: Array<PlacedChord>): void {
     if (chords && chords.length > 0) {
-      // Have a few end of track notes as a note may not be played by an unreliable synth
+      // Have a few end of track notes instead of just one
+      // as a note may not be played by an unreliable synth
       chords[chords.length] = this.createLastOfTrackPlacedChord(chords.length);
       chords[chords.length] = this.createLastOfTrackPlacedChord(chords.length);
       chords[chords.length] = this.createLastOfTrackPlacedChord(chords.length);
