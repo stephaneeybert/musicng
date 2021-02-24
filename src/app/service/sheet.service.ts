@@ -413,11 +413,7 @@ export class SheetService {
   }
 
   private renderChordNameInIntl(placedChord: PlacedChord): string {
-    // The international name of the chord is the chroma picked in the tonality
-    // This chroma picked in the tonality is the first note added in the chord
-    // This is valid if the chord is not reversed
-    const note: Note = this.notationService.getFirstNoteSortedByIndex(placedChord);
-    return note.renderChroma();
+    return this.notationService.getChordIntlName(placedChord);
   }
 
   private renderChordNameInSyllabic(placedChord: PlacedChord): string {
