@@ -9,7 +9,7 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_MAJOR_CHROMAS, HALF_TONE_MINOR_CHROMAS, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR } from './notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_MAJOR_CHROMAS, HALF_TONE_MINOR_CHROMAS, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NOTE_RANGE_INTERVAL_MAJOR, NOTE_ACCIDENTAL_DIMINISHED } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 const CHORD_SEPARATOR: string = ' ';
@@ -128,12 +128,20 @@ export class NotationService {
     });
   }
 
-  public getFirstNoteSortedByIndex(placedChord: PlacedChord): Note {
+  public getFirstChordNoteSortedByIndex(placedChord: PlacedChord): Note {
     const sortedNotes: Array<Note> = this.sortNotesByIndex(placedChord.notes);
-    if (!sortedNotes || sortedNotes.length == 0) {
+    if (!sortedNotes || sortedNotes.length < 3) {
       throw new Error('The placed chord had no notes to sort by index.');
     }
     return sortedNotes[0];
+  }
+
+  private getSecondChordNoteSortedByIndex(placedChord: PlacedChord): Note {
+    const sortedNotes: Array<Note> = this.sortNotesByIndex(placedChord.notes);
+    if (!sortedNotes || sortedNotes.length < 3) {
+      throw new Error('The placed chord had no notes to sort by index.');
+    }
+    return sortedNotes[1];
   }
 
   public getFirstNoteSortedByPitch(placedChord: PlacedChord): Note {
@@ -356,5 +364,255 @@ private allowedChromas(): Array<string> {
   public createTimeSignature(numerator: number, denominator: number): TimeSignature {
     return new TimeSignature(numerator, denominator);
   }
+
+  // The international name of the chord is the chroma picked in the tonality
+  // This chroma picked in the tonality is the first note added in the chord
+  // This is valid if the chord is not reversed
+  // Suffix the chord name with a minor accidental if the second note of the chord is a minor
+  public getChordIntlName(placedChord: PlacedChord): string {
+    const note: Note = this.getFirstChordNoteSortedByIndex(placedChord);
+    // Get the chord position in the tonality
+    const firstChordNote: Note = this.getFirstChordNoteSortedByIndex(placedChord);
+    const firstNotePosition: number = this.getChordNotePositionInTonality(placedChord, firstChordNote);
+    const secondChordNote: Note = this.getSecondChordNoteSortedByIndex(placedChord);
+    const secondNotePosition: number = this.getChordNotePositionInTonality(placedChord, secondChordNote);
+    // Check if the second note of the chord is a major or minor
+    if (this.isMinorDegree(placedChord.tonality.range, firstNotePosition, secondNotePosition)) {
+      if (this.isDiminishedDegree(placedChord.tonality.range, firstNotePosition, secondNotePosition)) {
+        return note.renderChroma() + NOTE_ACCIDENTAL_MINOR + NOTE_ACCIDENTAL_DIMINISHED;
+      } else {
+        return note.renderChroma() + NOTE_ACCIDENTAL_MINOR;
+      }
+    } else {
+      return note.renderChroma();
+    }
+  }
+
+  private getChordNotePositionInTonality(placedChord: PlacedChord, note: Note): number {
+    let tonalityChromas: Array<string> = this.getTonalityChromas(placedChord.tonality.range, placedChord.tonality.firstChroma);
+    for (let position: number = 0; position < tonalityChromas.length; position++) {
+      if (note.renderChroma() == tonalityChromas[position]) {
+        console.log(tonalityChromas + ' : ' + note.renderChroma() + ' : ' + position);
+        return position;
+      }
+    }
+    throw new Error('The position for the placed chord note ' + note.renderChroma() + ' could not be found in the tonality ' + tonalityChromas);
+  }
+
+  private getNbHalfTonesBetweenFirstAndSecondNote(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number): number {
+    let nbHalfTones: number = 0;
+    const intervals: Array<number> = this.getNoteRangeIntervals(noteRange);
+    for (let index: number = firstNotePosition; index < secondNotePosition; index++) {
+      nbHalfTones = nbHalfTones + (intervals[index] * 2);
+    }
+    return nbHalfTones;
+  }
+
+  private isMajorDegree(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number): boolean {
+    if (this.getNbHalfTonesBetweenFirstAndSecondNote(noteRange, firstNotePosition, secondNotePosition) == NOTE_RANGE_INTERVAL_MAJOR) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private isMinorDegree(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number): boolean {
+    if (this.getNbHalfTonesBetweenFirstAndSecondNote(noteRange, firstNotePosition, secondNotePosition) < NOTE_RANGE_INTERVAL_MAJOR) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private isDiminishedDegree(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number): boolean {
+    // Check the degree is minor
+    if (this.getNbHalfTonesBetweenFirstAndSecondNote(noteRange, firstNotePosition, secondNotePosition) < NOTE_RANGE_INTERVAL_MAJOR) {
+      // Consider the last interval as it is the diminished note
+      const intervals: Array<number> = this.getNoteRangeIntervals(noteRange);
+      if (secondNotePosition == (intervals.length - 1)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  public getNoteRangeIntervals(noteRange: NOTE_RANGE): Array<number> {
+    const noteRangeIntervals: Array<number> | undefined = NOTE_RANGE_INTERVALS.get(noteRange);
+    if (noteRangeIntervals) {
+      return noteRangeIntervals;
+    } else {
+      throw new Error('No intervals could be found for the note range ' + noteRange);
+    }
+  }
+
+  /* TODO ENHARMONICS */
+  public getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
+    let tonality: Array<string> = new Array();
+    const sourceScale: Array<string> = this.getSourceScale(rangeFirstChroma);
+    const enharmonicScale: Array<string> = this.getEnharmonicScale(rangeFirstChroma);
+    const alphaScale: Array<string> = this.getAlphaScale(rangeFirstChroma, sourceScale.length);
+    const noteRangeStructure: Array<number> = this.intervalsToStructure(this.getNoteRangeIntervals(noteRange));
+
+    let structureIndex: number = 0;
+    for (let index = 0; index < sourceScale.length; index++) {
+      if (noteRangeStructure[structureIndex] == index) {
+        if (sourceScale[index].includes(alphaScale[structureIndex])) {
+          tonality.push(sourceScale[index]);
+        } else if (enharmonicScale[index].includes(alphaScale[structureIndex])) {
+          tonality.push(enharmonicScale[index]);
+        }
+        structureIndex++;
+      }
+    }
+    return tonality;
+  }
+
+  private getSourceScale(rangeFirstChroma: string): Array<string> {
+    return this.pickContainingEnharmonics(rangeFirstChroma);
+  }
+
+  private getEnharmonicScale(rangeFirstChroma: string): Array<string> {
+    const sameSoundingChroma: string = this.getChromaEnharmonic(rangeFirstChroma);
+    return this.pickContainingEnharmonics(sameSoundingChroma);
+  }
+
+  private getAlphaScale(startChroma: string, length: number): Array<string> {
+    var shiftedChromas: Array<string> = new Array();
+    for (let i: number = 0; i < length; i++) {
+      if (startChroma.includes(CHROMAS_ALPHABETICAL[i])) {
+        for (let j = i; j < length + i; j++) {
+          shiftedChromas.push(CHROMAS_ALPHABETICAL[j % CHROMAS_ALPHABETICAL.length]);
+        }
+        break;
+      }
+    }
+    if (shiftedChromas.length == 0) {
+      throw new Error('The chroma ' + startChroma + ' could not be found in the alphabetical chromas ' + CHROMAS_ALPHABETICAL);
+    }
+    return shiftedChromas;
+  }
+
+  // Create a new map of enharmonics from mappings with their orginal values as keys
+  // so as to get a map of enharmonics containing only the reversed mappings
+  private getReversedEnharmonics(): Map<string, string> {
+    const reversed: Map<string, string> = new Map();
+    CHROMA_ENHARMONICS.forEach((value: string, key: string) => {
+      reversed.set(value, key);
+    });
+    return reversed;
+  }
+
+  // Add to the map of enharmonics some new mappings with their original values as keys
+  // so as to get a map with the original mappings plus the reversed mappings
+  private getBidirectionalEnharmonics(): Map<string, string> {
+    const bidirectional: Map<string, string> = new Map();
+    CHROMA_ENHARMONICS.forEach((value: string, key: string) => {
+      bidirectional.set(key, value);
+      bidirectional.set(value, key);
+    });
+    return bidirectional;
+  }
+
+  // Get the matching enharmonic from a chroma
+  private getChromaEnharmonic(chroma: string): string {
+    const bidirectional: Map<string, string> = this.getBidirectionalEnharmonics();
+    if (bidirectional.has(chroma)) {
+      const enharmonic: string | undefined = bidirectional.get(chroma);
+      if (enharmonic) {
+        return enharmonic;
+      } else {
+        throw new Error('The chroma ' + chroma + ' could not be retrieved in the enharmonics.');
+      }
+    } else {
+      throw new Error('The chroma ' + chroma + ' could not be found in the enharmonics.');
+    }
+  }
+
+  // Get the one enharmonic mappings array that contains a chroma
+  // and shift the array so as to start it with the chroma
+  private pickContainingEnharmonics(startChroma: string): Array<string> {
+    let chromas: Array<string> = new Array();
+    if (CHROMA_ENHARMONICS.has(startChroma)) {
+      CHROMA_ENHARMONICS.forEach((value: string, key: string) => {
+        chromas.push(key);
+      });
+    } else {
+      const reversedEnharmonics: Map<string, string> = this.getReversedEnharmonics();
+      if (reversedEnharmonics.has(startChroma)) {
+        reversedEnharmonics.forEach((value: string, key: string) => {
+          chromas.push(key);
+        });
+      } else {
+        throw new Error('The chroma ' + startChroma + ' could not be found in the reversed enharmonics.');
+      }
+    }
+
+    let shiftedChromas: Array<string> = new Array();
+    for (let i: number = 0; i < chromas.length; i++) {
+      if (startChroma == chromas[i]) {
+        for (let j = i; j < chromas.length + i; j++) {
+          shiftedChromas.push(chromas[j % chromas.length]);
+        }
+        break;
+      }
+    }
+
+    return shiftedChromas;
+  }
+
+  private intervalsToStructure(noteRangeIntervals: Array<number>): Array<number> {
+    let noteRangeStructure: Array<number> = new Array();
+    let total: number = 0;
+    for (let index: number = 0; index < noteRangeIntervals.length; index++) {
+      noteRangeStructure.push(total);
+      total += (2 * noteRangeIntervals[index]);
+    }
+    return noteRangeStructure;
+  }
+
+  private getAllTonalities(): Array<Tonality> {
+    const tonalities: Array<Tonality> = new Array();
+    CHROMAS_MAJOR.forEach((chroma: string) => {
+      tonalities.push(new Tonality(NOTE_RANGE.MAJOR, chroma));
+    });
+    CHROMAS_MINOR.forEach((chroma: string) => {
+      tonalities.push(new Tonality(NOTE_RANGE.MINOR_NATURAL, chroma));
+    });
+    return tonalities;
+  }
+
+  public logAllTonalities(): void {
+    this.getAllTonalities().forEach((tonality: Tonality) => {
+      const tonalitySyllabics: Array<string> = new Array();
+      const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
+      tonalityChromas.forEach((chroma: string) => {
+        const syllabic: string = this.chordChromaLetterToChromaSyllabic(chroma, tonality.range);
+        // const syllabic: string = this.noteChromaLetterToChromaSyllabic(chroma);
+        tonalitySyllabics.push(syllabic);
+      });
+      console.log(tonalityChromas);
+      // console.log(tonalitySyllabics);
+    });
+  }
+
+/*
+  private getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
+    const tonality: Array<string> = new Array();
+    const noteRangeIntervals: Array<number> = this.notationService.getNoteRangeIntervals(noteRange);
+    tonality.push(rangeFirstChroma);
+    let chromas: Array<string> = this.notationService.selectHalfToneChromasFromFirstChroma(rangeFirstChroma);
+    let index: number = chromas.indexOf(rangeFirstChroma);
+    for (let i = 0; i < noteRangeIntervals.length - 1; i++) {
+      for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
+        chromas = this.createArrayShiftOnceLeft(chromas);
+      }
+      tonality.push(chromas[index]);
+    }
+    return tonality;
+  }
+*/
 
 }

@@ -10,7 +10,7 @@ import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { NOTE_RANGE, HALF_TONE_CHROMAS, NOTE_RANGE_INTERVALS, HALF_TONE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, CHROMAS_ALPHABETICAL, CHROMA_ENHARMONICS, DEFAULT_TONALITY_C_MAJOR } from './notation.constant ';
+import { NOTE_RANGE, HALF_TONE_CHROMAS, HALF_TONE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, DEFAULT_TONALITY_C_MAJOR } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 @Injectable({
@@ -49,7 +49,7 @@ export class GeneratorService {
   // If a current chord chroma is lower than the previous chord chroma
   // then the current chroma belong to the next upper octave
   private chordChromaBelongsToNextUpperOctave(previousChroma: string, currentChroma: string): boolean {
-    const tonalityChromas: Array<string> = this.getTonalityChromas(DEFAULT_TONALITY_C_MAJOR.range, DEFAULT_TONALITY_C_MAJOR.firstChroma);
+    const tonalityChromas: Array<string> = this.notationService.getTonalityChromas(DEFAULT_TONALITY_C_MAJOR.range, DEFAULT_TONALITY_C_MAJOR.firstChroma);
     const previousAlphaChroma: string = previousChroma.substr(0, 1);
     const currentAlphaChroma: string = currentChroma.substr(0, 1);
     return tonalityChromas.indexOf(currentAlphaChroma) < tonalityChromas.indexOf(previousAlphaChroma);
@@ -253,7 +253,7 @@ export class GeneratorService {
     const nearNotes: Array<string> = new Array<string>();
     const harmonyChordSortedChromas: Array<string> = harmonyChord.getSortedNotesChromas();
 
-    const tonalityChromas: Array<string> = this.getTonalityChromas(harmonyChord.tonality.range, harmonyChord.tonality.firstChroma);
+    const tonalityChromas: Array<string> = this.notationService.getTonalityChromas(harmonyChord.tonality.range, harmonyChord.tonality.firstChroma);
     const previousMelodyNoteIndex: number = tonalityChromas.indexOf(previousMelodyChroma);
 
     if (previousMelodyNoteIndex < 0) {
@@ -266,7 +266,7 @@ export class GeneratorService {
     const NEAR_MAX: number = 2; // TODO Have this constant as a settings
 
     // Consider the chromas above the previous melody note chroma
-    if (previousMelodyOctave <= this.notationService.getFirstNoteSortedByIndex(harmonyChord).renderOctave()) {
+    if (previousMelodyOctave <= this.notationService.getFirstChordNoteSortedByIndex(harmonyChord).renderOctave()) {
       for (let chromaIndex: number = 0; chromaIndex < NEAR_MAX; chromaIndex++) {
         chromas = this.createArrayShiftOnceLeft(chromas);
         // Consider only notes before the next harmony chord note
@@ -284,7 +284,7 @@ export class GeneratorService {
     }
 
     // Consider the chromas below the previous melody note chroma
-    if (previousMelodyOctave >= this.notationService.getFirstNoteSortedByIndex(harmonyChord).renderOctave()) {
+    if (previousMelodyOctave >= this.notationService.getFirstChordNoteSortedByIndex(harmonyChord).renderOctave()) {
       chromas = tonalityChromas;
       for (let chromaIndex: number = 0; chromaIndex < NEAR_MAX; chromaIndex++) {
         chromas = this.createArrayShiftOnceRight(chromas);
@@ -324,14 +324,14 @@ export class GeneratorService {
   private getNearNotesFromSourceChord(harmonyChord: PlacedChord, previousMelodyChroma: string, previousMelodyOctave: number): Array<[string, number]> {
     const nearNoteChromas: Array<[string, number]> = new Array<[string, number]>();
     const harmonyChordSortedChromas: Array<string> = harmonyChord.getSortedNotesChromas();
-    let tonalityChromas: Array<string> = this.getTonalityChromas(harmonyChord.tonality.range, harmonyChord.tonality.firstChroma);
+    let tonalityChromas: Array<string> = this.notationService.getTonalityChromas(harmonyChord.tonality.range, harmonyChord.tonality.firstChroma);
     const previousMelodyNoteIndex: number = tonalityChromas.indexOf(previousMelodyChroma);
 
     // If the previous note was from a different tonality and is not found in the new tonality
     // then pick any note from the harmony chord
     if (previousMelodyNoteIndex < 0) {
       const chordNoteIndex: number = this.commonService.getRandomIntegerBetween(0, harmonyChordSortedChromas.length - 1);
-      nearNoteChromas.push([harmonyChordSortedChromas[chordNoteIndex], this.notationService.getFirstNoteSortedByIndex(harmonyChord).renderOctave()]);
+      nearNoteChromas.push([harmonyChordSortedChromas[chordNoteIndex], this.notationService.getFirstChordNoteSortedByIndex(harmonyChord).renderOctave()]);
     } else {
       // The maximum near distance to consider
       const NEAR_MAX: number = 2; // TODO Have this constant as a settings
@@ -369,181 +369,6 @@ export class GeneratorService {
     }
   }
 
-  // Add to the map of enharmonics some new mappings with their original values as keys
-  // so as to get a map with the original mappings plus the reversed mappings
-  private getBidirectionalEnharmonics(): Map<string, string> {
-    const bidirectional: Map<string, string> = new Map();
-    CHROMA_ENHARMONICS.forEach((value: string, key: string) => {
-      bidirectional.set(key, value);
-      bidirectional.set(value, key);
-    });
-    return bidirectional;
-  }
-
-  // Create a new map of enharmonics from mappings with their orginal values as keys
-  // so as to get a map of enharmonics containing only the reversed mappings
-  private getReversedEnharmonics(): Map<string, string> {
-    const reversed: Map<string, string> = new Map();
-    CHROMA_ENHARMONICS.forEach((value: string, key: string) => {
-      reversed.set(value, key);
-    });
-    return reversed;
-  }
-
-  // Get the matching enharmonic from a chroma
-  private getChromaEnharmonic(chroma: string): string {
-    const bidirectional: Map<string, string> = this.getBidirectionalEnharmonics();
-    if (bidirectional.has(chroma)) {
-      const enharmonic: string | undefined = bidirectional.get(chroma);
-      if (enharmonic) {
-        return enharmonic;
-      } else {
-        throw new Error('The chroma ' + chroma + ' could not be retrieved in the enharmonics.');
-      }
-    } else {
-      throw new Error('The chroma ' + chroma + ' could not be found in the enharmonics.');
-    }
-  }
-
-  // Get the one enharmonic mappings array that contains a chroma
-  // and shift the array so as to start it with the chroma
-  private pickContainingEnharmonics(startChroma: string): Array<string> {
-    let chromas: Array<string> = new Array();
-    if (CHROMA_ENHARMONICS.has(startChroma)) {
-      CHROMA_ENHARMONICS.forEach((value: string, key: string) => {
-        chromas.push(key);
-      });
-    } else {
-      const reversedEnharmonics: Map<string, string> = this.getReversedEnharmonics();
-      if (reversedEnharmonics.has(startChroma)) {
-        reversedEnharmonics.forEach((value: string, key: string) => {
-          chromas.push(key);
-        });
-      } else {
-        throw new Error('The chroma ' + startChroma + ' could not be found in the reversed enharmonics.');
-      }
-    }
-
-    let shiftedChromas: Array<string> = new Array();
-    for (let i: number = 0; i < chromas.length; i++) {
-      if (startChroma == chromas[i]) {
-        for (let j = i; j < chromas.length + i; j++) {
-          shiftedChromas.push(chromas[j % chromas.length]);
-        }
-        break;
-      }
-    }
-
-    return shiftedChromas;
-  }
-
-  private getSourceScale(rangeFirstChroma: string): Array<string> {
-    return this.pickContainingEnharmonics(rangeFirstChroma);
-  }
-
-  private getEnharmonicScale(rangeFirstChroma: string): Array<string> {
-    const sameSoundingChroma: string = this.getChromaEnharmonic(rangeFirstChroma);
-    return this.pickContainingEnharmonics(sameSoundingChroma);
-  }
-
-  private getAlphaScale(startChroma: string, length: number): Array<string> {
-    var shiftedChromas: Array<string> = new Array();
-    for (let i: number = 0; i < length; i++) {
-      if (startChroma.includes(CHROMAS_ALPHABETICAL[i])) {
-        for (let j = i; j < length + i; j++) {
-          shiftedChromas.push(CHROMAS_ALPHABETICAL[j % CHROMAS_ALPHABETICAL.length]);
-        }
-        break;
-      }
-    }
-    if (shiftedChromas.length == 0) {
-      throw new Error('The chroma ' + startChroma + ' could not be found in the alphabetical chromas ' + CHROMAS_ALPHABETICAL);
-    }
-    return shiftedChromas;
-  }
-
-  private intervalsToStructure(noteRangeIntervals: Array<number>): Array<number> {
-    let noteRangeStructure: Array<number> = new Array();
-    let total: number = 0;
-    for (let index: number = 0; index < noteRangeIntervals.length; index++) {
-      noteRangeStructure.push(total);
-      total += (2 * noteRangeIntervals[index]);
-    }
-    return noteRangeStructure;
-  }
-
-  private getNoteRangeIntervals(noteRange: NOTE_RANGE): Array<number> {
-    const noteRangeIntervals: Array<number> | undefined = NOTE_RANGE_INTERVALS.get(noteRange);
-    if (noteRangeIntervals) {
-      return noteRangeIntervals;
-    } else {
-      throw new Error('No intervals could be found for the note range ' + noteRange);
-    }
-  }
-
-/* TODOENHARMONICS
-*/
-  private getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
-    let tonality: Array<string> = new Array();
-    const sourceScale: Array<string> = this.getSourceScale(rangeFirstChroma);
-    const enharmonicScale: Array<string> = this.getEnharmonicScale(rangeFirstChroma);
-    const alphaScale: Array<string> = this.getAlphaScale(rangeFirstChroma, sourceScale.length);
-    const noteRangeStructure: Array<number> = this.intervalsToStructure(this.getNoteRangeIntervals(noteRange));
-
-    let structureIndex: number = 0;
-    for (let index = 0; index < sourceScale.length; index++) {
-      if (noteRangeStructure[structureIndex] == index) {
-        if (sourceScale[index].includes(alphaScale[structureIndex])) {
-          tonality.push(sourceScale[index]);
-        } else if (enharmonicScale[index].includes(alphaScale[structureIndex])) {
-          tonality.push(enharmonicScale[index]);
-        }
-        structureIndex++;
-      }
-    }
-    return tonality;
-  }
-/*
-  private getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
-    const tonality: Array<string> = new Array();
-    const noteRangeIntervals: Array<number> = this.getNoteRangeIntervals(noteRange);
-    tonality.push(rangeFirstChroma);
-    let chromas: Array<string> = this.notationService.selectHalfToneChromasFromFirstChroma(rangeFirstChroma);
-    let index: number = chromas.indexOf(rangeFirstChroma);
-    for (let i = 0; i < noteRangeIntervals.length - 1; i++) {
-      for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
-        chromas = this.createArrayShiftOnceLeft(chromas);
-      }
-      tonality.push(chromas[index]);
-    }
-    return tonality;
-  }
-*/
-  private getAllTonalities(): Array<Tonality> {
-    const tonalities: Array<Tonality> = new Array();
-    CHROMAS_MAJOR.forEach((chroma: string) => {
-      tonalities.push(new Tonality(NOTE_RANGE.MAJOR, chroma));
-    });
-    CHROMAS_MINOR.forEach((chroma: string) => {
-      tonalities.push(new Tonality(NOTE_RANGE.MINOR_NATURAL, chroma));
-    });
-    return tonalities;
-  }
-
-  public logAllTonalities(): void {
-    this.getAllTonalities().forEach((tonality: Tonality) => {
-      const tonalitySyllabics: Array<string> = new Array();
-      const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
-      tonalityChromas.forEach((chroma: string) => {
-        const syllabic: string = this.notationService.chordChromaLetterToChromaSyllabic(chroma, tonality.range);
-        // const syllabic: string = this.notationService.noteChromaLetterToChromaSyllabic(chroma);
-        tonalitySyllabics.push(syllabic);
-      });
-      console.log(tonalityChromas);
-      // console.log(tonalitySyllabics);
-    });
-  }
-
   private getFirstMeasureTonality(): Tonality {
     const firstChroma: string = this.settingsService.getSettings().generateTonality;
     return new Tonality(NOTE_RANGE.MAJOR, firstChroma);
@@ -553,7 +378,7 @@ export class GeneratorService {
     const tonalities: Array<Tonality> = new Array();
     for (let i: number = 0; i < HALF_TONE_CHROMAS.length; i++) {
       const chroma: string = HALF_TONE_CHROMAS[i];
-      const tonalityChromas: Array<string> = this.getTonalityChromas(range, chroma);
+      const tonalityChromas: Array<string> = this.notationService.getTonalityChromas(range, chroma);
       if (previousPreviousChroma) {
         if (tonalityChromas.includes(previousPreviousChroma) && tonalityChromas.includes(previousChroma)) {
           tonalities.push(new Tonality(range, chroma));
@@ -574,16 +399,16 @@ export class GeneratorService {
     if (previousChord) {
       let tonalities: Array<Tonality> = new Array();
       if (previousPreviousChord) {
-        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), this.notationService.getFirstNoteSortedByIndex(previousPreviousChord).renderChroma()));
+        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, this.notationService.getFirstChordNoteSortedByIndex(previousChord).renderChroma(), this.notationService.getFirstChordNoteSortedByIndex(previousPreviousChord).renderChroma()));
         if (!onlyMajor) {
-          tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), this.notationService.getFirstNoteSortedByIndex(previousPreviousChord).renderChroma()));
+          tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstChordNoteSortedByIndex(previousChord).renderChroma(), this.notationService.getFirstChordNoteSortedByIndex(previousPreviousChord).renderChroma()));
         }
       }
       // If no tonality includes the two previous notes then pick the ones that contain the previous note only
       if (tonalities.length == 0) {
-        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), undefined));
+        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, this.notationService.getFirstChordNoteSortedByIndex(previousChord).renderChroma(), undefined));
         if (!onlyMajor) {
-          tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma(), undefined));
+          tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstChordNoteSortedByIndex(previousChord).renderChroma(), undefined));
         }
       }
       if (dontRepeat) {
@@ -676,8 +501,8 @@ export class GeneratorService {
 
   private generateTwoMelodyChordsForOneHarmonyChord(placedChordIndex: number, previousMelodyChord: PlacedChord | undefined, harmonyChord: PlacedChord, octave: number, chordDuration: number, velocity: number): Array<PlacedChord> {
     const melodyChords: Array<PlacedChord> = new Array();
-    let currentMelodyChroma: string | undefined = previousMelodyChord ? this.notationService.getFirstNoteSortedByIndex(previousMelodyChord).renderChroma() : undefined;
-    let currentMelodyOctave: number = previousMelodyChord ? this.notationService.getFirstNoteSortedByIndex(previousMelodyChord).renderOctave() : octave;
+    let currentMelodyChroma: string | undefined = previousMelodyChord ? this.notationService.getFirstChordNoteSortedByIndex(previousMelodyChord).renderChroma() : undefined;
+    let currentMelodyOctave: number = previousMelodyChord ? this.notationService.getFirstChordNoteSortedByIndex(previousMelodyChord).renderOctave() : octave;
 
     if (!this.notationService.isEndOfTrackPlacedChord(harmonyChord)) {
       // For each harmony chord of the harmony track, there are two single note chords of half duration in the melody track
@@ -807,8 +632,8 @@ export class GeneratorService {
 
   private generateHarmonyChord(placedChordIndex: number, tonality: Tonality, octave: number, chordDuration: number, velocity: number, previousChord: PlacedChord | undefined): PlacedChord | undefined {
     let previousChordSortedChromas: Array<string> = previousChord ? previousChord.getSortedNotesChromas() : [];
-    const previousBaseChroma: string | undefined = previousChord ? this.notationService.getFirstNoteSortedByIndex(previousChord).renderChroma() : undefined;
-    const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
+    const previousBaseChroma: string | undefined = previousChord ? this.notationService.getFirstChordNoteSortedByIndex(previousChord).renderChroma() : undefined;
+    const tonalityChromas: Array<string> = this.notationService.getTonalityChromas(tonality.range, tonality.firstChroma);
 
     const chromas: Array<string> = this.buildChromas(tonalityChromas, previousBaseChroma);
 
