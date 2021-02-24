@@ -26,8 +26,6 @@ export class GeneratorService {
     private translateService: TranslateService,
   ) { }
 
-  CHROMA_SHIFT_TIMES: number = 2;
-
   private createNotesAndPlacedChord(octave: number, chordDuration: number, velocity: number, tonality: Tonality, placedChordIndex: number, chromas: Array<string>): PlacedChord {
     let noteIndex: number = 0;
     let previousChroma: string = '';
@@ -150,28 +148,11 @@ export class GeneratorService {
     let index: number = chromas.indexOf(chromas[0]);
     for (let i = 0; i < noteRangeIntervals.length - 1; i++) {
       for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
-        chromas = this.createArrayShiftOnceLeft(chromas);
+        chromas = this.notationService.createArrayShiftOnceLeft(chromas);
       }
       tonality.push(chromas[index]);
     }
     return tonality;
-  }
-
-  private createArrayShiftOnceLeft(items: Array<string>): Array<string> {
-    // Make a deep copy
-    let shiftedItems: Array<string> = new Array();
-    items.forEach((chroma: string) => {
-      shiftedItems.push(chroma);
-    });
-
-    // Shift the copy and not the original
-    const item: string | undefined = shiftedItems.shift();
-    if (item) {
-      shiftedItems.push(item);
-    } else {
-      throw new Error('The array could not be shifted left');
-    }
-    return shiftedItems;
   }
 
   private createArrayShiftOnceRight(items: Array<string>): Array<string> {
@@ -189,33 +170,6 @@ export class GeneratorService {
       throw new Error('The array could not be shifted right');
     }
     return shiftedItems;
-  }
-
-  // Create a chromas array shifted from another one
-  private createShiftedChromas(chromas: Array<string>): Array<string> {
-    for (let i = 0; i < this.CHROMA_SHIFT_TIMES; i++) {
-      chromas = this.createArrayShiftOnceLeft(chromas);
-    }
-    return chromas;
-  }
-
-  // Create all the shifted chromas arrays for a chord width
-  private getTonalityShiftedChromas(tonalityChromas: Array<string>): Array<Array<string>> {
-    const shiftedChromas: Array<Array<string>> = new Array();
-    // Create shifted chromas, each starting some notes down the previous chroma
-    // The number of shifted chromas is the width of the chord
-    // An example for the C tonality is:
-    // 'G', 'A', 'B', 'C', 'D', 'E', 'F'
-    // 'E', 'F', 'G', 'A', 'B', 'C', 'D'
-    // 'C', 'D', 'E', 'F', 'G', 'A', 'B'
-
-    // Build the shifted chromas
-    shiftedChromas[0] = tonalityChromas;
-    const chordWidth: number = this.settingsService.getSettings().generateChordWidth;
-    for (let index = 1; index < chordWidth; index++) {
-      shiftedChromas[index] = this.createShiftedChromas(shiftedChromas[index - 1]);
-    }
-    return shiftedChromas;
   }
 
   // Check if the chord shares a minimum number of notes with its previous chord
@@ -268,7 +222,7 @@ export class GeneratorService {
     // Consider the chromas above the previous melody note chroma
     if (previousMelodyOctave <= this.notationService.getFirstChordNoteSortedByIndex(harmonyChord).renderOctave()) {
       for (let chromaIndex: number = 0; chromaIndex < NEAR_MAX; chromaIndex++) {
-        chromas = this.createArrayShiftOnceLeft(chromas);
+        chromas = this.notationService.createArrayShiftOnceLeft(chromas);
         // Consider only notes before the next harmony chord note
         if (!harmonyChordSortedChromas.includes(chromas[previousMelodyNoteIndex])) {
           // Check if the note is on the upper octave
@@ -652,7 +606,8 @@ export class GeneratorService {
 
   private buildChromas(tonalityChromas: Array<string>, previousBaseChroma?: string): Array<string> {
     const chromas: Array<string> = new Array();
-    const shiftedChromas: Array<Array<string>> = this.getTonalityShiftedChromas(tonalityChromas);
+    const chordWidth: number = this.settingsService.getSettings().generateChordWidth;
+    const shiftedChromas: Array<Array<string>> = this.notationService.getTonalityShiftedChromas(tonalityChromas, chordWidth);
 
     let chromaIndex: number;
     if (previousBaseChroma) {

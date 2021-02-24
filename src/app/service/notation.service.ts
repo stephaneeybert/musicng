@@ -19,6 +19,7 @@ const NOTE_END_OF_TRACK_OCTAVE: number = 0;
 const NOTE_END_OF_TRACK_DURATION: number = 8;
 const NOTE_END_OF_TRACK_VELOCITY: number = 0;
 const CHROMA_OCTAVE_PATTERN: RegExp = /[a-z#]+|[^a-z#]+/gi;
+const CHROMA_SHIFT_TIMES: number = 2;
 
 const DEFAULT_CHORD_DURATION: number = 4;
 const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
@@ -154,14 +155,17 @@ export class NotationService {
   }
 
   public tonalityFirstChromaLetterToChromaSyllabic(placedChord: PlacedChord): string {
-    let chroma: string = this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, placedChord.tonality.firstChroma);
+    const chordNameIntl: string = this.getChordIntlName(placedChord);
+    let chroma: string = this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
+    // TODO Do we need this isRangeMinor ?
+    // TODO Have the missing m for minor
     if (this.isRangeMinor(placedChord.tonality.range)) {
       chroma += NOTE_ACCIDENTAL_MINOR;
     }
-    return chroma;
+    return chordNameIntl + ' ' + chroma;
   }
 
-  public chordChromaLetterToChromaSyllabic(chroma: string, range: NOTE_RANGE): string {
+  public chordChromaLetterToChromaSyllabic(range: NOTE_RANGE, chroma: string): string {
     let syllabicChroma: string = this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chroma);
     if (this.isRangeMinor(range)) {
       syllabicChroma += NOTE_ACCIDENTAL_MINOR;
@@ -584,19 +588,69 @@ private allowedChromas(): Array<string> {
     return tonalities;
   }
 
-  public logAllTonalities(): void {
-    this.getAllTonalities().forEach((tonality: Tonality) => {
-      const tonalitySyllabics: Array<string> = new Array();
-      const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
-      tonalityChromas.forEach((chroma: string) => {
-        const syllabic: string = this.chordChromaLetterToChromaSyllabic(chroma, tonality.range);
-        // const syllabic: string = this.noteChromaLetterToChromaSyllabic(chroma);
-        tonalitySyllabics.push(syllabic);
-      });
-      console.log(tonalityChromas);
-      // console.log(tonalitySyllabics);
+  public createArrayShiftOnceLeft(items: Array<string>): Array<string> {
+    // Make a deep copy
+    let shiftedItems: Array<string> = new Array();
+    items.forEach((chroma: string) => {
+      shiftedItems.push(chroma);
     });
+
+    // Shift the copy and not the original
+    const item: string | undefined = shiftedItems.shift();
+    if (item) {
+      shiftedItems.push(item);
+    } else {
+      throw new Error('The array could not be shifted left');
+    }
+    return shiftedItems;
   }
+
+  // Create a chromas array shifted from another one
+  private createShiftedChromas(chromas: Array<string>): Array<string> {
+    for (let i = 0; i < CHROMA_SHIFT_TIMES; i++) {
+      chromas = this.createArrayShiftOnceLeft(chromas);
+    }
+    return chromas;
+  }
+
+  // Create all the shifted chromas arrays for a chord width
+  public getTonalityShiftedChromas(tonalityChromas: Array<string>, chordWidth: number): Array<Array<string>> {
+    const shiftedChromas: Array<Array<string>> = new Array();
+    // Create shifted chromas, each starting some notes down the previous chroma
+    // The number of shifted chromas is the width of the chord
+    // An example for the C tonality is:
+    // 'G', 'A', 'B', 'C', 'D', 'E', 'F'
+    // 'E', 'F', 'G', 'A', 'B', 'C', 'D'
+    // 'C', 'D', 'E', 'F', 'G', 'A', 'B'
+
+    // Build the shifted chromas
+    shiftedChromas[0] = tonalityChromas;
+    for (let index = 1; index < chordWidth; index++) {
+      shiftedChromas[index] = this.createShiftedChromas(shiftedChromas[index - 1]);
+    }
+    return shiftedChromas;
+  }
+
+  // TODO
+  // public logAllTonalities(): void {
+  //   this.getAllTonalities().forEach((tonality: Tonality) => {
+  //     const tonalitySyllabics: Array<string> = new Array();
+  //     const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
+  //     const shiftedChromas: Array<Array<string>> = this.getTonalityShiftedChromas(tonalityChromas, DEFAULT_CHORD_WIDTH);
+
+  //     let index: number = 0;
+  //     tonalityChromas.forEach((tonalityChroma: string) => {
+  //       const placedChord: PlacedChord = this.createPlacedChord(index, DEFAULT_CHORD_DURATION, TempoUnit.NOTE, DEFAULT_VELOCITY_MEDIUM, DEFAULT_TONALITY_C_MAJOR, notes);
+  //       const chordNameIntl: string = this.getChordIntlName(placedChord);
+  //       const syllabic: string = this.chordChromaLetterToChromaSyllabic(tonality.range, chordNameIntl);
+  //       tonalitySyllabics.push(syllabic);
+  //       index++;
+  //     });
+  //     console.log(tonalityChromas);
+  //     console.log(tonalitySyllabics);
+  //     index = 0;
+  //   });
+  // }
 
 /*
   private getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
