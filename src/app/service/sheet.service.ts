@@ -130,7 +130,7 @@ export class SheetService {
                       }
                     }
                     if (track.displayChordNames) {
-                      const noteName: string = this.renderChordNameInSyllabic(placedChord);
+                      const noteName: string = this.renderChordNameInIntl(placedChord) + ' ' + this.renderChordNameInSyllabic(placedChord);
                       if (noteName !== previousNoteName) {
                         this.addChordName(placedChord, noteName);
                         previousNoteName = noteName;
