@@ -48,7 +48,7 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
   }
 
   public cleanUpInstance(soundtrackJson: any): Soundtrack {
-    const soundtrack: Soundtrack = new Soundtrack(this.commonService.normalizeName(name), name);
+    const soundtrack: Soundtrack = new Soundtrack(this.commonService.normalizeName(soundtrackJson.name), soundtrackJson.name);
 
     // The settings may end up being stored with unset properties
     if (this.commonService.isSet(soundtrackJson.id)) {
