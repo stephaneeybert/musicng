@@ -80,7 +80,8 @@ export class SheetService {
     let sheetWidth: number;
     let sheetHeight: number;
     sheetWidth = displayWidth;
-    sheetHeight = this.getNbStaves(animatedStave, soundtrack) * VEXFLOW_STAVE_HEIGHT;
+    // Add one more stave space at the bottom
+    sheetHeight = (this.getNbStaves(animatedStave, soundtrack) + 1) * VEXFLOW_STAVE_HEIGHT;
 
     const showAllNotes: boolean = this.settingsService.getSettings().showAllNotes;
 
