@@ -141,20 +141,6 @@ export class GeneratorService {
     return this.translateService.instant('soundtracks.assignedName') + '_' + this.commonService.getRandomString(4);
   }
 
-  private buildTonality(scale: Array<string>, noteRangeIntervals: Array<number>): Array<string> {
-    const tonality: Array<string> = new Array();
-    let chromas: Array<string> = scale;
-    tonality.push(chromas[0]);
-    let index: number = chromas.indexOf(chromas[0]);
-    for (let i = 0; i < noteRangeIntervals.length - 1; i++) {
-      for (var j = 0; j < noteRangeIntervals[i] / HALF_TONE; j++) {
-        chromas = this.notationService.createArrayShiftOnceLeft(chromas);
-      }
-      tonality.push(chromas[index]);
-    }
-    return tonality;
-  }
-
   private createArrayShiftOnceRight(items: Array<string>): Array<string> {
     // Make a deep copy
     let shiftedItems: Array<string> = new Array();
