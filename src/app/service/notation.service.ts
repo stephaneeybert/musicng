@@ -139,7 +139,7 @@ export class NotationService {
 
   private getSecondChordNoteSortedByIndex(placedChord: PlacedChord): Note {
     const sortedNotes: Array<Note> = this.sortNotesByIndex(placedChord.notes);
-    if (!sortedNotes || sortedNotes.length < 3) {
+    if (!sortedNotes || sortedNotes.length < 2) {
       throw new Error('The placed chord had no notes to sort by index.');
     }
     return sortedNotes[1];
