@@ -287,18 +287,22 @@ export class GeneratorService {
     return new Tonality(NOTE_RANGE.MAJOR, firstChroma);
   }
 
-  private getTonalitiesContainingChromas(range: NOTE_RANGE, previousChroma: string, previousPreviousChroma: string | undefined): Array<Tonality> {
+  private getTonalitiesContainingChromas(range: NOTE_RANGE, previousChordName: string, previousPreviousChordName: string | undefined): Array<Tonality> {
     const tonalities: Array<Tonality> = new Array();
     for (let i: number = 0; i < HALF_TONE_CHROMAS.length; i++) {
       const chroma: string = HALF_TONE_CHROMAS[i];
       const tonalityChordNames: Array<string> = this.notationService.getTonalityChordNames(range, chroma);
-      if (previousPreviousChroma) {
-        if (tonalityChordNames.includes(previousPreviousChroma) && tonalityChordNames.includes(previousChroma)) {
+      console.log(tonalityChordNames);
+      if (previousPreviousChordName) {
+        console.log('previousPreviousChordName: ' + previousPreviousChordName);
+        if (tonalityChordNames.includes(previousPreviousChordName) && tonalityChordNames.includes(previousChordName)) {
           tonalities.push(new Tonality(range, chroma));
+          console.log('Matching previousPreviousChordName: ' + previousPreviousChordName + ' and previousChordName: ' + previousChordName);
         }
       } else {
-        if (tonalityChordNames.includes(previousChroma)) {
+        if (tonalityChordNames.includes(previousChordName)) {
           tonalities.push(new Tonality(range, chroma));
+          console.log('Matching previousChordName: ' + previousChordName);
         }
       }
     }
