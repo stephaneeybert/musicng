@@ -318,13 +318,13 @@ export class GeneratorService {
     const tonalities: Array<Tonality> = new Array();
     for (let i: number = 0; i < HALF_TONE_CHROMAS.length; i++) {
       const chroma: string = HALF_TONE_CHROMAS[i];
-      const tonalityChromas: Array<string> = this.notationService.getTonalityChromas(range, chroma);
+      const tonalityChordNames: Array<string> = this.notationService.getTonalityChordNames(range, chroma);
       if (previousPreviousChroma) {
-        if (tonalityChromas.includes(previousPreviousChroma) && tonalityChromas.includes(previousChroma)) {
+        if (tonalityChordNames.includes(previousPreviousChroma) && tonalityChordNames.includes(previousChroma)) {
           tonalities.push(new Tonality(range, chroma));
         }
       } else {
-        if (tonalityChromas.includes(previousChroma)) {
+        if (tonalityChordNames.includes(previousChroma)) {
           tonalities.push(new Tonality(range, chroma));
         }
       }
