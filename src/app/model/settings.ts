@@ -43,7 +43,7 @@ export class Settings {
     this.generateModulation = DEFAULT_RANDOM_MODULATION;
     this.generateNbChords = DEFAULT_NB_CHORDS;
     this.generateDoubleChord = false;
-    this.generateMelody = false;
+    this.generateMelody = true;
     this.generateHarmony = true;
     this.generateDrums = false;
     this.generateBass = false;
