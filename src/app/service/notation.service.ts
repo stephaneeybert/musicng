@@ -154,39 +154,48 @@ export class NotationService {
     return sortedNotes[lastIsLowest];
   }
 
-  public tonalityFirstChromaLetterToChromaSyllabic(placedChord: PlacedChord): string {
-    const chordNameIntl: string = this.getChordIntlName(placedChord);
-    let chroma: string = this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
+  public renderTonalityNameInSyllabic(placedChord: PlacedChord): string {
+    const chordNameIntl: string = placedChord.tonality.firstChroma; // this.getChordIntlName(placedChord); TODO Remove
+    let syllabic: string = this.chromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
     // TODO Do we need this isRangeMinor ?
     // TODO Have the missing m for minor
     if (this.isRangeMinor(placedChord.tonality.range)) {
-      chroma += NOTE_ACCIDENTAL_MINOR;
+      syllabic += NOTE_ACCIDENTAL_MINOR;
     }
-    return chordNameIntl + ' ' + chroma;
+    return chordNameIntl + ' ' + syllabic;
   }
 
-  public chordChromaLetterToChromaSyllabic(range: NOTE_RANGE, chroma: string): string {
-    let syllabicChroma: string = this.chromaLetterToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chroma);
-    if (this.isRangeMinor(range)) {
-      syllabicChroma += NOTE_ACCIDENTAL_MINOR;
+  public chordChromaIntlToChromaSyllabic(range: NOTE_RANGE, chroma: string): string {
+    // TODO Remove the minor accidental if any
+    let bareChroma: string = chroma;
+    let accidental: string = '';
+    if (bareChroma.includes(NOTE_ACCIDENTAL_MINOR)) {
+      bareChroma = bareChroma.replace(NOTE_ACCIDENTAL_MINOR, '');
+      accidental += NOTE_ACCIDENTAL_MINOR;
     }
+    if (bareChroma.includes(NOTE_ACCIDENTAL_DIMINISHED)) {
+      bareChroma = bareChroma.replace(NOTE_ACCIDENTAL_DIMINISHED, '');
+      accidental += NOTE_ACCIDENTAL_DIMINISHED;
+    }
+    let syllabicChroma: string = this.chromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, bareChroma);
+    syllabicChroma += accidental;
     return syllabicChroma;
   }
 
   public noteChromaLetterToChromaSyllabic(chroma: string): string {
-    return this.chromaLetterToChromaSyllabic(NOTE_CHROMAS_SYLLABIC, chroma);
+    return this.chromaIntlToChromaSyllabic(NOTE_CHROMAS_SYLLABIC, chroma);
   }
 
-  private chromaLetterToChromaSyllabic(chromasSyllabic: Map<string, string>, chroma: string): string {
+  private chromaIntlToChromaSyllabic(chromasSyllabic: Map<string, string>, chroma: string): string {
     if (chromasSyllabic.has(chroma)) {
       const syllabic: string | undefined = chromasSyllabic.get(chroma);
       if (syllabic) {
         return syllabic;
       } else {
-        throw new Error('The chroma letter ' + chroma + ' could not be retrieved in the chromas syllabic ' + chromasSyllabic.keys.toString());
+        throw new Error('The chroma letter ' + chroma + ' could not be retrieved in the chromas syllabic.');
       }
     } else {
-      throw new Error('The chroma letter ' + chroma + ' could not be found in the chromas syllabic ' + chromasSyllabic.keys.toString());
+      throw new Error('The chroma letter ' + chroma + ' could not be found in the chromas syllabic.');
     }
   }
 
@@ -396,7 +405,6 @@ private allowedChromas(): Array<string> {
     let tonalityChromas: Array<string> = this.getTonalityChromas(placedChord.tonality.range, placedChord.tonality.firstChroma);
     for (let position: number = 0; position < tonalityChromas.length; position++) {
       if (note.renderChroma() == tonalityChromas[position]) {
-        console.log(tonalityChromas + ' : ' + note.renderChroma() + ' : ' + position);
         return position;
       }
     }

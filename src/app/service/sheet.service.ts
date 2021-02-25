@@ -130,7 +130,7 @@ export class SheetService {
                       }
                     }
                     if (track.displayChordNames) {
-                      const noteName: string = this.renderChordNameInIntl(placedChord) + ' ' + this.renderChordNameInSyllabic(placedChord);
+                      const noteName: string = this.notationService.getChordIntlName(placedChord) + ' ' + this.renderChordNameInSyllabic(placedChord);
                       if (noteName !== previousNoteName) {
                         this.addChordName(placedChord, noteName);
                         previousNoteName = noteName;
@@ -225,7 +225,7 @@ export class SheetService {
     if (!measure.sheetStave) {
       throw new Error('The tonality name could not be drawn as the measure had no stave.');
     }
-    const tonalityFirstChroma: string = this.notationService.tonalityFirstChromaLetterToChromaSyllabic(measure.placedChords[0]);
+    const tonalityFirstChroma: string = this.notationService.renderTonalityNameInSyllabic(measure.placedChords[0]);
     const staveX: number = this.getStaveX(animatedStave, track.index, 0);
     const staveY: number = measure.sheetStave.getYForBottomText();
     this.drawText(soundtrack.sheetContext, tonalityFirstChroma, staveX, staveY);
@@ -412,13 +412,9 @@ export class SheetService {
     }
   }
 
-  private renderChordNameInIntl(placedChord: PlacedChord): string {
-    return this.notationService.getChordIntlName(placedChord);
-  }
-
   private renderChordNameInSyllabic(placedChord: PlacedChord): string {
-    const chordNameIntl: string = this.renderChordNameInIntl(placedChord);
-    return this.notationService.chordChromaLetterToChromaSyllabic(placedChord.tonality.range, chordNameIntl);
+    const chordNameIntl: string = this.notationService.getChordIntlName(placedChord);
+    return this.notationService.chordChromaIntlToChromaSyllabic(placedChord.tonality.range, chordNameIntl);
   }
 
   private renderAllChordNoteNamesInSyllabic(placedChord: PlacedChord): Array<string> {
