@@ -157,8 +157,6 @@ export class NotationService {
   public renderTonalityNameInSyllabic(placedChord: PlacedChord): string {
     const chordNameIntl: string = placedChord.tonality.firstChroma;
     let syllabic: string = this.chromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
-    // TODO Do we need this isRangeMinor ?
-    // TODO Have the missing m for minor
     if (this.isRangeMinor(placedChord.tonality.range)) {
       syllabic += NOTE_ACCIDENTAL_MINOR;
     }
