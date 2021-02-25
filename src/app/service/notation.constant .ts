@@ -1,7 +1,7 @@
 import { TempoUnit } from '@app/model/tempo-unit';
 import { Tonality } from '@app/model/note/tonality';
 
-export const DEFAULT_VELOCITY_SOFTER: number = 10;
+export const DEFAULT_VELOCITY_SOFTER: number = 40;
 export const DEFAULT_VELOCITY_MEDIUM: number = 50;
 export const DEFAULT_VELOCITY_LOUDER: number = 100;
 export const DEFAULT_TIME_SIGNATURES: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9];
