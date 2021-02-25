@@ -9,7 +9,7 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_MAJOR_CHROMAS, HALF_TONE_MINOR_CHROMAS, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NOTE_RANGE_INTERVAL_MAJOR, NOTE_ACCIDENTAL_DIMINISHED } from './notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_MAJOR_CHROMAS, HALF_TONE_MINOR_CHROMAS, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NOTE_RANGE_INTERVAL_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_VELOCITY_MEDIUM, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 const CHORD_SEPARATOR: string = ' ';
@@ -458,7 +458,62 @@ private allowedChromas(): Array<string> {
     }
   }
 
-  /* TODO ENHARMONICS */
+  public getTonalityChordNames(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
+    const tonalityChordNames: Array<string> = new Array();
+    const tonalityChromas: Array<string> = this.getTonalityChromas(noteRange, rangeFirstChroma);
+    let placedChordIndex: number = 0;
+    const chromas: Array<Array<string>> = this.buildStandardTonalityChromas(tonalityChromas);
+    const tonality: Tonality = new Tonality(noteRange, rangeFirstChroma);
+    for (let index: number = 0; index < tonalityChromas.length; index++) {
+      const placedChord: PlacedChord = this.createNotesAndPlacedChord(DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_DURATION, DEFAULT_VELOCITY_MEDIUM, tonality, placedChordIndex, chromas[index]);
+      tonalityChordNames.push(this.getChordIntlName(placedChord));
+      placedChordIndex++;
+    }
+    return tonalityChordNames;
+  }
+
+  private buildStandardTonalityChromas(tonalityChromas: Array<string>): Array<Array<string>> {
+    const chromas: Array<Array<string>> = new Array();
+    const shiftedChromas: Array<Array<string>> = this.getTonalityShiftedChromas(tonalityChromas, DEFAULT_CHORD_WIDTH);
+    let chromaIndex: number;
+    chromaIndex = 0;
+    for (let chromaIndex = 0; chromaIndex < tonalityChromas.length; chromaIndex++) {
+      const chordChromas: Array<string> = new Array();
+      for (let noteIndex = 0; noteIndex < DEFAULT_CHORD_WIDTH; noteIndex++) {
+        chordChromas.push(shiftedChromas[noteIndex][chromaIndex]);
+      }
+      chromas.push(chordChromas);
+    }
+    return chromas;
+  }
+
+  public createNotesAndPlacedChord(octave: number, chordDuration: number, velocity: number, tonality: Tonality, placedChordIndex: number, chromas: Array<string>): PlacedChord {
+    let noteIndex: number = 0;
+    let previousChroma: string = '';
+    const nextUpperOctave: number = octave + 1;
+    const notes: Array<Note> = new Array();
+    for (let i = 0; i < chromas.length; i++) {
+      const chroma: string = chromas[i];
+      if (noteIndex > 0 && this.chordChromaBelongsToNextUpperOctave(previousChroma, chroma)) {
+        octave = nextUpperOctave;
+      }
+      const note: Note = this.createNote(noteIndex, chroma, octave);
+      noteIndex++;
+      previousChroma = chroma;
+      notes.push(note);
+    }
+    return this.createPlacedChord(placedChordIndex, chordDuration, TempoUnit.NOTE, velocity, tonality, notes);
+  }
+
+  // If a current chord chroma is lower than the previous chord chroma
+  // then the current chroma belong to the next upper octave
+  private chordChromaBelongsToNextUpperOctave(previousChroma: string, currentChroma: string): boolean {
+    const tonalityChromas: Array<string> = this.getTonalityChromas(DEFAULT_TONALITY_C_MAJOR.range, DEFAULT_TONALITY_C_MAJOR.firstChroma);
+    const previousAlphaChroma: string = previousChroma.substr(0, 1);
+    const currentAlphaChroma: string = currentChroma.substr(0, 1);
+    return tonalityChromas.indexOf(currentAlphaChroma) < tonalityChromas.indexOf(previousAlphaChroma);
+  }
+
   public getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
     let tonality: Array<string> = new Array();
     const sourceScale: Array<string> = this.getSourceScale(rangeFirstChroma);

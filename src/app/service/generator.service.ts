@@ -26,33 +26,6 @@ export class GeneratorService {
     private translateService: TranslateService,
   ) { }
 
-  private createNotesAndPlacedChord(octave: number, chordDuration: number, velocity: number, tonality: Tonality, placedChordIndex: number, chromas: Array<string>): PlacedChord {
-    let noteIndex: number = 0;
-    let previousChroma: string = '';
-    const nextUpperOctave: number = octave + 1;
-    const notes: Array<Note> = new Array();
-    for (let i = 0; i < chromas.length; i++) {
-      const chroma: string = chromas[i];
-      if (noteIndex > 0 && this.chordChromaBelongsToNextUpperOctave(previousChroma, chroma)) {
-        octave = nextUpperOctave;
-      }
-      const note: Note = this.notationService.createNote(noteIndex, chroma, octave);
-      noteIndex++;
-      previousChroma = chroma;
-      notes.push(note);
-    }
-    return this.notationService.createPlacedChord(placedChordIndex, chordDuration, TempoUnit.NOTE, velocity, tonality, notes);
-  }
-
-  // If a current chord chroma is lower than the previous chord chroma
-  // then the current chroma belong to the next upper octave
-  private chordChromaBelongsToNextUpperOctave(previousChroma: string, currentChroma: string): boolean {
-    const tonalityChromas: Array<string> = this.notationService.getTonalityChromas(DEFAULT_TONALITY_C_MAJOR.range, DEFAULT_TONALITY_C_MAJOR.firstChroma);
-    const previousAlphaChroma: string = previousChroma.substr(0, 1);
-    const currentAlphaChroma: string = currentChroma.substr(0, 1);
-    return tonalityChromas.indexOf(currentAlphaChroma) < tonalityChromas.indexOf(previousAlphaChroma);
-  }
-
   private createMeasure(index: number): Measure {
     const tempoBpm: number = this.settingsService.getSettings().generateTempoBpm;
     const timeSignatureNumerator: number = this.settingsService.getSettings().generateTimeSignatureNumerator;
@@ -338,17 +311,19 @@ export class GeneratorService {
     const dontRepeat: boolean = true // TODO Have a settings to default false
     if (previousChord) {
       let tonalities: Array<Tonality> = new Array();
+      const previousChordName: string = this.notationService.getChordIntlName(previousChord);
       if (previousPreviousChord) {
-        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, this.notationService.getFirstChordNoteSortedByIndex(previousChord).renderChroma(), this.notationService.getFirstChordNoteSortedByIndex(previousPreviousChord).renderChroma()));
+        const previousPreviousChordName: string = this.notationService.getChordIntlName(previousPreviousChord);
+        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, previousChordName, previousPreviousChordName));
         if (!onlyMajor) {
-          tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstChordNoteSortedByIndex(previousChord).renderChroma(), this.notationService.getFirstChordNoteSortedByIndex(previousPreviousChord).renderChroma()));
+          tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, previousChordName, previousPreviousChordName));
         }
       }
       // If no tonality includes the two previous notes then pick the ones that contain the previous note only
       if (tonalities.length == 0) {
-        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, this.notationService.getFirstChordNoteSortedByIndex(previousChord).renderChroma(), undefined));
+        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, previousChordName, undefined));
         if (!onlyMajor) {
-          tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, this.notationService.getFirstChordNoteSortedByIndex(previousChord).renderChroma(), undefined));
+          tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, previousChordName, undefined));
         }
       }
       if (dontRepeat) {
@@ -457,7 +432,7 @@ export class GeneratorService {
       currentMelodyOctave = firstMelodyOctave;
       // The duration is a quotient base and is thus multiplied by 2 to cut it in half
       const halfDuration: number = chordDuration * 2;
-      let placedChord: PlacedChord = this.createNotesAndPlacedChord(currentMelodyOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex, [firstMelodyChroma]);
+      let placedChord: PlacedChord = this.notationService.createNotesAndPlacedChord(currentMelodyOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex, [firstMelodyChroma]);
       melodyChords.push(placedChord);
 
       let inpassingTextNote: string | undefined;
@@ -467,7 +442,7 @@ export class GeneratorService {
 
       if (inpassingTextNote) {
         const [inpassingNoteChroma, inpassingNoteOctave]: [string, number] = this.notationService.noteToChromaOctave(inpassingTextNote);
-        placedChord = this.createNotesAndPlacedChord(inpassingNoteOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, [inpassingNoteChroma]);
+        placedChord = this.notationService.createNotesAndPlacedChord(inpassingNoteOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, [inpassingNoteChroma]);
         melodyChords.push(placedChord);
       } else {
         // Get one of the harmony chord notes even the already picked one
@@ -477,7 +452,7 @@ export class GeneratorService {
           // but with a duration that is twice as long
           melodyChords[melodyChords.length - 1].duration = this.notationService.createDuration(chordDuration, TempoUnit.NOTE);
         } else {
-          placedChord = this.createNotesAndPlacedChord(secondMelodyOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, [secondMelodyChroma]);
+          placedChord = this.notationService.createNotesAndPlacedChord(secondMelodyOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, [secondMelodyChroma]);
           melodyChords.push(placedChord);
         }
       }
@@ -579,13 +554,13 @@ export class GeneratorService {
 
     // Consider a chord only if it is similar to its previous one
     if (!previousChord || this.isSimilarToPrevious(previousChordSortedChromas, chromas)) {
-      return this.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex, chromas);
+      return this.notationService.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex, chromas);
     } else {
       // If the current chord is too dissimilar from its previous one
       // then create a chord from a reversing of the previous one
       if (this.settingsService.getSettings().generateReverseDissimilarChord) {
         const shiftedChromas: Array<string> = this.createShiftedChord(previousChordSortedChromas);
-        return this.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex, shiftedChromas);
+        return this.notationService.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex, shiftedChromas);
       }
     }
   }
