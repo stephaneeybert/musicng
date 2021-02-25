@@ -604,7 +604,7 @@ export class GeneratorService {
       chromaIndex = 0; // TODO this.randomlyPickChromaFromSomeTonalityChromas(tonalityChromas);
     }
 
-    for (let noteIndex = 0; noteIndex < this.settingsService.getSettings().generateChordWidth; noteIndex++) {
+    for (let noteIndex = 0; noteIndex < chordWidth; noteIndex++) {
       chromas.push(shiftedChromas[noteIndex][chromaIndex]);
     }
     return chromas;
