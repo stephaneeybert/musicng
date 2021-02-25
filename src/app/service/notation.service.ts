@@ -475,9 +475,7 @@ private allowedChromas(): Array<string> {
   private buildStandardTonalityChromas(tonalityChromas: Array<string>): Array<Array<string>> {
     const chromas: Array<Array<string>> = new Array();
     const shiftedChromas: Array<Array<string>> = this.getTonalityShiftedChromas(tonalityChromas, DEFAULT_CHORD_WIDTH);
-    let chromaIndex: number;
-    chromaIndex = 0;
-    for (let chromaIndex = 0; chromaIndex < tonalityChromas.length; chromaIndex++) {
+    for (let chromaIndex: number = 0; chromaIndex < tonalityChromas.length; chromaIndex++) {
       const chordChromas: Array<string> = new Array();
       for (let noteIndex = 0; noteIndex < DEFAULT_CHORD_WIDTH; noteIndex++) {
         chordChromas.push(shiftedChromas[noteIndex][chromaIndex]);
