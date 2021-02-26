@@ -337,13 +337,19 @@ export class GeneratorService {
   }
 
   private stripTonalityChroma(tonalityChromas: Array<string>, previousTonality: Tonality | undefined, dontRepeat: boolean): Array<string> {
+    let deepCopy: Array<string> = new Array();
+    tonalityChromas.forEach((chroma: string) => {
+      deepCopy.push(chroma);
+    });
+
     if (previousTonality && dontRepeat) {
-      let index: number = tonalityChromas.findIndex(chroma => chroma === previousTonality.firstChroma);
+      let index: number = deepCopy.findIndex(chroma => chroma === previousTonality.firstChroma);
       if (index != -1) {
-        tonalityChromas.splice(index, 1);
+        deepCopy.splice(index, 1);
       }
     }
-    return tonalityChromas;
+
+    return deepCopy;
   }
 
   private getRandomTonality(previousTonality: Tonality | undefined, onlyMajor: boolean, dontRepeat: boolean): Tonality {
