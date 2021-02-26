@@ -641,17 +641,6 @@ private allowedChromas(): Array<string> {
     return noteRangeStructure;
   }
 
-  private getAllTonalities(): Array<Tonality> {
-    const tonalities: Array<Tonality> = new Array();
-    CHROMAS_MAJOR.forEach((chroma: string) => {
-      tonalities.push(new Tonality(NOTE_RANGE.MAJOR, chroma));
-    });
-    CHROMAS_MINOR.forEach((chroma: string) => {
-      tonalities.push(new Tonality(NOTE_RANGE.MINOR_NATURAL, chroma));
-    });
-    return tonalities;
-  }
-
   public createArrayShiftOnceLeft(items: Array<string>): Array<string> {
     // Make a deep copy
     let shiftedItems: Array<string> = new Array();
@@ -696,6 +685,16 @@ private allowedChromas(): Array<string> {
   }
 
   // TODO
+  private getAllTonalities(): Array<Tonality> {
+    const tonalities: Array<Tonality> = new Array();
+    CHROMAS_MAJOR.forEach((chroma: string) => {
+      tonalities.push(new Tonality(NOTE_RANGE.MAJOR, chroma));
+    });
+    CHROMAS_MINOR.forEach((chroma: string) => {
+      tonalities.push(new Tonality(NOTE_RANGE.MINOR_NATURAL, chroma));
+    });
+    return tonalities;
+  }
   // public logAllTonalities(): void {
   //   this.getAllTonalities().forEach((tonality: Tonality) => {
   //     const tonalitySyllabics: Array<string> = new Array();
