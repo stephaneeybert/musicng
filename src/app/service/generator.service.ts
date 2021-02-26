@@ -287,20 +287,14 @@ export class GeneratorService {
     return new Tonality(NOTE_RANGE.MAJOR, firstChroma);
   }
 
-  private getTonalitiesContainingChromas(range: NOTE_RANGE, previousChordName: string, previousPreviousChordName: string | undefined): Array<Tonality> {
+  private getTonalitiesContainingChromas(range: NOTE_RANGE, previousChordName: string, previousPreviousChordName: string): Array<Tonality> {
     const tonalities: Array<Tonality> = new Array();
-    const halfTones: Array<string> = range == NOTE_RANGE.MAJOR ? CHROMAS_MAJOR : CHROMAS_MINOR;
+    const halfTones: Array<string> = (range == NOTE_RANGE.MAJOR) ? CHROMAS_MAJOR : CHROMAS_MINOR;
     for (let i: number = 0; i < halfTones.length; i++) {
       const chroma: string = halfTones[i];
       const tonalityChordNames: Array<string> = this.notationService.getTonalityChordNames(range, chroma);
-      if (previousPreviousChordName) {
-        if (tonalityChordNames.includes(previousPreviousChordName) && tonalityChordNames.includes(previousChordName)) {
-          tonalities.push(new Tonality(range, chroma));
-        }
-      } else {
-        if (tonalityChordNames.includes(previousChordName)) {
-          tonalities.push(new Tonality(range, chroma));
-        }
+      if (tonalityChordNames.includes(previousPreviousChordName) && tonalityChordNames.includes(previousChordName)) {
+        tonalities.push(new Tonality(range, chroma));
       }
     }
     return tonalities;
@@ -310,30 +304,22 @@ export class GeneratorService {
   private getSibblingTonality(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Tonality {
     const onlyMajor: boolean = true; // TODO Have a settings to default false
     const dontRepeat: boolean = true // TODO Have a settings to default false
-    if (previousChord) {
+    if (previousPreviousChord && previousChord) {
       let tonalities: Array<Tonality> = new Array();
       const previousChordName: string = this.notationService.getChordIntlName(previousChord);
-      if (previousPreviousChord) {
-        const previousPreviousChordName: string = this.notationService.getChordIntlName(previousPreviousChord);
-        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, previousChordName, previousPreviousChordName));
-        if (!onlyMajor) {
-          tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, previousChordName, previousPreviousChordName));
-        }
+      const previousPreviousChordName: string = this.notationService.getChordIntlName(previousPreviousChord);
+      tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, previousChordName, previousPreviousChordName));
+      if (!onlyMajor) {
+        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, previousChordName, previousPreviousChordName));
       }
       // There must always be at least one tonality that includes the two previous chords
       if (tonalities.length == 0) {
-        throw new Error('No tonality could be found as sibbling to the two previous chords.');
+        throw new Error('No tonality could be found as sibbling to the two previous chords ' + previousPreviousChordName + ' and ' + previousChordName);
       }
       if (dontRepeat) {
-        tonalities = this.stripTonality(tonalities, previousChord.tonality);
+        this.stripTonality(tonalities, previousChord.tonality);
       }
-      // If no tonality includes the previous note then pick a random one
-      if (tonalities.length > 0) {
-        const index: number = this.commonService.getRandomIntegerBetween(0, tonalities.length - 1);
-        return tonalities[index];
-      } else {
-        return this.getRandomTonality(previousChord.tonality, onlyMajor, dontRepeat);
-      }
+      return this.getRandomTonality(previousChord.tonality, onlyMajor, dontRepeat);
     } else {
       // If no previous chord is specified then randomly pick a tonality
       return this.getRandomTonality(undefined, onlyMajor, dontRepeat);
