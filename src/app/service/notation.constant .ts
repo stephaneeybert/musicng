@@ -141,7 +141,8 @@ export const NOTE_RANGE_INTERVALS: Map<NOTE_RANGE, Array<number>> = new Map([
   [NOTE_RANGE.BLUES, [1.5, 1, 0.5, 0.5, 1.5, 1]]
 ]);
 
-export const NOTE_RANGE_INTERVAL_MAJOR: number = 4;
+export const NB_HALF_TONES_MAJOR: number = 4;
+export const NB_HALF_TONES_MINOR: number = 3;
 
 export const NOTE_C: string = 'C';
 export const NOTE_ACCIDENTAL_MINOR: string = 'm';

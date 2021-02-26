@@ -9,7 +9,7 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_MAJOR_CHROMAS, HALF_TONE_MINOR_CHROMAS, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NOTE_RANGE_INTERVAL_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFTER } from './notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_MAJOR_CHROMAS, HALF_TONE_MINOR_CHROMAS, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFTER, NB_HALF_TONES_MINOR } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 const CHORD_SEPARATOR: string = ' ';
@@ -143,6 +143,14 @@ export class NotationService {
       throw new Error('The placed chord had no notes to sort by index.');
     }
     return sortedNotes[1];
+  }
+
+  private getThirdChordNoteSortedByIndex(placedChord: PlacedChord): Note {
+    const sortedNotes: Array<Note> = this.sortNotesByIndex(placedChord.notes);
+    if (!sortedNotes || sortedNotes.length < 3) {
+      throw new Error('The placed chord had no notes to sort by index.');
+    }
+    return sortedNotes[2];
   }
 
   public getFirstNoteSortedByPitch(placedChord: PlacedChord): Note {
@@ -387,9 +395,11 @@ private allowedChromas(): Array<string> {
     const firstNotePosition: number = this.getChordNotePositionInTonality(placedChord, firstChordNote);
     const secondChordNote: Note = this.getSecondChordNoteSortedByIndex(placedChord);
     const secondNotePosition: number = this.getChordNotePositionInTonality(placedChord, secondChordNote);
+    const thirdChordNote: Note = this.getThirdChordNoteSortedByIndex(placedChord);
+    const thirdNotePosition: number = this.getChordNotePositionInTonality(placedChord, thirdChordNote);
     // Check if the second note of the chord is a major or minor
-    if (this.isMinorDegree(placedChord.tonality.range, firstNotePosition, secondNotePosition)) {
-      if (this.isDiminishedDegree(placedChord.tonality.range, firstNotePosition, secondNotePosition)) {
+    if (this.isMinorDegree(placedChord.tonality.range, firstNotePosition, secondNotePosition, thirdNotePosition)) {
+      if (this.isDiminishedDegree(placedChord.tonality.range, firstNotePosition, secondNotePosition, thirdNotePosition)) {
         return note.renderChroma() + NOTE_ACCIDENTAL_MINOR + NOTE_ACCIDENTAL_DIMINISHED;
       } else {
         return note.renderChroma() + NOTE_ACCIDENTAL_MINOR;
@@ -409,7 +419,7 @@ private allowedChromas(): Array<string> {
     throw new Error('The position for the placed chord note ' + note.renderChroma() + ' could not be found in the tonality ' + tonalityChromas);
   }
 
-  private getNbHalfTonesBetweenFirstAndSecondNote(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number): number {
+  private getNbHalfTonesBetweenNotes(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number): number {
     let nbHalfTones: number = 0;
     const intervals: Array<number> = this.getNoteRangeIntervals(noteRange);
     for (let index: number = firstNotePosition; index < secondNotePosition; index++) {
@@ -418,25 +428,28 @@ private allowedChromas(): Array<string> {
     return nbHalfTones;
   }
 
+  // The chord is diminished if the number of intervals between the first and second notes is 4 and the number of intervals between the second and third notes is 3
   private isMajorDegree(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number): boolean {
-    if (this.getNbHalfTonesBetweenFirstAndSecondNote(noteRange, firstNotePosition, secondNotePosition) == NOTE_RANGE_INTERVAL_MAJOR) {
+    if (this.getNbHalfTonesBetweenNotes(noteRange, firstNotePosition, secondNotePosition) == NB_HALF_TONES_MAJOR) {
       return true;
     } else {
       return false;
     }
   }
 
-  private isMinorDegree(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number): boolean {
-    if (this.getNbHalfTonesBetweenFirstAndSecondNote(noteRange, firstNotePosition, secondNotePosition) < NOTE_RANGE_INTERVAL_MAJOR) {
+  // The chord is diminished if the number of intervals between the first and second notes is 3 and the number of intervals between the second and third notes is 4
+  private isMinorDegree(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number, thirdNotePosition: number): boolean {
+    if (this.getNbHalfTonesBetweenNotes(noteRange, firstNotePosition, secondNotePosition) == NB_HALF_TONES_MINOR && this.getNbHalfTonesBetweenNotes(noteRange, secondNotePosition, thirdNotePosition) == NB_HALF_TONES_MAJOR) {
       return true;
     } else {
       return false;
     }
   }
 
-  private isDiminishedDegree(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number): boolean {
+  // The chord is diminished if the number of intervals between the first and second notes is 3 and the number of intervals between the second and third notes is 3
+  private isDiminishedDegree(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number, thirdNotePosition: number): boolean {
     // Check the degree is minor
-    if (this.getNbHalfTonesBetweenFirstAndSecondNote(noteRange, firstNotePosition, secondNotePosition) < NOTE_RANGE_INTERVAL_MAJOR) {
+    if (this.getNbHalfTonesBetweenNotes(noteRange, firstNotePosition, secondNotePosition) == NB_HALF_TONES_MINOR && this.getNbHalfTonesBetweenNotes(noteRange, secondNotePosition, thirdNotePosition) == NB_HALF_TONES_MINOR) {
       // Consider the last interval as it is the diminished note
       const intervals: Array<number> = this.getNoteRangeIntervals(noteRange);
       if (secondNotePosition == (intervals.length - 1)) {
