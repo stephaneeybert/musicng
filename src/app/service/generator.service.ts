@@ -448,9 +448,9 @@ export class GeneratorService {
       } else {
         // Get one of the harmony chord notes even the already picked one
         const [secondMelodyChroma, secondMelodyOctave]: [string, number] = this.pickNearNoteFromSourceChord(harmonyChord, currentMelodyChroma, currentMelodyOctave);
+        // If the second note is the same as the fisrt one then have only one chord
+        // but with a duration that is twice as long
         if (secondMelodyChroma == firstMelodyChroma && secondMelodyOctave == firstMelodyOctave) {
-          // If the second note is the same as the fisrt one then have only one chord
-          // but with a duration that is twice as long
           melodyChords[melodyChords.length - 1].duration = this.notationService.createDuration(chordDuration, TempoUnit.NOTE);
         } else {
           placedChord = this.notationService.createNotesAndPlacedChord(secondMelodyOctave, halfDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, [secondMelodyChroma]);
