@@ -57,14 +57,6 @@ export const CHROMA_ENHARMONICS: Map<string, string> = new Map([
   ['B', 'Cb']
 ]);
 
-// Tonality names and syllabics
-export const TONALITY_MAJOR_NAMES: Array<string> = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
-export const TONALITY_MINOR_NAMES: Array<string> = ['Am', 'Bbm', 'Bm', 'Cm', 'C#m', 'Dm', 'D#m', 'Em', 'Fm', 'F#m', 'Gm', 'Abm'];
-export const TONALITY_SYLLABIC: Map<string, string> = new Map([
-  ['C', 'Do'], ['Db', 'Réb'], ['D', 'Ré'], ['Eb', 'Mib'], ['E', 'Mi'], ['F', 'Fa'], ['F#', 'Fa#'], ['G', 'Sol'], ['Ab', 'Lab'], ['A', 'La'], ['Bb', 'Sib'], ['B', 'Si'],
-  ['Cm', 'Do'], ['C#m', 'Do#'], ['Dm', 'Ré'], ['D#m', 'Mib'], ['Em', 'Mi'], ['Fm', 'Fa'], ['F#m', 'Fa#'], ['Gm', 'Sol'], ['Abm', 'Lab'], ['Am', 'La'], ['Bbm', 'Sib'], ['Bm', 'Si']
-]);
-
 // Do not start any major tonality with these chromas: G#, D#, A#, E#, B# and Fb
 // They are illegal root chromas for major scales thus cannot be used as starting chromas for major scales
 // This is due to overly complex resulting note names, giving double sharps or double flats
@@ -72,12 +64,7 @@ export const TONALITY_SYLLABIC: Map<string, string> = new Map([
 export const CHROMAS_MAJOR: Array<string> = ['Cb', 'Gb', 'Db', 'Ab', 'Eb', 'Bb', 'F', 'C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#'];
 export const CHROMAS_MINOR: Array<string> = ['Ab', 'Eb', 'Bb', 'F', 'C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#', 'G#', 'D#', 'A#'];
 export const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-export const TODO_NOT_USED_ROOT_CHROMAS: Array<string> = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-export const TODO_NOT_USED_CHROMA_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-/* ENHARMONICS
-*/
-export const HALF_TONE_CHROMAS: Array<string> = CHROMAS_MAJOR
-  .concat(CHROMAS_MINOR);
+
 export const CHORD_CHROMAS_SYLLABIC: Map<string, string> = new Map([
   ['B#', 'Si#'], ['C#', 'Do#'], ['C##', 'Ré'], ['D', 'Ré'], ['D#', 'Ré#'], ['E', 'Mi'], ['E#', 'Mi#'], ['F#', 'Fa#'], ['F##', 'Sol'], ['G', 'Sol'], ['G#', 'Sol#'], ['G##', 'La'], ['A', 'La'], ['A#', 'La#'], ['B', 'Si'],
   ['C', 'Do'], ['Db', 'Réb'], ['D', 'Ré'], ['E', 'Mi'], ['Eb', 'Mib'], ['Fb', 'Mi'], ['F', 'Fa'], ['Gb', 'Solb'], ['G', 'Sol'], ['Ab', 'Lab'], ['A', 'La'], ['Bb', 'Sib'], ['Cb', 'Si-']
@@ -94,28 +81,9 @@ export const NOTE_CHROMAS_SYLLABIC: Map<string, string> = new Map([
 // Do       Ré       Mi  Fa       Sol      La       Si
 // C   C#   D   D#   E   F   F#   G   G#   A   A#   B
 //     Db       Eb           Gb       Ab       Bb   Cb
-export const HALF_TONE: number = 0.5;
 
-export const HALF_TONE_SHARP_CHROMAS: Array<string> = ['B#', 'C#', 'C##', 'D#', 'E', 'E#', 'F#', 'F##', 'G#', 'G##', 'A#', 'B'];
-export const HALF_TONE_FLAT_CHROMAS: Array<string> = ['C', 'Db', 'D', 'Eb', 'Fb', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'Cb'];
-/*
-export const HALF_TONE_CHROMAS: Array<string> = HALF_TONE_SHARP_CHROMAS
-.concat(HALF_TONE_FLAT_CHROMAS);
-*/
 export const HALF_TONE_MAJOR_CHROMAS: Array<string> = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
 export const HALF_TONE_MINOR_CHROMAS: Array<string> = ['Cm', 'C#m', 'Dm', 'D#m', 'Em', 'Fm', 'F#m', 'Gm', 'Abm', 'Am', 'Bbm', 'Bm'];
-/*
-export const HALF_TONE_CHROMAS: Array<string> = HALF_TONE_MAJOR_CHROMAS
-.concat(HALF_TONE_MINOR_CHROMAS);
-export const CHORD_CHROMAS_SYLLABIC: Map<string, string> = new Map([
-  ['B#', 'Do'], ['C#', 'Do#'], ['C##', 'Rém'], ['D#', 'Ré#m'], ['E', 'Mim'], ['E#', 'Fa'], ['F#', 'Fa#'], ['F##', 'Sol'], ['G#', 'Sol#'], ['G##', 'Lam'], ['A#', 'La#m'], ['B', 'Si-'],
-  ['C', 'Do'], ['Db', 'Dom'], ['D', 'Rém'], ['Eb', 'Ré#m'], ['Fb', 'Mim'], ['F', 'Fa'], ['Gb', 'Fa#'], ['G', 'Sol'], ['Ab', 'Sol#'], ['A', 'Lam'], ['Bb', 'La#m'], ['Cb', 'Si-']
-]);
-export const NOTE_CHROMAS_SYLLABIC: Map<string, string> = new Map([
-  ['B#', 'do'], ['C#', 'do#'], ['C##', 'ré'], ['D#', 'ré#'], ['E', 'mi'], ['E#', 'fa'], ['F#', 'fa#'], ['F##', 'sol'], ['G#', 'sol#'], ['G##', 'la'], ['A#', 'la#'], ['B', 'si'],
-  ['C', 'do'], ['Db', 'do'], ['D', 'ré'], ['Eb', 'ré#'], ['Fb', 'mi'], ['F', 'fa'], ['Gb', 'fa#'], ['G', 'sol'], ['Ab', 'sol#'], ['A', 'la'], ['Bb', 'la#'], ['Cb', 'si']
-]);
-*/
 
 export enum TRACK_TYPES {
   MELODY = 'melody',
