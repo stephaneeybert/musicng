@@ -10,7 +10,7 @@ import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { NOTE_RANGE, HALF_TONE_CHROMAS, HALF_TONE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, DEFAULT_TONALITY_C_MAJOR } from './notation.constant ';
+import { NOTE_RANGE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, DEFAULT_TONALITY_C_MAJOR } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 @Injectable({
@@ -289,20 +289,17 @@ export class GeneratorService {
 
   private getTonalitiesContainingChromas(range: NOTE_RANGE, previousChordName: string, previousPreviousChordName: string | undefined): Array<Tonality> {
     const tonalities: Array<Tonality> = new Array();
-    for (let i: number = 0; i < HALF_TONE_CHROMAS.length; i++) {
-      const chroma: string = HALF_TONE_CHROMAS[i];
+    const halfTones: Array<string> = range == NOTE_RANGE.MAJOR ? CHROMAS_MAJOR : CHROMAS_MINOR;
+    for (let i: number = 0; i < halfTones.length; i++) {
+      const chroma: string = halfTones[i];
       const tonalityChordNames: Array<string> = this.notationService.getTonalityChordNames(range, chroma);
-      console.log(tonalityChordNames);
       if (previousPreviousChordName) {
-        console.log('previousPreviousChordName: ' + previousPreviousChordName);
         if (tonalityChordNames.includes(previousPreviousChordName) && tonalityChordNames.includes(previousChordName)) {
           tonalities.push(new Tonality(range, chroma));
-          console.log('Matching previousPreviousChordName: ' + previousPreviousChordName + ' and previousChordName: ' + previousChordName);
         }
       } else {
         if (tonalityChordNames.includes(previousChordName)) {
           tonalities.push(new Tonality(range, chroma));
-          console.log('Matching previousChordName: ' + previousChordName);
         }
       }
     }
