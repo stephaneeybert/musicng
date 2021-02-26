@@ -320,12 +320,9 @@ export class GeneratorService {
           tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, previousChordName, previousPreviousChordName));
         }
       }
-      // If no tonality includes the two previous notes then pick the ones that contain the previous note only
+      // There must always be at least one tonality that includes the two previous chords
       if (tonalities.length == 0) {
-        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, previousChordName, undefined));
-        if (!onlyMajor) {
-          tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, previousChordName, undefined));
-        }
+        throw new Error('No tonality could be found as sibbling to the two previous chords.');
       }
       if (dontRepeat) {
         tonalities = this.stripTonality(tonalities, previousChord.tonality);
