@@ -326,14 +326,13 @@ export class GeneratorService {
     }
   }
 
-  private stripTonality(tonalities: Array<Tonality>, previousTonality: Tonality | undefined): Array<Tonality> {
+  private stripTonality(tonalities: Array<Tonality>, previousTonality: Tonality | undefined): void {
     if (previousTonality) {
       let index: number = tonalities.findIndex(tonality => tonality.firstChroma === previousTonality.firstChroma);
       if (index != -1) {
         tonalities.splice(index, 1);
       }
     }
-    return tonalities;
   }
 
   private stripTonalityChroma(tonalityChromas: Array<string>, previousTonality: Tonality | undefined, dontRepeat: boolean): Array<string> {
