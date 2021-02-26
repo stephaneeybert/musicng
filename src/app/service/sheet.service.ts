@@ -11,6 +11,7 @@ import { Track } from '@app/model/track';
 import { TranslateService } from '@ngx-translate/core';
 import { MaterialService } from '@app/core/service/material.service';
 import { SettingsService } from '@app/views/settings/settings.service';
+import { CHORD_CHROMAS_SYLLABIC } from './notation.constant ';
 
 const NAME_PREFIX_SOUNDTRACK: string = 'sheet-soundtrack-';
 const NAME_PREFIX_DEVICE: string = 'sheet-device-';
@@ -226,10 +227,14 @@ export class SheetService {
     if (!measure.sheetStave) {
       throw new Error('The tonality name could not be drawn as the measure had no stave.');
     }
-    const tonalityFirstChroma: string = this.notationService.renderTonalityNameInSyllabic(measure.placedChords[0]);
-    const staveX: number = this.getStaveX(animatedStave, track.index, 0);
-    const staveY: number = measure.sheetStave.getYForBottomText();
-    this.drawText(soundtrack.sheetContext, tonalityFirstChroma, staveX, staveY);
+    // Dp not render the tonality name on the melody track
+    // as the tonality name is determined from the harmony chords
+    if (this.notationService.isHarmonyChord(measure.placedChords[0])) {
+      const tonalityFirstChroma: string = this.notationService.renderTonalityNameInSyllabic(measure.placedChords[0]);
+      const staveX: number = this.getStaveX(animatedStave, track.index, 0);
+      const staveY: number = measure.sheetStave.getYForBottomText();
+      this.drawText(soundtrack.sheetContext, tonalityFirstChroma, staveX, staveY);
+    }
   }
 
   private drawTrackNameOnMeasure(track: Track, soundtrack: Soundtrack, staveX: number, staveY: number): void {
@@ -415,7 +420,7 @@ export class SheetService {
 
   private renderChordNameInSyllabic(placedChord: PlacedChord): string {
     const chordNameIntl: string = this.notationService.getChordIntlName(placedChord);
-    return this.notationService.chordChromaIntlToChromaSyllabic(placedChord.tonality.range, chordNameIntl);
+    return this.notationService.chromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
   }
 
   private renderAllChordNoteNamesInSyllabic(placedChord: PlacedChord): Array<string> {

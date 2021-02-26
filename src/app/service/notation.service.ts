@@ -99,14 +99,6 @@ export class NotationService {
     });
   }
 
-  private isRangeMinor(noteRange: NOTE_RANGE): boolean {
-    if (noteRange == NOTE_RANGE.MINOR_NATURAL || noteRange == NOTE_RANGE.MINOR_HARMONIC || noteRange == NOTE_RANGE.MINOR_MELODIC) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   public removeSharpsAndFlats(chroma: string): string {
     return chroma.replace(NOTE_SHARP, '').replace(NOTE_FLAT, '');
   }
@@ -163,16 +155,16 @@ export class NotationService {
   }
 
   public renderTonalityNameInSyllabic(placedChord: PlacedChord): string {
-    const chordNameIntl: string = placedChord.tonality.firstChroma;
+    const chordNameIntl: string = this.getChordIntlName(placedChord);
     let syllabic: string = this.chromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
-    if (this.isRangeMinor(placedChord.tonality.range)) {
-      syllabic += NOTE_ACCIDENTAL_MINOR;
-    }
     return chordNameIntl + ' ' + syllabic;
   }
 
-  public chordChromaIntlToChromaSyllabic(range: NOTE_RANGE, chroma: string): string {
-    // TODO Remove the minor accidental if any
+  public isHarmonyChord(placedChord: PlacedChord): boolean {
+    return placedChord.notes && placedChord.notes.length >= DEFAULT_CHORD_WIDTH;
+  }
+
+  public chromaIntlToChromaSyllabic(chromasSyllabic: Map<string, string>, chroma: string): string {
     let bareChroma: string = chroma;
     let accidental: string = '';
     if (bareChroma.includes(NOTE_ACCIDENTAL_MINOR)) {
@@ -183,16 +175,16 @@ export class NotationService {
       bareChroma = bareChroma.replace(NOTE_ACCIDENTAL_DIMINISHED, '');
       accidental += NOTE_ACCIDENTAL_DIMINISHED;
     }
-    let syllabicChroma: string = this.chromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, bareChroma);
+    let syllabicChroma: string = this.getChromaSyllabic(chromasSyllabic, bareChroma);
     syllabicChroma += accidental;
     return syllabicChroma;
   }
 
   public noteChromaLetterToChromaSyllabic(chroma: string): string {
-    return this.chromaIntlToChromaSyllabic(NOTE_CHROMAS_SYLLABIC, chroma);
+    return this.getChromaSyllabic(NOTE_CHROMAS_SYLLABIC, chroma);
   }
 
-  private chromaIntlToChromaSyllabic(chromasSyllabic: Map<string, string>, chroma: string): string {
+  private getChromaSyllabic(chromasSyllabic: Map<string, string>, chroma: string): string {
     if (chromasSyllabic.has(chroma)) {
       const syllabic: string | undefined = chromasSyllabic.get(chroma);
       if (syllabic) {
