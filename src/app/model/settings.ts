@@ -1,5 +1,5 @@
 import { TempoUnit, TempoUnitType } from './tempo-unit';
-import { DEFAULT_TEMPO_BPM, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_CHORD_DURATION, DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_WIDTH, DEFAULT_RANDOM_INPASSING, DEFAULT_NB_CHORDS, DEFAULT_VELOCITY_MEDIUM, DEFAULT_VELOCITY_LOUDER, NOTE_RANGE, DEFAULT_RANDOM_MODULATION, DEFAULT_VELOCITY_SOFTER, NOTE_C } from '@app/service/notation.constant ';
+import { DEFAULT_TEMPO_BPM, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_CHORD_DURATION, DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_WIDTH, DEFAULT_RANDOM_INPASSING, DEFAULT_NB_CHORDS, DEFAULT_VELOCITY_MEDIUM, DEFAULT_VELOCITY_LOUD, NOTE_RANGE, DEFAULT_RANDOM_MODULATION, DEFAULT_VELOCITY_SOFT, NOTE_C } from '@app/service/notation.constant ';
 
 export class Settings {
 
@@ -47,8 +47,8 @@ export class Settings {
     this.generateHarmony = true;
     this.generateDrums = false;
     this.generateBass = false;
-    this.generateVelocityMelody = DEFAULT_VELOCITY_LOUDER;
-    this.generateVelocityHarmony = DEFAULT_VELOCITY_SOFTER;
+    this.generateVelocityMelody = DEFAULT_VELOCITY_LOUD;
+    this.generateVelocityHarmony = DEFAULT_VELOCITY_SOFT;
     this.generateVelocityDrums = DEFAULT_VELOCITY_MEDIUM;
     this.generateVelocityBass = DEFAULT_VELOCITY_MEDIUM;
     this.animatedStave = false;

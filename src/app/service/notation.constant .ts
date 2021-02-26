@@ -1,9 +1,9 @@
 import { TempoUnit } from '@app/model/tempo-unit';
 import { Tonality } from '@app/model/note/tonality';
 
-export const DEFAULT_VELOCITY_SOFTER: number = 45;
+export const DEFAULT_VELOCITY_SOFT: number = 45;
 export const DEFAULT_VELOCITY_MEDIUM: number = 50;
-export const DEFAULT_VELOCITY_LOUDER: number = 100;
+export const DEFAULT_VELOCITY_LOUD: number = 100;
 export const DEFAULT_TIME_SIGNATURES: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 export const DEFAULT_TEMPO_BPM: number = 90;
 export const DEFAULT_CHORD_WIDTH: number = 3;

@@ -9,7 +9,7 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_MAJOR_CHROMAS, HALF_TONE_MINOR_CHROMAS, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFTER, NB_HALF_TONES_MINOR } from './notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_MAJOR_CHROMAS, HALF_TONE_MINOR_CHROMAS, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFT, NB_HALF_TONES_MINOR } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 const CHORD_SEPARATOR: string = ' ';
@@ -478,7 +478,7 @@ private allowedChromas(): Array<string> {
     const chromas: Array<Array<string>> = this.buildStandardTonalityChromas(tonalityChromas);
     const tonality: Tonality = new Tonality(noteRange, rangeFirstChroma);
     for (let index: number = 0; index < tonalityChromas.length; index++) {
-      const placedChord: PlacedChord = this.createNotesAndPlacedChord(DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_DURATION, DEFAULT_VELOCITY_SOFTER, tonality, placedChordIndex, chromas[index]);
+      const placedChord: PlacedChord = this.createNotesAndPlacedChord(DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_DURATION, DEFAULT_VELOCITY_SOFT, tonality, placedChordIndex, chromas[index]);
       tonalityChordNames.push(this.getChordIntlName(placedChord));
       placedChordIndex++;
     }
