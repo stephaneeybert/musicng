@@ -9,7 +9,7 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, HALF_TONE_MAJOR_CHROMAS, HALF_TONE_MINOR_CHROMAS, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFT, NB_HALF_TONES_MINOR } from './notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFT, NB_HALF_TONES_MINOR } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 const CHORD_SEPARATOR: string = ' ';
@@ -372,11 +372,9 @@ private allowedChromas(): Array<string> {
     const thirdNotePosition: number = this.getChordNotePositionInTonality(placedChord, thirdChordNote);
     // Check if the second note of the chord is a major or minor
     if (this.isMinorDegree(placedChord.tonality.range, firstNotePosition, secondNotePosition, thirdNotePosition)) {
-      if (this.isDiminishedDegree(placedChord.tonality.range, firstNotePosition, secondNotePosition, thirdNotePosition)) {
-        return note.renderChroma() + NOTE_ACCIDENTAL_MINOR + NOTE_ACCIDENTAL_DIMINISHED;
-      } else {
-        return note.renderChroma() + NOTE_ACCIDENTAL_MINOR;
-      }
+      return note.renderChroma() + NOTE_ACCIDENTAL_MINOR;
+    } else if (this.isDiminishedDegree(placedChord.tonality.range, firstNotePosition, secondNotePosition, thirdNotePosition)) {
+      return note.renderChroma() + NOTE_ACCIDENTAL_MINOR + NOTE_ACCIDENTAL_DIMINISHED;
     } else {
       return note.renderChroma();
     }
