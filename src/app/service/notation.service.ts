@@ -197,25 +197,6 @@ export class NotationService {
     }
   }
 
-  // public selectHalfToneChromasFromFirstChroma(chroma: string): Array<string> {
-  //   if (HALF_TONE_SHARP_CHROMAS.includes(chroma)) {
-  //     return HALF_TONE_SHARP_CHROMAS;
-  //   } else if (HALF_TONE_FLAT_CHROMAS.includes(chroma)) {
-  //     return HALF_TONE_FLAT_CHROMAS;
-  //   } else {
-  //     throw new Error('No chromas array was found containing the chroma ' + chroma);
-  //   }
-  // } TODO
-  public selectHalfToneChromasFromFirstChroma(chroma: string): Array<string> {
-    if (HALF_TONE_MAJOR_CHROMAS.includes(chroma)) {
-      return HALF_TONE_MAJOR_CHROMAS;
-    } else if (HALF_TONE_MINOR_CHROMAS.includes(chroma)) {
-      return HALF_TONE_MINOR_CHROMAS;
-    } else {
-      throw new Error('No chromas array was found containing the chroma ' + chroma);
-    }
-  }
-
   public createPlacedChord(index: number, chordDuration: number, tempoUnit: TempoUnitType, velocity: number, tonality: Tonality, notes: Array<Note>): PlacedChord {
     const duration: Duration = this.createDuration(chordDuration, tempoUnit);
     const placedChord: PlacedChord = this.createEmptyChord(index, duration, velocity, tonality);
