@@ -296,3 +296,47 @@ Dans le système tonal, c’est-à-dire le système actuel d’écriture musical
 // Select one tonality only, of 7 notes (not two with 14 notes) only one, major or minor
 // TODO
 // Before randomly picking a tonality, filter the tonalities by electing those which contain the base notes of the previous two chords
+
+// Frequencies
+var afreq = 440; // Standard A440 tuning
+var semitone = Math.pow(2, 1.0 / 12);
+var bflatfreq = afreq * semitone;
+var bfreq = bflatfreq * semitone;
+// Rather than going B4 (493.883 Hz) to C5 (523.251 Hz), we'll
+// double back to C4 (261.626 Hz). So our base frequencies
+// are from C4 to B4
+var cfreq = (bfreq * semitone) / 2.0;
+var csharpfreq = cfreq * semitone;
+var dfreq = csharpfreq * semitone;
+var eflatfreq = dfreq * semitone;
+var efreq = eflatfreq * semitone;
+var ffreq = efreq * semitone;
+var fsharpfreq = ffreq * semitone;
+var gfreq = fsharpfreq * semitone;
+var gsharpfreq = gfreq * semitone;
+var noteLookup = {"A": afreq,
+    "A#": bflatfreq,
+    "Bb": bflatfreq,
+    "B": bfreq,
+    "B#": cfreq,
+    "Cb": bfreq,
+    "C": cfreq,
+    "C#": csharpfreq,
+    "Db": csharpfreq,
+    "D": dfreq,
+    "D#": eflatfreq,
+    "Eb": eflatfreq,
+    "E": efreq,
+    "E#": ffreq,
+    "Fb": efreq,
+    "F": ffreq,
+    "F#": fsharpfreq,
+    "Gb": fsharpfreq,
+    "G": gfreq,
+    "G#": gsharpfreq,
+    "Ab": gsharpfreq,
+    };
+private multiplyBySemitone(nosemitones): number {
+  return Math.pow(semitone, nosemitones);
+}
+
