@@ -117,8 +117,8 @@
             "tip": "When choosing a note for a chord, tune the probability of choosing an in passing note."
           },
           "tonality": {
-            "label": "Tonality (12 #) (12 b)",
-            "tip": "The tonality of the first measure. There are 12 sharp tonalities followed by 12 flat tonalities."
+            "label": "Major tonality",
+            "tip": "The tonality of the first measure."
           },
           "modulation": {
             "label": "Modulation",

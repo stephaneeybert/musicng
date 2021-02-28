@@ -117,8 +117,8 @@
             "tip": "Lors du choix d'une note pour un accord, régler la probabilité de choisir une note de passage."
           },
           "tonality": {
-            "label": "Tonalité (12 #) (12 b)",
-            "tip": "La tonalité de la première mesure. Il y a 12 tonalités dièses suivies par 12 tonalités bémols."
+            "label": "Tonalité majeure",
+            "tip": "La tonalité de la première mesure."
           },
           "modulation": {
             "label": "Modulation",
