@@ -64,6 +64,7 @@ export const CHROMA_ENHARMONICS: Map<string, string> = new Map([
 export const CHROMAS_MAJOR: Array<string> = ['Cb', 'C', 'C#', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 export const CHROMAS_MINOR: Array<string> = ['Ab', 'A', 'A#', 'Bb', 'B', 'C', 'C#', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'G', 'G#'];
 // export const CHROMAS_MAJOR: Array<string> = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+// export const CHROMAS_MINOR: Array<string> = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
 export const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
 export const CHORD_CHROMAS_SYLLABIC: Map<string, string> = new Map([
