@@ -83,9 +83,6 @@ export const NOTE_CHROMAS_SYLLABIC: Map<string, string> = new Map([
 // C   C#   D   D#   E   F   F#   G   G#   A   A#   B
 //     Db       Eb           Gb       Ab       Bb   Cb
 
-export const HALF_TONE_MAJOR_CHROMAS: Array<string> = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
-export const HALF_TONE_MINOR_CHROMAS: Array<string> = ['Cm', 'C#m', 'Dm', 'D#m', 'Em', 'Fm', 'F#m', 'Gm', 'Abm', 'Am', 'Bbm', 'Bm'];
-
 export enum TRACK_TYPES {
   MELODY = 'melody',
   HARMONY = 'harmony',
