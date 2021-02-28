@@ -358,6 +358,7 @@ private allowedChromas(): Array<string> {
   }
 
   // The international name of the chord is the chroma picked in the tonality
+  // possibly suffixed with some accidentals
   // This chroma picked in the tonality is the first note added in the chord
   // This is valid if the chord is not reversed
   // Suffix the chord name with a minor accidental if the second note of the chord is a minor
@@ -372,10 +373,13 @@ private allowedChromas(): Array<string> {
     const thirdNotePosition: number = this.getChordNotePositionInTonality(placedChord, thirdChordNote);
     // Check if the second note of the chord is a major or minor
     if (this.isMinorDegree(placedChord.tonality.range, firstNotePosition, secondNotePosition, thirdNotePosition)) {
+      // Minor chord
       return note.renderChroma() + NOTE_ACCIDENTAL_MINOR;
     } else if (this.isDiminishedDegree(placedChord.tonality.range, firstNotePosition, secondNotePosition, thirdNotePosition)) {
+      // Diminished chord
       return note.renderChroma() + NOTE_ACCIDENTAL_MINOR + NOTE_ACCIDENTAL_DIMINISHED;
     } else {
+      // Major chord
       return note.renderChroma();
     }
   }
