@@ -58,7 +58,7 @@ export const CHROMA_ENHARMONICS: Map<string, string> = new Map([
 ]);
 
 // Do not start any major tonality with these chromas: G#, D#, A#, E#, B# and Fb
-// They are illegal root chromas for major scales thus cannot be used as starting chromas for major scales
+// They are illegal root chromas for major scales and thus cannot be used as starting chromas for major scales
 // This is due to overly complex resulting note names, giving double sharps or double flats
 // Instead use the following enharmonic keys respectively: Ab, Eb, Bb, F, C, E
 export const CHROMAS_MAJOR: Array<string> = ['Cb', 'Gb', 'Db', 'Ab', 'Eb', 'Bb', 'F', 'C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#'];
