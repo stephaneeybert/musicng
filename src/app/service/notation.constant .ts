@@ -61,8 +61,9 @@ export const CHROMA_ENHARMONICS: Map<string, string> = new Map([
 // They are illegal root chromas for major scales and thus cannot be used as starting chromas for major scales
 // This is due to overly complex resulting note names, giving double sharps or double flats
 // Instead use the following enharmonic keys respectively: Ab, Eb, Bb, F, C, E
-export const CHROMAS_MAJOR: Array<string> = ['Cb', 'Gb', 'Db', 'Ab', 'Eb', 'Bb', 'F', 'C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#'];
-export const CHROMAS_MINOR: Array<string> = ['Ab', 'Eb', 'Bb', 'F', 'C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#', 'G#', 'D#', 'A#'];
+export const CHROMAS_MAJOR: Array<string> = ['Cb', 'C', 'C#', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+export const CHROMAS_MINOR: Array<string> = ['Ab', 'A', 'A#', 'Bb', 'B', 'C', 'C#', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'G', 'G#'];
+// export const CHROMAS_MAJOR: Array<string> = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
 export const CHROMAS_ALPHABETICAL: Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
 export const CHORD_CHROMAS_SYLLABIC: Map<string, string> = new Map([
