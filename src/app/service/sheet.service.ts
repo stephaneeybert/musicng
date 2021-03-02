@@ -420,7 +420,7 @@ export class SheetService {
 
   private renderChordNameInSyllabic(placedChord: PlacedChord): string {
     const chordNameIntl: string = this.notationService.getChordIntlName(placedChord);
-    return this.notationService.chromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
+    return this.notationService.chordChromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
   }
 
   private renderAllChordNoteNamesInSyllabic(placedChord: PlacedChord): Array<string> {

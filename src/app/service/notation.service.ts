@@ -156,7 +156,7 @@ export class NotationService {
 
   public renderTonalityNameInSyllabic(placedChord: PlacedChord): string {
     const chordNameIntl: string = this.getChordIntlName(placedChord);
-    let syllabic: string = this.chromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
+    let syllabic: string = this.chordChromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
     return chordNameIntl + ' ' + syllabic;
   }
 
@@ -164,7 +164,7 @@ export class NotationService {
     return placedChord.notes && placedChord.notes.length >= DEFAULT_CHORD_WIDTH;
   }
 
-  public chromaIntlToChromaSyllabic(chromasSyllabic: Map<string, string>, chroma: string): string {
+  public chordChromaIntlToChromaSyllabic(chromasSyllabic: Map<string, string>, chroma: string): string {
     let bareChroma: string = chroma;
     let accidental: string = '';
     if (bareChroma.includes(NOTE_ACCIDENTAL_MINOR)) {
