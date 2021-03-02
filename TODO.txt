@@ -260,6 +260,14 @@ La Am Bdim C Dm Em F G
 Sib Bbm Cdim Db Ebm Fm Gb Ab 
 Si Bm C#dim D Em F#m G A
 ---
+Norbert, tu m'as dit que il ne devait pas y avoir de tonalité commançant par Cb
+J'ai donc supprimé ces deux tableux :
+export const CHROMAS_MAJOR: Array<string> = ['Cb', 'C', 'C#', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+export const CHROMAS_MINOR: Array<string> = ['Ab', 'A', 'A#', 'Bb', 'B', 'C', 'C#', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'G', 'G#'];
+Et je les ai remplacés par ceux deux là :
+export const CHROMAS_MAJOR: Array<string> = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+export const CHROMAS_MINOR: Array<string> = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+---
 Dans une même gamme, tous les degrés n'ont pas la même importance. Le degré I est le plus important car c'est le degré sur lequel la gamme est construite. Ensuite, c'est le degré V, puis le degré IV. Et enfin dans l’ordre, les degrés II, III, VI et VII qui ont un rapport de plus en plus éloigné avec la tonique ( degré I ).
 ---
 Ne pas confondre la modulation qui est un changement de gamme à l’intérieur d’un morceau avec la transposition qui est un changement de l’ensemble du morceau.
@@ -340,3 +348,4 @@ private multiplyBySemitone(nosemitones): number {
   return Math.pow(semitone, nosemitones);
 }
 
+No tonality could be found as sibbling to the two previous chords C# and E#m
