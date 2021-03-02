@@ -674,8 +674,6 @@ private allowedChromas(): Array<string> {
 
   public logAllTonalities(): void {
     this.getAllTonalities().forEach((tonality: Tonality) => {
-      const tonalitySyllabics: Array<string> = new Array();
-      const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
       const tonalityChordNames: Array<string> = this.getTonalityChordNames(tonality.range, tonality.firstChroma);
       console.log(tonalityChordNames);
     });
