@@ -423,15 +423,9 @@ private allowedChromas(): Array<string> {
 
   // The chord is diminished if the number of intervals between the first and second notes is 3 and the number of intervals between the second and third notes is 3
   private isDiminishedDegree(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number, thirdNotePosition: number): boolean {
-    // Check the degree is minor
+    // Check the degree is diminished
     if (this.getNbHalfTonesBetweenNotes(noteRange, firstNotePosition, secondNotePosition) == NB_HALF_TONES_MINOR && this.getNbHalfTonesBetweenNotes(noteRange, secondNotePosition, thirdNotePosition) == NB_HALF_TONES_MINOR) {
-      // Consider the last interval as it is the diminished note
-      const intervals: Array<number> = this.getNoteRangeIntervals(noteRange);
-      if (secondNotePosition == (intervals.length - 1)) {
-        return true;
-      } else {
-        return false;
-      }
+      return true;
     } else {
       return false;
     }
