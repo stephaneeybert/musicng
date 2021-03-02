@@ -444,7 +444,7 @@ private allowedChromas(): Array<string> {
     const tonalityChordNames: Array<string> = new Array();
     const tonalityChromas: Array<string> = this.getTonalityChromas(noteRange, rangeFirstChroma);
     let placedChordIndex: number = 0;
-    const chromas: Array<Array<string>> = this.buildStandardTonalityChromas(tonalityChromas);
+    const chromas: Array<Array<string>> = this.buildStandardTonalityChordChromas(tonalityChromas);
     const tonality: Tonality = new Tonality(noteRange, rangeFirstChroma);
     for (let index: number = 0; index < tonalityChromas.length; index++) {
       const placedChord: PlacedChord = this.createNotesAndPlacedChord(DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_DURATION, DEFAULT_VELOCITY_SOFT, tonality, placedChordIndex, chromas[index]);
@@ -454,7 +454,7 @@ private allowedChromas(): Array<string> {
     return tonalityChordNames;
   }
 
-  private buildStandardTonalityChromas(tonalityChromas: Array<string>): Array<Array<string>> {
+  private buildStandardTonalityChordChromas(tonalityChromas: Array<string>): Array<Array<string>> {
     const chromas: Array<Array<string>> = new Array();
     const shiftedChromas: Array<Array<string>> = this.getTonalityShiftedChromas(tonalityChromas, DEFAULT_CHORD_WIDTH);
     for (let chromaIndex: number = 0; chromaIndex < tonalityChromas.length; chromaIndex++) {
