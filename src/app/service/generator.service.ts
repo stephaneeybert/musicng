@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Measure } from '@app/model/measure/measure';
 import { NotationService } from './notation.service';
 import { PlacedChord } from '@app/model/note/placed-chord';
-import { Note } from '@app/model/note/note';
 import { SoundtrackService } from '@app/views/soundtrack/soundtrack.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Soundtrack } from '@app/model/soundtrack';
