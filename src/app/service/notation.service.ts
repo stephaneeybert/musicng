@@ -661,7 +661,6 @@ private allowedChromas(): Array<string> {
     return shiftedChromas;
   }
 
-  // TODO
   private getAllTonalities(): Array<Tonality> {
     const tonalities: Array<Tonality> = new Array();
     CHROMAS_MAJOR.forEach((chroma: string) => {
@@ -672,24 +671,14 @@ private allowedChromas(): Array<string> {
     });
     return tonalities;
   }
-  // public logAllTonalities(): void {
-  //   this.getAllTonalities().forEach((tonality: Tonality) => {
-  //     const tonalitySyllabics: Array<string> = new Array();
-  //     const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
-  //     const shiftedChromas: Array<Array<string>> = this.getTonalityShiftedChromas(tonalityChromas, DEFAULT_CHORD_WIDTH);
 
-  //     let index: number = 0;
-  //     tonalityChromas.forEach((tonalityChroma: string) => {
-  //       const placedChord: PlacedChord = this.createPlacedChord(index, DEFAULT_CHORD_DURATION, TempoUnit.NOTE, DEFAULT_VELOCITY_SOFTER, DEFAULT_TONALITY_C_MAJOR, notes);
-  //       const chordNameIntl: string = this.getChordIntlName(placedChord);
-  //       const syllabic: string = this.chordChromaLetterToChromaSyllabic(tonality.range, chordNameIntl);
-  //       tonalitySyllabics.push(syllabic);
-  //       index++;
-  //     });
-  //     console.log(tonalityChromas);
-  //     console.log(tonalitySyllabics);
-  //     index = 0;
-  //   });
-  // }
+  public logAllTonalities(): void {
+    this.getAllTonalities().forEach((tonality: Tonality) => {
+      const tonalitySyllabics: Array<string> = new Array();
+      const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
+      const tonalityChordNames: Array<string> = this.getTonalityChordNames(tonality.range, tonality.firstChroma);
+      console.log(tonalityChordNames);
+    });
+  }
 
 }
