@@ -394,10 +394,10 @@ private allowedChromas(): Array<string> {
     throw new Error('The position for the placed chord note ' + note.renderChroma() + ' could not be found in the tonality ' + tonalityChromas);
   }
 
-  private getNbHalfTonesBetweenNotes(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number): number {
+  private getNbHalfTonesBetweenNotes(noteRange: NOTE_RANGE, fromNotePosition: number, toNotePosition: number): number {
     let nbHalfTones: number = 0;
     const intervals: Array<number> = this.getNoteRangeIntervals(noteRange);
-    for (let index: number = firstNotePosition; index < secondNotePosition; index++) {
+    for (let index: number = fromNotePosition; index < toNotePosition; index++) {
       nbHalfTones = nbHalfTones + (intervals[index] * 2);
     }
     return nbHalfTones;
