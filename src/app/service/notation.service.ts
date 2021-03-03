@@ -371,13 +371,15 @@ private allowedChromas(): Array<string> {
     const secondNotePosition: number = this.getChordNotePositionInTonality(placedChord, secondChordNote);
     const thirdChordNote: Note = this.getThirdChordNoteSortedByIndex(placedChord);
     const thirdNotePosition: number = this.getChordNotePositionInTonality(placedChord, thirdChordNote);
+    const firstToSecondHalfTones: number = this.getNbHalfTonesBetweenNotes(placedChord.tonality.range, firstNotePosition, secondNotePosition);
+    const secondToThirdHalfTones: number = this.getNbHalfTonesBetweenNotes(placedChord.tonality.range, secondNotePosition, thirdNotePosition);
     // Check if the second note of the chord is a major or minor
-    if (this.isMinorDegree(placedChord.tonality.range, firstNotePosition, secondNotePosition, thirdNotePosition)) {
+    if (this.isMinorDegree(firstToSecondHalfTones, secondToThirdHalfTones)) {
       // Minor chord
       return note.renderChroma() + NOTE_ACCIDENTAL_MINOR;
-    } else if (this.isDiminishedDegree(placedChord.tonality.range, firstNotePosition, secondNotePosition, thirdNotePosition)) {
+    } else if (this.isDiminishedDegree(firstToSecondHalfTones, secondToThirdHalfTones)) {
       // Diminished chord
-      return note.renderChroma() + NOTE_ACCIDENTAL_MINOR + NOTE_ACCIDENTAL_DIMINISHED;
+      return note.renderChroma() + NOTE_ACCIDENTAL_DIMINISHED;
     } else {
       // Major chord
       return note.renderChroma();
@@ -397,15 +399,22 @@ private allowedChromas(): Array<string> {
   private getNbHalfTonesBetweenNotes(noteRange: NOTE_RANGE, fromNotePosition: number, toNotePosition: number): number {
     let nbHalfTones: number = 0;
     const intervals: Array<number> = this.getNoteRangeIntervals(noteRange);
+    if (fromNotePosition > toNotePosition) {
+      toNotePosition += intervals.length;
+    }
     for (let index: number = fromNotePosition; index < toNotePosition; index++) {
-      nbHalfTones = nbHalfTones + (intervals[index] * 2);
+      let position: number = index;
+      if (position >= intervals.length) {
+        position -= intervals.length;
+      }
+      nbHalfTones = nbHalfTones + (intervals[position] * 2);
     }
     return nbHalfTones;
   }
 
   // The chord is diminished if the number of intervals between the first and second notes is 4 and the number of intervals between the second and third notes is 3
-  private isMajorDegree(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number): boolean {
-    if (this.getNbHalfTonesBetweenNotes(noteRange, firstNotePosition, secondNotePosition) == NB_HALF_TONES_MAJOR) {
+  private isMajorDegree(firstToSecondHalfTones: number, secondToThirdHalfTones: number): boolean {
+    if (firstToSecondHalfTones == NB_HALF_TONES_MAJOR && secondToThirdHalfTones == NB_HALF_TONES_MINOR) {
       return true;
     } else {
       return false;
@@ -413,8 +422,8 @@ private allowedChromas(): Array<string> {
   }
 
   // The chord is diminished if the number of intervals between the first and second notes is 3 and the number of intervals between the second and third notes is 4
-  private isMinorDegree(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number, thirdNotePosition: number): boolean {
-    if (this.getNbHalfTonesBetweenNotes(noteRange, firstNotePosition, secondNotePosition) == NB_HALF_TONES_MINOR && this.getNbHalfTonesBetweenNotes(noteRange, secondNotePosition, thirdNotePosition) == NB_HALF_TONES_MAJOR) {
+  private isMinorDegree(firstToSecondHalfTones: number, secondToThirdHalfTones: number): boolean {
+    if (firstToSecondHalfTones == NB_HALF_TONES_MINOR && secondToThirdHalfTones == NB_HALF_TONES_MAJOR) {
       return true;
     } else {
       return false;
@@ -422,9 +431,9 @@ private allowedChromas(): Array<string> {
   }
 
   // The chord is diminished if the number of intervals between the first and second notes is 3 and the number of intervals between the second and third notes is 3
-  private isDiminishedDegree(noteRange: NOTE_RANGE, firstNotePosition: number, secondNotePosition: number, thirdNotePosition: number): boolean {
+  private isDiminishedDegree(firstToSecondHalfTones: number, secondToThirdHalfTones: number): boolean {
     // Check the degree is diminished
-    if (this.getNbHalfTonesBetweenNotes(noteRange, firstNotePosition, secondNotePosition) == NB_HALF_TONES_MINOR && this.getNbHalfTonesBetweenNotes(noteRange, secondNotePosition, thirdNotePosition) == NB_HALF_TONES_MINOR) {
+    if (firstToSecondHalfTones == NB_HALF_TONES_MINOR && secondToThirdHalfTones == NB_HALF_TONES_MINOR) {
       return true;
     } else {
       return false;
@@ -673,10 +682,12 @@ private allowedChromas(): Array<string> {
   }
 
   public logAllTonalities(): void {
-    this.getAllTonalities().forEach((tonality: Tonality) => {
+    const tonalities: Array<Tonality> = this.getAllTonalities();
+    for (let index: number = 0; index < tonalities.length; index++) {
+      const tonality: Tonality = tonalities[index];
       const tonalityChordNames: Array<string> = this.getTonalityChordNames(tonality.range, tonality.firstChroma);
       console.log(tonalityChordNames);
-    });
+    }
   }
 
 }
