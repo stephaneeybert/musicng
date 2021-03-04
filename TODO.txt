@@ -348,4 +348,27 @@ private multiplyBySemitone(nosemitones): number {
   return Math.pow(semitone, nosemitones);
 }
 
-No tonality could be found as sibbling to the two previous chords C# and E#m
+["C", "Dm", "Em", "F", "G", "Am", "B-"]
+["Db", "Ebm", "Fm", "Gb", "Ab", "Bbm", "C-"]
+["D", "Em", "F#m", "G", "A", "Bm", "C#-"]
+["Eb", "Fm", "Gm", "Ab", "Bb", "Cm", "D-"]
+["E", "F#m", "G#m", "A", "B", "C#m", "D#-"]
+["F", "Gm", "Am", "Bb", "C", "Dm", "E-"]
+["F#", "G#m", "A#m", "B", "C#", "D#m", "E#-"]
+["G", "Am", "Bm", "C", "D", "Em", "F#-"]
+["Ab", "Bbm", "Cm", "Db", "Eb", "Fm", "G-"]
+["A", "Bm", "C#m", "D", "E", "F#m", "G#-"]
+["Bb", "Cm", "Dm", "Eb", "F", "Gm", "A-"]
+["B", "C#m", "D#m", "E", "F#", "G#m", "A#-"]
+["Cm", "D-", "Eb", "Fm", "Gm", "Ab", "Bb"]
+["C#m", "D#-", "E", "F#m", "G#m", "A", "B"]
+["Dm", "E-", "F", "Gm", "Am", "Bb", "C"]
+["D#m", "E#-", "F#", "G#m", "A#m", "B", "C#"]
+["Em", "F#-", "G", "Am", "Bm", "C", "D"]
+["Fm", "G-", "Ab", "Bbm", "Cm", "Db", "Eb"]
+["F#m", "G#-", "A", "Bm", "C#m", "D", "E"]
+["Gm", "A-", "Bb", "Cm", "Dm", "Eb", "F"]
+["Abm", "Bb-", "Cb", "Dbm", "Ebm", "Fb", "Gb"]
+["Am", "B-", "C", "Dm", "Em", "F", "G"]
+["Bbm", "C-", "Db", "Ebm", "Fm", "Gb", "Ab"]
+["Bm", "C#-", "D", "Em", "F#m", "G", "A"]
