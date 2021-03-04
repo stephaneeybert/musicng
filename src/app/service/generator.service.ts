@@ -562,9 +562,9 @@ export class GeneratorService {
     if (previousBaseChroma) {
       chromaIndex = this.randomlyPickChromaFromTonalityBonuses(tonalityChromas, previousBaseChroma);
     } else {
-      // TODO If in major then take within the 0, 2, 4 ones and ignore the others in the 7
-      // TODO Implement the randomlyPickChromaFromSomeTonalityChromas method
-      chromaIndex = 0; // TODO this.randomlyPickChromaFromSomeTonalityChromas(tonalityChromas);
+      // TODO If in major tonality then pick the chroma within the 0, 2, 4 ones and ignore the others in the tonality of 7 chromas
+      // TODO Implement a randomlyPickChromaFromSomeTonalityChromas method that should pick between these 3 chromas
+      chromaIndex = 0; // TODO then enable the mthod here this.randomlyPickChromaFromSomeTonalityChromas(tonalityChromas);
     }
 
     for (let noteIndex = 0; noteIndex < chordWidth; noteIndex++) {
