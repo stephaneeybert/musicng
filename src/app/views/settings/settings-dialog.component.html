@@ -113,6 +113,16 @@
             matTooltip="{{ 'settings.form.set.generate.inpassingNote.tip' | translate }}"></mat-slider>
         </p>
         <p>
+          <mat-label>{{ 'settings.form.set.generate.bonusMin.label' | translate }} </mat-label>
+          <mat-slider thumbLabel min="0" max="5" step="1" formControlName="generateBonusMin"
+            matTooltip="{{ 'settings.form.set.generate.bonusMin.tip' | translate }}"></mat-slider>
+        </p>
+        <p>
+          <mat-label>{{ 'settings.form.set.generate.bonusRandom.label' | translate }} </mat-label>
+          <mat-slider thumbLabel [displayWith]="formatAsPercentage" min="0" max="100" step="10" formControlName="generateBonusRandom"
+            matTooltip="{{ 'settings.form.set.generate.bonusRandom.tip' | translate }}"></mat-slider>
+        </p>
+        <p>
           <mat-form-field>
             <mat-label>{{ 'settings.form.set.generate.tonality.label' | translate }}</mat-label>
             <mat-select formControlName="generateTonality" [compareWith]="compareItemsById"

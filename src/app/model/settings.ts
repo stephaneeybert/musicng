@@ -1,5 +1,5 @@
 import { TempoUnit, TempoUnitType } from './tempo-unit';
-import { DEFAULT_TEMPO_BPM, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_CHORD_DURATION, DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_WIDTH, DEFAULT_RANDOM_INPASSING, DEFAULT_NB_CHORDS, DEFAULT_VELOCITY_MEDIUM, DEFAULT_VELOCITY_LOUD, NOTE_RANGE, DEFAULT_RANDOM_MODULATION, DEFAULT_VELOCITY_SOFT, NOTE_C } from '@app/service/notation.constant ';
+import { DEFAULT_TEMPO_BPM, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_CHORD_DURATION, DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_WIDTH, DEFAULT_RANDOM_INPASSING, DEFAULT_NB_CHORDS, DEFAULT_VELOCITY_MEDIUM, DEFAULT_VELOCITY_LOUD, NOTE_RANGE, DEFAULT_RANDOM_MODULATION, DEFAULT_VELOCITY_SOFT, NOTE_C, DEFAULT_BONUS_MIN, DEFAULT_BONUS_RANDOM } from '@app/service/notation.constant ';
 
 export class Settings {
 
@@ -16,6 +16,8 @@ export class Settings {
   generateModulation: number;
   generateNbChords: number;
   generateDoubleChord: boolean;
+  generateBonusMin: number;
+  generateBonusRandom: number;
   generateMelody: boolean;
   generateHarmony: boolean;
   generateDrums: boolean;
@@ -43,6 +45,8 @@ export class Settings {
     this.generateModulation = DEFAULT_RANDOM_MODULATION;
     this.generateNbChords = DEFAULT_NB_CHORDS;
     this.generateDoubleChord = false;
+    this.generateBonusMin = DEFAULT_BONUS_MIN;
+    this.generateBonusRandom = DEFAULT_BONUS_RANDOM;
     this.generateMelody = true;
     this.generateHarmony = true;
     this.generateDrums = false;
@@ -71,6 +75,8 @@ export class Settings {
     generateModulation: number,
     generateNbChords: number,
     generateDoubleChord: boolean,
+    generateBonusMin: number,
+    generateBonusRandom: number,
     generateMelody: boolean,
     generateHarmony: boolean,
     generateDrums: boolean,
@@ -97,6 +103,8 @@ export class Settings {
     this.generateModulation = generateModulation;
     this.generateNbChords = generateNbChords;
     this.generateDoubleChord = generateDoubleChord;
+    this.generateBonusMin = generateBonusMin;
+    this.generateBonusRandom = generateBonusRandom;
     this.generateMelody = generateMelody;
     this.generateHarmony = generateHarmony;
     this.generateDrums = generateDrums;

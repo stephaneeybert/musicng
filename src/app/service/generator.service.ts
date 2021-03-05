@@ -573,17 +573,18 @@ export class GeneratorService {
     return chromas;
   }
 
+  // TODO Remove ?
   private randomlyPickChromaFromTonality(tonalityChromas: Array<string>): number {
     return this.commonService.getRandomIntegerBetween(0, tonalityChromas.length - 1);
   }
 
   // Based on the previous chroma bonuses pick one chroma
   private randomlyPickChromaFromTonalityBonuses(tonalityChromas: Array<string>, previousChroma: string): number {
-    // The higher the randomliness, the less wright has the bonus and thus the more random the selection
-    // The lower the randomliness, the more weight has the bonus and thus the less random the selection
-    const BONUS_RANDOMLINESS: number = 0; // TODO Maybe have a settings
+    // The higher the random value, the less weight has the bonus and thus the more random the choice of a note
+    // The lower the random value, the more weight has the bonus and thus the less random the choice of a note
+    const BONUS_RANDOMLINESS: number = this.settingsService.getSettings().generateBonusRandom;
     // If a minimum bonus is specified then do not consider the chromas that have a lower bonus
-    const BONUS_MIN: number = 3; // TODO Maybe have a settings
+    const BONUS_MIN: number = this.settingsService.getSettings().generateBonusMin;
 
     const previousChromaIndex: number = tonalityChromas.indexOf(previousChroma);
     if (previousChromaIndex < 0) {

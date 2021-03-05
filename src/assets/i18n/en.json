@@ -116,6 +116,14 @@
             "label": "In passing note",
             "tip": "When choosing a note for a chord, tune the probability of choosing an in passing note."
           },
+          "bonusMin": {
+            "label": "Bonus minimum",
+            "tip": "If a minimum bonus is specified then ignore the notes that have a bonus lower than the minimum."
+          },
+          "bonusRandom": {
+            "label": "Bonus random",
+            "tip": "The higher the random value, the less weight has the bonus and thus the more random the choice of a note."
+          },
           "tonality": {
             "label": "Major tonality",
             "tip": "The tonality of the first measure."

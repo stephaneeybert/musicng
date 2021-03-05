@@ -53,6 +53,8 @@ export class SettingsDialogComponent implements OnInit {
       existingSettings.generateModulation,
       existingSettings.generateNbChords,
       existingSettings.generateDoubleChord,
+      existingSettings.generateBonusMin,
+      existingSettings.generateBonusRandom,
       existingSettings.generateMelody,
       existingSettings.generateHarmony,
       existingSettings.generateDrums,
@@ -94,6 +96,8 @@ export class SettingsDialogComponent implements OnInit {
       }),
       generateNbChords: new FormControl(this.settingsEdition.generateNbChords),
       generateDoubleChord: new FormControl(this.settingsEdition.generateDoubleChord),
+      generateBonusMin: new FormControl(this.settingsEdition.generateBonusMin),
+      generateBonusRandom: new FormControl(this.settingsEdition.generateBonusRandom),
       generateMelody: new FormControl(this.settingsEdition.generateMelody),
       generateHarmony: new FormControl(this.settingsEdition.generateHarmony),
       generateDrums: new FormControl({

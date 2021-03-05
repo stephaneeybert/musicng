@@ -75,6 +75,12 @@ export class SettingsStorageService extends LocalStorageService<Settings> {
     if (this.commonService.isSet(settingJson.generateDoubleChord)) {
       settings.generateDoubleChord = settingJson.generateDoubleChord;
     }
+    if (this.commonService.isSet(settingJson.generateBonusMin)) {
+      settings.generateBonusMin = settingJson.generateBonusMin;
+    }
+    if (this.commonService.isSet(settingJson.generateBonusRandom)) {
+      settings.generateBonusRandom = settingJson.generateBonusRandom;
+    }
     if (this.commonService.isSet(settingJson.generateMelody)) {
       settings.generateMelody = settingJson.generateMelody;
     }
