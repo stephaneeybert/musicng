@@ -581,7 +581,7 @@ export class GeneratorService {
   private randomlyPickChromaFromTonalityBonuses(tonalityChromas: Array<string>, previousChroma: string): number {
     // The higher the randomliness, the less wright has the bonus and thus the more random the selection
     // The lower the randomliness, the more weight has the bonus and thus the less random the selection
-    const RANDOMLINESS: number = 0; // TODO Maybe have a settings
+    const BONUS_RANDOMLINESS: number = 0; // TODO Maybe have a settings
     // If a minimum bonus is specified then do not consider the chromas that have a lower bonus
     const MIN_BONUS: number = 3; // TODO Maybe have a settings
 
@@ -594,7 +594,7 @@ export class GeneratorService {
     for (let index = 0; index < chromaBonuses.length; index++) {
       let chromaBonus: number = chromaBonuses[index];
       if ((MIN_BONUS > 0 && chromaBonus >= MIN_BONUS) || 0 === MIN_BONUS) {
-        chromaBonus += RANDOMLINESS;
+        chromaBonus += BONUS_RANDOMLINESS;
         for (let nb = 0; nb < chromaBonus; nb++) {
           // Thanks to the matrix being mirror like, the chroma is retrieved from the bonus index in the keys array
           electedChromas.push(index);
