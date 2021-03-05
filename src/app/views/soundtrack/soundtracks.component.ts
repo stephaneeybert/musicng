@@ -20,7 +20,6 @@ import { MIDI_FILE_SUFFIX } from '@app/service/notation.constant ';
 import { DownloadService } from '@stephaneeybert/lib-core';
 import { Download } from '@stephaneeybert/lib-core/lib/download/download';
 import { ProgressTask } from '@stephaneeybert/lib-core/lib/download/progress-task';
-import { NotationService } from '@app/service/notation.service';
 
 @Component({
   selector: 'app-soundtracks',
@@ -47,7 +46,6 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
   constructor(
     private changeDetector: ChangeDetectorRef,
     private soundtrackStore: SoundtrackStore,
-    private notationService: NotationService,
     private generatorService: GeneratorService,
     private melodyService: MelodyService,
     private synthService: SynthService,
@@ -69,8 +67,6 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
     this.audioTransportStarted$ = this.synthService.audioTransportIsStarted$();
 
     this.soundtrackStore.loadAllFromStorage();
-
-    this.notationService.logAllTonalities();
   }
 
   ngOnDestroy() {
