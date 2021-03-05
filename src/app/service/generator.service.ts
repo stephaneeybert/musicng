@@ -573,11 +573,6 @@ export class GeneratorService {
     return chromas;
   }
 
-  // TODO Remove ?
-  private randomlyPickChromaFromTonality(tonalityChromas: Array<string>): number {
-    return this.commonService.getRandomIntegerBetween(0, tonalityChromas.length - 1);
-  }
-
   // Based on the previous chroma bonuses pick one chroma
   private randomlyPickChromaFromTonalityBonuses(tonalityChromas: Array<string>, previousChroma: string): number {
     // The higher the random value, the less weight has the bonus and thus the more random the choice of a note
