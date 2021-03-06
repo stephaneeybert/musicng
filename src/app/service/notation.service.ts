@@ -302,8 +302,7 @@ export class NotationService {
   public isBpmTempoUnit(duration: Duration) {
     return duration && duration.unit === TempoUnit.NOTE;
   }
-/* ENHARMONICS
-*/
+
   private allowedChromas(): Array<string> {
     const bidirectional: Array<string> = new Array();
     CHROMA_ENHARMONICS.forEach((value: string, key: string) => {
@@ -312,11 +311,6 @@ export class NotationService {
     });
     return META_CHROMAS.concat(bidirectional);
   }
-/*
-private allowedChromas(): Array<string> {
-  return META_CHROMAS.concat(HALF_TONE_CHROMAS);
-} TODO
-*/
 
   private createChroma(value: string): Chroma {
     if (this.allowedChromas().includes(value)) {
