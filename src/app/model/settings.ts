@@ -13,6 +13,7 @@ export class Settings {
   generateReverseDissimilarChord: boolean;
   generateInpassingNote: number;
   generateTonality: string;
+  generateOnlyMajorTonalities: boolean;
   generateModulation: number;
   generateNbChords: number;
   generateDoubleChord: boolean;
@@ -42,6 +43,7 @@ export class Settings {
     this.generateReverseDissimilarChord = false;
     this.generateInpassingNote = DEFAULT_RANDOM_INPASSING;
     this.generateTonality = NOTE_C;
+    this.generateOnlyMajorTonalities = false;
     this.generateModulation = DEFAULT_RANDOM_MODULATION;
     this.generateNbChords = DEFAULT_NB_CHORDS;
     this.generateDoubleChord = false;
@@ -72,6 +74,7 @@ export class Settings {
     generateReverseDissimilarChord: boolean,
     generateInpassingNote: number,
     generateTonality: string,
+    generateOnlyMajorTonalities: boolean,
     generateModulation: number,
     generateNbChords: number,
     generateDoubleChord: boolean,
@@ -100,6 +103,7 @@ export class Settings {
     this.generateReverseDissimilarChord = generateReverseDissimilarChord;
     this.generateInpassingNote = generateInpassingNote;
     this.generateTonality = generateTonality;
+    this.generateOnlyMajorTonalities = generateOnlyMajorTonalities;
     this.generateModulation = generateModulation;
     this.generateNbChords = generateNbChords;
     this.generateDoubleChord = generateDoubleChord;

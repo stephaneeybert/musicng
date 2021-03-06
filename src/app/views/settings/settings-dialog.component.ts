@@ -50,6 +50,7 @@ export class SettingsDialogComponent implements OnInit {
       existingSettings.generateReverseDissimilarChord,
       existingSettings.generateInpassingNote,
       existingSettings.generateTonality,
+      existingSettings.generateOnlyMajorTonalities,
       existingSettings.generateModulation,
       existingSettings.generateNbChords,
       existingSettings.generateDoubleChord,
@@ -90,6 +91,7 @@ export class SettingsDialogComponent implements OnInit {
         value: this.settingsEdition.generateTonality,
         disabled: false
       }),
+      generateOnlyMajorTonalities: new FormControl(this.settingsEdition.generateOnlyMajorTonalities),
       generateModulation: new FormControl({
         value: this.settingsEdition.generateModulation,
         disabled: false

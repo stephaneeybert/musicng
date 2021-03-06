@@ -134,6 +134,11 @@
           </mat-form-field>
         </p>
         <p>
+          <mat-slide-toggle formControlName="generateOnlyMajorTonalities"
+            matTooltip="{{ 'settings.form.set.generate.generateOnlyMajorTonalities.tip' | translate }}">
+            {{ 'settings.form.set.generate.generateOnlyMajorTonalities.label' | translate }}</mat-slide-toggle>
+        </p>
+        <p>
           <mat-label>{{ 'settings.form.set.generate.modulation.label' | translate }} </mat-label>
           <mat-slider thumbLabel [displayWith]="formatAsPercentage" min="0" max="100" step="5" formControlName="generateModulation"
             matTooltip="{{ 'settings.form.set.generate.modulation.tip' | translate }}"></mat-slider>

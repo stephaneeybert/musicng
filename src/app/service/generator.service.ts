@@ -298,8 +298,8 @@ export class GeneratorService {
 
   // Get a tonality selected randomly among ones that include two previous notes
   private getSibblingTonality(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Tonality {
-    const onlyMajor: boolean = false; // TODO Have a settings to default false
-    const dontRepeat: boolean = true // TODO Have a settings to default false
+    const onlyMajor: boolean = this.settingsService.getSettings().generateOnlyMajorTonalities;
+    const dontRepeat: boolean = true;
     if (previousPreviousChord && previousChord) {
       let tonalities: Array<Tonality> = new Array();
       const previousChordName: string = this.notationService.getChordIntlName(previousChord);

@@ -66,6 +66,9 @@ export class SettingsStorageService extends LocalStorageService<Settings> {
     if (this.commonService.isSet(settingJson.generateTonality)) {
       settings.generateTonality = settingJson.generateTonality;
     }
+    if (this.commonService.isSet(settingJson.generateOnlyMajorTonalities)) {
+      settings.generateOnlyMajorTonalities = settingJson.generateOnlyMajorTonalities;
+    }
     if (this.commonService.isSet(settingJson.generateModulation)) {
       settings.generateModulation = Number(settingJson.generateModulation);
     }
