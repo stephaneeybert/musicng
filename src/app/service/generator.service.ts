@@ -613,18 +613,6 @@ export class GeneratorService {
   // The table of bonus per chroma
   // For a given chroma there is a series of bonus numbers
   // A bonus represents the level of harmony between a chroma and its following chroma
-  // private getBonusTable(): Map<string, Array<number>> {
-  //   const bonuses: Map<string, Array<number>> = new Map([
-  //     [ 'C', [ 30, 0, 15, 5, 5, 10, 0 ] ],
-  //     [ 'D', [ 0, 30, 0, 10, 0, 5, 10 ] ],
-  //     [ 'E', [ 15, 0, 30, 0, 10, 0, 0 ] ],
-  //     [ 'F', [ 5, 10, 0, 30, 0, 15, 0 ] ],
-  //     [ 'G', [ 5, 0, 10, 0, 30, 0, 10 ] ],
-  //     [ 'A', [ 10, 5, 0, 15, 0, 30, 0 ] ],
-  //     [ 'B', [ 0, 10, 0, 0, 10, 0, 30 ] ]
-  //   ]);
-  //   return bonuses;
-  // }
   private getBonusTable(): Array<Array<number>> {
     const bonuses: Array<Array<number>> = new Array(
       [0, 0, 15, 5, 5, 10, 0],
