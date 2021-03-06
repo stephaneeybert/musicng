@@ -589,7 +589,7 @@ export class SheetService {
     }
   }
 
-  private renderSVGContext(id: string, width: number, height: number): any { // TODO Replace all these any types
+  private renderSVGContext(id: string, width: number, height: number): any {
     const domElement: HTMLElement | null = document.getElementById(id);
     if (domElement != null) {
       const renderer: Vex.Flow.Renderer = new Vex.Flow.Renderer(domElement, Vex.Flow.Renderer.Backends.SVG);
