@@ -10,6 +10,7 @@ export const DEFAULT_CHORD_WIDTH: number = 3;
 export const DEFAULT_CHORD_DURATION: number = 4;
 export const DEFAULT_NOTE_OCTAVE: number = 4;
 export const DEFAULT_NB_CHORDS: number = 40;
+export const NOTE_NEAR_MAX: number = 2;
 export const DEFAULT_BONUS_MIN: number = 3;
 export const DEFAULT_BONUS_RANDOM: number = 0;
 export const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;

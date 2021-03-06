@@ -9,7 +9,7 @@ import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { NOTE_RANGE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR } from './notation.constant ';
+import { NOTE_RANGE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, NOTE_NEAR_MAX } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 
 @Injectable({
@@ -174,12 +174,10 @@ export class GeneratorService {
 
     let chromas: Array<string> = tonalityChromas;
 
-    // The maximum near distance to consider
-    const NEAR_MAX: number = 2; // TODO Have this constant as a settings
-
     // Consider the chromas above the previous melody note chroma
     if (previousMelodyOctave <= this.notationService.getFirstChordNoteSortedByIndex(harmonyChord).renderOctave()) {
-      for (let chromaIndex: number = 0; chromaIndex < NEAR_MAX; chromaIndex++) {
+      // The maximum distance to consider for a note to be near enough
+      for (let chromaIndex: number = 0; chromaIndex < NOTE_NEAR_MAX; chromaIndex++) {
         chromas = this.notationService.createArrayShiftOnceLeft(chromas);
         // Consider only notes before the next harmony chord note
         if (!harmonyChordSortedChromas.includes(chromas[previousMelodyNoteIndex])) {
@@ -198,7 +196,8 @@ export class GeneratorService {
     // Consider the chromas below the previous melody note chroma
     if (previousMelodyOctave >= this.notationService.getFirstChordNoteSortedByIndex(harmonyChord).renderOctave()) {
       chromas = tonalityChromas;
-      for (let chromaIndex: number = 0; chromaIndex < NEAR_MAX; chromaIndex++) {
+      // The maximum distance to consider for a note to be near enough
+      for (let chromaIndex: number = 0; chromaIndex < NOTE_NEAR_MAX; chromaIndex++) {
         chromas = this.createArrayShiftOnceRight(chromas);
         // Consider only notes before the next harmony chord note
         if (!harmonyChordSortedChromas.includes(chromas[previousMelodyNoteIndex])) {
@@ -245,14 +244,12 @@ export class GeneratorService {
       const chordNoteIndex: number = this.commonService.getRandomIntegerBetween(0, harmonyChordSortedChromas.length - 1);
       nearNoteChromas.push([harmonyChordSortedChromas[chordNoteIndex], this.notationService.getFirstChordNoteSortedByIndex(harmonyChord).renderOctave()]);
     } else {
-      // The maximum near distance to consider
-      const NEAR_MAX: number = 2; // TODO Have this constant as a settings
-
       for (let noteIndex = 0; noteIndex < harmonyChordSortedChromas.length; noteIndex++) {
         const harmonyChordChroma: string = harmonyChordSortedChromas[noteIndex];
         // Avoid the previous chroma
         if (harmonyChordChroma != previousMelodyChroma) {
-          if (Math.abs(tonalityChromas.indexOf(harmonyChordChroma) - previousMelodyNoteIndex) <= NEAR_MAX) {
+          // The maximum distance to consider for a note to be near enough
+          if (Math.abs(tonalityChromas.indexOf(harmonyChordChroma) - previousMelodyNoteIndex) < NOTE_NEAR_MAX) {
             nearNoteChromas.push([harmonyChordChroma, previousMelodyOctave]);
           }
         }
