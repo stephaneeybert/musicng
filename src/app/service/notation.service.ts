@@ -347,7 +347,7 @@ private allowedChromas(): Array<string> {
     const sameChord: PlacedChord = this.createEmptyChord(chordIndex, chord.duration, chord.velocity, chord.tonality)
     sameChord.dottedAll = chord.dottedAll;
     chord.getNotesSortedByIndex()
-    .map((note: Note) => {
+    .forEach((note: Note) => {
       sameChord.addNote(note);
     });
     return sameChord;
