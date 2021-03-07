@@ -533,9 +533,8 @@ export class GeneratorService {
   private generateHarmonyChord(placedChordIndex: number, tonality: Tonality, octave: number, chordDuration: number, velocity: number, previousChord: PlacedChord | undefined): PlacedChord | undefined {
     let previousChordSortedChromas: Array<string> = previousChord ? previousChord.getSortedNotesChromas() : [];
     const previousBaseChroma: string | undefined = previousChord ? this.notationService.getFirstChordNoteSortedByIndex(previousChord).renderChroma() : undefined;
-    const tonalityChromas: Array<string> = this.notationService.getTonalityChromas(tonality.range, tonality.firstChroma);
 
-    const chromas: Array<string> = this.buildChromas(tonalityChromas, previousBaseChroma);
+    const chromas: Array<string> = this.buildChordChromas(tonality, previousBaseChroma);
 
     // Consider a chord only if it is similar to its previous one
     if (!previousChord || this.isSimilarToPrevious(previousChordSortedChromas, chromas)) {
@@ -550,8 +549,9 @@ export class GeneratorService {
     }
   }
 
-  private buildChromas(tonalityChromas: Array<string>, previousBaseChroma?: string): Array<string> {
+  private buildChordChromas(tonality: Tonality, previousBaseChroma?: string): Array<string> {
     const chromas: Array<string> = new Array();
+    const tonalityChromas: Array<string> = this.notationService.getTonalityChromas(tonality.range, tonality.firstChroma);
     const chordWidth: number = this.settingsService.getSettings().generateChordWidth;
     const shiftedChromas: Array<Array<string>> = this.notationService.getTonalityShiftedChromas(tonalityChromas, chordWidth);
 
@@ -559,15 +559,28 @@ export class GeneratorService {
     if (previousBaseChroma) {
       chromaIndex = this.randomlyPickChromaFromTonalityBonuses(tonalityChromas, previousBaseChroma);
     } else {
-      // TODO If in major tonality then pick the chroma within the 0, 2, 4 ones and ignore the others in the tonality of 7 chromas
-      // TODO Implement a randomlyPickChromaFromSomeTonalityChromas method that should pick between these 3 chromas
-      chromaIndex = 0; // TODO then enable the mthod here this.randomlyPickChromaFromSomeTonalityChromas(tonalityChromas);
+      chromaIndex = this.randomlyPickFirstChroma(tonalityChromas, tonality);
     }
 
     for (let noteIndex = 0; noteIndex < chordWidth; noteIndex++) {
       chromas.push(shiftedChromas[noteIndex][chromaIndex]);
     }
     return chromas;
+  }
+
+  // Pick a first chroma when there is no previous chord
+  private randomlyPickFirstChroma(tonalityChromas: Array<string>, tonality: Tonality): number {
+    const chromas: Array<number> = new Array();
+    // If in major tonality then pick the chroma within the 0, 2, 4 ones and ignore the others in the tonality of 7 chromas
+    if (tonality.range == NOTE_RANGE.MAJOR) {
+      chromas.push(0);
+      chromas.push(2);
+      chromas.push(4);
+      const randomIndex: number = this.commonService.getRandomIntegerBetween(0, (chromas.length - 1));
+      return chromas[randomIndex];
+    } else {
+      return 0;
+    }
   }
 
   // Based on the previous chroma bonuses pick one chroma
