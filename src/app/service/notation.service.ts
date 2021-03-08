@@ -157,7 +157,7 @@ export class NotationService {
   public renderTonalityNameInSyllabic(placedChord: PlacedChord): string {
     const chordNameIntl: string = this.getChordIntlName(placedChord);
     let syllabic: string = this.chordChromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
-    return chordNameIntl + ' ' + syllabic;
+    return syllabic + ' ' + chordNameIntl;
   }
 
   public isHarmonyChord(placedChord: PlacedChord): boolean {
