@@ -296,7 +296,7 @@ export class GeneratorService {
     return tonalities;
   }
 
-  // Get a tonality selected randomly among ones that include two previous notes
+  // Get a tonality selected randomly among ones that include two previous chords
   private getSibblingTonality(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Tonality {
     const onlyMajor: boolean = this.settingsService.getSettings().generateOnlyMajorTonalities;
     const dontRepeat: boolean = true;
