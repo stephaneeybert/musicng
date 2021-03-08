@@ -132,7 +132,7 @@ export class SheetService {
                       }
                     }
                     if (track.displayChordNames) {
-                      const noteName: string = this.notationService.getChordIntlName(placedChord) + ' ' + this.renderChordNameInSyllabic(placedChord);
+                      const noteName: string = this.renderChordNameInSyllabic(placedChord) + ' ' + this.notationService.getChordIntlName(placedChord);
                       if (noteName !== previousNoteName) {
                         this.addChordName(placedChord, noteName);
                         previousNoteName = noteName;
