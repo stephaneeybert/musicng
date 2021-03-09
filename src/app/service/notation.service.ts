@@ -154,8 +154,7 @@ export class NotationService {
     return sortedNotes[lastIsLowest];
   }
 
-  public renderTonalityNameInSyllabic(placedChord: PlacedChord): string {
-    const chordNameIntl: string = this.getChordIntlName(placedChord);
+  public renderTonalityNameInSyllabic(chordNameIntl: string): string {
     let syllabic: string = this.chordChromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
     return syllabic + ' ' + chordNameIntl;
   }

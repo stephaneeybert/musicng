@@ -230,10 +230,11 @@ export class SheetService {
     // Dp not render the tonality name on the melody track
     // as the tonality name is determined from the harmony chords
     if (this.notationService.isHarmonyChord(measure.placedChords[0])) {
-      const tonalityFirstChroma: string = this.notationService.renderTonalityNameInSyllabic(measure.placedChords[0]);
+      const tonalityChordNames: Array<string> = this.notationService.getTonalityChordNames(measure.placedChords[0].tonality.range, measure.placedChords[0].tonality.firstChroma);
+      const tonalityName: string = this.notationService.renderTonalityNameInSyllabic(tonalityChordNames[0]);
       const staveX: number = this.getStaveX(animatedStave, track.index, 0);
       const staveY: number = measure.sheetStave.getYForBottomText();
-      this.drawText(soundtrack.sheetContext, tonalityFirstChroma, staveX, staveY);
+      this.drawText(soundtrack.sheetContext, tonalityName, staveX, staveY);
     }
   }
 
