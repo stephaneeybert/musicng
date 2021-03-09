@@ -283,7 +283,7 @@ export class GeneratorService {
     return new Tonality(NOTE_RANGE.MAJOR, firstChroma);
   }
 
-  private getTonalitiesContainingChromas(range: NOTE_RANGE, previousChordName: string, previousPreviousChordName: string): Array<Tonality> {
+  private getTonalitiesContainingChordNames(range: NOTE_RANGE, previousPreviousChordName: string, previousChordName: string): Array<Tonality> {
     const tonalities: Array<Tonality> = new Array();
     const halfTones: Array<string> = (range == NOTE_RANGE.MAJOR) ? CHROMAS_MAJOR : CHROMAS_MINOR;
     for (let i: number = 0; i < halfTones.length; i++) {
@@ -304,9 +304,9 @@ export class GeneratorService {
       let tonalities: Array<Tonality> = new Array();
       const previousChordName: string = this.notationService.getChordIntlName(previousChord);
       const previousPreviousChordName: string = this.notationService.getChordIntlName(previousPreviousChord);
-      tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MAJOR, previousChordName, previousPreviousChordName));
+      tonalities = tonalities.concat(this.getTonalitiesContainingChordNames(NOTE_RANGE.MAJOR, previousPreviousChordName, previousChordName));
       if (!onlyMajor) {
-        tonalities = tonalities.concat(this.getTonalitiesContainingChromas(NOTE_RANGE.MINOR_NATURAL, previousChordName, previousPreviousChordName));
+        tonalities = tonalities.concat(this.getTonalitiesContainingChordNames(NOTE_RANGE.MINOR_NATURAL, previousPreviousChordName, previousChordName));
       }
       // There must always be at least one tonality that includes the two previous chords
       if (tonalities.length == 0) {
