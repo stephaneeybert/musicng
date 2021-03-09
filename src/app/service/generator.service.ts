@@ -541,7 +541,7 @@ export class GeneratorService {
       return this.notationService.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex, chromas);
     } else {
       // If the current chord is too dissimilar from its previous one
-      // then create a chord from a reversing of the previous one
+      // then possibly create a chord from a reversing of the previous one
       if (this.settingsService.getSettings().generateReverseDissimilarChord) {
         const shiftedChromas: Array<string> = this.createShiftedChord(previousChordSortedChromas);
         return this.notationService.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex, shiftedChromas);
