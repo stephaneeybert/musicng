@@ -308,12 +308,12 @@ export class GeneratorService {
       if (!onlyMajor) {
         tonalities = tonalities.concat(this.getTonalitiesContainingChordNames(NOTE_RANGE.MINOR_NATURAL, previousPreviousChordName, previousChordName));
       }
+      if (dontRepeat) {
+        this.stripTonality(tonalities, previousChord.tonality);
+      }
       // There must always be at least one tonality that includes the two previous chords
       if (tonalities.length == 0) {
         throw new Error('No tonality could be found as sibbling to the two previous chords ' + previousPreviousChordName + ' and ' + previousChordName);
-      }
-      if (dontRepeat) {
-        this.stripTonality(tonalities, previousChord.tonality);
       }
       return tonalities[this.commonService.getRandomIntegerBetween(0, tonalities.length - 1)];
     } else {
