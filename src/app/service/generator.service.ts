@@ -308,7 +308,7 @@ export class GeneratorService {
       if (!onlyMajor) {
         tonalities = tonalities.concat(this.getTonalitiesContainingChordNames(NOTE_RANGE.MINOR_NATURAL, previousPreviousChordName, previousChordName));
       }
-      if (dontRepeat) {
+      if (dontRepeat && tonalities.length > 1) {
         this.stripTonality(tonalities, previousChord.tonality);
       }
       // There must always be at least one tonality that includes the two previous chords
