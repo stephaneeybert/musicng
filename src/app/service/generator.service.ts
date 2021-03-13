@@ -315,7 +315,7 @@ export class GeneratorService {
       if (dontRepeat) {
         this.stripTonality(tonalities, previousChord.tonality);
       }
-      return this.getRandomTonality(previousChord.tonality, onlyMajor, dontRepeat);
+      return tonalities[this.commonService.getRandomIntegerBetween(0, tonalities.length - 1)];
     } else {
       // If no previous chord is specified then randomly pick a tonality
       return this.getRandomTonality(undefined, onlyMajor, dontRepeat);
