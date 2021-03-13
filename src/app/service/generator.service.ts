@@ -550,7 +550,7 @@ export class GeneratorService {
     }
   }
 
-  private buildChordChromas(tonality: Tonality, previousBaseChroma?: string): Array<string> {
+  private buildChordChromas(tonality: Tonality, previousBaseChroma : string | undefined): Array<string> {
     const chromas: Array<string> = new Array();
     const tonalityChromas: Array<string> = this.notationService.getTonalityChromas(tonality.range, tonality.firstChroma);
     const chordWidth: number = this.settingsService.getSettings().generateChordWidth;
