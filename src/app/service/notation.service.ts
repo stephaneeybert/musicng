@@ -154,6 +154,11 @@ export class NotationService {
     return sortedNotes[lastIsLowest];
   }
 
+  public renderTonalityName(tonality: Tonality): string {
+    const tonalityChordNames: Array<string> = this.getTonalityChordNames(tonality.range, tonality.firstChroma);
+    return this.renderTonalityNameInSyllabic(tonalityChordNames[0]);
+  }
+
   public renderTonalityNameInSyllabic(chordNameIntl: string): string {
     let syllabic: string = this.chordChromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
     return syllabic + ' ' + chordNameIntl;
