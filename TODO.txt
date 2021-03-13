@@ -230,36 +230,6 @@ Dans le cas de la gamme majeure, les intervalles sont :
 Do + 1 ton = Ré + 1 ton = Mi + 1/2 ton = Fa + 1 ton = Sol + 1 ton = La + 1 ton = Si + 1/2 ton = Do
 soit Do Ré Mi Fa Sol La Si Do qui est la tonalité dd Do
 ---
-LES 12 TONALITÉS MAJEURES, COMPRENANT CHACUNES 7 ACCORDS
-I II III IV V VI VII 
-Do C Dm Em F G Am Bdim 
-Réb Db Ebm Fm Gb Ab Bm Cdim 
-Ré D Em F#m G A Bm C#dim 
-Mib Eb Fm Gm Ab Bb Cm Ddim 
-Mi E F#m G#m A B C#m D#dim 
-Fa F Gm Am Bb C Dm Edim 
-Fa# F# G#m A#m B C# D#m E#dim 
-Sol G Am Bm C D Em F#dim
-Lab Ab Bbm Cm Db Eb Fm Gdim 
-La A Bm C#m D E F#m G#dim 
-Sib Bb Cm Dm Eb F Gm Adim 
-Si B C#m D#m E F# G#m A#dim
----
-LES 12 TONALITÉS MINEURES
-I II III IV V VI VII 
-Do Cm Ddim Eb Fm Gm Ab Bb 
-Do# C#m D#dim E Gbm Abm A B 
-Ré Dm Edim F Gm Am Bb C 
-Mib D#m E#dim F# G#m A#m B C# 
-Mi Em F#dim G Am Bm C D 
-Fa Fm Gdim Ab Bbm Cm Db Eb 
-Fa# F#m G#dim A Bm C#m D E 
-Sol Gm Adim Bb Cm Dm Eb F 
-Lab Abm Bbdim B Dbm Ebm F F# 
-La Am Bdim C Dm Em F G 
-Sib Bbm Cdim Db Ebm Fm Gb Ab 
-Si Bm C#dim D Em F#m G A
----
 Norbert, tu m'as dit que il ne devait pas y avoir de tonalité commançant par Cb
 J'ai donc supprimé ces deux tableux :
 export const CHROMAS_MAJOR: Array<string> = ['Cb', 'C', 'C#', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
@@ -348,6 +318,38 @@ private multiplyBySemitone(nosemitones): number {
   return Math.pow(semitone, nosemitones);
 }
 
+-----
+["Cb", "Dbm", "Ebm", "Fb", "Gb", "Abm", "Bb-"]
+["C", "Dm", "Em", "F", "G", "Am", "B-"]
+["C#", "D#m", "E#m", "F#", "G#", "A#m", "B#-"]
+["Db", "Ebm", "Fm", "Gb", "Ab", "Bbm", "C-"]
+["D", "Em", "F#m", "G", "A", "Bm", "C#-"]
+["Eb", "Fm", "Gm", "Ab", "Bb", "Cm", "D-"]
+["E", "F#m", "G#m", "A", "B", "C#m", "D#-"]
+["F", "Gm", "Am", "Bb", "C", "Dm", "E-"]
+["F#", "G#m", "A#m", "B", "C#", "D#m", "E#-"]
+["Gb", "Abm", "Bbm", "Cb", "Db", "Ebm", "F-"]
+["G", "Am", "Bm", "C", "D", "Em", "F#-"]
+["Ab", "Bbm", "Cm", "Db", "Eb", "Fm", "G-"]
+["A", "Bm", "C#m", "D", "E", "F#m", "G#-"]
+["Bb", "Cm", "Dm", "Eb", "F", "Gm", "A-"]
+["B", "C#m", "D#m", "E", "F#", "G#m", "A#-"]
+["Abm", "Bb-", "Cb", "Dbm", "Ebm", "Fb", "Gb"]
+["Am", "B-", "C", "Dm", "Em", "F", "G"]
+["A#m", "B#-", "C#", "D#m", "E#m", "F#", "G#"]
+["Bbm", "C-", "Db", "Ebm", "Fm", "Gb", "Ab"]
+["Bm", "C#-", "D", "Em", "F#m", "G", "A"]
+["Cm", "D-", "Eb", "Fm", "Gm", "Ab", "Bb"]
+["C#m", "D#-", "E", "F#m", "G#m", "A", "B"]
+["Dm", "E-", "F", "Gm", "Am", "Bb", "C"]
+["D#m", "E#-", "F#", "G#m", "A#m", "B", "C#"]
+["Ebm", "F-", "Gb", "Abm", "Bbm", "Cb", "Db"]
+["Em", "F#-", "G", "Am", "Bm", "C", "D"]
+["Fm", "G-", "Ab", "Bbm", "Cm", "Db", "Eb"]
+["F#m", "G#-", "A", "Bm", "C#m", "D", "E"]
+["Gm", "A-", "Bb", "Cm", "Dm", "Eb", "F"]
+["G#m", "A#-", "B", "C#m", "D#m", "E", "F#"]
+-----
 ["C", "Dm", "Em", "F", "G", "Am", "B-"]
 ["Db", "Ebm", "Fm", "Gb", "Ab", "Bbm", "C-"]
 ["D", "Em", "F#m", "G", "A", "Bm", "C#-"]
@@ -372,3 +374,33 @@ private multiplyBySemitone(nosemitones): number {
 ["Am", "B-", "C", "Dm", "Em", "F", "G"]
 ["Bbm", "C-", "Db", "Ebm", "Fm", "Gb", "Ab"]
 ["Bm", "C#-", "D", "Em", "F#m", "G", "A"]
+---
+LES 12 TONALITÉS MAJEURES, COMPRENANT CHACUNES 7 ACCORDS
+I II III IV V VI VII 
+Do C Dm Em F G Am Bdim 
+Réb Db Ebm Fm Gb Ab Bm Cdim 
+Ré D Em F#m G A Bm C#dim 
+Mib Eb Fm Gm Ab Bb Cm Ddim 
+Mi E F#m G#m A B C#m D#dim 
+Fa F Gm Am Bb C Dm Edim 
+Fa# F# G#m A#m B C# D#m E#dim 
+Sol G Am Bm C D Em F#dim
+Lab Ab Bbm Cm Db Eb Fm Gdim 
+La A Bm C#m D E F#m G#dim 
+Sib Bb Cm Dm Eb F Gm Adim 
+Si B C#m D#m E F# G#m A#dim
+---
+LES 12 TONALITÉS MINEURES
+I II III IV V VI VII 
+Do Cm Ddim Eb Fm Gm Ab Bb 
+Do# C#m D#dim E Gbm Abm A B 
+Ré Dm Edim F Gm Am Bb C 
+Mib D#m E#dim F# G#m A#m B C# 
+Mi Em F#dim G Am Bm C D 
+Fa Fm Gdim Ab Bbm Cm Db Eb 
+Fa# F#m G#dim A Bm C#m D E 
+Sol Gm Adim Bb Cm Dm Eb F 
+Lab Abm Bbdim B Dbm Ebm F F# 
+La Am Bdim C Dm Em F G 
+Sib Bbm Cdim Db Ebm Fm Gb Ab 
+Si Bm C#dim D Em F#m G A
