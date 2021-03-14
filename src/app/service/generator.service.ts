@@ -577,16 +577,12 @@ export class GeneratorService {
   // Pick a first chroma when there is no previous chord
   private randomlyPickFirstChroma(tonalityChromas: Array<string>, tonality: Tonality): number {
     const chromas: Array<number> = new Array();
-    // If in major tonality then pick the chroma within the 0, 2, 4 ones and ignore the others in the tonality of 7 chromas
-    if (tonality.range == NOTE_RANGE.MAJOR) {
-      chromas.push(0);
-      chromas.push(2);
-      chromas.push(4);
-      const randomIndex: number = this.commonService.getRandomIntegerBetween(0, (chromas.length - 1));
-      return chromas[randomIndex];
-    } else {
-      return this.commonService.getRandomIntegerBetween(0, (tonalityChromas.length - 1));
-    }
+    // Pick the chroma within the 0, 2, 4 ones and ignore the others in the tonality of 7 chromas
+    chromas.push(0);
+    chromas.push(2);
+    chromas.push(4);
+    const randomIndex: number = this.commonService.getRandomIntegerBetween(0, (chromas.length - 1));
+    return chromas[randomIndex];
   }
 
   // Based on the previous chroma bonuses pick one chroma
