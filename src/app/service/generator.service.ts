@@ -535,11 +535,11 @@ export class GeneratorService {
     let previousChordSortedChromas: Array<string> = previousChord ? previousChord.getSortedNotesChromas() : [];
     const previousBaseChroma: string | undefined = previousChord ? this.notationService.getFirstChordNoteSortedByIndex(previousChord).renderChroma() : undefined;
 
-    const chromas: Array<string> = this.buildChordChromas(tonality, previousBaseChroma);
+    const chordChromas: Array<string> = this.buildChordChromas(tonality, previousBaseChroma);
 
     // Consider a chord only if it is similar to its previous one
-    if (!previousChord || this.isSimilarToPrevious(previousChordSortedChromas, chromas)) {
-      return this.notationService.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex, chromas);
+    if (!previousChord || this.isSimilarToPrevious(previousChordSortedChromas, chordChromas)) {
+      return this.notationService.createNotesAndPlacedChord(octave, chordDuration, velocity, tonality, placedChordIndex, chordChromas);
     } else {
       // If the current chord is too dissimilar from its previous one
       // then possibly create a chord from a reversing of the previous one
