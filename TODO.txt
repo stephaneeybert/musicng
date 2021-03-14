@@ -319,6 +319,39 @@ private multiplyBySemitone(nosemitones): number {
 }
 
 -----
+Tonalities chromas (30)
+["Cb", "Db", "Eb", "Fb", "Gb", "Ab", "Bb"]
+["C", "D", "E", "F", "G", "A", "B"]
+["C#", "D#", "E#", "F#", "G#", "A#", "B#"]
+["Db", "Eb", "F", "Gb", "Ab", "Bb", "C"]
+["D", "E", "F#", "G", "A", "B", "C#"]
+["Eb", "F", "G", "Ab", "Bb", "C", "D"]
+["E", "F#", "G#", "A", "B", "C#", "D#"]
+["F", "G", "A", "Bb", "C", "D", "E"]
+["F#", "G#", "A#", "B", "C#", "D#", "E#"]
+["Gb", "Ab", "Bb", "Cb", "Db", "Eb", "F"]
+["G", "A", "B", "C", "D", "E", "F#"]
+["Ab", "Bb", "C", "Db", "Eb", "F", "G"]
+["A", "B", "C#", "D", "E", "F#", "G#"]
+["Bb", "C", "D", "Eb", "F", "G", "A"]
+["B", "C#", "D#", "E", "F#", "G#", "A#"]
+["Ab", "Bb", "Cb", "Db", "Eb", "Fb", "Gb"]
+["A", "B", "C", "D", "E", "F", "G"]
+["A#", "B#", "C#", "D#", "E#", "F#", "G#"]
+["Bb", "C", "Db", "Eb", "F", "Gb", "Ab"]
+["B", "C#", "D", "E", "F#", "G", "A"]
+["C", "D", "Eb", "F", "G", "Ab", "Bb"]
+["C#", "D#", "E", "F#", "G#", "A", "B"]
+["D", "E", "F", "G", "A", "Bb", "C"]
+["D#", "E#", "F#", "G#", "A#", "B", "C#"]
+["Eb", "F", "Gb", "Ab", "Bb", "Cb", "Db"]
+["E", "F#", "G", "A", "B", "C", "D"]
+["F", "G", "Ab", "Bb", "C", "Db", "Eb"]
+["F#", "G#", "A", "B", "C#", "D", "E"]
+["G", "A", "Bb", "C", "D", "Eb", "F"]
+["G#", "A#", "B", "C#", "D#", "E", "F#"]
+-----
+Tonalities chords names (30)
 ["Cb", "Dbm", "Ebm", "Fb", "Gb", "Abm", "Bb-"]
 ["C", "Dm", "Em", "F", "G", "Am", "B-"]
 ["C#", "D#m", "E#m", "F#", "G#", "A#m", "B#-"]
@@ -350,6 +383,33 @@ private multiplyBySemitone(nosemitones): number {
 ["Gm", "A-", "Bb", "Cm", "Dm", "Eb", "F"]
 ["G#m", "A#-", "B", "C#m", "D#m", "E", "F#"]
 -----
+Tonalities chromas (24) (On n'y choisit que parmis les 0, 2, 4 pour construire les accords ?)
+["C", "D", "E", "F", "G", "A", "B"]
+["Db", "Eb", "F", "Gb", "Ab", "Bb", "C"]
+["D", "E", "F#", "G", "A", "B", "C#"]
+["Eb", "F", "G", "Ab", "Bb", "C", "D"]
+["E", "F#", "G#", "A", "B", "C#", "D#"]
+["F", "G", "A", "Bb", "C", "D", "E"]
+["F#", "G#", "A#", "B", "C#", "D#", "E#"]
+["G", "A", "B", "C", "D", "E", "F#"]
+["Ab", "Bb", "C", "Db", "Eb", "F", "G"]
+["A", "B", "C#", "D", "E", "F#", "G#"]
+["Bb", "C", "D", "Eb", "F", "G", "A"]
+["B", "C#", "D#", "E", "F#", "G#", "A#"]
+["C", "D", "Eb", "F", "G", "Ab", "Bb"]
+["C#", "D#", "E", "F#", "G#", "A", "B"]
+["D", "E", "F", "G", "A", "Bb", "C"]
+["D#", "E#", "F#", "G#", "A#", "B", "C#"]
+["E", "F#", "G", "A", "B", "C", "D"]
+["F", "G", "Ab", "Bb", "C", "Db", "Eb"]
+["F#", "G#", "A", "B", "C#", "D", "E"]
+["G", "A", "Bb", "C", "D", "Eb", "F"]
+["Ab", "Bb", "Cb", "Db", "Eb", "Fb", "Gb"]
+["A", "B", "C", "D", "E", "F", "G"]
+["Bb", "C", "Db", "Eb", "F", "Gb", "Ab"]
+["B", "C#", "D", "E", "F#", "G", "A"]
+-----
+Tonalities chords names (24)
 ["C", "Dm", "Em", "F", "G", "Am", "B-"]
 ["Db", "Ebm", "Fm", "Gb", "Ab", "Bbm", "C-"]
 ["D", "Em", "F#m", "G", "A", "Bm", "C#-"]
@@ -374,7 +434,9 @@ private multiplyBySemitone(nosemitones): number {
 ["Am", "B-", "C", "Dm", "Em", "F", "G"]
 ["Bbm", "C-", "Db", "Ebm", "Fm", "Gb", "Ab"]
 ["Bm", "C#-", "D", "Em", "F#m", "G", "A"]
----
+-----
+No tonality could be found as sibbling to the two previous chords E#m and C#
+-----
 LES 12 TONALITÉS MAJEURES, COMPRENANT CHACUNES 7 ACCORDS
 I II III IV V VI VII 
 Do C Dm Em F G Am Bdim 
