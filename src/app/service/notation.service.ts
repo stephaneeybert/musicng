@@ -681,6 +681,16 @@ export class NotationService {
 
   public logAllTonalities(): void {
     const tonalities: Array<Tonality> = this.getAllTonalities();
+
+    console.log('Tonalities chromas');
+    for (let index: number = 0; index < tonalities.length; index++) {
+      const tonality: Tonality = tonalities[index];
+      const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
+      console.log(tonalityChromas);
+    }
+
+    console.log('');
+    console.log('Tonalities chords names');
     for (let index: number = 0; index < tonalities.length; index++) {
       const tonality: Tonality = tonalities[index];
       const tonalityChordNames: Array<string> = this.getTonalityChordNames(tonality.range, tonality.firstChroma);
