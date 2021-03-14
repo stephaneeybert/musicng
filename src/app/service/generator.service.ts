@@ -280,6 +280,11 @@ export class GeneratorService {
 
   private getFirstMeasureTonality(): Tonality {
     const firstChroma: string = this.settingsService.getSettings().generateTonality;
+    // The tonality of the first measure must be a major one
+    if (!CHROMAS_MAJOR.includes(firstChroma)) {
+      throw new Error('The setting for the tonality of the first measure is not a major one');
+    }
+    console.log('Start with first chroma: ' + firstChroma);
     return new Tonality(NOTE_RANGE.MAJOR, firstChroma);
   }
 
