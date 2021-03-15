@@ -494,6 +494,7 @@ export class NotationService {
 
   // If a current chord chroma is lower than the previous chord chroma
   // then the current chroma belong to the next upper octave
+  // as the chromas of a chord are created in ascending pitch order
   private chordChromaBelongsToNextUpperOctave(previousChroma: string, currentChroma: string): boolean {
     const tonalityChromas: Array<string> = this.getTonalityChromas(DEFAULT_TONALITY_C_MAJOR.range, DEFAULT_TONALITY_C_MAJOR.firstChroma);
     const previousAlphaChroma: string = previousChroma.substr(0, 1);
