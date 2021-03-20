@@ -11,6 +11,7 @@ import { CommonService } from '@stephaneeybert/lib-core';
 import { SettingsService } from '@app/views/settings/settings.service';
 import { NOTE_RANGE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, NOTE_NEAR_MAX } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
+import { Note } from '@app/model/note/note';
 
 @Injectable({
   providedIn: 'root'
@@ -234,23 +235,26 @@ export class GeneratorService {
   // The octave remains the same as the one from the harmony chord
   private getNearNotesFromSourceChord(harmonyChord: PlacedChord, previousMelodyChroma: string, previousMelodyOctave: number): Array<[string, number]> {
     const nearNoteChromas: Array<[string, number]> = new Array<[string, number]>();
-    const harmonyChordSortedChromas: Array<string> = harmonyChord.getSortedNotesChromas();
+    const harmonyChordNotes: Array<Note> = harmonyChord.getNotesSortedByIndex();
     let tonalityChromas: Array<string> = this.notationService.getTonalityChromas(harmonyChord.tonality.range, harmonyChord.tonality.firstChroma);
     const previousMelodyNoteIndex: number = tonalityChromas.indexOf(previousMelodyChroma);
 
     // If the previous note was from a different tonality and is thus not found in the new tonality
     // then pick any note from the harmony chord
     if (previousMelodyNoteIndex < 0) {
-      const chordNoteIndex: number = this.commonService.getRandomIntegerBetween(0, harmonyChordSortedChromas.length - 1);
-      nearNoteChromas.push([harmonyChordSortedChromas[chordNoteIndex], this.notationService.getFirstChordNoteSortedByIndex(harmonyChord).renderOctave()]);
+      const chordNoteIndex: number = this.commonService.getRandomIntegerBetween(0, harmonyChordNotes.length - 1);
+      const pickedChordNote: Note = harmonyChordNotes[chordNoteIndex];
+      nearNoteChromas.push([pickedChordNote.renderChroma(), pickedChordNote.renderOctave()]);
     } else {
-      for (let noteIndex = 0; noteIndex < harmonyChordSortedChromas.length; noteIndex++) {
-        const harmonyChordChroma: string = harmonyChordSortedChromas[noteIndex];
+      for (let noteIndex = 0; noteIndex < harmonyChordNotes.length; noteIndex++) {
+        const harmonyChordNote: Note = harmonyChordNotes[noteIndex];
+        const harmonyChordChroma: string = harmonyChordNote.renderChroma();
+        const harmonyChordOctave: number = harmonyChordNote.renderOctave();
         // Avoid the previous chroma
         if (harmonyChordChroma != previousMelodyChroma) {
           // The maximum distance to consider for a note to be near enough
-          if (Math.abs(tonalityChromas.indexOf(harmonyChordChroma) - previousMelodyNoteIndex) < NOTE_NEAR_MAX) {
-            nearNoteChromas.push([harmonyChordChroma, previousMelodyOctave]);
+          if (this.notationService.getChromasDistance(previousMelodyChroma, previousMelodyOctave, harmonyChordChroma, harmonyChordOctave, tonalityChromas) < NOTE_NEAR_MAX) {
+            nearNoteChromas.push([harmonyChordChroma, harmonyChordNote.renderOctave()]);
           }
         }
       }

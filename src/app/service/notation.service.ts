@@ -481,7 +481,7 @@ export class NotationService {
     const notes: Array<Note> = new Array();
     for (let i = 0; i < chromas.length; i++) {
       const chroma: string = chromas[i];
-      if (noteIndex > 0 && this.chordChromaBelongsToNextUpperOctave(previousChroma, chroma)) {
+      if (noteIndex > 0 && this.chordChromaBelongsToNextUpperOctave(previousChroma, chroma, tonality)) {
         octave = nextUpperOctave;
       }
       const note: Note = this.createNote(noteIndex, chroma, octave);
@@ -495,11 +495,15 @@ export class NotationService {
   // If a current chord chroma is lower than the previous chord chroma
   // then the current chroma belong to the next upper octave
   // as the chromas of a chord are created in ascending pitch order
-  private chordChromaBelongsToNextUpperOctave(previousChroma: string, currentChroma: string): boolean {
-    const tonalityChromas: Array<string> = this.getTonalityChromas(DEFAULT_TONALITY_C_MAJOR.range, DEFAULT_TONALITY_C_MAJOR.firstChroma);
-    const previousAlphaChroma: string = previousChroma.substr(0, 1);
-    const currentAlphaChroma: string = currentChroma.substr(0, 1);
-    return tonalityChromas.indexOf(currentAlphaChroma) < tonalityChromas.indexOf(previousAlphaChroma);
+  private chordChromaBelongsToNextUpperOctave(previousChroma: string, currentChroma: string, tonality: Tonality): boolean {
+    const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
+    return tonalityChromas.indexOf(currentChroma) < tonalityChromas.indexOf(previousChroma);
+  }
+
+  public getChromasDistance(previousNoteChroma: string, previousNoteOctave: number, currentNoteChroma: string, currentNoteOctave: number, tonalityChromas: Array<string>): number {
+    const previousNoteIndex: number = tonalityChromas.indexOf(previousNoteChroma);
+    const currentNoteIndex: number = tonalityChromas.indexOf(currentNoteChroma);
+    return Math.abs((((currentNoteOctave - 1) * tonalityChromas.length) + currentNoteIndex) - (((previousNoteOctave - 1) * tonalityChromas.length) + previousNoteIndex));
   }
 
   public getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
