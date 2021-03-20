@@ -238,7 +238,7 @@ export class GeneratorService {
     let tonalityChromas: Array<string> = this.notationService.getTonalityChromas(harmonyChord.tonality.range, harmonyChord.tonality.firstChroma);
     const previousMelodyNoteIndex: number = tonalityChromas.indexOf(previousMelodyChroma);
 
-    // If the previous note was from a different tonality and is not found in the new tonality
+    // If the previous note was from a different tonality and is thus not found in the new tonality
     // then pick any note from the harmony chord
     if (previousMelodyNoteIndex < 0) {
       const chordNoteIndex: number = this.commonService.getRandomIntegerBetween(0, harmonyChordSortedChromas.length - 1);
@@ -255,7 +255,7 @@ export class GeneratorService {
         }
       }
 
-      // If no note was near enough to be added then use the previous note
+      // If no note was near enough to be added then reuse the previous note
       if (nearNoteChromas.length == 0) {
         nearNoteChromas.push([previousMelodyChroma, previousMelodyOctave]);
       }
