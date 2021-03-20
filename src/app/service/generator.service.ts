@@ -183,7 +183,7 @@ export class GeneratorService {
         // Consider only notes before the next harmony chord note
         if (!harmonyChordSortedChromas.includes(chromas[previousMelodyNoteIndex])) {
           // Check if the note is on the upper octave
-          let octave = previousMelodyOctave;
+          let octave: number = previousMelodyOctave;
           if (previousMelodyNoteIndex + chromaIndex + 1 >= tonalityChromas.length) {
             octave++;
           }
@@ -203,7 +203,7 @@ export class GeneratorService {
         // Consider only notes before the next harmony chord note
         if (!harmonyChordSortedChromas.includes(chromas[previousMelodyNoteIndex])) {
           // Check if the note is on the lower octave
-          let octave = previousMelodyOctave;
+          let octave: number = previousMelodyOctave;
           if (previousMelodyNoteIndex - chromaIndex <= 0) {
             octave--;
           }
