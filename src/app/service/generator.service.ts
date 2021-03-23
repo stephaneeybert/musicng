@@ -174,18 +174,23 @@ export class GeneratorService {
     }
 
     let chromas: Array<string> = tonalityChromas;
+    console.log(tonalityChromas);
 
     // Consider the chromas above the previous melody note chroma
     if (previousMelodyOctave <= this.notationService.getFirstChordNoteSortedByIndex(harmonyChord).renderOctave()) {
       // The maximum distance to consider for a note to be near enough
+// TODO if (this.notationService.getChromasDistance(previousMelodyChroma, previousMelodyOctave, harmonyChordChroma, harmonyChordOctave, tonalityChromas) < NOTE_NEAR_MAX) {
       for (let chromaIndex: number = 0; chromaIndex < NOTE_NEAR_MAX; chromaIndex++) {
         chromas = this.notationService.createArrayShiftOnceLeft(chromas);
         // Consider only notes before the next harmony chord note
         if (!harmonyChordSortedChromas.includes(chromas[previousMelodyNoteIndex])) {
           // Check if the note is on the upper octave
           let octave: number = previousMelodyOctave;
+          console.log('Added above in passing note ' + chromas[previousMelodyNoteIndex]);
+          console.log(harmonyChordSortedChromas);
           if (previousMelodyNoteIndex + chromaIndex + 1 >= tonalityChromas.length) {
             octave++;
+            console.log('previousMelodyOctave: ' + previousMelodyOctave + ' octave: ' + octave);
           }
           nearNotes.push(chromas[previousMelodyNoteIndex] + String(octave));
         } else {
