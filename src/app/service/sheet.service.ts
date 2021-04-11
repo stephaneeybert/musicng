@@ -178,7 +178,7 @@ export class SheetService {
       keys: this.renderNotesSortedByPitch(placedChord.notes),
       duration: chordDuration,
       auto_stem: true,
-      clef: Clef.TREBLE
+      clef: this.renderClef()
     });
     return staveNote;
   }
@@ -197,7 +197,7 @@ export class SheetService {
     // Add a clef property to the measure or the chord model class
     // Draw the measure clef if the first measure or if the current measure clef differs from the previous measure clef
     // See http://www.vexflow.com/build/docs/clef.html
-    stave.addClef(this.renderClef(measure));
+    stave.addClef(this.renderClef());
     stave.addTimeSignature(this.renderTimeSignature(measure));
     stave.draw();
     return stave;
@@ -488,8 +488,7 @@ export class SheetService {
     }
   }
 
-  private renderClef(measure: Measure): string {
-    return Clef.TREBLE;
+  private renderClef(): string {
   }
 
   private renderTimeSignature(measure: Measure): string {
