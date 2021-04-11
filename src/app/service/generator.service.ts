@@ -520,7 +520,7 @@ export class GeneratorService {
             const randomTonality: Tonality = this.getSibblingTonality(previousPreviousChord, previousChord);
             tonality = new Tonality(randomTonality.range, randomTonality.firstChroma);
           }
-          // Avoid using the bonus table when changing of tonality as no chroma can then be foung
+          // Avoid using the bonus table when changing of tonality as no chroma can then be found
           previousChord = undefined;
         }
       }
