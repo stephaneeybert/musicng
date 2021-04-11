@@ -259,7 +259,7 @@ export class GeneratorService {
         if (harmonyChordChroma != previousMelodyChroma) {
           // The maximum distance to consider for a note to be near enough
           if (this.notationService.getChromasDistance(previousMelodyChroma, previousMelodyOctave, harmonyChordChroma, harmonyChordOctave, tonalityChromas) < NOTE_NEAR_MAX) {
-            nearNoteChromas.push([harmonyChordChroma, harmonyChordNote.renderOctave()]);
+            nearNoteChromas.push([harmonyChordChroma, harmonyChordOctave]);
           }
         }
       }
