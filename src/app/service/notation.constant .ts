@@ -112,10 +112,10 @@ export const NOTE_RANGE_INTERVALS: Map<NOTE_RANGE, Array<number>> = new Map([
 export const NB_HALF_TONES_MAJOR: number = 4;
 export const NB_HALF_TONES_MINOR: number = 3;
 
-export const NOTE_C: string = 'C';
+export const NOTE_CHROMA_C: string = 'C';
 export const NOTE_ACCIDENTAL_MINOR: string = 'm';
 export const NOTE_ACCIDENTAL_DIMINISHED: string = '-';
 
-export const DEFAULT_TONALITY_C_MAJOR: Tonality = new Tonality(NOTE_RANGE.MAJOR, NOTE_C);
+export const DEFAULT_TONALITY_C_MAJOR: Tonality = new Tonality(NOTE_RANGE.MAJOR, NOTE_CHROMA_C);
 
 export const MIDI_FILE_SUFFIX: string = 'mid';
