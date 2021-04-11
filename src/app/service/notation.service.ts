@@ -492,12 +492,15 @@ export class NotationService {
     return this.createPlacedChord(placedChordIndex, chordDuration, TempoUnit.NOTE, velocity, tonality, notes);
   }
 
-  // If a current chord chroma is lower than the previous chord chroma
-  // then the current chroma belong to the next upper octave
-  // as the chromas of a chord are created in ascending pitch order
-  private chordChromaBelongsToNextUpperOctave(previousChroma: string, currentChroma: string, tonality: Tonality): boolean {
-    const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
-    return tonalityChromas.indexOf(currentChroma) < tonalityChromas.indexOf(previousChroma);
+  // If the chord chroma is at, or above, the position of the C (Do) of the next upper octave
+  // then the chroma belongs to the next upper octave
+  private chordChromaBelongsToNextUpperOctave(chroma: string, octave: number, tonality: Tonality): boolean {
+    const cMajorNexTUpperOctaveNote: Note = this.createNote(0, NOTE_CHROMA_C, octave + 1);
+    const note: Note = this.createNote(0, chroma, octave);
+    if (this.getNoteFrequency(note) >= this.getNoteFrequency(cMajorNexTUpperOctaveNote)) {
+      console.log(chroma + ' IS NEXT OCTAVE ' + octave);
+    }
+    return this.getNoteFrequency(note) >= this.getNoteFrequency(cMajorNexTUpperOctaveNote);
   }
 
   public getChromasDistance(previousNoteChroma: string, previousNoteOctave: number, currentNoteChroma: string, currentNoteOctave: number, tonalityChromas: Array<string>): number {
