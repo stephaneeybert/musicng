@@ -489,6 +489,7 @@ export class SheetService {
   }
 
   private renderClef(): string {
+    return Clef.TREBLE; // TODO Why is it hard coded ? Where to specify the tonality ? Okay pour tracks harmoy and melody but cle de FA pour les basses
   }
 
   private renderTimeSignature(measure: Measure): string {
