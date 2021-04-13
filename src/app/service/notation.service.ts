@@ -492,15 +492,25 @@ export class NotationService {
     return this.createPlacedChord(placedChordIndex, chordDuration, TempoUnit.NOTE, velocity, tonality, notes);
   }
 
-  // If the chord chroma is at, or above, the position of the C (Do) of the next upper octave
-  // then the chroma belongs to the next upper octave
-  private chordChromaBelongsToNextUpperOctave(chroma: string, octave: number, tonality: Tonality): boolean {
-    const cMajorNexTUpperOctaveNote: Note = this.createNote(0, NOTE_CHROMA_C, octave + 1);
-    const note: Note = this.createNote(0, chroma, octave);
-    if (this.getNoteFrequency(note) >= this.getNoteFrequency(cMajorNexTUpperOctaveNote)) {
-      console.log(chroma + ' IS NEXT OCTAVE ' + octave);
+  // As the chromas of a chord are created in ascending pitch order
+  // if a current chord chroma is lower than the previous chord chroma
+  // then take the alpha chromas of these two chromas and
+  // if this current alpha chroma is lower than that previous alpha chroma on the C Major tonality
+  // then the current chroma belong to the next upper octave
+  private chordChromaBelongsToNextUpperOctave(previousChroma: string, currentChroma: string, tonality: Tonality): boolean {
+    const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
+    if (tonalityChromas.indexOf(currentChroma) < tonalityChromas.indexOf(previousChroma)) {
+      const previousAlphaChroma: string = previousChroma.substring(0,1);
+      const currentAlphaChroma: string = currentChroma.substring(0,1);
+      const cMajorTonalityChromas: Array<string> = this.getTonalityChromas(DEFAULT_TONALITY_C_MAJOR.range, DEFAULT_TONALITY_C_MAJOR.firstChroma);
+      if (cMajorTonalityChromas.indexOf(currentAlphaChroma) < cMajorTonalityChromas.indexOf(previousAlphaChroma)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
-    return this.getNoteFrequency(note) >= this.getNoteFrequency(cMajorNexTUpperOctaveNote);
   }
 
   public getChromasDistance(previousNoteChroma: string, previousNoteOctave: number, currentNoteChroma: string, currentNoteOctave: number, tonalityChromas: Array<string>): number {
