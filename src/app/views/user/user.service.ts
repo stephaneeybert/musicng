@@ -31,7 +31,7 @@ export class UserService {
       );
   }
 
-  public getSome(searchTerm: string, sortFieldName: string, sortDirection: string, currentPage: number, pageSize: number): Observable<HateoasPageable> {
+  public getSome$(searchTerm: string, sortFieldName: string, sortDirection: string, currentPage: number, pageSize: number): Observable<HateoasPageable> {
     let httpParams = new HttpParams()
     .set('page', String(currentPage))
     .set('size', String(pageSize));
