@@ -33,7 +33,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.settings$ = this.settingsStore.getSettings$();
-    this.observeSettingss();
+    this.observeSettings();
 
     this.settingsStore.loadFromStorage();
   }
@@ -106,7 +106,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       });
   }
 
-  private observeSettingss(): void {
+  private observeSettings(): void {
     this.settingsSubscription = this.settingsStore.getSettings$()
       .subscribe((settings: Settings) => {
         this.settings = settings;
