@@ -187,7 +187,6 @@ export class GeneratorService {
           // Check if the note is on the upper octave
           let octave: number = previousMelodyOctave;
           console.log('Added above in passing note ' + chromas[previousMelodyNoteIndex]);
-          console.log(harmonyChordSortedChromas);
           if (previousMelodyNoteIndex + chromaIndex + 1 >= tonalityChromas.length) {
             octave++;
             console.log('previousMelodyOctave: ' + previousMelodyOctave + ' octave: ' + octave);
