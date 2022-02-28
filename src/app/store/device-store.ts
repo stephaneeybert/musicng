@@ -68,7 +68,7 @@ export class DeviceStore extends Store<Array<Device>> {
   private muteToggle(device: Device, mute: boolean) {
     if (device.mute !== mute) {
       device.mute = mute;
-      this.setDevice(device);
+      this.update(device);
     }
   }
 
@@ -80,17 +80,12 @@ export class DeviceStore extends Store<Array<Device>> {
     this.muteToggle(device, false);
   }
 
-  public setDeviceKeyboard(device: Device, keyboard: any) {
-    device.keyboard = keyboard;
-    this.setDevice(device);
-  }
-
   public setDeviceSynth(device: Device, synth: Tone.PolySynth) {
     device.synth = synth;
-    this.setDevice(device);
+    this.update(device);
   }
 
-  public setDevice(device: Device) {
+  private update(device: Device) {
     const index: number = this.getDeviceIndex(device.id);
     if (index !== -1) {
       const devices: Array<Device> = this.getState();

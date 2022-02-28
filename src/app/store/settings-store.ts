@@ -31,18 +31,13 @@ export class SettingsStore extends Store<Settings> {
     return this.getState();
   }
 
-  private setSettings(settings: Settings) {
+  public update(settings: Settings) {
     this.setState(settings);
   }
 
-  private storeSettings(settings: Settings): void {
+  public store(settings: Settings): void {
     const cleanSettings: Settings = this.settingsStorageService.cleanUpInstance(settings);
     this.settingsStorageService.setSettings(cleanSettings);
-  }
-
-  public setAndStoreSettings(settings: Settings) {
-    this.setSettings(settings);
-    this.storeSettings(settings);
   }
 
   public delete(): boolean {

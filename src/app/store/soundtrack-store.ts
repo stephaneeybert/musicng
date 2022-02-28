@@ -44,7 +44,7 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
       const soundtracks: Array<Soundtrack> = this.getState();
       soundtracks.push(soundtrack);
       this.setState(soundtracks);
-      this.storeSoundtrack(soundtrack);
+      this.store(soundtrack);
     }
   }
 
@@ -75,27 +75,12 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     return allDeleted;
   }
 
-  public setSoundtrackKeyboard(soundtrack: Soundtrack, keyboard: any) {
-    soundtrack.keyboard = keyboard;
-    this.setSoundtrack(soundtrack);
-  }
-
-  public setSoundtrackSheetSVGContext(soundtrack: Soundtrack, context: any) {
-    soundtrack.sheetContext = context;
-    this.setSoundtrack(soundtrack);
-  }
-
-  public setAndStoreSoundtrack(soundtrack: Soundtrack) {
-    this.setSoundtrack(soundtrack);
-    this.storeSoundtrack(soundtrack);
-  }
-
-  private storeSoundtrack(soundtrack: Soundtrack): void {
+  public store(soundtrack: Soundtrack): void {
     const cleanSoundtrack: Soundtrack = this.soundtrackStorageService.cleanUpInstance(soundtrack);
     this.soundtrackStorageService.setSoundtrack(cleanSoundtrack);
   }
 
-  public setSoundtrack(soundtrack: Soundtrack) {
+  public update(soundtrack: Soundtrack) {
     const index: number = this.getSoundtrackIndex(soundtrack.id);
     if (index !== -1) {
       const soundtracks: Array<Soundtrack> = this.getState();
@@ -112,7 +97,7 @@ export class SoundtrackStore extends Store<Array<Soundtrack>> {
     }
   }
 
-  private getSoundtrackIndex(soundtrackId: string): number {
+  public getSoundtrackIndex(soundtrackId: string): number {
     return this.getState().findIndex((soundtrack: Soundtrack) => {
       return this.commonService.normalizeName(soundtrack.id) === this.commonService.normalizeName(soundtrackId);
     });

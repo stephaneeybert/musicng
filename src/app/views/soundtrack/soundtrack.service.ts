@@ -19,7 +19,7 @@ export class SoundtrackService {
     return new Soundtrack(this.commonService.normalizeName(id), name);
   }
 
-  public storeSoundtrack(soundtrack: Soundtrack): void {
+  public add(soundtrack: Soundtrack): void {
     if (soundtrack.hasTracks()) {
       this.soundtrackStore.add(soundtrack);
     } else {
@@ -35,12 +35,12 @@ export class SoundtrackService {
     return this.soundtrackStore.getSoundtracks();
   }
 
-  public setSoundtrack(soundtrack: Soundtrack) {
-    this.soundtrackStore.setSoundtrack(soundtrack);
+  public updateSoundtrack(soundtrack: Soundtrack) {
+    this.soundtrackStore.update(soundtrack);
   }
 
-  public setAndStoreSoundtrack(soundtrack: Soundtrack) {
-    this.soundtrackStore.setAndStoreSoundtrack(soundtrack);
+  public storeSoundtrack(soundtrack: Soundtrack) {
+    this.soundtrackStore.store(soundtrack);
   }
 
 }

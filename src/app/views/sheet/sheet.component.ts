@@ -8,6 +8,7 @@ import { Settings } from '@app/model/settings';
 import { SettingsStore } from '@app/store/settings-store';
 import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
+import { Loop } from 'tone';
 
 @Component({
   selector: 'app-sheet',
@@ -16,21 +17,15 @@ import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 })
 export class SheetComponent implements AfterViewInit, OnDestroy {
 
-  inputSoundtrack?: Soundtrack;
-  private soundtrack$: Subject<Soundtrack> = new ReplaySubject<Soundtrack>();
-  // HINT: A setter with the very same name as the variable can be used in place of the variable
   @Input()
-  set soundtrack(soundtrack: Soundtrack) {
-    this.soundtrack$.next(soundtrack);
-    this.inputSoundtrack = soundtrack;
-  };
+  soundtrackId?: string;
 
   private device$: Subject<Device> = new ReplaySubject<Device>();
   // HINT: A setter with the very same name as the variable can be used in place of the variable
-  @Input()
+  @Input() // TODO NEXT change this into a non observable member variable @Input() deviceId?: string;
   set device(device: Device) {
     this.device$.next(device);
-  };
+  }
 
   private soundtrackSubscription?: Subscription;
   private deviceSubscription?: Subscription;
@@ -53,15 +48,17 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.initScreenWidth();
 
-    const soundtrackAndSettings$: Observable<[Soundtrack, Settings]> = combineLatest(
-      this.soundtrack$,
+    const soundtrackAndSettings$: Observable<[Array<Soundtrack>, Settings]> = combineLatest(
+      this.soundtrackStore.getSoundtracks$(),
       this.settingsStore.getSettings$()
     );
 
     this.soundtrackSubscription = soundtrackAndSettings$
-      .subscribe(([soundtrack, settings]: [Soundtrack, Settings]) => {
+      .subscribe(([soundtracks, settings]: [Array<Soundtrack>, Settings]) => {
         // The soundtrack sheet is redrawn when the animated stave setting is changed
-        this.initializeWithSoundtrackId(soundtrack, settings.animatedStave);
+        if (this.soundtrackId != null) {
+          this.createSoundtrackSheet(soundtracks[this.soundtrackStore.getSoundtrackIndex(this.soundtrackId)], settings.animatedStave);
+        }
       });
 
     this.deviceSubscription = this.device$
@@ -81,9 +78,6 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.inputSoundtrack != null) {
-      this.sheetService.clearSVGContext(this.inputSoundtrack);
-    }
     if (this.soundtrackSubscription != null) {
       this.soundtrackSubscription.unsubscribe();
     }
@@ -101,14 +95,6 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
     this.changeDetector.detectChanges();
   }
 
-  private initializeWithSoundtrackId(soundtrack: Soundtrack, animatedStave: boolean): void {
-    if (soundtrack != null) {
-      // Refresh the view with its id before creating the sheet
-      this.detectChanges(this.sheetService.buildSoundtrackSheetId(soundtrack));
-      this.createSoundtrackSheet(soundtrack, animatedStave);
-    }
-  }
-
   private initializeWithDeviceId(device: Device): void {
     if (device != null) {
       // Refresh the view with its id before creating the sheet
@@ -120,8 +106,9 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
   private createSoundtrackSheet(soundtrack: Soundtrack, animatedStave: boolean): void {
     if (soundtrack != null) {
       if (soundtrack.hasNotes()) {
+        // Refresh the view with its id before creating the sheet
+        this.detectChanges(this.sheetService.buildSoundtrackSheetId(soundtrack));
         this.sheetService.createSoundtrackSheet(this.sheetService.buildSoundtrackSheetId(soundtrack), this.screenWidth, soundtrack, animatedStave);
-        this.soundtrackStore.setSoundtrackSheetSVGContext(soundtrack, soundtrack.sheetContext);
       } else {
         throw new Error('No sheet was created for the soundtrack. Notes should be set to the soundtrack before adding it to the observables data store, ensuring that when the new soundtrack is observed, it has notes and can get a sheet.');
       }

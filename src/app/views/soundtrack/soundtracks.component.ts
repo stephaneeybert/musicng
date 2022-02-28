@@ -21,6 +21,9 @@ import { DownloadService } from '@stephaneeybert/lib-core';
 import { Download } from '@stephaneeybert/lib-core/lib/download/download';
 import { ProgressTask } from '@stephaneeybert/lib-core/lib/download/progress-task';
 import { NotationService } from '@app/service/notation.service';
+import { Track } from '@app/model/track';
+import { Measure } from '@app/model/measure/measure';
+import { PlacedChord } from '@app/model/note/placed-chord';
 
 @Component({
   selector: 'app-soundtracks',
@@ -87,7 +90,7 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
 
   generateSoundtrack(): void {
     if (this.soundtrackService.maximumNotYetReached()) {
-      // const soundtrack2: Soundtrack = this.melodyService.addDummyMelody();
+      // const soundtrack2: Soundtrack = this.generatorService.addDummyMelody();
       const soundtrack: Soundtrack = this.generatorService.generateSoundtrack();
       const message: string = this.translateService.instant('soundtracks.message.added', { name: soundtrack.name });
       this.materialService.showSnackBar(message);
@@ -95,6 +98,27 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
       const message: string = this.translateService.instant('soundtracks.message.maxNbReached');
       this.materialService.showSnackBar(message);
     }
+  }
+
+  regenerateSoundtrack(soundtrack: Soundtrack): void {
+    const harmonyTrack: Track = this.generatorService.getHarmonyTrack(soundtrack);
+    const demoMeasureIndex: number = 1;
+    const fromHarmonyMeasure: Measure = harmonyTrack.getSortedMeasures()[demoMeasureIndex];
+    const fromHarmonyChordIndex: number = 1;
+    const fromHarmonyChord: PlacedChord = fromHarmonyMeasure.getSortedChords()[fromHarmonyChordIndex];
+    this.generatorService.regenerateHarmonyChords(soundtrack, fromHarmonyMeasure, fromHarmonyChord);
+
+    // TODO When regenerating the harmony chords, do we regenerate the melody chords ?
+    // TODO Can we have a direction for the harmony track too ? Or is it only for the melody track ?
+    const melodyTrack: Track = this.generatorService.getMelodyTrack(soundtrack);
+    const fromMelodyMeasure: Measure = melodyTrack.getSortedMeasures()[demoMeasureIndex];
+    const fromMelodyChordIndex: number = fromHarmonyChordIndex * 2;
+    const fromMelodyChord: PlacedChord = fromMelodyMeasure.getSortedChords()[fromMelodyChordIndex];
+    const directionUp: boolean = false;
+    this.generatorService.regenerateMelodyChords(soundtrack, fromMelodyMeasure, fromMelodyChord, directionUp);
+
+    const message: string = this.translateService.instant('soundtracks.message.regenerated', { name: soundtrack.name });
+    this.materialService.showSnackBar(message);
   }
 
   startTransport(): void {
@@ -153,7 +177,8 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
             existingSoundtrack.copyright = soundtrackEdition.copyright;
             existingSoundtrack.lyrics = soundtrackEdition.lyrics;
             // TODO The soundtrackEdition should be saved
-            this.soundtrackService.setAndStoreSoundtrack(existingSoundtrack);
+            this.soundtrackStore.store(existingSoundtrack);
+            this.soundtrackStore.update(existingSoundtrack);
 
             this.soundtrackEditedEvent.emit(existingSoundtrack);
           }

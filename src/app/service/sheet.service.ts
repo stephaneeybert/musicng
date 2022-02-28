@@ -395,12 +395,12 @@ export class SheetService {
     + ' ' + this.translateService.instant('message.error.reloadApp');
   }
 
-  private noCanvasContextError(error: Error): void {
+  private noCanvasContextError(error: any): void {
     this.logMessageError(this.renderCanvasContextErrorMessage(), error);
     throw new Error(error.message);
   }
 
-  private logMessageError(message: string, error: Error): void {
+  private logMessageError(message: string, error: any): void {
     console.log(message);
     console.log(error.message);
     console.log(error.stack);
