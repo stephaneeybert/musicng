@@ -22,14 +22,14 @@ export class KeyboardComponent implements AfterViewInit, OnDestroy {
 
   private soundtrack$: Subject<Soundtrack> = new ReplaySubject<Soundtrack>();
   // HINT: A setter with the very same name as the variable can be used in place of the variable
-  @Input()
+  @Input() // TODO NEXT change this into a non observable member variable @Input() soundtrackId?: string;
   set soundtrack(soundtrack: Soundtrack) {
     this.soundtrack$.next(soundtrack);
   };
 
   private device$: Subject<Device> = new ReplaySubject<Device>();
   // HINT: A setter with the very same name as the variable can be used in place of the variable
-  @Input()
+  @Input() // TODO NEXT change this into a non observable member variable @Input() deviceId?: string;
   set device(device: Device) {
     this.device$.next(device);
   };
@@ -118,13 +118,13 @@ export class KeyboardComponent implements AfterViewInit, OnDestroy {
       this.screenDeviceService.showElement(this.keyboardElementRef);
       if (soundtrack.keyboard == null) {
         const keyboard: any = this.keyboardService.createKeyboard(this.keyboardService.buildSoundtrackKeyboardId(soundtrack.id), this.screenWidth);
-        this.soundtrackStore.setSoundtrackKeyboard(soundtrack, keyboard);
+        soundtrack.keyboard = keyboard;
       }
     } else {
       this.screenDeviceService.hideElement(this.keyboardElementRef);
       if (soundtrack.keyboard != null) {
         this.keyboardService.removeKeyboardDomElement(this.keyboardElementRef);
-        this.soundtrackStore.setSoundtrackKeyboard(soundtrack, undefined);
+        soundtrack.keyboard = undefined;
       }
     }
   }
@@ -134,7 +134,7 @@ export class KeyboardComponent implements AfterViewInit, OnDestroy {
       this.keyboardService.removeKeyboardDomElement(this.keyboardElementRef);
     }
     const keyboard: any = this.keyboardService.createKeyboard(this.keyboardService.buildDeviceKeyboardId(device.id), this.screenWidth);
-    this.deviceStore.setDeviceKeyboard(device, keyboard);
+    device.keyboard = keyboard;
     this.playSoundFromKeyboard(keyboard, device.synth!);
   }
 

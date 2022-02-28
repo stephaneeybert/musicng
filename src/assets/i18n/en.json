@@ -236,6 +236,7 @@
     },
     "edit": "Edit",
     "delete": "Delete",
+    "regenerate": "Regenerate",
     "play": "Play",
     "stop": "Stop",
     "replay": "Replay",
@@ -259,6 +260,7 @@
     },
     "message": {
       "added": "The soundtrack {{ name }} has been added.",
+      "regenerated": "The soundtrack {{ name }} has been regenerated.",
       "maxNbReached": "The maximum number of soundtracks is reached. Delete a soundtrack before adding one.",
       "updated": "The soundtrack {{ name }} has been updated.",
       "deleted": "The soundtrack {{ name }} has been deleted.",

@@ -97,7 +97,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
             existingSettings.showKeyboard = settingsEdition.showKeyboard;
             existingSettings.showAllNotes = settingsEdition.showAllNotes;
             existingSettings.allowDarkTheme = settingsEdition.allowDarkTheme;
-            this.settingsStore.setAndStoreSettings(existingSettings);
+            this.settingsStore.store(existingSettings);
+            this.settingsStore.update(existingSettings);
 
             const message: string = this.translateService.instant('settings.message.saved');
             this.materialService.showSnackBar(message);

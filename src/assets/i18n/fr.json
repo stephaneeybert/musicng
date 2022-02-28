@@ -236,6 +236,7 @@
     },
     "edit": "Modifier",
     "delete": "Supprimer",
+    "regenerate": "Regénérer",
     "play": "Jouer",
     "stop": "Arreter",
     "replay": "Rejouer",
@@ -259,6 +260,7 @@
     },
     "message": {
       "added": "Le morceau {{ name }} a été ajouté.",
+      "regenerated": "Le morceau {{ name }} a été regénéré.",
       "maxNbReached": "Le nombre maximum de morceaux est atteint. Veuillez supprimer un morceau avant d'en ajouter un.",
       "updated": "Le morceau {{ name }} a été modifié.",
       "deleted": "Le morceau {{ name }} a été supprimé.",

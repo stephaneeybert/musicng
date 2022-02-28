@@ -22,8 +22,8 @@ export class Soundtrack {
     this.nowPlaying = false;
   }
 
-  public addTrack(measures: Array<Measure>): Track {
-    const track: Track = new Track(this.tracks.length);
+  public addTrack(index: number, measures: Array<Measure>): Track {
+    const track: Track = new Track(index);
     track.measures = measures;
     this.tracks.push(track);
     return track;

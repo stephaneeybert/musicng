@@ -196,7 +196,7 @@ export class SynthService {
 
   private setPlaying(soundtrack: Soundtrack, playing: boolean): void {
     soundtrack.nowPlaying = playing;
-    this.soundtrackService.setSoundtrack(soundtrack);
+    this.soundtrackService.updateSoundtrack(soundtrack);
   }
 
   private play(track: Track, soundtrack: Soundtrack, animatedStave: boolean): void {
