@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectorRef, HostListener, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Input, ChangeDetectorRef, HostListener, OnDestroy, ViewChild, ElementRef, AfterViewInit, ViewContainerRef, InjectionToken, Injector } from '@angular/core';
 import { Device } from '@app/model/device';
 import { SheetService } from '@app/service/sheet.service';
 import { Soundtrack } from '@app/model/soundtrack';
@@ -8,7 +8,11 @@ import { Settings } from '@app/model/settings';
 import { SettingsStore } from '@app/store/settings-store';
 import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
-import { Loop } from 'tone';
+import { CustomOverlayRef, OverlayCloseEvent, OverlayService } from '@app/service/overlay.service';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { SheetMenuComponent } from './sheet-menu.component';
+
+export const DATA_TOKEN = new InjectionToken<{}>('SheetPopupPortalData');
 
 @Component({
   selector: 'app-sheet',
@@ -37,12 +41,17 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
   settings$?: Observable<Settings>;
   private settingsSubscription?: Subscription;
 
+  private customOverlayRef: CustomOverlayRef | undefined;
+
   constructor(
     private changeDetector: ChangeDetectorRef,
     private sheetService: SheetService,
     private screenDeviceService: ScreenDeviceService,
     private soundtrackStore: SoundtrackStore,
-    private settingsStore: SettingsStore
+    private settingsStore: SettingsStore,
+    private overlayService: OverlayService,
+    private viewContainerRef: ViewContainerRef,
+    private injector: Injector,
   ) { }
 
   ngAfterViewInit() {
@@ -121,4 +130,30 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  @HostListener('click', ['$event'])
+  onSheetEvent(event: PointerEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.createPopupMenu(event.clientX, event.clientY);
+  }
+
+  private createPopupMenu(left: number, top: number): void {
+    const inputData: string = "Salut mon pote";
+    this.customOverlayRef = this.overlayService.create<string, string>(left, top, inputData);
+    const dataInjector = this.createInjector(this.customOverlayRef);
+    const componentPortal: ComponentPortal<SheetMenuComponent> = new ComponentPortal(SheetMenuComponent, this.viewContainerRef, dataInjector);
+    this.customOverlayRef.closeEvents.subscribe((event: OverlayCloseEvent<string>) => {
+      console.log(event);
+     });
+    this.overlayService.attach<SheetMenuComponent>(this.customOverlayRef, componentPortal);
+  }
+
+  private createInjector(customOverlayRef: CustomOverlayRef): Injector {
+    return Injector.create({
+      parent: this.injector,
+      providers: [
+        { provide: CustomOverlayRef, useValue: customOverlayRef }
+      ]
+    })
+  }
 }
