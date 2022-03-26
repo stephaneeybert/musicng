@@ -12,6 +12,7 @@ import { SettingsService } from '@app/views/settings/settings.service';
 import { NOTE_RANGE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, NOTE_NEAR_MAX, DEFAULT_TEMPO_BPM } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 import { Note } from '@app/model/note/note';
+import { MaterialService } from '@app/core/service/material.service';
 
 const TRACK_INDEX_MELODY: number = 0;
 const TRACK_INDEX_HARMONY: number = 1;
@@ -33,6 +34,7 @@ export class GeneratorService {
     private notationService: NotationService,
     private settingsService: SettingsService,
     private translateService: TranslateService,
+    private materialService: MaterialService
   ) { }
 
   private createMeasure(index: number): Measure {
@@ -93,6 +95,27 @@ export class GeneratorService {
     melodyTrack.displayChordNames = true;
     this.soundtrackService.add(soundtrack);
     return soundtrack;
+  }
+
+  regenerateSoundtrack(soundtrack: Soundtrack): void {
+    const harmonyTrack: Track = this.getHarmonyTrack(soundtrack);
+    const demoMeasureIndex: number = 1;
+    const fromHarmonyMeasure: Measure = harmonyTrack.getSortedMeasures()[demoMeasureIndex];
+    const fromHarmonyChordIndex: number = 1;
+    const fromHarmonyChord: PlacedChord = fromHarmonyMeasure.getSortedChords()[fromHarmonyChordIndex];
+    this.regenerateHarmonyChords(soundtrack, fromHarmonyMeasure, fromHarmonyChord);
+
+    // TODO When regenerating the harmony chords, do we regenerate the melody chords ?
+    // TODO Can we have a direction for the harmony track too ? Or is it only for the melody track ?
+    const melodyTrack: Track = this.getMelodyTrack(soundtrack);
+    const fromMelodyMeasure: Measure = melodyTrack.getSortedMeasures()[demoMeasureIndex];
+    const fromMelodyChordIndex: number = fromHarmonyChordIndex * 2;
+    const fromMelodyChord: PlacedChord = fromMelodyMeasure.getSortedChords()[fromMelodyChordIndex];
+    const directionUp: boolean = false;
+    this.regenerateMelodyChords(soundtrack, fromMelodyMeasure, fromMelodyChord, directionUp);
+
+    const message: string = this.translateService.instant('soundtracks.message.regenerated', { name: soundtrack.name });
+    this.materialService.showSnackBar(message);
   }
 
   public generateSoundtrack(): Soundtrack {

@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output, OnDestroy } from '@angular/core';
-import { BehaviorSubject, interval, Observable, ReplaySubject, Subscription } from 'rxjs';
+import { BehaviorSubject, interval, Observable, Subscription } from 'rxjs';
 import { Soundtrack } from '@app/model/soundtrack';
 import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { GeneratorService } from '@app/service/generator.service';
@@ -21,9 +21,6 @@ import { DownloadService } from '@stephaneeybert/lib-core';
 import { Download } from '@stephaneeybert/lib-core/lib/download/download';
 import { ProgressTask } from '@stephaneeybert/lib-core/lib/download/progress-task';
 import { NotationService } from '@app/service/notation.service';
-import { Track } from '@app/model/track';
-import { Measure } from '@app/model/measure/measure';
-import { PlacedChord } from '@app/model/note/placed-chord';
 
 @Component({
   selector: 'app-soundtracks',
@@ -101,24 +98,7 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
   }
 
   regenerateSoundtrack(soundtrack: Soundtrack): void {
-    const harmonyTrack: Track = this.generatorService.getHarmonyTrack(soundtrack);
-    const demoMeasureIndex: number = 1;
-    const fromHarmonyMeasure: Measure = harmonyTrack.getSortedMeasures()[demoMeasureIndex];
-    const fromHarmonyChordIndex: number = 1;
-    const fromHarmonyChord: PlacedChord = fromHarmonyMeasure.getSortedChords()[fromHarmonyChordIndex];
-    this.generatorService.regenerateHarmonyChords(soundtrack, fromHarmonyMeasure, fromHarmonyChord);
-
-    // TODO When regenerating the harmony chords, do we regenerate the melody chords ?
-    // TODO Can we have a direction for the harmony track too ? Or is it only for the melody track ?
-    const melodyTrack: Track = this.generatorService.getMelodyTrack(soundtrack);
-    const fromMelodyMeasure: Measure = melodyTrack.getSortedMeasures()[demoMeasureIndex];
-    const fromMelodyChordIndex: number = fromHarmonyChordIndex * 2;
-    const fromMelodyChord: PlacedChord = fromMelodyMeasure.getSortedChords()[fromMelodyChordIndex];
-    const directionUp: boolean = false;
-    this.generatorService.regenerateMelodyChords(soundtrack, fromMelodyMeasure, fromMelodyChord, directionUp);
-
-    const message: string = this.translateService.instant('soundtracks.message.regenerated', { name: soundtrack.name });
-    this.materialService.showSnackBar(message);
+    this.generatorService.regenerateSoundtrack(soundtrack);
   }
 
   startTransport(): void {
