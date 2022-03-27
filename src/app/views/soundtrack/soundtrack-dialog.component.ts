@@ -20,7 +20,7 @@ export class SoundtrackDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private data: any,
     private soundtrackValidator: SoundtrackValidator
   ) {
-    const inputSoundtrackEdition: SoundtrackEdition = data.soundtrack;
+    const inputSoundtrackEdition: SoundtrackEdition = this.data.soundtrack;
     this.soundtrackEdition = new SoundtrackEdition(inputSoundtrackEdition.id, inputSoundtrackEdition.name, inputSoundtrackEdition.copyright, inputSoundtrackEdition.lyrics);
   }
 
