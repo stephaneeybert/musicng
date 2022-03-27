@@ -169,6 +169,22 @@ export class SheetService {
           }
         });
       }
+      this.collectBoundingBoxes(soundtrack);
+    }
+  }
+
+  private collectBoundingBoxes(soundtrack: Soundtrack): void {
+    for (const track of soundtrack.getSortedTracks()) {
+      for (const measure of track.getSortedMeasures()) {
+        if (measure.placedChords) {
+          for (const placedChord of measure.placedChords) {
+            if (placedChord.staveNote) {
+              const box: Vex.Flow.BoundingBox = placedChord.staveNote.getBoundingBox();
+              console.log("x:" + box.getX() + " y:" + box.getY() + " width: " + box.getW() + " height: " + box.getH());
+            }
+          }
+        }
+      }
     }
   }
 
