@@ -1,7 +1,6 @@
 import * as vexflow from 'vexflow';
 import { TimeSignature } from './time-signature';
 import { PlacedChord } from '@app/model/note/placed-chord';
-import { Duration } from '@app/model/note/duration/duration';
 
 export class Measure {
 

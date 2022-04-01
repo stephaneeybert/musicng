@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CustomOverlayRef } from '@app/service/overlay.service';
 import { TranslateService } from '@ngx-translate/core';
 
+export const MENU_ITEM_REGENERATE: string = 'regenerate';
+
 @Component({
   templateUrl: './sheet-menu.component.html'
 })
@@ -23,7 +25,7 @@ export class SheetMenuComponent implements OnInit {
   }
 
   regenerateSoundtrack(): void {
-    this.customOverlayRef.closeWithData('Outputing message...');
+    this.customOverlayRef.closeWithData(MENU_ITEM_REGENERATE);
   }
 
 }

@@ -44,6 +44,8 @@ const VEXFLOW_REPEAT_END: string = ':|';
 const VEXFLOW_DOUBLE_REPEAT: string = '::';
 const VEXFLOW_END_BAR: string = '|=';
 
+const VEXFLOW_BOUNDING_BOX_PADDING: number = 5;
+
 export enum VexfloWAccidental {
   sharp = '#',
   flat = 'b',
@@ -52,6 +54,25 @@ export enum VexfloWAccidental {
   natural = 'n',
   doubleFlat = 'bb',
   doubleSharp = '##'
+}
+
+export class Bounding {
+  top: number;
+  left: number;
+  bottom: number;
+  right: number;
+  trackId: number;
+  measureId: number;
+  placedChordId: number;
+  constructor(top: number, left: number, bottom: number, right: number, trackId: number, measureId: number, placedChordId: number) {
+    this.top = top;
+    this.left = left;
+    this.bottom = bottom;
+    this.right = right;
+    this.trackId = trackId;
+    this.measureId = measureId;
+    this.placedChordId = placedChordId;
+  }
 }
 
 @Injectable({
@@ -169,23 +190,56 @@ export class SheetService {
           }
         });
       }
-      this.collectBoundingBoxes(soundtrack);
     }
   }
 
-  private collectBoundingBoxes(soundtrack: Soundtrack): void {
+  public collectBoundingBoxes(soundtrack: Soundtrack): Array<Bounding> {
+    const boundings: Array<Bounding> = new Array();
     for (const track of soundtrack.getSortedTracks()) {
       for (const measure of track.getSortedMeasures()) {
         if (measure.placedChords) {
-          for (const placedChord of measure.placedChords) {
+          for (const placedChord of measure.getSortedChords()) {
             if (placedChord.staveNote) {
               const box: Vex.Flow.BoundingBox = placedChord.staveNote.getBoundingBox();
-              console.log("x:" + box.getX() + " y:" + box.getY() + " width: " + box.getW() + " height: " + box.getH());
+              const top = this.svgYToBrowser(soundtrack, box.getY() - VEXFLOW_BOUNDING_BOX_PADDING);
+              const left = this.svgXToBrowser(soundtrack, box.getX() - VEXFLOW_BOUNDING_BOX_PADDING);
+              const bottom = this.svgYToBrowser(soundtrack, box.getY() + box.getH() + VEXFLOW_BOUNDING_BOX_PADDING);
+              const right = this.svgXToBrowser(soundtrack, box.getX() + box.getW() + VEXFLOW_BOUNDING_BOX_PADDING);
+              if (top && left && right && bottom) {
+                boundings.push(new Bounding(top, left, bottom, right, track.index, measure.index, placedChord.index));
+                if (soundtrack.sheetContext) {
+                  soundtrack.sheetContext.rect(box.getX() - VEXFLOW_BOUNDING_BOX_PADDING, box.getY() - VEXFLOW_BOUNDING_BOX_PADDING, box.getW() + VEXFLOW_BOUNDING_BOX_PADDING, box.getH() + VEXFLOW_BOUNDING_BOX_PADDING);
+                }
+              }
             }
           }
         }
       }
     }
+    return boundings;
+  }
+
+  private svgXToBrowser(soundtrack: Soundtrack, svgX: number): number | undefined {
+    if (soundtrack.sheetContext != null) {
+      const svgMarginLeft: number = soundtrack.sheetContext.svg.getBoundingClientRect().left;
+      return svgMarginLeft + svgX;
+    }
+  }
+
+  private svgYToBrowser(soundtrack: Soundtrack, svgY: number): number | undefined {
+    if (soundtrack.sheetContext != null) {
+      const svgMarginTop: number = soundtrack.sheetContext.svg.getBoundingClientRect().top;
+      return svgMarginTop + svgY;
+    }
+  }
+
+  public locateMeasureAndChord(boundings: Array<Bounding>, x: number, y: number): [number, number, number] {
+    for (const bounding of boundings) {
+      if (bounding.top <= y && y <= bounding.bottom && bounding.left <= x && x <= bounding.right) {
+        return [ bounding.trackId, bounding.measureId, bounding.placedChordId ];
+      }
+    }
+    return [-1, -1, -1];
   }
 
   private createStaveNoteKeys(placedChord: PlacedChord): Vex.Flow.StaveNote {
