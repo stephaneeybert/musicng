@@ -101,10 +101,10 @@ export class GeneratorService {
     const trackIndex: number = 1;
     const measureIndex: number = 1;
     const placedChordIndex: number = 1;
-    this.regenerateSoundtrack(soundtrack, trackIndex, measureIndex, placedChordIndex);
+    this.recreateSoundtrack(soundtrack, trackIndex, measureIndex, placedChordIndex, true);
   }
 
-  public regenerateSoundtrack(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, placedChordIndex: number): void {
+  public recreateSoundtrack(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, placedChordIndex: number, directionUp: boolean): void {
     const harmonyTrack: Track = this.getHarmonyTrack(soundtrack);
     if (trackIndex == TRACK_INDEX_HARMONY) {
       const harmonyMeasure: Measure = harmonyTrack.getSortedMeasures()[measureIndex];
@@ -116,13 +116,11 @@ export class GeneratorService {
       const melodyMeasure: Measure = melodyTrack.getSortedMeasures()[measureIndex];
       const melodyChordIndex: number = placedChordIndex * 2;
       const melodyChord: PlacedChord = melodyMeasure.getSortedChords()[melodyChordIndex];
-      const directionUp: boolean = false;
       this.regenerateMelodyChords(soundtrack, melodyMeasure, melodyChord, directionUp);
     } else if (trackIndex == TRACK_INDEX_MELODY) {
       const melodyTrack: Track = this.getMelodyTrack(soundtrack);
       const melodyMeasure: Measure = melodyTrack.getSortedMeasures()[measureIndex];
       const melodyChord: PlacedChord = melodyMeasure.getSortedChords()[placedChordIndex];
-      const directionUp: boolean = false;
       this.regenerateMelodyChords(soundtrack, melodyMeasure, melodyChord, directionUp);
     }
 

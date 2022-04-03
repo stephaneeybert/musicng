@@ -2,14 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { CustomOverlayRef } from '@app/service/overlay.service';
 import { TranslateService } from '@ngx-translate/core';
 
-export const MENU_ITEM_REGENERATE: string = 'regenerate';
+export const MENU_ITEM_RECREATE_CRESCENDO: string = 'recreate-crescendo';
+export const MENU_ITEM_RECREATE_DECRESCENDO: string = 'recreate-decrescendo';
 
 @Component({
-  templateUrl: './sheet-menu.component.html'
+  templateUrl: './sheet-menu.component.html',
+  styleUrls: ['./sheet-menu.component.css']
 })
 export class SheetMenuComponent implements OnInit {
 
-  buttonLabel: string | undefined;
+  buttonCrescendoLabel: string | undefined;
+  buttonDecrescendoLabel: string | undefined;
 
   constructor(
     private translateService: TranslateService,
@@ -19,13 +22,18 @@ export class SheetMenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.translateService.get('soundtracks.regenerate').subscribe((text: string) => {
-      this.buttonLabel = text;
-    })
+    this.buttonCrescendoLabel = this.translateService.instant('soundtracks.recreate')
+      + ' ' + this.translateService.instant('soundtracks.crescendo');
+    this.buttonDecrescendoLabel = this.translateService.instant('soundtracks.recreate')
+      + ' ' + this.translateService.instant('soundtracks.decrescendo');
   }
 
-  regenerateSoundtrack(): void {
-    this.customOverlayRef.closeWithData(MENU_ITEM_REGENERATE);
+  recreateCrescendo(): void {
+    this.customOverlayRef.closeWithData(MENU_ITEM_RECREATE_CRESCENDO);
+  }
+
+  recreateDecrescendo(): void {
+    this.customOverlayRef.closeWithData(MENU_ITEM_RECREATE_DECRESCENDO);
   }
 
 }

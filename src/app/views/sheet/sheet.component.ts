@@ -12,7 +12,7 @@ import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 import { combineLatest, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { MENU_ITEM_REGENERATE, SheetMenuComponent } from './sheet-menu.component';
+import { MENU_ITEM_RECREATE_CRESCENDO, MENU_ITEM_RECREATE_DECRESCENDO, SheetMenuComponent } from './sheet-menu.component';
 
 export const DATA_TOKEN = new InjectionToken<{}>('SheetPopupPortalData');
 
@@ -165,11 +165,15 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
     const dataInjector = this.createInjector(this.customOverlayRef);
     const componentPortal: ComponentPortal<SheetMenuComponent> = new ComponentPortal(SheetMenuComponent, this.viewContainerRef, dataInjector);
     this.customOverlayRef.closeEvents.subscribe((event: OverlayCloseEvent<string>) => {
-      if (event.data == MENU_ITEM_REGENERATE) {
+      if (event.data == MENU_ITEM_RECREATE_CRESCENDO || event.data == MENU_ITEM_RECREATE_DECRESCENDO) {
         if (this.boundings) {
           const [trackIndex, measureIndex, placedChordIndex]: [number, number, number] = this.sheetService.locateMeasureAndChord(this.boundings, x, y + this.scrollY);
           if (this.soundtrack) {
-            this.generatorService.regenerateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
+            if (event.data == MENU_ITEM_RECREATE_CRESCENDO) {
+              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, true);
+            } else if (event.data == MENU_ITEM_RECREATE_DECRESCENDO) {
+              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, false);
+            }
           }
         }
       }
