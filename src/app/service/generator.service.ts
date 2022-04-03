@@ -97,23 +97,36 @@ export class GeneratorService {
     return soundtrack;
   }
 
-  regenerateSoundtrack(soundtrack: Soundtrack): void {
+  public regenerateSoundtrackDemo(soundtrack: Soundtrack): void {
+    const trackIndex: number = 1;
+    const measureIndex: number = 1;
+    const placedChordIndex: number = 1;
+    this.regenerateSoundtrack(soundtrack, trackIndex, measureIndex, placedChordIndex);
+  }
+
+  public regenerateSoundtrack(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, placedChordIndex: number): void {
     const harmonyTrack: Track = this.getHarmonyTrack(soundtrack);
-    const demoMeasureIndex: number = 1;
-    const fromHarmonyMeasure: Measure = harmonyTrack.getSortedMeasures()[demoMeasureIndex];
-    const fromHarmonyChordIndex: number = 1;
-    const fromHarmonyChord: PlacedChord = fromHarmonyMeasure.getSortedChords()[fromHarmonyChordIndex];
-    this.regenerateHarmonyChords(soundtrack, fromHarmonyMeasure, fromHarmonyChord);
+    if (trackIndex == TRACK_INDEX_HARMONY) {
+      const harmonyMeasure: Measure = harmonyTrack.getSortedMeasures()[measureIndex];
+      const harmonyChord: PlacedChord = harmonyMeasure.getSortedChords()[placedChordIndex];
+      this.regenerateHarmonyChords(soundtrack, harmonyMeasure, harmonyChord);
 
-    // TODO When regenerating the harmony chords, do we regenerate the melody chords ?
+      // Regenerate the melody chords when regenerating the harmony chords
+      const melodyTrack: Track = this.getMelodyTrack(soundtrack);
+      const melodyMeasure: Measure = melodyTrack.getSortedMeasures()[measureIndex];
+      const melodyChordIndex: number = placedChordIndex * 2;
+      const melodyChord: PlacedChord = melodyMeasure.getSortedChords()[melodyChordIndex];
+      const directionUp: boolean = false;
+      this.regenerateMelodyChords(soundtrack, melodyMeasure, melodyChord, directionUp);
+    } else if (trackIndex == TRACK_INDEX_MELODY) {
+      const melodyTrack: Track = this.getMelodyTrack(soundtrack);
+      const melodyMeasure: Measure = melodyTrack.getSortedMeasures()[measureIndex];
+      const melodyChord: PlacedChord = melodyMeasure.getSortedChords()[placedChordIndex];
+      const directionUp: boolean = false;
+      this.regenerateMelodyChords(soundtrack, melodyMeasure, melodyChord, directionUp);
+    }
+
     // TODO Can we have a direction for the harmony track too ? Or is it only for the melody track ?
-    const melodyTrack: Track = this.getMelodyTrack(soundtrack);
-    const fromMelodyMeasure: Measure = melodyTrack.getSortedMeasures()[demoMeasureIndex];
-    const fromMelodyChordIndex: number = fromHarmonyChordIndex * 2;
-    const fromMelodyChord: PlacedChord = fromMelodyMeasure.getSortedChords()[fromMelodyChordIndex];
-    const directionUp: boolean = false;
-    this.regenerateMelodyChords(soundtrack, fromMelodyMeasure, fromMelodyChord, directionUp);
-
     const message: string = this.translateService.instant('soundtracks.message.regenerated', { name: soundtrack.name });
     this.materialService.showSnackBar(message);
   }
@@ -282,7 +295,7 @@ export class GeneratorService {
     }
 
     let chromas: Array<string> = tonalityChromas;
-    console.log(tonalityChromas);
+//    console.log(tonalityChromas);
 
     // Consider the chromas above the previous melody note chroma
     if (previousMelodyOctave <= this.notationService.getFirstChordNoteSortedByIndex(harmonyChord).renderOctave()) {

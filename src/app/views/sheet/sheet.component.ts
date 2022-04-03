@@ -1,8 +1,10 @@
 import { ComponentPortal } from '@angular/cdk/portal';
+import { CdkScrollable, ScrollDispatcher } from '@angular/cdk/scrolling';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, InjectionToken, Injector, Input, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
 import { Device } from '@app/model/device';
 import { Settings } from '@app/model/settings';
 import { Soundtrack } from '@app/model/soundtrack';
+import { GeneratorService } from '@app/service/generator.service';
 import { CustomOverlayRef, OverlayCloseEvent, OverlayService } from '@app/service/overlay.service';
 import { Bounding, SheetService } from '@app/service/sheet.service';
 import { SettingsStore } from '@app/store/settings-store';
@@ -24,6 +26,8 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
   @Input()
   soundtrackId?: string;
 
+  private soundtrack?: Soundtrack;
+
   private device$: Subject<Device> = new ReplaySubject<Device>();
   // HINT: A setter with the very same name as the variable can be used in place of the variable
   @Input() // TODO NEXT change this into a non observable member variable @Input() deviceId?: string;
@@ -44,17 +48,20 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
   private customOverlayRef: CustomOverlayRef | undefined;
 
   private boundings?: Array<Bounding>;
+  private scrollSubscription?: Subscription;
   private scrollY: number = 0;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
     private sheetService: SheetService,
+    private generatorService: GeneratorService,
     private screenDeviceService: ScreenDeviceService,
     private soundtrackStore: SoundtrackStore,
     private settingsStore: SettingsStore,
     private overlayService: OverlayService,
     private viewContainerRef: ViewContainerRef,
-    private injector: Injector
+    private injector: Injector,
+    private scrollDispatcher: ScrollDispatcher
   ) { }
 
   ngAfterViewInit() {
@@ -69,9 +76,9 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
       .subscribe(([soundtracks, settings]: [Array<Soundtrack>, Settings]) => {
         // The soundtrack sheet is redrawn when the animated stave setting is changed
         if (this.soundtrackId != null) {
-          const soundtrack: Soundtrack = soundtracks[this.soundtrackStore.getSoundtrackIndex(this.soundtrackId)];
-          this.createSoundtrackSheet(soundtrack, settings.animatedStave);
-          this.boundings = this.sheetService.collectBoundingBoxes(soundtrack);
+          this.soundtrack = soundtracks[this.soundtrackStore.getSoundtrackIndex(this.soundtrackId)];
+          this.createSoundtrackSheet(this.soundtrack, settings.animatedStave);
+          this.boundings = this.sheetService.collectBoundingBoxes(this.soundtrack);
         }
       });
 
@@ -81,7 +88,11 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
         this.initializeWithDeviceId(device);
       });
 
-    window.addEventListener('scroll', this.setScreenScroll, true);
+    // Retrieving scroll events cannot be implmented with an @HostListener annotation
+    this.scrollSubscription = this.scrollDispatcher.scrolled()
+      .subscribe((cdk: CdkScrollable | void) => {
+        this.scrollY = (cdk as CdkScrollable).getElementRef().nativeElement.scrollTop || 0;
+      });
   }
 
   ngOnDestroy() {
@@ -94,18 +105,14 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
     if (this.settingsSubscription != null) {
       this.settingsSubscription.unsubscribe();
     }
-
-    window.removeEventListener('scroll', this.setScreenScroll, true);
+    if (this.scrollSubscription != null) {
+      this.scrollSubscription.unsubscribe();
+    }
   }
 
   private initScreenWidth(): void {
     this.screenWidth = this.screenDeviceService.getScreenInnerWidth();
   }
-
-  // Retrieving scroll events cannot be implmented with an @HostListener annotation
-  private setScreenScroll = (event: Event): void => {
-    this.scrollY = (event.target as Element).scrollTop;
-  };
 
   @HostListener('window:resize', ['$event'])
   public onResize(): void {
@@ -153,17 +160,17 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
   }
 
   private createPopupMenu(x: number, y: number): void {
-    const inputData: string = "Salut mon pote";
+    const inputData: string = '';
     this.customOverlayRef = this.overlayService.create<string, string>(x, y, inputData);
     const dataInjector = this.createInjector(this.customOverlayRef);
     const componentPortal: ComponentPortal<SheetMenuComponent> = new ComponentPortal(SheetMenuComponent, this.viewContainerRef, dataInjector);
     this.customOverlayRef.closeEvents.subscribe((event: OverlayCloseEvent<string>) => {
       if (event.data == MENU_ITEM_REGENERATE) {
-        console.log('at x: ' + x + ' y: ' + y);
         if (this.boundings) {
-          const [trackId, measureId, placedChordId]: [number, number, number] = this.sheetService.locateMeasureAndChord(this.boundings, x, y + this.scrollY);
-//        console.log('for soundtrack ' + this.soundtrackId);
-          console.log('Located track: ' + trackId + ' measure: ' + measureId + ' and chord: ' + placedChordId);
+          const [trackIndex, measureIndex, placedChordIndex]: [number, number, number] = this.sheetService.locateMeasureAndChord(this.boundings, x, y + this.scrollY);
+          if (this.soundtrack) {
+            this.generatorService.regenerateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
+          }
         }
       }
      });

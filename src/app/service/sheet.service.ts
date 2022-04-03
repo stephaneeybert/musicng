@@ -219,6 +219,24 @@ export class SheetService {
     return boundings;
   }
 
+/*
+  private screenToSVG(soundtrack: Soundtrack, screenX: number, screenY: number) : SVGPoint | undefined {
+    if (soundtrack.sheetContext != null) {
+      const svgPoint: SVGPoint = soundtrack.sheetContext.svg.createSVGPoint(screenX, screenY);
+      svgPoint.x = screenX;
+      svgPoint.y = screenY;
+      return svgPoint.matrixTransform(soundtrack.sheetContext.svg.getScreenCTM().inverse());
+    }
+  }
+
+  private SVGToScreen(svgX, svgY) {
+   var p = svg.createSVGPoint()
+    p.x = svgX
+    p.y = svgY
+    return p.matrixTransform(svg.getScreenCTM());
+  }
+*/
+
   private svgXToBrowser(soundtrack: Soundtrack, svgX: number): number | undefined {
     if (soundtrack.sheetContext != null) {
       const svgMarginLeft: number = soundtrack.sheetContext.svg.getBoundingClientRect().left;
@@ -610,17 +628,14 @@ export class SheetService {
       let i: number = 0;
       placedChord.notes.forEach((note: Note) => {
         if (note.isTripleSharp()) {
-          // TODO See if Vexflow now supports triples
-          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_DOUBLE_SHARP));
-          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_SHARP));
+          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_TRIPLE_SHARP));
+// TODO https://github.com/0xfe/vexflow/issues/1354#issuecomment-1086773526
         } else if (note.isDoubleSharp()) {
           staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_DOUBLE_SHARP));
         } else if (note.isSharp()) {
           staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_SHARP));
         } else if (note.isTripleFlat()) {
-          // TODO See if Vexflow now supports triples
-          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_DOUBLE_FLAT));
-          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_FLAT));
+          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_TRIPLE_FLAT));
         } else if (note.isDoubleFlat()) {
           staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_DOUBLE_FLAT));
         } else if (note.isFlat()) {

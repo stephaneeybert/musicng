@@ -4,7 +4,6 @@ import { Soundtrack } from '@app/model/soundtrack';
 import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { GeneratorService } from '@app/service/generator.service';
 import { SynthService } from '@app/service/synth.service';
-import { MelodyService } from '@app/service/melody.service';
 import { SoundtrackService } from './soundtrack.service';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { SoundtrackDialogComponent } from './soundtrack-dialog.component';
@@ -12,15 +11,12 @@ import { SoundtrackEdition } from './soundtrack-edition';
 import { TranslateService } from '@ngx-translate/core';
 import { delay, tap } from 'rxjs/operators';
 import { MaterialService } from '@app/core/service/material.service';
-import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faLayerPlus as farLayerPlus } from '@stephaneeybert/pro-regular-svg-icons';
-import { faLayerPlus as fasLayerPlus } from '@stephaneeybert/pro-solid-svg-icons';
+import { names } from 'nf-icons';
 import { MidiService } from '@app/service/midi.service';
 import { MIDI_FILE_SUFFIX } from '@app/service/notation.constant ';
 import { DownloadService } from '@stephaneeybert/lib-core';
 import { Download } from '@stephaneeybert/lib-core/lib/download/download';
 import { ProgressTask } from '@stephaneeybert/lib-core/lib/download/progress-task';
-import { NotationService } from '@app/service/notation.service';
 
 @Component({
   selector: 'app-soundtracks',
@@ -47,19 +43,15 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
   constructor(
     private changeDetector: ChangeDetectorRef,
     private soundtrackStore: SoundtrackStore,
-    private notationService: NotationService,
     private generatorService: GeneratorService,
-    private melodyService: MelodyService,
     private synthService: SynthService,
     private soundtrackService: SoundtrackService,
     private materialService: MaterialService,
     private translateService: TranslateService,
     private matDialog: MatDialog,
-    private faIconLibrary: FaIconLibrary,
     private midiService: MidiService,
     private downloadService: DownloadService
   ) {
-    this.faIconLibrary.addIcons(farLayerPlus, fasLayerPlus);
   }
 
   ngOnInit() {
@@ -70,7 +62,7 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
 
     this.soundtrackStore.loadAllFromStorage();
 
-    this.notationService.logAllTonalities();
+//    this.notationService.logAllTonalities();
   }
 
   ngOnDestroy() {
@@ -98,7 +90,7 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
   }
 
   regenerateSoundtrack(soundtrack: Soundtrack): void {
-    this.generatorService.regenerateSoundtrack(soundtrack);
+    this.generatorService.regenerateSoundtrackDemo(soundtrack);
   }
 
   startTransport(): void {

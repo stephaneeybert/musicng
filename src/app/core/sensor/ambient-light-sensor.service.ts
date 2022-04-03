@@ -40,7 +40,8 @@ export class AmbientLightSensorService {
       } else {
         this.illuminance.error(ERROR_MESSAGES.UNSUPPORTED_SENSOR);
       }
-    } catch (error) {
+    } catch (e) {
+      const error: Error = (e as Error);
       if (error.name === ERROR_TYPES.SECURITY) {
         this.illuminance.error(ERROR_MESSAGES.NOT_ALLOWED_BY_SECURITY);
       } else if (error.name === ERROR_TYPES.REFERENCE) {
@@ -59,7 +60,7 @@ export class AmbientLightSensorService {
     sensor.onerror = async (event: HttpErrorResponse) => {
       if (event.error.name === ERROR_TYPES.NOT_ALLOWED) {
         const result: PermissionStatus = await navigator.permissions.query({
-          name: SENSOR_POLICY_NAME
+          name: (SENSOR_POLICY_NAME as PermissionName)
         });
         if (result.state === ACCESS_DENIED) {
           this.illuminance.error(ERROR_MESSAGES.PREMISSION_DENIED);

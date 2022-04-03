@@ -15,7 +15,7 @@ import { SoundtrackStore } from '@app/store/soundtrack-store';
 export class SettingsResetComponent {
 
   dialogRef!: MatDialogRef<SettingsResetDialogComponent>;
-  @Output()
+  @Output() // TODO Why this event emitter ? It seems it's not being used..
   settingsEditedEvent: EventEmitter<Settings> = new EventEmitter<Settings>();
 
   private dialogEmitterSubscription?: Subscription;

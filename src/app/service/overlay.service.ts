@@ -56,7 +56,7 @@ export class CustomOverlayRef<R = any, T = any> {
     });
   }
 
-  public getData(): T {
+  public getInputData(): T {
     return this.data;
   }
 

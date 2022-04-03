@@ -18,7 +18,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   private settingsSubscription?: Subscription;
 
   dialogRef!: MatDialogRef<SettingsDialogComponent>;
-  @Output()
+  @Output() // TODO Why this event emitter ? It seems it's not being used..
   settingsEditedEvent: EventEmitter<Settings> = new EventEmitter<Settings>();
 
   private dialogEmitterSubscription?: Subscription;

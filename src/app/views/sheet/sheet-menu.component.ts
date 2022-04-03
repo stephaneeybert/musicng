@@ -15,7 +15,7 @@ export class SheetMenuComponent implements OnInit {
     private translateService: TranslateService,
     private customOverlayRef: CustomOverlayRef,
   ) {
-    console.log(this.customOverlayRef.getData());
+//    console.log('Menu input data: ' + this.customOverlayRef.getInputData());
   }
 
   ngOnInit() {

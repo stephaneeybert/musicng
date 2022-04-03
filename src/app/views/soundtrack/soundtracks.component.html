@@ -1,7 +1,7 @@
 <div style="text-align: right;">
   <button mat-fab color="accent" (click)="generateSoundtrack()"
     matTooltip="{{ 'soundtracks.add.tip' | translate }}">
-    <fa-icon [icon]="['far', 'layer-plus']" size="2x"></fa-icon>
+    <mat-icon size="2x">plus</mat-icon>
   </button>
 </div>
 <div *ngIf="getNbSoundtracks() > 0" class="soundtracks">
