@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import Vex from 'vexflow';
-import { Soundtrack } from '@app/model/soundtrack';
-import { Device } from '@app/model/device';
-import { NotationService } from './notation.service';
-import { Note } from '@app/model/note/note';
-import { Measure } from '@app/model/measure/measure';
-import { Clef } from '@app/model/clef';
-import { PlacedChord } from '@app/model/note/placed-chord';
-import { Track } from '@app/model/track';
-import { TranslateService } from '@ngx-translate/core';
 import { MaterialService } from '@app/core/service/material.service';
+import { Clef } from '@app/model/clef';
+import { Device } from '@app/model/device';
+import { Measure } from '@app/model/measure/measure';
+import { Note } from '@app/model/note/note';
+import { PlacedChord } from '@app/model/note/placed-chord';
+import { Soundtrack } from '@app/model/soundtrack';
+import { Track } from '@app/model/track';
 import { SettingsService } from '@app/views/settings/settings.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Accidental, Annotation, AnnotationHorizontalJustify, AnnotationVerticalJustify, BoundingBox, Dot, Flow, Formatter, Renderer, Stave, StaveNote, Voice } from 'vexflow';
 import { CHORD_CHROMAS_SYLLABIC } from './notation.constant ';
+import { NotationService } from './notation.service';
 
 const NAME_PREFIX_SOUNDTRACK: string = 'sheet-soundtrack-';
 const NAME_PREFIX_DEVICE: string = 'sheet-device-';
@@ -111,7 +111,7 @@ export class SheetService {
       this.clearSVGContext(soundtrack);
     }
     soundtrack.sheetContext = this.renderSVGContext(id, sheetWidth, sheetHeight);
-    const formatter: Vex.Flow.Formatter = new Vex.Flow.Formatter();
+    const formatter: Formatter = new Formatter();
     const nbTracks: number = soundtrack.getNbTracks();
     if (soundtrack.hasTracks()) {
       soundtrack.tracks.forEach((track: Track) => {
@@ -126,17 +126,17 @@ export class SheetService {
 
                 this.drawTrackNameOnMeasure(track, soundtrack, staveX, staveY);
 
-                const stave: Vex.Flow.Stave = this.drawBareStave(measure, soundtrack, displayWidth, staveX, staveY);
+                const stave: Stave = this.drawBareStave(measure, soundtrack, displayWidth, staveX, staveY);
                 measure.sheetStave = stave;
 
                 this.drawTonalityNameOnStave(measure, track, soundtrack, animatedStave);
 
-                const voice: Vex.Flow.Voice = this.createBareVoice(measure, stave);
+                const voice: Voice = this.createBareVoice(measure, stave);
 
-                const staveNotes: Array<Vex.Flow.StaveNote> = new Array<Vex.Flow.StaveNote>();
+                const staveNotes: Array<StaveNote> = new Array<StaveNote>();
                 for (const placedChord of measure.placedChords) {
                   if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
-                    const staveNote: Vex.Flow.StaveNote = this.createStaveNoteKeys(placedChord);
+                    const staveNote: StaveNote = this.createStaveNoteKeys(placedChord);
                     staveNotes.push(staveNote);
                     // Store the stave note for later access
                     placedChord.staveNote = staveNote;
@@ -200,16 +200,13 @@ export class SheetService {
         if (measure.placedChords) {
           for (const placedChord of measure.getSortedChords()) {
             if (placedChord.staveNote) {
-              const box: Vex.Flow.BoundingBox = placedChord.staveNote.getBoundingBox();
+              const box: BoundingBox = placedChord.staveNote.getBoundingBox();
               const top = this.svgYToBrowser(soundtrack, box.getY() - VEXFLOW_BOUNDING_BOX_PADDING);
               const left = this.svgXToBrowser(soundtrack, box.getX() - VEXFLOW_BOUNDING_BOX_PADDING);
               const bottom = this.svgYToBrowser(soundtrack, box.getY() + box.getH() + VEXFLOW_BOUNDING_BOX_PADDING);
               const right = this.svgXToBrowser(soundtrack, box.getX() + box.getW() + VEXFLOW_BOUNDING_BOX_PADDING);
               if (top && left && right && bottom) {
                 boundings.push(new Bounding(top, left, bottom, right, track.index, measure.index, placedChord.index));
-                if (soundtrack.sheetContext) {
-                  soundtrack.sheetContext.rect(box.getX() - VEXFLOW_BOUNDING_BOX_PADDING, box.getY() - VEXFLOW_BOUNDING_BOX_PADDING, box.getW() + VEXFLOW_BOUNDING_BOX_PADDING, box.getH() + VEXFLOW_BOUNDING_BOX_PADDING);
-                }
               }
             }
           }
@@ -260,9 +257,9 @@ export class SheetService {
     return [-1, -1, -1];
   }
 
-  private createStaveNoteKeys(placedChord: PlacedChord): Vex.Flow.StaveNote {
+  private createStaveNoteKeys(placedChord: PlacedChord): StaveNote {
     const chordDuration: string = this.renderDuration(placedChord);
-    const staveNote: Vex.Flow.StaveNote = new Vex.Flow.StaveNote({
+    const staveNote: StaveNote = new StaveNote({
       keys: this.renderNotesSortedByPitch(placedChord.notes),
       duration: chordDuration,
       auto_stem: true,
@@ -271,8 +268,8 @@ export class SheetService {
     return staveNote;
   }
 
-  private drawBareStave(measure: Measure, soundtrack: Soundtrack, displayWidth: number, staveX: number, staveY: number): Vex.Flow.Stave {
-    const stave = new Vex.Flow.Stave(staveX, staveY, displayWidth);
+  private drawBareStave(measure: Measure, soundtrack: Soundtrack, displayWidth: number, staveX: number, staveY: number): Stave {
+    const stave = new Stave(staveX, staveY, displayWidth);
     if (soundtrack.sheetContext != null) {
       stave.setContext(soundtrack.sheetContext);
     }
@@ -281,7 +278,7 @@ export class SheetService {
     }
     // TODO
     // List the possible Vexflow clef names
-    // It looks like a new clef can be set to any chord new Vex.Flow.StaveNote({ clef: "tenor", keys: ["d/3"], duration: "q" })
+    // It looks like a new clef can be set to any chord new StaveNote({ clef: "tenor", keys: ["d/3"], duration: "q" })
     // Add a clef property to the measure or the chord model class
     // Draw the measure clef if the first measure or if the current measure clef differs from the previous measure clef
     // See http://www.vexflow.com/build/docs/clef.html
@@ -291,11 +288,11 @@ export class SheetService {
     return stave;
   }
 
-  private createBareVoice(measure: Measure, stave: Vex.Flow.Stave): Vex.Flow.Voice {
-    const voice: Vex.Flow.Voice = new Vex.Flow.Voice({
+  private createBareVoice(measure: Measure, stave: Stave): Voice {
+    const voice: Voice = new Voice({
       num_beats: measure.timeSignature.numerator,
       beat_value: measure.timeSignature.denominator,
-      resolution: Vex.Flow.RESOLUTION
+      resolution: Flow.RESOLUTION
     });
     voice.setStrict(false);
     voice.setStave(stave);
@@ -452,7 +449,7 @@ export class SheetService {
     if (soundtrack.sheetContext != null) {
       if (soundtrack.nowPlaying) {
         try {
-          const staveNote: Vex.Flow.StaveNote = this.styleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR);
+          const staveNote: StaveNote = this.styleStaveNote(placedChord, VEXFLOW_NOTE_HIGHLIGHT_COLOR);
           staveNote.draw();
         } catch (error) {
           this.noCanvasContextError(error);
@@ -465,7 +462,7 @@ export class SheetService {
     if (soundtrack.sheetContext != null) {
       if (soundtrack.nowPlaying) {
         try {
-          const staveNote: Vex.Flow.StaveNote = this.styleStaveNote(placedChord, VEXFLOW_NOTE_COLOR);
+          const staveNote: StaveNote = this.styleStaveNote(placedChord, VEXFLOW_NOTE_COLOR);
           staveNote.draw();
         } catch (error) {
           this.noCanvasContextError(error);
@@ -495,7 +492,7 @@ export class SheetService {
     console.trace();
   }
 
-  private styleStaveNote(placedChord: PlacedChord, color: string): Vex.Flow.StaveNote {
+  private styleStaveNote(placedChord: PlacedChord, color: string): StaveNote {
     if (placedChord.staveNote != null) {
       placedChord.staveNote.setStyle({
         fillStyle: color,
@@ -546,12 +543,12 @@ export class SheetService {
     return vexflowNotes;
   }
 
-  private renderAnnotation(textNote: string): Vex.Flow.Annotation {
+  private renderAnnotation(textNote: string): Annotation {
     return (
-      new Vex.Flow.Annotation(textNote))
+      new Annotation(textNote))
       .setFont(VEXFLOW_FONT_TYPE, VEXFLOW_FONT_SIZE, VEXFLOW_FONT_WEIGHT)
-      .setJustification(Vex.Flow.Annotation.Justify.CENTER_STEM)
-      .setVerticalJustification(Vex.Flow.Annotation.VerticalJustify.BOTTOM);
+      .setJustification(AnnotationHorizontalJustify.CENTER_STEM)
+      .setVerticalJustification(AnnotationVerticalJustify.BOTTOM);
   }
 
   private renderNote(note: Note): string {
@@ -610,41 +607,40 @@ export class SheetService {
 
   private addChordName(placedChord: PlacedChord, noteName: string): void {
     if (placedChord.staveNote) {
-      placedChord.staveNote.addAnnotation(0, this.renderAnnotation(noteName));
+      placedChord.staveNote.addModifier(this.renderAnnotation(noteName), 0);
     }
   }
 
   private addAllChordNames(placedChord: PlacedChord, noteNames: Array<string>): void {
     if (placedChord.staveNote) {
       for (let i: number = 0; i < noteNames.length; i++) {
-        placedChord.staveNote.addAnnotation(0, this.renderAnnotation(noteNames[i]));
+        placedChord.staveNote.addModifier(this.renderAnnotation(noteNames[i]), 0);
       }
     }
   }
 
   private addAccidentalOnNotes(placedChord: PlacedChord): void {
     if (placedChord.staveNote) {
-      const staveNote: Vex.Flow.StaveNote = placedChord.staveNote;
-      let i: number = 0;
+      const staveNote: StaveNote = placedChord.staveNote;
+      let index: number = 0;
       placedChord.notes.forEach((note: Note) => {
         if (note.isTripleSharp()) {
-          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_TRIPLE_SHARP));
-// TODO https://github.com/0xfe/vexflow/issues/1354#issuecomment-1086773526
+          staveNote.addModifier(new Accidental(VEXFLOW_ACCIDENTAL_TRIPLE_SHARP), index);
         } else if (note.isDoubleSharp()) {
-          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_DOUBLE_SHARP));
+          staveNote.addModifier(new Accidental(VEXFLOW_ACCIDENTAL_DOUBLE_SHARP), index);
         } else if (note.isSharp()) {
-          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_SHARP));
+          staveNote.addModifier(new Accidental(VEXFLOW_ACCIDENTAL_SHARP), index);
         } else if (note.isTripleFlat()) {
-          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_TRIPLE_FLAT));
+          staveNote.addModifier(new Accidental(VEXFLOW_ACCIDENTAL_TRIPLE_FLAT), index);
         } else if (note.isDoubleFlat()) {
-          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_DOUBLE_FLAT));
+          staveNote.addModifier(new Accidental(VEXFLOW_ACCIDENTAL_DOUBLE_FLAT), index);
         } else if (note.isFlat()) {
-          staveNote.addAccidental(i, new Vex.Flow.Accidental(VEXFLOW_ACCIDENTAL_FLAT));
+          staveNote.addModifier(new Accidental(VEXFLOW_ACCIDENTAL_FLAT), index);
         }
         if (note.pitch.accidental) {
-          staveNote.addAccidental(i, new Vex.Flow.Accidental(note.pitch.accidental));
+          staveNote.addModifier(new Accidental(note.pitch.accidental), index);
         }
-        i++;
+        index++;
       })
     }
   }
@@ -660,25 +656,32 @@ export class SheetService {
 
   private addDotOnNotes(placedChord: PlacedChord): void {
     if (placedChord.staveNote) {
-      const staveNote: Vex.Flow.StaveNote = placedChord.staveNote;
+      const staveNote: StaveNote = placedChord.staveNote;
       if (placedChord.dottedAll) {
-        staveNote.addDotToAll();
+        let index: number = 0;
+        for (const note of placedChord.notes) {
+          const dot: Dot = new Dot();
+          staveNote.addModifier(dot, index);
+          index++;
+        }
       } else {
-        let i: number = 0;
-        placedChord.notes.forEach((note: Note) => {
+        let index: number = 0;
+        for (const note of placedChord.notes) {
           if (note.dotted) {
-            staveNote.addDot(i);
+            const dot: Dot = new Dot();
+            staveNote.addModifier(dot, index);
           }
-          i++;
-        })
+          index++;
+        }
       }
     }
   }
 
   private renderSVGContext(id: string, width: number, height: number): any {
     const domElement: HTMLElement | null = document.getElementById(id);
+    const domDivElement: HTMLDivElement = (domElement as HTMLDivElement);
     if (domElement != null) {
-      const renderer: Vex.Flow.Renderer = new Vex.Flow.Renderer(domElement, Vex.Flow.Renderer.Backends.SVG);
+      const renderer: Renderer = new Renderer(domDivElement, Renderer.Backends.SVG);
       renderer.resize(width, height);
       const sheetContext: any = renderer.getContext();
       return sheetContext;

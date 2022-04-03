@@ -1,6 +1,6 @@
-import * as vexflow from 'vexflow';
-import { TimeSignature } from './time-signature';
 import { PlacedChord } from '@app/model/note/placed-chord';
+import { Stave, Voice } from 'vexflow';
+import { TimeSignature } from './time-signature';
 
 export class Measure {
 
@@ -9,8 +9,8 @@ export class Measure {
   tempo: number;
   timeSignature: TimeSignature;
   placedChords?: Array<PlacedChord>;
-  sheetStave?: vexflow.Flow.Stave;
-  sheetVoice?: vexflow.Flow.Voice;
+  sheetStave?: Stave;
+  sheetVoice?: Voice;
 
   constructor(index: number, tempo: number, timeSignature: TimeSignature) {
     this.index = index;

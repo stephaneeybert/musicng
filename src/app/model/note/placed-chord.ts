@@ -1,7 +1,7 @@
-import * as vexflow from 'vexflow';
-import { Note } from './note';
-import { Duration } from './duration/duration';
+import { StaveNote } from 'vexflow';
 import { TempoUnitType } from '../tempo-unit';
+import { Duration } from './duration/duration';
+import { Note } from './note';
 import { Tonality } from './tonality';
 
 export class PlacedChord {
@@ -12,7 +12,7 @@ export class PlacedChord {
   velocity: number;
   tonality: Tonality;
   dottedAll: boolean; // TODO Use it in the synth ?
-  staveNote?: vexflow.Flow.StaveNote;
+  staveNote?: StaveNote;
 
   constructor(index: number, duration: Duration, velocity: number, tonality: Tonality) {
     this.index = index;

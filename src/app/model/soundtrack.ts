@@ -1,6 +1,6 @@
-import * as vexflow from 'vexflow';
-import { Track } from './track';
+import { SVGContext } from 'vexflow';
 import { Measure } from './measure/measure';
+import { Track } from './track';
 
 export class Soundtrack {
 
@@ -11,7 +11,7 @@ export class Soundtrack {
   lyrics: string;
   keyboard: any;
   nowPlaying: boolean;
-  sheetContext?: vexflow.Flow.SVGContext;
+  sheetContext?: SVGContext;
 
   constructor(id: string, name: string) {
     this.tracks = new Array<Track>();
