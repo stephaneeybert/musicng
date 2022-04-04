@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { CustomOverlayRef } from '@app/service/overlay.service';
 import { TranslateService } from '@ngx-translate/core';
+import { DATA_TOKEN } from './sheet.component';
 
 export const MENU_ITEM_RECREATE_CRESCENDO: string = 'recreate-crescendo';
 export const MENU_ITEM_RECREATE_DECRESCENDO: string = 'recreate-decrescendo';
@@ -17,8 +18,10 @@ export class SheetMenuComponent implements OnInit {
   constructor(
     private translateService: TranslateService,
     private customOverlayRef: CustomOverlayRef,
+    @Inject(DATA_TOKEN) public data: string
   ) {
 //    console.log('Menu input data: ' + this.customOverlayRef.getInputData());
+//    console.log('Menu injected data: ' + this.data);
   }
 
   ngOnInit() {

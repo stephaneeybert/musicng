@@ -161,8 +161,9 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
 
   private createPopupMenu(x: number, y: number): void {
     const inputData: string = '';
+    const injectedData: string = '';
     this.customOverlayRef = this.overlayService.create<string, string>(x, y, inputData);
-    const dataInjector = this.createInjector(this.customOverlayRef);
+    const dataInjector = this.createInjector<string>(this.customOverlayRef, injectedData);
     const componentPortal: ComponentPortal<SheetMenuComponent> = new ComponentPortal(SheetMenuComponent, this.viewContainerRef, dataInjector);
     this.customOverlayRef.closeEvents.subscribe((event: OverlayCloseEvent<string>) => {
       if (event.data == MENU_ITEM_RECREATE_CRESCENDO || event.data == MENU_ITEM_RECREATE_DECRESCENDO) {
@@ -181,11 +182,12 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
     this.overlayService.attach<SheetMenuComponent>(this.customOverlayRef, componentPortal);
   }
 
-  private createInjector(customOverlayRef: CustomOverlayRef): Injector {
+  private createInjector<T>(customOverlayRef: CustomOverlayRef, data: T): Injector {
     return Injector.create({
       parent: this.injector,
       providers: [
-        { provide: CustomOverlayRef, useValue: customOverlayRef }
+        { provide: CustomOverlayRef, useValue: customOverlayRef },
+        { provide: DATA_TOKEN, useValue: data },
       ]
     })
   }
