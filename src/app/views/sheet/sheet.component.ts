@@ -77,8 +77,10 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
         // The soundtrack sheet is redrawn when the animated stave setting is changed
         if (this.soundtrackId != null) {
           this.soundtrack = soundtracks[this.soundtrackStore.getSoundtrackIndex(this.soundtrackId)];
-          this.createSoundtrackSheet(this.soundtrack, settings.animatedStave);
-          this.boundings = this.sheetService.collectBoundingBoxes(this.soundtrack);
+          if (this.soundtrack) {
+            this.createSoundtrackSheet(this.soundtrack, settings.animatedStave);
+            this.boundings = this.sheetService.collectBoundingBoxes(this.soundtrack);
+          }
         }
       });
 
