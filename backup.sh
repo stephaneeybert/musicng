@@ -8,7 +8,7 @@ currentDir=`pwd`
 
 cd ..
 
-zip -r $zipfile $filename -x "*.vscode/*" "*.editorconfig" "*.project" "*.settings/*" "*node_modules/*" "*.git/*" "*dist/*" ".gitignore"
+zip -r $zipfile $filename -x "*.angular/*" "*.vscode/*" "*.editorconfig" "*.project" "*.settings/*" "*node_modules/*" "*.git/*" "*dist/*" ".gitignore"
 
 mv -f $zipfile /home/stephane/backup
 
