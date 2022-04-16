@@ -281,6 +281,29 @@
   "sheet": {
     "error": {
       "noSheetDrawing": "The drawing of staves is no longer possible."
+    },
+    "menu": {
+      "crescendo": {
+        "label": "Crescendo",
+        "tip": "Crescendo from this chord"
+      },
+      "decrescendo": {
+        "label": "Decrescendo",
+        "tip": "Decrescendo from this chord"
+      },
+      "form": {
+        "title": "Tonality",
+        "set": {
+          "tonality": {
+            "label": "Tonality",
+            "tip": "Folow up with the tonality:"
+          },
+          "chord": {
+            "label": "Chord",
+            "tip": "Select the chord:"
+          }
+        }
+      }
     }
   },
   "user": {

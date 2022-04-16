@@ -9,8 +9,10 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFT, NB_HALF_TONES_MINOR, NOTE_CHROMA_C } from './notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFT, NB_HALF_TONES_MINOR, NOTE_CHROMA_C, TRACK_INDEX_HARMONY } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
+import { Soundtrack } from '@app/model/soundtrack';
+import { Track } from '@app/model/track';
 
 const CHORD_SEPARATOR: string = ' ';
 const CHORD_DURATION_SEPARATOR: string = '/';
@@ -156,11 +158,20 @@ export class NotationService {
 
   public renderTonalityName(tonality: Tonality): string {
     const tonalityChordNames: Array<string> = this.getTonalityChordNames(tonality.range, tonality.firstChroma);
-    return this.renderTonalityNameInSyllabic(tonalityChordNames[0]);
+    return this.renderChordNameInSyllabic(tonalityChordNames[0]);
   }
 
-  public renderTonalityNameInSyllabic(chordNameIntl: string): string {
-    let syllabic: string = this.chordChromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
+  public renderTonalityChords(tonality: Tonality): Array<string> {
+    const chordNames: Array<string> = new Array();
+    const tonalityChordNames: Array<string> = this.getTonalityChordNames(tonality.range, tonality.firstChroma);
+    for (const tonalityChordName of tonalityChordNames) {
+      chordNames.push(this.renderChordNameInSyllabic(tonalityChordName));
+    }
+    return chordNames;
+  }
+
+  public renderChordNameInSyllabic(chordNameIntl: string): string {
+    const syllabic: string = this.chordChromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
     return syllabic + ' ' + chordNameIntl;
   }
 
@@ -340,15 +351,15 @@ export class NotationService {
     return new PlacedChord(index, duration, velocity, tonality);
   }
 
-  public createSameChord(chord: PlacedChord): PlacedChord {
+  public clonePlacedChord(chord: PlacedChord): PlacedChord {
     const chordIndex: number = chord.index + 1;
-    const sameChord: PlacedChord = this.createEmptyChord(chordIndex, chord.duration, chord.velocity, chord.tonality)
-    sameChord.dottedAll = chord.dottedAll;
+    const clonedChord: PlacedChord = this.createEmptyChord(chordIndex, chord.duration, chord.velocity, chord.tonality)
+    clonedChord.dottedAll = chord.dottedAll;
     chord.getNotesSortedByIndex()
     .forEach((note: Note) => {
-      sameChord.addNote(note);
+      clonedChord.addNote(note);
     });
-    return sameChord;
+    return clonedChord;
   }
 
   public createTimeSignature(numerator: number, denominator: number): TimeSignature {
@@ -520,7 +531,7 @@ export class NotationService {
   }
 
   public getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {
-    let tonality: Array<string> = new Array();
+    let tonalityChromas: Array<string> = new Array();
     const sourceScale: Array<string> = this.getSourceScale(rangeFirstChroma);
     const enharmonicScale: Array<string> = this.getEnharmonicScale(rangeFirstChroma);
     const alphaScale: Array<string> = this.getAlphaScale(rangeFirstChroma, sourceScale.length);
@@ -530,14 +541,14 @@ export class NotationService {
     for (let index = 0; index < sourceScale.length; index++) {
       if (noteRangeStructure[structureIndex] == index) {
         if (sourceScale[index].includes(alphaScale[structureIndex])) {
-          tonality.push(sourceScale[index]);
+          tonalityChromas.push(sourceScale[index]);
         } else if (enharmonicScale[index].includes(alphaScale[structureIndex])) {
-          tonality.push(enharmonicScale[index]);
+          tonalityChromas.push(enharmonicScale[index]);
         }
         structureIndex++;
       }
     }
-    return tonality;
+    return tonalityChromas;
   }
 
   private getSourceScale(rangeFirstChroma: string): Array<string> {
@@ -684,6 +695,41 @@ export class NotationService {
       shiftedChromas[index] = this.createShiftedChromas(shiftedChromas[index - 1]);
     }
     return shiftedChromas;
+  }
+
+  public isHarmonyTrack(trackIndex: number): boolean {
+    return trackIndex == TRACK_INDEX_HARMONY;
+  }
+
+  public isFirstMeasureChord(placedChordIndex: number): boolean {
+    return placedChordIndex == 0;
+  }
+
+  public getMeasure(soundtrack: Soundtrack, trackIndex: number, measureIndex: number): Measure {
+    const track: Track = soundtrack.getSortedTracks()[trackIndex];
+    return track.getSortedMeasures()[measureIndex];
+  }
+
+  public getPlacedChord(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, placedChordIndex: number): PlacedChord {
+    const measure: Measure = this.getMeasure(soundtrack, trackIndex, measureIndex);
+    const placedChord: PlacedChord = measure.getSortedChords()[placedChordIndex];
+    return placedChord;
+  }
+
+  public getMajorTonalities(): Array<Tonality> {
+    const tonalities: Array<Tonality> = new Array();
+    CHROMAS_MAJOR.forEach((chroma: string) => {
+      tonalities.push(new Tonality(NOTE_RANGE.MAJOR, chroma));
+    });
+    return tonalities;
+  }
+
+  public getMajorTonalityChromas(): Array<string> {
+    const chromas: Array<string> = new Array();
+    CHROMAS_MAJOR.forEach((chroma: string) => {
+      chromas.push(chroma);
+    });
+    return chromas;
   }
 
   private getAllTonalities(): Array<Tonality> {

@@ -1,5 +1,17 @@
-.sheet-menu-button {
-  font-weight: bold;
-  text-align: center;
+.sheet-menu {
+  background: #fff;
   padding: 10px;
+  border: solid 2px #ccc;
 }
+
+.center {
+  text-align: center;
+  width: 100%;
+}
+
+.mat-option {
+  text-align: center;
+  padding: 4px;
+  margin: 0;
+}
+

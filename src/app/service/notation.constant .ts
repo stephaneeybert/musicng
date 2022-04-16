@@ -92,6 +92,11 @@ export enum TRACK_TYPES {
   BASS = 'bass'
 }
 
+export const TRACK_INDEX_MELODY: number = 0;
+export const TRACK_INDEX_HARMONY: number = 1;
+export const TRACK_INDEX_DRUMS: number = 2;
+export const TRACK_INDEX_BASS: number = 3;
+
 // A range is an ordered sequence of intervals, from a lower note to an higher note
 export enum NOTE_RANGE {
   MAJOR = 0,

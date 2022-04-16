@@ -1,7 +1,44 @@
-<div>
-  <button class='sheet-menu-button' type="button" (click)="recreateCrescendo()">{{ buttonCrescendoLabel }}</button>
+<div class="sheet-menu" [hidden]="handleTonalities() || handleHarmonyChords()">
+  <mat-icon class="center" (click)="recreateCrescendo()" matTooltip="{{ 'sheet.menu.crescendo.label' | translate }}">north_east</mat-icon>
+  <br/>
+  <br/>
+  <mat-icon class="center" (click)="recreateDecrescendo()" matTooltip="{{ 'sheet.menu.decrescendo.label' | translate }}">south_east</mat-icon>
 </div>
-<div>
-  <button class='sheet-menu-button' type="button" (click)="recreateDecrescendo()">{{ buttonDecrescendoLabel }}</button>
+
+<div class="sheet-menu" [hidden]="!handleTonalities()">
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'sheet.menu.form.set.tonality.label' | translate }}</mat-label>
+    <mat-select disableRipple name="tonality"
+      matTooltip="{{ 'sheet.menu.form.set.tonality.tip' | translate }}"
+      (selectionChange)="recreateOnTonality($event)">
+      <mat-option *ngFor="let tonalityChroma of tonalityChromas" value="{{ tonalityChroma }}">
+        {{ tonalityChroma }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <p>
+    <mat-slide-toggle name="crescendo"
+    [(ngModel)]="crescendo"
+    matTooltip="{{ 'sheet.menu.crescendo.tip' | translate }}">
+    {{ 'sheet.menu.crescendo.label' | translate }}</mat-slide-toggle>
+  </p>
 </div>
-<!-- TODO <mat-icon (click)="recreateCrescendo()" matTooltip="{{ buttonCrescendoLabel }}">replay</mat-icon> -->
+
+<div class="sheet-menu" [hidden]="!handleHarmonyChords()">
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'sheet.menu.form.set.chord.label' | translate }}</mat-label>
+    <mat-select disableRipple name="chord"
+      matTooltip="{{ 'sheet.menu.form.set.chord.tip' | translate }}"
+      (selectionChange)="recreateWithChord($event)">
+      <mat-option *ngFor="let tonalityChord of tonalityChords" value="{{ tonalityChord }}">
+        {{ tonalityChord }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <p>
+    <mat-slide-toggle name="crescendo"
+    [(ngModel)]="crescendo"
+    matTooltip="{{ 'sheet.menu.crescendo.tip' | translate }}">
+    {{ 'sheet.menu.crescendo.label' | translate }}</mat-slide-toggle>
+  </p>
+</div>

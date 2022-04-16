@@ -13,6 +13,7 @@ import { SettingsDialogComponent } from '@app/views/settings/settings-dialog.com
 import { SettingsResetDialogComponent } from '@app/views/settings/settings-reset-dialog.component';
 import { SettingsResetComponent } from '@app/views/settings/settings-reset.component';
 import { SettingsComponent } from '@app/views/settings/settings.component';
+import { SheetMenuComponent } from '@app/views/sheet/sheet-menu.component';
 import { LibCoreModule } from '@stephaneeybert/lib-core';
 import { LibI18nModule } from '@stephaneeybert/lib-i18n';
 import { LibPwaModule } from '@stephaneeybert/lib-pwa';
@@ -26,7 +27,8 @@ import { LibPwaModule } from '@stephaneeybert/lib-pwa';
     SettingsDialogComponent,
     SettingsComponent,
     SettingsResetDialogComponent,
-    SettingsResetComponent
+    SettingsResetComponent,
+    SheetMenuComponent
   ],
   imports: [
     AppRoutingModule,

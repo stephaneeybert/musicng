@@ -27,7 +27,7 @@ type GenerateTonalityType = {
 export class SettingsDialogComponent implements OnInit {
 
   settingsEdition: Settings;
-  form!: FormGroup;
+  formGroup!: FormGroup;
   timeSignatures: Array<TimeSignatureType> = new Array();
   chordDurationUnits: Array<ChordDurationUnitType> = new Array();
   generateTonalities: Array<GenerateTonalityType> = new Array();
@@ -74,7 +74,7 @@ export class SettingsDialogComponent implements OnInit {
   ngOnInit() {
     this.instantiateLists();
 
-    this.form = this.formBuilder.group({
+    this.formGroup = this.formBuilder.group({
       generateTempoBpm: new FormControl(this.settingsEdition.generateTempoBpm),
       generateTimeSignatureNumerator: new FormControl(this.settingsEdition.generateTimeSignatureNumerator),
       generateTimeSignatureDenominator: new FormControl(this.settingsEdition.generateTimeSignatureDenominator),
@@ -127,7 +127,7 @@ export class SettingsDialogComponent implements OnInit {
     });
 
     // Have the form fields error messages shown on keystroke
-    this.form.markAllAsTouched();
+    this.formGroup.markAllAsTouched();
   }
 
   private instantiateLists(): void {
@@ -145,7 +145,7 @@ export class SettingsDialogComponent implements OnInit {
   }
 
   public hasError(controlName: string, errorName: string): boolean {
-    return this.form.controls[controlName].hasError(errorName);
+    return this.formGroup.controls[controlName].hasError(errorName);
   }
 
   save(formGroup: FormGroup) {

@@ -13,7 +13,7 @@ export class OverlayService {
     private overlay: Overlay
   ) { }
 
-  public create<R = any, T = any>(left: number, top: number, inputData: T): CustomOverlayRef<R> {
+  public create<R = any, T = any>(left: number, top: number, inputData: T | undefined): CustomOverlayRef<R> {
     const positionStrategy = this.overlay
       .position()
       .global()
@@ -64,7 +64,7 @@ export class CustomOverlayRef<R = any, T = any> {
     this.close('close', data);
   }
 
-  private closeWithoutData(): void {
+  public closeWithoutData(): void {
     this.close('backdropClick', undefined);
   }
 

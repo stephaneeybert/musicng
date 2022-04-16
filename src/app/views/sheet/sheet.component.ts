@@ -2,9 +2,11 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { CdkScrollable, ScrollDispatcher } from '@angular/cdk/scrolling';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, InjectionToken, Injector, Input, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
 import { Device } from '@app/model/device';
+import { PlacedChord } from '@app/model/note/placed-chord';
 import { Settings } from '@app/model/settings';
 import { Soundtrack } from '@app/model/soundtrack';
 import { GeneratorService } from '@app/service/generator.service';
+import { NotationService } from '@app/service/notation.service';
 import { CustomOverlayRef, OverlayCloseEvent, OverlayService } from '@app/service/overlay.service';
 import { Bounding, SheetService } from '@app/service/sheet.service';
 import { SettingsStore } from '@app/store/settings-store';
@@ -12,7 +14,7 @@ import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
 import { combineLatest, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { MENU_ITEM_RECREATE_CRESCENDO, MENU_ITEM_RECREATE_DECRESCENDO, SheetMenuComponent } from './sheet-menu.component';
+import { SheetMenuComponent, SheetMenuInput, SheetMenuResponse } from './sheet-menu.component';
 
 export const DATA_TOKEN = new InjectionToken<{}>('SheetPopupPortalData');
 
@@ -54,6 +56,7 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
   constructor(
     private changeDetector: ChangeDetectorRef,
     private sheetService: SheetService,
+    private notationService: NotationService,
     private generatorService: GeneratorService,
     private screenDeviceService: ScreenDeviceService,
     private soundtrackStore: SoundtrackStore,
@@ -161,27 +164,30 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
     this.createPopupMenu(event.clientX, event.clientY);
   }
 
-  private createPopupMenu(x: number, y: number): void {
-    const inputData: string = '';
-    const injectedData: string = '';
-    this.customOverlayRef = this.overlayService.create<string, string>(x, y, inputData);
-    const dataInjector = this.createInjector<string>(this.customOverlayRef, injectedData);
-    const componentPortal: ComponentPortal<SheetMenuComponent> = new ComponentPortal(SheetMenuComponent, this.viewContainerRef, dataInjector);
-    this.customOverlayRef.closeEvents.subscribe((event: OverlayCloseEvent<string>) => {
-      if (event.data == MENU_ITEM_RECREATE_CRESCENDO || event.data == MENU_ITEM_RECREATE_DECRESCENDO) {
-        if (this.boundings) {
-          const [trackIndex, measureIndex, placedChordIndex]: [number, number, number] = this.sheetService.locateMeasureAndChord(this.boundings, x, y + this.scrollY);
-          if (this.soundtrack) {
-            if (event.data == MENU_ITEM_RECREATE_CRESCENDO) {
-              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, true);
-            } else if (event.data == MENU_ITEM_RECREATE_DECRESCENDO) {
-              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, false);
+  private createPopupMenu(posX: number, posY: number): void {
+    if (this.soundtrack && this.boundings) {
+      const [trackIndex, measureIndex, placedChordIndex]: [number, number, number] = this.sheetService.locateMeasureAndChord(this.boundings, posX, posY + this.scrollY);
+      const placedChord: PlacedChord = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
+      const inputData: SheetMenuInput | undefined = new SheetMenuInput(trackIndex, measureIndex, placedChordIndex, placedChord.tonality.firstChroma);
+      this.customOverlayRef = this.overlayService.create<SheetMenuResponse, SheetMenuInput>(posX, posY, inputData);
+      const injectedData: string = '';
+      const dataInjector = this.createInjector<string>(this.customOverlayRef, injectedData);
+      const componentPortal: ComponentPortal<SheetMenuComponent> = new ComponentPortal(SheetMenuComponent, this.viewContainerRef, dataInjector);
+      this.customOverlayRef.closeEvents.subscribe((event: OverlayCloseEvent<SheetMenuResponse>) => {
+        if (this.soundtrack && this.boundings) {
+          if (event.data) {
+            if (event.data.chord) {
+              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, event.data.crescendo, event.data.chord, undefined);
+            } else if (event.data.tonality) {
+              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, event.data.crescendo, undefined, event.data.tonality);
+            } else {
+              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, event.data.crescendo, undefined, undefined);
             }
           }
         }
-      }
-     });
+      });
     this.overlayService.attach<SheetMenuComponent>(this.customOverlayRef, componentPortal);
+    }
   }
 
   private createInjector<T>(customOverlayRef: CustomOverlayRef, data: T): Injector {
