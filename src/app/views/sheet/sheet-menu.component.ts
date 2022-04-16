@@ -37,6 +37,10 @@ export class SheetMenuComponent implements OnInit {
     this.tonalityChords = this.notationService.getTonalityChordNames(tonality.range, tonality.firstChroma);
   }
 
+  renderChordNameInSyllabic(chordNameIntl: string): string {
+    return this.notationService.renderChordNameInSyllabic(chordNameIntl);
+  }
+
   handleTonalities(): boolean {
     return this.notationService.isHarmonyTrack(this.inputData.trackIndex) && this.notationService.isFirstMeasureChord(this.inputData.placedChordIndex);
   }
