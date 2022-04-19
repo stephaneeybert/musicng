@@ -22,6 +22,11 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <p>
+    <mat-slide-toggle name="recreate" [(ngModel)]="recreate"
+    matTooltip="{{ 'sheet.menu.note.recreate.tip' | translate }}">
+    {{ 'sheet.menu.note.recreate.label' | translate }}</mat-slide-toggle>
+  </p>
 </div>
 
 <div class="sheet-menu" [hidden]="!handleTonalities()">

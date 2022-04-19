@@ -283,6 +283,12 @@
       "noSheetDrawing": "Le dessin des partitions n'est plus possible."
     },
     "menu": {
+      "note": {
+        "recreate": {
+          "label": "Recréer",
+          "tip": "Recréer le morceau depuis cette note"
+        }
+      },
       "directionUp": {
         "label": "Montant",
         "tip": "Montant depuis cet accord"
