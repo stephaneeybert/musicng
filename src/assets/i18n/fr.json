@@ -283,13 +283,13 @@
       "noSheetDrawing": "Le dessin des partitions n'est plus possible."
     },
     "menu": {
-      "crescendo": {
-        "label": "Crescendo",
-        "tip": "Crescendo depuis cet accord"
+      "directionUp": {
+        "label": "Montant",
+        "tip": "Montant depuis cet accord"
       },
-      "decrescendo": {
-        "label": "Decrescendo",
-        "tip": "Decrescendo depuis cet accord"
+      "directionDown": {
+        "label": "Descendant",
+        "tip": "Descendant depuis cet accord"
       },
       "form": {
         "title": "Tonalité",
@@ -301,6 +301,10 @@
           "chord": {
             "label": "Accord",
             "tip": "Choisir l'accord:"
+          },
+          "note": {
+            "label": "Note",
+            "tip": "Choisir la note:"
           }
         }
       }

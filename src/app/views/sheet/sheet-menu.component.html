@@ -1,8 +1,27 @@
-<div class="sheet-menu" [hidden]="handleTonalities() || handleHarmonyChords()">
-  <mat-icon class="center" (click)="recreateCrescendo()" matTooltip="{{ 'sheet.menu.crescendo.label' | translate }}">north_east</mat-icon>
-  <br/>
-  <br/>
-  <mat-icon class="center" (click)="recreateDecrescendo()" matTooltip="{{ 'sheet.menu.decrescendo.label' | translate }}">south_east</mat-icon>
+<div class="sheet-menu" [hidden]="!handleHarmonyChords()">
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'sheet.menu.form.set.chord.label' | translate }}</mat-label>
+    <mat-select disableRipple name="chord"
+      matTooltip="{{ 'sheet.menu.form.set.chord.tip' | translate }}"
+      (selectionChange)="recreateWithHarmonyChord($event)">
+      <mat-option *ngFor="let tonalityChord of tonalityChords" value="{{ tonalityChord }}">
+        {{ renderChordNameInSyllabic(tonalityChord) }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div class="sheet-menu" [hidden]="!handleMelodyNotes()">
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'sheet.menu.form.set.note.label' | translate }}</mat-label>
+    <mat-select disableRipple name="note"
+      matTooltip="{{ 'sheet.menu.form.set.note.tip' | translate }}"
+      (selectionChange)="recreateWithMelodyNote($event)">
+      <mat-option *ngFor="let chromaOctave of melodyNotes" value="{{ chromaOctave }}">
+        {{ renderNoteNameInSyllabic(chromaOctave) }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 
 <div class="sheet-menu" [hidden]="!handleTonalities()">
@@ -11,34 +30,9 @@
     <mat-select disableRipple name="tonality"
       matTooltip="{{ 'sheet.menu.form.set.tonality.tip' | translate }}"
       (selectionChange)="recreateOnTonality($event)">
-      <mat-option *ngFor="let tonalityChroma of tonalityChromas" value="{{ tonalityChroma }}">
+      <mat-option *ngFor="let tonalityChroma of tonalitiesChromas" value="{{ tonalityChroma }}">
         {{ renderChordNameInSyllabic(tonalityChroma) }}
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <p>
-    <mat-slide-toggle name="crescendo"
-    [(ngModel)]="crescendo"
-    matTooltip="{{ 'sheet.menu.crescendo.tip' | translate }}">
-    {{ 'sheet.menu.crescendo.label' | translate }}</mat-slide-toggle>
-  </p>
-</div>
-
-<div class="sheet-menu" [hidden]="!handleHarmonyChords()">
-  <mat-form-field appearance="fill">
-    <mat-label>{{ 'sheet.menu.form.set.chord.label' | translate }}</mat-label>
-    <mat-select disableRipple name="chord"
-      matTooltip="{{ 'sheet.menu.form.set.chord.tip' | translate }}"
-      (selectionChange)="recreateWithChord($event)">
-      <mat-option *ngFor="let tonalityChord of tonalityChords" value="{{ tonalityChord }}">
-        {{ renderChordNameInSyllabic(tonalityChord) }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <p>
-    <mat-slide-toggle name="crescendo"
-    [(ngModel)]="crescendo"
-    matTooltip="{{ 'sheet.menu.crescendo.tip' | translate }}">
-    {{ 'sheet.menu.crescendo.label' | translate }}</mat-slide-toggle>
-  </p>
 </div>

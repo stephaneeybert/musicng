@@ -2,6 +2,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { CdkScrollable, ScrollDispatcher } from '@angular/cdk/scrolling';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, InjectionToken, Injector, Input, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
 import { Device } from '@app/model/device';
+import { Measure } from '@app/model/measure/measure';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { Settings } from '@app/model/settings';
 import { Soundtrack } from '@app/model/soundtrack';
@@ -168,7 +169,14 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
     if (this.soundtrack && this.boundings) {
       const [trackIndex, measureIndex, placedChordIndex]: [number, number, number] = this.sheetService.locateMeasureAndChord(this.boundings, posX, posY + this.scrollY);
       const placedChord: PlacedChord = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
-      const inputData: SheetMenuInput | undefined = new SheetMenuInput(trackIndex, measureIndex, placedChordIndex, placedChord.tonality.firstChroma);
+      let melodyNotes: Array<string> | undefined = undefined;
+      if (this.notationService.isMelodyTrack(trackIndex)) {
+        const measure: Measure = this.notationService.getMeasure(this.soundtrack, trackIndex, measureIndex);
+        const harmonyChord: PlacedChord = this.notationService.getHarmonyChordFromMelodyChord(this.soundtrack, measure.index, placedChord.index);
+        const previousPlacedChord: PlacedChord | undefined = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
+        melodyNotes = this.generatorService.collectPossibleMelodyNotesFromHarmonyChord(harmonyChord, previousPlacedChord, false);
+      }
+      const inputData: SheetMenuInput | undefined = new SheetMenuInput(trackIndex, measureIndex, placedChordIndex, placedChord.tonality.firstChroma, melodyNotes);
       this.customOverlayRef = this.overlayService.create<SheetMenuResponse, SheetMenuInput>(posX, posY, inputData);
       const injectedData: string = '';
       const dataInjector = this.createInjector<string>(this.customOverlayRef, injectedData);
@@ -176,12 +184,12 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
       this.customOverlayRef.closeEvents.subscribe((event: OverlayCloseEvent<SheetMenuResponse>) => {
         if (this.soundtrack && this.boundings) {
           if (event.data) {
-            if (event.data.chord) {
-              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, event.data.crescendo, event.data.chord, undefined);
+            if (event.data.harmonyChordChroma) {
+              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, event.data.harmonyChordChroma, undefined, undefined, undefined);
+            } else if (event.data.melodyNoteChroma) {
+              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, undefined, event.data.melodyNoteChroma, event.data.melodyNoteOctave, undefined);
             } else if (event.data.tonality) {
-              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, event.data.crescendo, undefined, event.data.tonality);
-            } else {
-              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, event.data.crescendo, undefined, undefined);
+              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, undefined, undefined, undefined, event.data.tonality);
             }
           }
         }

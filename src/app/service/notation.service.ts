@@ -9,7 +9,7 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFT, NB_HALF_TONES_MINOR, NOTE_CHROMA_C, TRACK_INDEX_HARMONY } from './notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFT, NB_HALF_TONES_MINOR, NOTE_CHROMA_C, TRACK_INDEX_HARMONY, TRACK_INDEX_MELODY } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Track } from '@app/model/track';
@@ -154,6 +154,14 @@ export class NotationService {
     }
     const lastIsLowest: number = sortedNotes.length - 1;
     return sortedNotes[lastIsLowest];
+  }
+
+  public renderIntlChromaOctave(chroma: string, octave: number): string {
+    let abc: string = chroma;
+    if (octave != null) {
+      abc += octave;
+    }
+    return abc;
   }
 
   public renderTonalityName(tonality: Tonality): string {
@@ -701,6 +709,10 @@ export class NotationService {
     return trackIndex == TRACK_INDEX_HARMONY;
   }
 
+  public isMelodyTrack(trackIndex: number): boolean {
+    return trackIndex == TRACK_INDEX_MELODY;
+  }
+
   public isFirstMeasureChord(placedChordIndex: number): boolean {
     return placedChordIndex == 0;
   }
@@ -714,6 +726,26 @@ export class NotationService {
     const measure: Measure = this.getMeasure(soundtrack, trackIndex, measureIndex);
     const placedChord: PlacedChord = measure.getSortedChords()[placedChordIndex];
     return placedChord;
+  }
+
+  public getPreviousPlacedChord(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, placedChordIndex: number): PlacedChord | undefined {
+    // Ignore the previous chord if it sits in the previous measure
+    if (placedChordIndex > 0) {
+      const previousChordIndex: number = placedChordIndex - 1;
+      const measure: Measure = this.getMeasure(soundtrack, trackIndex, measureIndex);
+      const placedChord: PlacedChord = measure.getSortedChords()[previousChordIndex];
+      return placedChord;
+    } else {
+      return undefined;
+    }
+  }
+
+  public getHarmonyChordFromMelodyChord(soundtrack: Soundtrack, measureIndex: number, melodyChordIndex: number): PlacedChord  {
+    const harmonyChord: PlacedChord = this.getPlacedChord(soundtrack, TRACK_INDEX_HARMONY, measureIndex, Math.floor(melodyChordIndex / 2));
+    if (harmonyChord == undefined) {
+      throw new Error('No harmony chord was found matching the melody chord.');
+    }
+    return harmonyChord;
   }
 
   public getMajorTonalities(): Array<Tonality> {
