@@ -10,7 +10,7 @@ import { Track } from '@app/model/track';
 import { SettingsService } from '@app/views/settings/settings.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Accidental, Annotation, AnnotationHorizontalJustify, AnnotationVerticalJustify, BoundingBox, Dot, Flow, Formatter, Renderer, Stave, StaveNote, Voice } from 'vexflow';
-import { CHORD_CHROMAS_SYLLABIC } from './notation.constant ';
+import { CHORD_CHROMAS_SYLLABIC, OCTAVE_SEPARATOR } from './notation.constant ';
 import { NotationService } from './notation.service';
 
 const NAME_PREFIX_SOUNDTRACK: string = 'sheet-soundtrack-';
@@ -18,7 +18,6 @@ const NAME_PREFIX_DEVICE: string = 'sheet-device-';
 
 const VEXFLOW_SHEET_WIDTH_RATIO: number = 0.9;
 const VEXFLOW_STAVE_HEIGHT: number = 140;
-const VEXFLOW_OCTAVE_SEPARATOR: string = '/';
 const VEXFLOW_REST_NOTE: string = 'B/4';
 const VEXFLOW_ACCIDENTAL_SHARP: string = '#';
 const VEXFLOW_ACCIDENTAL_DOUBLE_SHARP: string = '##';
@@ -146,7 +145,7 @@ export class SheetService {
                     this.styleNotes(placedChord);
 
                     if (showAllNotes) {
-                      const noteNames: Array<string> = this.renderAllChordNoteNamesInSyllabic(placedChord);
+                      const noteNames: Array<string> = this.notationService.renderAllChordNoteNamesInSyllabic(placedChord);
                       if (noteNames.length > 0) {
                         this.addAllChordNames(placedChord, noteNames);
                         previousNoteName = noteNames[noteNames.length - 1];
@@ -509,20 +508,6 @@ export class SheetService {
     return this.notationService.chordChromaIntlToChromaSyllabic(CHORD_CHROMAS_SYLLABIC, chordNameIntl);
   }
 
-  private renderAllChordNoteNamesInSyllabic(placedChord: PlacedChord): Array<string> {
-    const noteNames: Array<string> = new Array();
-    const sortedNotes: Array<Note> = placedChord.getNotesSortedByIndex();
-    for (let i: number = 0; i < sortedNotes.length; i++) {
-      const reverse: number = placedChord.notes.length - i - 1;
-      const note: Note = sortedNotes[reverse];
-      const name: string = this.notationService.noteChromaLetterToChromaSyllabic(note.renderChroma())
-      + ' ' + note.renderChroma() + VEXFLOW_OCTAVE_SEPARATOR + note.renderOctave();
-
-      noteNames.push(name);
-    }
-    return noteNames;
-  }
-
   // The Vexflow API requires that notes be sorted in ascending order before
   // being added as keys to a stave
   private renderNotesSortedByPitch(notes: Array<Note>): Array<string> {
@@ -559,7 +544,7 @@ export class SheetService {
       // The accidental must not be present in the note
       vexflowNote = this.notationService.removeSharpsAndFlats(note.renderChroma());
       if (note.renderOctave() != null) {
-        vexflowNote += VEXFLOW_OCTAVE_SEPARATOR + note.renderOctave();
+        vexflowNote += OCTAVE_SEPARATOR + note.renderOctave();
       }
     }
     return vexflowNote;

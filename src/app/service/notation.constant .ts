@@ -18,6 +18,8 @@ export const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
 export const DEFAULT_RANDOM_INPASSING: number = 50;
 export const DEFAULT_RANDOM_MODULATION: number = 100;
 
+export const OCTAVE_SEPARATOR: string = '/';
+
 export const NOTE_REST: string = 'rest';
 export const NOTE_END_OF_TRACK: string = 'end';
 export const META_CHROMAS: Array<string> = [NOTE_REST, NOTE_END_OF_TRACK];
