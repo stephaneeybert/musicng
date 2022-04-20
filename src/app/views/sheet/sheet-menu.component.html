@@ -9,6 +9,11 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <p>
+    <mat-slide-toggle name="recreateChord" [(ngModel)]="recreateChord"
+    matTooltip="{{ 'sheet.menu.chord.recreate.tip' | translate }}">
+    {{ 'sheet.menu.chord.recreate.label' | translate }}</mat-slide-toggle>
+  </p>
 </div>
 
 <div class="sheet-menu" [hidden]="!handleMelodyNotes()">
@@ -23,7 +28,7 @@
     </mat-select>
   </mat-form-field>
   <p>
-    <mat-slide-toggle name="recreate" [(ngModel)]="recreate"
+    <mat-slide-toggle name="recreateNote" [(ngModel)]="recreateNote"
     matTooltip="{{ 'sheet.menu.note.recreate.tip' | translate }}">
     {{ 'sheet.menu.note.recreate.label' | translate }}</mat-slide-toggle>
   </p>

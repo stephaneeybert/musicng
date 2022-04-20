@@ -40,6 +40,21 @@ export class Measure {
     }
   }
 
+  public addChord(placedChord: PlacedChord): void {
+    if (placedChord) {
+      this.getSortedChords().push(placedChord);
+    }
+  }
+
+  public deleteChord(chord: PlacedChord): boolean {
+    if (chord) {
+      this.getSortedChords().splice(chord.index, 1);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public getTempo(): number {
     return this.tempo;
   }

@@ -110,11 +110,11 @@ export class GeneratorService {
   }
 
   public recreateSoundtrack(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, placedChordIndex: number, pickedChordChroma: string | undefined, pickedNoteChroma: string | undefined, pickedNoteOctave: number | undefined, pickedTonalityChroma: string | undefined, recreate: boolean): void {
-    const harmonyTrack: Track = this.getHarmonyTrack(soundtrack);
     if (trackIndex == TRACK_INDEX_HARMONY) {
+      const harmonyTrack: Track = this.getHarmonyTrack(soundtrack);
       const harmonyMeasure: Measure = harmonyTrack.getSortedMeasures()[measureIndex];
       const harmonyChord: PlacedChord = harmonyMeasure.getSortedChords()[placedChordIndex];
-      this.regenerateHarmonyChords(soundtrack, harmonyMeasure, harmonyChord, pickedChordChroma, pickedTonalityChroma, recreate);
+      this.regenerateHarmonyChords(soundtrack,  harmonyMeasure, harmonyChord, pickedChordChroma, pickedTonalityChroma, recreate);
 
       // Regenerate the melody chords when regenerating the harmony chords
       const melodyTrack: Track = this.getMelodyTrack(soundtrack);
@@ -129,7 +129,12 @@ export class GeneratorService {
       this.regenerateMelodyChords(soundtrack, melodyTrack, fromMeasure, fromChord, pickedNoteChroma, pickedNoteOctave, recreate);
     }
 
-    const message: string = this.translateService.instant('soundtracks.message.regenerated', { name: soundtrack.name });
+    let message: string;
+    if (recreate) {
+      message = this.translateService.instant('soundtracks.message.regenerated', { name: soundtrack.name });
+    } else {
+      message = this.translateService.instant('soundtracks.message.updated', { name: soundtrack.name });
+    }
     this.materialService.showSnackBar(message);
   }
 
@@ -205,14 +210,24 @@ export class GeneratorService {
     harmonyTrack.displayChordNames = true;
   }
 
-  public regenerateHarmonyChords(soundtrack: Soundtrack, fromMeasure: Measure, fromChord: PlacedChord, pickedChordChroma: string | undefined, pickedTonalityChroma: string | undefined, recreate: boolean): void {
+  private regenerateHarmonyChords(soundtrack: Soundtrack, fromMeasure: Measure, fromChord: PlacedChord, pickedChordChroma: string | undefined, pickedTonalityChroma: string | undefined, recreate: boolean): void {
     const octave: number = this.settingsService.getSettings().generateNoteOctave;
     const chordDuration: number = this.settingsService.getSettings().generateChordDuration;
     const harmonyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityHarmony);
     const harmonyTrack: Track = soundtrack.getSortedTracks()[1];
     if (recreate) {
-    this.deleteStartingFromChord(harmonyTrack, fromMeasure, fromChord);
+      this.deleteStartingFromChord(harmonyTrack, fromMeasure, fromChord);
       soundtrack.getSortedTracks()[harmonyTrack.index].measures = this.generateHarmonyChordsInMeasures(octave, chordDuration, harmonyVelocity, harmonyTrack, fromMeasure, fromChord, pickedChordChroma, pickedTonalityChroma, recreate);
+    } else {
+      if (pickedChordChroma) {
+        const velocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityHarmony);
+        const chordChromas = this.buildSpecificChordChromas(fromChord.tonality, pickedChordChroma);
+        const currentHarmonyChord: PlacedChord = this.notationService.getPlacedChord(soundtrack, TRACK_INDEX_HARMONY, fromMeasure.index, fromChord.index);
+        const newHarmonyChord = this.notationService.createNotesAndPlacedChord(octave, chordDuration, velocity, fromChord.tonality, fromChord.index, chordChromas);
+        if (fromMeasure.deleteChord(currentHarmonyChord)) {
+          fromMeasure.addChord(newHarmonyChord);
+        }
+      }
     }
     this.soundtrackService.storeSoundtrack(soundtrack);
     this.soundtrackService.updateSoundtrack(soundtrack);

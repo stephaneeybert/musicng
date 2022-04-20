@@ -283,6 +283,12 @@
       "noSheetDrawing": "The drawing of staves is no longer possible."
     },
     "menu": {
+      "chord": {
+        "recreate": {
+          "label": "Recreate",
+          "tip": "Recreate the soundtrack from this chord"
+        }
+      },
       "note": {
         "recreate": {
           "label": "Recreate",

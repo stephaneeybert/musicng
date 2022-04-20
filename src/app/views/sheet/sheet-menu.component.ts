@@ -18,7 +18,8 @@ export class SheetMenuComponent implements OnInit {
   tonalitiesChromas: Array<string> | undefined;
   tonalityChords: Array<string> | undefined;
   melodyNotes: Array<string> | undefined;
-  recreate: boolean = false;
+  recreateChord: boolean = false;
+  recreateNote: boolean = false;
 
   constructor(
     private notationService: NotationService,
@@ -64,8 +65,7 @@ export class SheetMenuComponent implements OnInit {
 
   recreateWithHarmonyChord(event: MatSelectChange): void {
     if (event.value) {
-      const recreate: boolean = false;
-      const sheetMenuResponse: SheetMenuResponse = new SheetMenuResponse(event.value, undefined, undefined, undefined, recreate);
+      const sheetMenuResponse: SheetMenuResponse = new SheetMenuResponse(event.value, undefined, undefined, undefined, this.recreateChord);
       this.customOverlayRef.closeWithData(sheetMenuResponse);
     } else {
       this.customOverlayRef.closeWithoutData();
@@ -75,7 +75,7 @@ export class SheetMenuComponent implements OnInit {
   recreateWithMelodyNote(event: MatSelectChange): void {
     if (event.value) {
       const [chroma, octave]: [string, number] = this.notationService.noteToChromaOctave(event.value);
-      const sheetMenuResponse: SheetMenuResponse = new SheetMenuResponse(undefined, chroma, octave, undefined, this.recreate);
+      const sheetMenuResponse: SheetMenuResponse = new SheetMenuResponse(undefined, chroma, octave, undefined, this.recreateNote);
       this.customOverlayRef.closeWithData(sheetMenuResponse);
     } else {
       this.customOverlayRef.closeWithoutData();
