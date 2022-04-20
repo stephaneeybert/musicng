@@ -24,8 +24,15 @@ export class PlacedChord {
   }
 
   public addNote(note: Note): void {
+    if (note) { this.notes.push(note); }
+  }
+
+  public deleteNote(note: Note): boolean {
     if (note) {
-      this.notes.push(note);
+      this.notes.splice(note.index, 1);
+      return true;
+    } else {
+      return false;
     }
   }
 

@@ -185,11 +185,11 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
         if (this.soundtrack && this.boundings) {
           if (event.data) {
             if (event.data.harmonyChordChroma) {
-              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, event.data.harmonyChordChroma, undefined, undefined, undefined);
+              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, event.data.harmonyChordChroma, undefined, undefined, undefined, event.data.recreate);
             } else if (event.data.melodyNoteChroma) {
-              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, undefined, event.data.melodyNoteChroma, event.data.melodyNoteOctave, undefined);
+              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, undefined, event.data.melodyNoteChroma, event.data.melodyNoteOctave, undefined, event.data.recreate);
             } else if (event.data.tonality) {
-              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, undefined, undefined, undefined, event.data.tonality);
+              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, undefined, undefined, undefined, event.data.tonality, event.data.recreate);
             }
           }
         }

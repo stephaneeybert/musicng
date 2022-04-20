@@ -748,6 +748,23 @@ export class NotationService {
     return harmonyChord;
   }
 
+  public replaceMelodyNote(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, placedChordIndex: number, pickedNoteChroma: string, pickedNoteOctave: number): void {
+    const currentChord: PlacedChord = this.getPlacedChord(soundtrack, trackIndex, measureIndex, placedChordIndex);
+    if (currentChord.hasNotes()) {
+      const currentNote: Note = currentChord.getNotesSortedByIndex()[0];
+      const newNote: Note = this.createNote(currentNote.index, pickedNoteChroma, pickedNoteOctave);
+      if (currentChord.deleteNote(currentNote)) {
+        currentChord.addNote(newNote);
+      }
+    }
+  }
+
+  public harmonyChordDuratioToMelodyNoteDuration(chordDuration: number): number {
+    // The duration is a quotient base and is thus multiplied by 2 to cut it in half
+    const noteDuration: number = chordDuration * 2;
+    return noteDuration;
+  }
+
   public getMajorTonalities(): Array<Tonality> {
     const tonalities: Array<Tonality> = new Array();
     CHROMAS_MAJOR.forEach((chroma: string) => {
