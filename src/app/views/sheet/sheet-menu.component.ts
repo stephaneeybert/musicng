@@ -50,7 +50,7 @@ export class SheetMenuComponent implements OnInit {
   }
 
   handleHarmonyChords(): boolean {
-    return this.notationService.isHarmonyTrack(this.inputData.trackIndex) && !this.notationService.isFirstMeasureChord(this.inputData.placedChordIndex);
+    return this.notationService.isHarmonyTrack(this.inputData.trackIndex);
   }
 
   handleMelodyNotes(): boolean {
