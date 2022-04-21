@@ -676,7 +676,7 @@ export class NotationService {
     return noteRangeStructure;
   }
 
-  public createArrayShiftOnceLeft(items: Array<string>): Array<string> {
+  public shiftChromasLeftOnce(items: Array<string>): Array<string> {
     // Make a deep copy
     let shiftedItems: Array<string> = new Array();
     items.forEach((chroma: string) => {
@@ -693,10 +693,27 @@ export class NotationService {
     return shiftedItems;
   }
 
+  public shiftChromasRightOnce(items: Array<string>): Array<string> {
+    // Make a deep copy
+    let shiftedItems: Array<string> = new Array();
+    items.forEach((chroma: string) => {
+      shiftedItems.push(chroma);
+    });
+
+    // Shift the copy and not the original
+    const item: string | undefined = shiftedItems.pop();
+    if (item) {
+      shiftedItems.unshift(item);
+    } else {
+      throw new Error('The array could not be shifted right');
+    }
+    return shiftedItems;
+  }
+
   // Create a chromas array shifted from another one
-  private createShiftedChromas(chromas: Array<string>): Array<string> {
+  private shiftChromasLeft(chromas: Array<string>): Array<string> {
     for (let i = 0; i < CHROMA_SHIFT_TIMES; i++) {
-      chromas = this.createArrayShiftOnceLeft(chromas);
+      chromas = this.shiftChromasLeftOnce(chromas);
     }
     return chromas;
   }
@@ -714,7 +731,7 @@ export class NotationService {
     // Build the shifted chromas
     shiftedChromas[0] = tonalityChromas;
     for (let index = 1; index < chordWidth; index++) {
-      shiftedChromas[index] = this.createShiftedChromas(shiftedChromas[index - 1]);
+      shiftedChromas[index] = this.shiftChromasLeft(shiftedChromas[index - 1]);
     }
     return shiftedChromas;
   }
