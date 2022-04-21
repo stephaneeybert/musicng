@@ -18,12 +18,8 @@
       "prefix": "app",
       "architect": {
         "build": {
+          "defaultConfiguration": "development",
           "builder": "@angular-devkit/build-angular:browser",
-          "sourceMap": {
-            "scripts": true,
-            "styles": false,
-            "vendor": false
-          },
           "options": {
             "outputPath": "dist/musicng",
             "index": "src/index.html",
@@ -55,7 +51,21 @@
             "scripts": []
           },
           "configurations": {
+            "development": {
+              "optimization": false,
+              "sourceMap": {
+                "scripts": true,
+                "styles": false,
+                "vendor": false
+              }
+            },
             "production": {
+              "optimization": true,
+              "sourceMap": {
+                "scripts": true,
+                "styles": false,
+                "vendor": false
+              },
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -84,18 +94,16 @@
           }
         },
         "serve": {
+          "defaultConfiguration": "development",
           "builder": "@angular-devkit/build-angular:dev-server",
-          "sourceMap": {
-            "scripts": true,
-            "styles": false,
-            "vendor": false
-          },
           "options": {
             "browserTarget": "musicng:build"
           },
           "configurations": {
+            "development": {
+              "browserTarget": "musicng:build:development"
+            },
             "production": {
-              "optimization": true,
               "browserTarget": "musicng:build:production"
             }
           }
