@@ -9,7 +9,7 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFT, NB_HALF_TONES_MINOR, NOTE_CHROMA_C, TRACK_INDEX_HARMONY, TRACK_INDEX_MELODY, OCTAVE_SEPARATOR } from './notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFT, NB_HALF_TONES_MINOR, NOTE_CHROMA_C, TRACK_INDEX_HARMONY, TRACK_INDEX_MELODY, OCTAVE_SEPARATOR, NB_HALF_TONES_DISSONANCE } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Track } from '@app/model/track';
@@ -383,13 +383,13 @@ export class NotationService {
     const note: Note = this.getFirstChordNoteSortedByIndex(placedChord);
     // Get the chord position in the tonality
     const firstChordNote: Note = this.getFirstChordNoteSortedByIndex(placedChord);
-    const firstNotePosition: number = this.getChordNotePositionInTonality(placedChord, firstChordNote);
+    const firstNotePosition: number = this.getChromaPositionInTonality(placedChord.tonality, firstChordNote.renderChroma());
     const secondChordNote: Note = this.getSecondChordNoteSortedByIndex(placedChord);
-    const secondNotePosition: number = this.getChordNotePositionInTonality(placedChord, secondChordNote);
+    const secondNotePosition: number = this.getChromaPositionInTonality(placedChord.tonality, secondChordNote.renderChroma());
     const thirdChordNote: Note = this.getThirdChordNoteSortedByIndex(placedChord);
-    const thirdNotePosition: number = this.getChordNotePositionInTonality(placedChord, thirdChordNote);
-    const firstToSecondHalfTones: number = this.getNbHalfTonesBetweenNotes(placedChord.tonality.range, firstNotePosition, secondNotePosition);
-    const secondToThirdHalfTones: number = this.getNbHalfTonesBetweenNotes(placedChord.tonality.range, secondNotePosition, thirdNotePosition);
+    const thirdNotePosition: number = this.getChromaPositionInTonality(placedChord.tonality, thirdChordNote.renderChroma());
+    const firstToSecondHalfTones: number = this.getNbHalfTonesBetweenChromaPositions(placedChord.tonality, firstNotePosition, secondNotePosition);
+    const secondToThirdHalfTones: number = this.getNbHalfTonesBetweenChromaPositions(placedChord.tonality, secondNotePosition, thirdNotePosition);
     // Check if the second note of the chord is a major or minor
     if (this.isMinorDegree(firstToSecondHalfTones, secondToThirdHalfTones)) {
       // Minor chord
@@ -417,19 +417,35 @@ export class NotationService {
     return noteNames;
   }
 
-  private getChordNotePositionInTonality(placedChord: PlacedChord, note: Note): number {
-    let tonalityChromas: Array<string> = this.getTonalityChromas(placedChord.tonality.range, placedChord.tonality.firstChroma);
+  private getChromaPositionInTonality(tonality: Tonality, chroma: string): number {
+    let tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
     for (let position: number = 0; position < tonalityChromas.length; position++) {
-      if (note.renderChroma() == tonalityChromas[position]) {
+      if (chroma == tonalityChromas[position]) {
         return position;
       }
     }
-    throw new Error('The position for the placed chord note ' + note.renderChroma() + ' could not be found in the tonality ' + tonalityChromas);
+    throw new Error('The position for the placed chord note ' + chroma + ' could not be found in the tonality ' + tonalityChromas);
   }
 
-  private getNbHalfTonesBetweenNotes(noteRange: NOTE_RANGE, fromNotePosition: number, toNotePosition: number): number {
+  public getChromasDistance(previousNoteChroma: string, previousNoteOctave: number, currentNoteChroma: string, currentNoteOctave: number, tonalityChromas: Array<string>): number {
+    const previousNoteIndex: number = tonalityChromas.indexOf(previousNoteChroma);
+    const currentNoteIndex: number = tonalityChromas.indexOf(currentNoteChroma);
+    return Math.abs((((currentNoteOctave - 1) * tonalityChromas.length) + currentNoteIndex) - (((previousNoteOctave - 1) * tonalityChromas.length) + previousNoteIndex));
+  }
+
+  public isBelowNbHalfTonesDissonance(tonality: Tonality, fromChroma: string, toChroma: string): boolean {
+    return this.getNbHalfTonesBetweenChromas(tonality, fromChroma, toChroma) <= NB_HALF_TONES_DISSONANCE;
+  }
+
+  public getNbHalfTonesBetweenChromas(tonality: Tonality, fromChroma: string, toChroma: string): number {
+    const fromPosition: number = this.getChromaPositionInTonality(tonality, fromChroma);
+    const toPosition: number = this.getChromaPositionInTonality(tonality, toChroma);
+    return this.getNbHalfTonesBetweenChromaPositions(tonality, fromPosition, toPosition);
+  }
+
+  private getNbHalfTonesBetweenChromaPositions(tonality: Tonality, fromNotePosition: number, toNotePosition: number): number {
     let nbHalfTones: number = 0;
-    const intervals: Array<number> = this.getNoteRangeIntervals(noteRange);
+    const intervals: Array<number> = this.getNoteRangeIntervals(tonality.range);
     if (fromNotePosition > toNotePosition) {
       toNotePosition += intervals.length;
     }
@@ -544,12 +560,6 @@ export class NotationService {
     } else {
       return false;
     }
-  }
-
-  public getChromasDistance(previousNoteChroma: string, previousNoteOctave: number, currentNoteChroma: string, currentNoteOctave: number, tonalityChromas: Array<string>): number {
-    const previousNoteIndex: number = tonalityChromas.indexOf(previousNoteChroma);
-    const currentNoteIndex: number = tonalityChromas.indexOf(currentNoteChroma);
-    return Math.abs((((currentNoteOctave - 1) * tonalityChromas.length) + currentNoteIndex) - (((previousNoteOctave - 1) * tonalityChromas.length) + previousNoteIndex));
   }
 
   public getTonalityChromas(noteRange: NOTE_RANGE, rangeFirstChroma: string): Array<string> {

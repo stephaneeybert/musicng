@@ -316,49 +316,48 @@ export class GeneratorService {
 
     const harmonyChordSortedChromas: Array<string> = harmonyChord.getSortedNotesChromas();
 
+console.log('-------------');
+console.log(tonalityChromas);
+console.log(harmonyChordSortedChromas);
+console.log(previousMelodyChroma + previousMelodyOctave);
     // Consider the chromas above the previous melody note chroma
     if (previousMelodyOctave <= this.notationService.getFirstChordNoteSortedByIndex(harmonyChord).renderOctave()) {
-      // The maximum distance to consider for a note to be near enough
-// TODO if (this.notationService.getChromasDistance(previousMelodyChroma, previousMelodyOctave, harmonyChordChroma, harmonyChordOctave, tonalityChromas) < NOTE_NEAR_MAX) {
-      for (let chromaIndex: number = 0; chromaIndex < NOTE_NEAR_MAX; chromaIndex++) {
+      for (let chromaIndex: number = 0; chromaIndex < tonalityChromas.length; chromaIndex++) {
         chromas = this.notationService.shiftChromasLeftOnce(chromas);
         // Consider only notes before the next harmony chord note
         if (!harmonyChordSortedChromas.includes(chromas[previousMelodyNoteIndex])) {
-          // Check if the note is on the upper octave
-          let octave: number = previousMelodyOctave;
-          console.log('Added above in passing note ' + chromas[previousMelodyNoteIndex]);
-          if (previousMelodyNoteIndex + chromaIndex + 1 >= tonalityChromas.length) {
-            octave++;
-            console.log('Increasing octave for previousMelodyOctave: ' + previousMelodyOctave + ' to octave: ' + octave);
+          if (this.notationService.isBelowNbHalfTonesDissonance(harmonyChord.tonality, previousMelodyChroma, chromas[previousMelodyNoteIndex])) {
+            // Check if the note is on the upper octave
+            let octave: number = previousMelodyOctave;
+            if (previousMelodyNoteIndex + chromaIndex + 1 >= tonalityChromas.length) {
+              octave++;
+              console.log("Changement d'octave de: " + previousMelodyOctave + ' à: ' + octave);
+            }
+            inpassingNotes.push(chromas[previousMelodyNoteIndex] + String(octave));
+            console.log('Ajouté la note de passage ' + chromas[previousMelodyNoteIndex] + String(octave));
           }
-          inpassingNotes.push(chromas[previousMelodyNoteIndex] + String(octave));
         } else {
           break;
         }
       }
     }
-    // console.log('-------------');
-    // console.log(tonalityChromas);
-    // console.log(harmonyChordSortedChromas);
-    // console.log(previousMelodyChroma + previousMelodyOctave);
-    // console.log(inpassingNotes);
+console.log(inpassingNotes);
 
     // Consider the chromas below the previous melody note chroma
     if (previousMelodyOctave >= this.notationService.getFirstChordNoteSortedByIndex(harmonyChord).renderOctave()) {
       chromas = tonalityChromas;
-      // The maximum distance to consider for a note to be near enough
-      for (let chromaIndex: number = 0; chromaIndex < NOTE_NEAR_MAX; chromaIndex++) {
+      for (let chromaIndex: number = 0; chromaIndex < tonalityChromas.length; chromaIndex++) {
         chromas = this.notationService.shiftChromasRightOnce(chromas);
         // Consider only notes before the next harmony chord note
         if (!harmonyChordSortedChromas.includes(chromas[previousMelodyNoteIndex])) {
-          // Check if the note is on the lower octave
-          let octave: number = previousMelodyOctave;
-          // console.log('Added below in passing note ' + chromas[previousMelodyNoteIndex]);
-          if (previousMelodyNoteIndex - chromaIndex <= 0) {
-            octave--;
-            // console.log('previousMelodyOctave: ' + previousMelodyOctave + ' octave: ' + octave);
+          if (this.notationService.isBelowNbHalfTonesDissonance(harmonyChord.tonality, previousMelodyChroma, chromas[previousMelodyNoteIndex])) {
+            // Check if the note is on the lower octave
+            let octave: number = previousMelodyOctave;
+            if (previousMelodyNoteIndex - chromaIndex <= 0) {
+              octave--;
+            }
+            inpassingNotes.push(chromas[previousMelodyNoteIndex] + String(octave));
           }
-          inpassingNotes.push(chromas[previousMelodyNoteIndex] + String(octave));
         } else {
           break;
         }
