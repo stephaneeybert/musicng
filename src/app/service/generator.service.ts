@@ -9,11 +9,10 @@ import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { NOTE_RANGE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, NOTE_NEAR_MAX, DEFAULT_TEMPO_BPM } from './notation.constant ';
+import { NOTE_RANGE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, DEFAULT_TEMPO_BPM } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 import { Note } from '@app/model/note/note';
 import { MaterialService } from '@app/core/service/material.service';
-import { from } from 'rxjs';
 
 const TRACK_INDEX_MELODY: number = 0;
 const TRACK_INDEX_HARMONY: number = 1;
@@ -404,7 +403,7 @@ console.log(inpassingNotes);
         // Avoid the previous note
         if (harmonyChordChroma != previousMelodyChroma && harmonyChordOctave != previousMelodyOctave) {
           // The maximum distance to consider for a note to be near enough
-          if (this.notationService.getChromasDistance(previousMelodyChroma, previousMelodyOctave, harmonyChordChroma, harmonyChordOctave, tonalityChromas) < NOTE_NEAR_MAX) {
+          if (this.notationService.isBelowNbHalfTonesDissonance(harmonyChord.tonality, previousMelodyChroma, harmonyChordChroma)) {
             nearNoteChromas.push([harmonyChordChroma, harmonyChordOctave]);
           }
         }
