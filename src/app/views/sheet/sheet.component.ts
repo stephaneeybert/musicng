@@ -165,36 +165,43 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
     this.createPopupMenu(event.clientX, event.clientY);
   }
 
+  private clickedOnPlacedChord(trackIndex: number, measureIndex: number, placedChordIndex: number): boolean {
+    return (trackIndex >=0 && measureIndex >= 0 && placedChordIndex >= 0);
+  }
+
   private createPopupMenu(posX: number, posY: number): void {
     if (this.soundtrack && this.boundings) {
       const [trackIndex, measureIndex, placedChordIndex]: [number, number, number] = this.sheetService.locateMeasureAndChord(this.boundings, posX, posY + this.scrollY);
-      const placedChord: PlacedChord = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
-      let melodyNotes: Array<string> | undefined = undefined;
-      if (this.notationService.isMelodyTrack(trackIndex)) {
-        const measure: Measure = this.notationService.getMeasure(this.soundtrack, trackIndex, measureIndex);
-        const harmonyChord: PlacedChord = this.notationService.getHarmonyChordFromMelodyChord(this.soundtrack, measure.index, placedChord.index);
-        const previousPlacedChord: PlacedChord | undefined = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
-        melodyNotes = this.generatorService.collectPossibleMelodyNotesFromHarmonyChord(harmonyChord, previousPlacedChord, false);
-      }
-      const inputData: SheetMenuInput | undefined = new SheetMenuInput(trackIndex, measureIndex, placedChordIndex, placedChord.tonality.firstChroma, melodyNotes);
-      this.customOverlayRef = this.overlayService.create<SheetMenuResponse, SheetMenuInput>(posX, posY, inputData);
-      const injectedData: string = '';
-      const dataInjector = this.createInjector<string>(this.customOverlayRef, injectedData);
-      const componentPortal: ComponentPortal<SheetMenuComponent> = new ComponentPortal(SheetMenuComponent, this.viewContainerRef, dataInjector);
-      this.customOverlayRef.closeEvents.subscribe((event: OverlayCloseEvent<SheetMenuResponse>) => {
-        if (this.soundtrack && this.boundings) {
-          if (event.data) {
-            if (event.data.harmonyChordChroma) {
-              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, event.data.harmonyChordChroma, undefined, undefined, undefined, event.data.recreate);
-            } else if (event.data.melodyNoteChroma) {
-              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, undefined, event.data.melodyNoteChroma, event.data.melodyNoteOctave, undefined, event.data.recreate);
-            } else if (event.data.tonality) {
-              this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, undefined, undefined, undefined, event.data.tonality, event.data.recreate);
+      if (this.clickedOnPlacedChord(trackIndex, measureIndex, placedChordIndex)) {
+        console.log('trackIndex: ' + trackIndex + ' measureIndex: ' + measureIndex + ' placedChordIndex: ' + placedChordIndex);
+        const placedChord: PlacedChord = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
+        let melodyNotes: Array<string> | undefined = undefined;
+          if (this.notationService.isMelodyTrack(trackIndex)) {
+          const measure: Measure = this.notationService.getMeasure(this.soundtrack, trackIndex, measureIndex);
+          const harmonyChord: PlacedChord = this.notationService.getHarmonyChordFromMelodyChord(this.soundtrack, measure.index, placedChord.index);
+          const previousPlacedChord: PlacedChord | undefined = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
+          melodyNotes = this.generatorService.collectPossibleMelodyNotesFromHarmonyChord(harmonyChord, previousPlacedChord, false);
+        }
+        const inputData: SheetMenuInput | undefined = new SheetMenuInput(trackIndex, measureIndex, placedChordIndex, placedChord.tonality.firstChroma, melodyNotes);
+        this.customOverlayRef = this.overlayService.create<SheetMenuResponse, SheetMenuInput>(posX, posY, inputData);
+        const injectedData: string = '';
+        const dataInjector = this.createInjector<string>(this.customOverlayRef, injectedData);
+        const componentPortal: ComponentPortal<SheetMenuComponent> = new ComponentPortal(SheetMenuComponent, this.viewContainerRef, dataInjector);
+        this.customOverlayRef.closeEvents.subscribe((event: OverlayCloseEvent<SheetMenuResponse>) => {
+          if (this.soundtrack && this.boundings) {
+            if (event.data) {
+              if (event.data.harmonyChordChroma) {
+                this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, event.data.harmonyChordChroma, undefined, undefined, undefined, event.data.recreate);
+              } else if (event.data.melodyNoteChroma) {
+                this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, undefined, event.data.melodyNoteChroma, event.data.melodyNoteOctave, undefined, event.data.recreate);
+              } else if (event.data.tonality) {
+                this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, undefined, undefined, undefined, event.data.tonality, event.data.recreate);
+              }
             }
           }
-        }
-      });
-    this.overlayService.attach<SheetMenuComponent>(this.customOverlayRef, componentPortal);
+        });
+        this.overlayService.attach<SheetMenuComponent>(this.customOverlayRef, componentPortal);
+      }
     }
   }
 
