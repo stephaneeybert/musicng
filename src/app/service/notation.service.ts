@@ -427,7 +427,7 @@ export class NotationService {
     throw new Error('The position for the placed chord note ' + chroma + ' could not be found in the tonality ' + tonalityChromas);
   }
 
-  public getChromasDistance(previousNoteChroma: string, previousNoteOctave: number, currentNoteChroma: string, currentNoteOctave: number, tonalityChromas: Array<string>): number {
+  private getChromasDistance(previousNoteChroma: string, previousNoteOctave: number, currentNoteChroma: string, currentNoteOctave: number, tonalityChromas: Array<string>): number {
     const previousNoteIndex: number = tonalityChromas.indexOf(previousNoteChroma);
     const currentNoteIndex: number = tonalityChromas.indexOf(currentNoteChroma);
     return Math.abs((((currentNoteOctave - 1) * tonalityChromas.length) + currentNoteIndex) - (((previousNoteOctave - 1) * tonalityChromas.length) + previousNoteIndex));
@@ -503,7 +503,8 @@ export class NotationService {
     const chromas: Array<Array<string>> = this.buildStandardTonalityChordChromas(tonalityChromas);
     const tonality: Tonality = new Tonality(noteRange, rangeFirstChroma);
     for (let index: number = 0; index < tonalityChromas.length; index++) {
-      const placedChord: PlacedChord = this.createNotesAndPlacedChord(DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_DURATION, DEFAULT_VELOCITY_SOFT, tonality, placedChordIndex, chromas[index]);
+      const notes: Array<Note> = this.createChordNotesFromBaseNoteOctave(DEFAULT_NOTE_OCTAVE, tonality, chromas[index]);
+      const placedChord: PlacedChord = this.createPlacedChordFromNotes(DEFAULT_CHORD_DURATION, DEFAULT_VELOCITY_SOFT, tonality, placedChordIndex, notes);
       tonalityChordNames.push(this.getChordIntlName(placedChord));
       placedChordIndex++;
     }
@@ -523,21 +524,46 @@ export class NotationService {
     return chromas;
   }
 
-  public createNotesAndPlacedChord(octave: number, chordDuration: number, velocity: number, tonality: Tonality, placedChordIndex: number, chromas: Array<string>): PlacedChord {
+  private buildChromaOctavesFromBaseNoteOctave(octave: number, tonality: Tonality, chromas: Array<string>): Array<[string, number]> {
     let noteIndex: number = 0;
     let previousChroma: string = '';
     const nextUpperOctave: number = octave + 1;
-    const notes: Array<Note> = new Array();
+    const chromaOctaves: Array<[string, number]> = new Array();
     for (let i = 0; i < chromas.length; i++) {
       const chroma: string = chromas[i];
       if (noteIndex > 0 && this.chordChromaBelongsToNextUpperOctave(previousChroma, chroma, tonality)) {
         octave = nextUpperOctave;
       }
-      const note: Note = this.createNote(noteIndex, chroma, octave);
       noteIndex++;
       previousChroma = chroma;
+      chromaOctaves.push([chroma, octave]);
+    }
+    return chromaOctaves;
+  }
+
+  public createChordNotesFromBaseNoteOctave(baseNoteOctave: number, tonality: Tonality, chromas: Array<string>): Array<Note> {
+    const notes: Array<Note> = new Array();
+    let noteIndex: number = 0;
+    for (const [chroma, octave] of this.buildChromaOctavesFromBaseNoteOctave(baseNoteOctave, tonality, chromas)) {
+      const note: Note = this.createNote(noteIndex, chroma, octave);
+      noteIndex++;
       notes.push(note);
     }
+    return notes;
+  }
+
+  public createChordNotesFromChromaOctaves(chromaOctaves: Array<[string, number]>): Array<Note> {
+    const notes: Array<Note> = new Array();
+    let noteIndex: number = 0;
+    for (const [chroma, octave] of chromaOctaves) {
+      const note: Note = this.createNote(noteIndex, chroma, octave);
+      noteIndex++;
+      notes.push(note);
+    }
+    return notes;
+  }
+
+  public createPlacedChordFromNotes(chordDuration: number, velocity: number, tonality: Tonality, placedChordIndex: number, notes: Array<Note>): PlacedChord {
     return this.createPlacedChord(placedChordIndex, chordDuration, TempoUnit.NOTE, velocity, tonality, notes);
   }
 
