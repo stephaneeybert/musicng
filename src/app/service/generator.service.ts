@@ -197,7 +197,7 @@ export class GeneratorService {
     const melodyTrack: Track = soundtrack.getSortedTracks()[TRACK_INDEX_MELODY];
     if (recreate) {
       this.deleteStartingFromChord(melodyTrack, fromMeasure, fromChord);
-      const harmonyMeasures: Array<Measure> = this.getMelodyTrack(soundtrack).getSortedMeasures();
+      const harmonyMeasures: Array<Measure> = this.getHarmonyTrack(soundtrack).getSortedMeasures();
       const melodyChords: Array<PlacedChord> = this.generateMelodyChords(soundtrack, harmonyMeasures, octave, chordDuration, melodyVelocity, melodyTrack, fromMeasure, fromChord, pickedNoteChroma, pickedNoteOctave);
       soundtrack.getSortedTracks()[melodyTrack.index].measures = this.createMeasures(melodyChords);
     } else {
@@ -228,7 +228,7 @@ export class GeneratorService {
     const octave: number = this.settingsService.getSettings().generateNoteOctave;
     const chordDuration: number = this.settingsService.getSettings().generateChordDuration;
     const harmonyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityHarmony);
-    const harmonyTrack: Track = soundtrack.getSortedTracks()[1];
+    const harmonyTrack: Track = this.getHarmonyTrack(soundtrack);
     // Keep the octave of the base note of the replaced chord
     const pickedChordOctave: number = fromChord.getNotesSortedByIndex()[0].renderOctave();
     if (recreate) {
