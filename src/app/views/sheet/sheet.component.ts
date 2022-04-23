@@ -173,14 +173,14 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
     if (this.soundtrack && this.boundings) {
       const [trackIndex, measureIndex, placedChordIndex]: [number, number, number] = this.sheetService.locateMeasureAndChord(this.boundings, posX, posY + this.scrollY);
       if (this.clickedOnPlacedChord(trackIndex, measureIndex, placedChordIndex)) {
-        console.log('trackIndex: ' + trackIndex + ' measureIndex: ' + measureIndex + ' placedChordIndex: ' + placedChordIndex);
         const placedChord: PlacedChord = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
         let melodyNotes: Array<string> | undefined = undefined;
           if (this.notationService.isMelodyTrack(trackIndex)) {
           const measure: Measure = this.notationService.getMeasure(this.soundtrack, trackIndex, measureIndex);
           const harmonyChord: PlacedChord = this.notationService.getHarmonyChordFromMelodyChord(this.soundtrack, measure.index, placedChord.index);
-          const previousPlacedChord: PlacedChord | undefined = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
-          melodyNotes = this.generatorService.collectPossibleMelodyNotesFromHarmonyChord(harmonyChord, previousPlacedChord, false);
+          const melodyChord: PlacedChord | undefined = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
+          const previousMelodyChord: PlacedChord | undefined = this.notationService.getPreviousPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
+          melodyNotes = this.generatorService.collectPossibleMelodyNotesFromHarmonyChord(harmonyChord, previousMelodyChord, melodyChord, true);
         }
         const inputData: SheetMenuInput | undefined = new SheetMenuInput(trackIndex, measureIndex, placedChordIndex, placedChord.tonality.firstChroma, melodyNotes);
         this.customOverlayRef = this.overlayService.create<SheetMenuResponse, SheetMenuInput>(posX, posY, inputData);

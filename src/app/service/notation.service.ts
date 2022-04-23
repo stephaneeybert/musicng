@@ -123,6 +123,10 @@ export class NotationService {
     });
   }
 
+  public allowInpassingNote(previousMelodyChord: PlacedChord | undefined, melodyChord: PlacedChord): boolean {
+    return (previousMelodyChord != undefined && (melodyChord.index % 2) == 1);
+  }
+
   public getFirstChordNoteSortedByIndex(placedChord: PlacedChord): Note {
     const sortedNotes: Array<Note> = this.sortNotesByIndex(placedChord.notes);
     if (!sortedNotes || sortedNotes.length == 0) {
@@ -811,7 +815,7 @@ export class NotationService {
     return harmonyChord;
   }
 
-  public getMelodyChordFromHarmonyChord(soundtrack: Soundtrack, measureIndex: number, harmonyChordIndex: number): PlacedChord  {
+  public getFirstMelodyChordFromHarmonyChord(soundtrack: Soundtrack, measureIndex: number, harmonyChordIndex: number): PlacedChord  {
     const melodyChord: PlacedChord = this.getPlacedChord(soundtrack, TRACK_INDEX_MELODY, measureIndex, harmonyChordIndex * 2);
     if (melodyChord == undefined) {
       throw new Error('No melody chord was found matching the harmony chord.');

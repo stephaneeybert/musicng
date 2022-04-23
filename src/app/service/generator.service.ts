@@ -125,7 +125,7 @@ export class GeneratorService {
       // Regenerate the melody chords when regenerating the harmony chords
       const melodyTrack: Track = this.getMelodyTrack(soundtrack);
       const fromMeasure: Measure = melodyTrack.getSortedMeasures()[measureIndex];
-      const fromChord: PlacedChord = this.notationService.getMelodyChordFromHarmonyChord(soundtrack, fromMeasure.index, placedChordIndex);
+      const fromChord: PlacedChord = this.notationService.getFirstMelodyChordFromHarmonyChord(soundtrack, fromMeasure.index, placedChordIndex);
       this.regenerateMelodyChords(soundtrack, melodyTrack, fromMeasure, fromChord, undefined, undefined, harmonyChord, recreate);
     } else if (trackIndex == TRACK_INDEX_MELODY) {
       const melodyTrack: Track = this.getMelodyTrack(soundtrack);
@@ -596,17 +596,17 @@ export class GeneratorService {
   }
 
   // Collect the notes from the harmony chord plus the inpassing notes
-  public collectPossibleMelodyNotesFromHarmonyChord(harmonyChord: PlacedChord, previousMelodyChord: PlacedChord | undefined, withInpassing: boolean): Array<string> {
+  public collectPossibleMelodyNotesFromHarmonyChord(harmonyChord: PlacedChord, previousMelodyChord: PlacedChord | undefined, melodyChord: PlacedChord | undefined, withInpassing: boolean): Array<string> {
     let collection: Array<[string, number]> = new Array();
-    const octave: number = previousMelodyChord ? this.notationService.getFirstChordNoteSortedByIndex(previousMelodyChord).renderOctave() : this.settingsService.getSettings().generateNoteOctave;
     const sortedNotes: Array<Note> = harmonyChord.getNotesSortedByIndex();
     for (let i: number = 0; i < sortedNotes.length; i++) {
       const reverse: number = sortedNotes.length - i - 1;
       const note: Note = sortedNotes[reverse];
       collection.push([note.renderChroma(), note.renderOctave()]);
     }
-    if (withInpassing && previousMelodyChord) {
+    if (withInpassing && previousMelodyChord && melodyChord && this.notationService.allowInpassingNote(previousMelodyChord, melodyChord)) {
       const previousMelodyChroma: string | undefined = this.notationService.getFirstChordNoteSortedByIndex(previousMelodyChord).renderChroma();
+      const octave: number = previousMelodyChord ? this.notationService.getFirstChordNoteSortedByIndex(previousMelodyChord).renderOctave() : this.settingsService.getSettings().generateNoteOctave;
       for (const chroma of this.getInpassingNotes(harmonyChord, previousMelodyChroma, octave)) {
         collection.push([chroma, octave]);
       }
