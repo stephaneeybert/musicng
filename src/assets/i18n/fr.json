@@ -116,6 +116,10 @@
             "label": "Note de passage",
             "tip": "Lors du choix d'une note pour un accord, régler la probabilité de choisir une note de passage."
           },
+          "nbSemiTonesAsInpassingNotes": {
+            "label": "Notes de passage",
+            "tip": "Le nombre de demi-tons entre deux notes pour qu'elles soient considérées comme de passage."
+          },
           "nbSemiTonesAsNearNotes": {
             "label": "Notes proches",
             "tip": "Le nombre de demi-tons entre deux notes pour qu'elles soient considérées comme proches."

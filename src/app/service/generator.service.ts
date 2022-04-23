@@ -9,7 +9,7 @@ import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { NOTE_RANGE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, DEFAULT_TEMPO_BPM } from './notation.constant ';
+import { NOTE_RANGE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, DEFAULT_TEMPO_BPM } from './notation.constant';
 import { Tonality } from '@app/model/note/tonality';
 import { Note } from '@app/model/note/note';
 import { MaterialService } from '@app/core/service/material.service';
@@ -322,7 +322,7 @@ export class GeneratorService {
         chromas = this.notationService.shiftChromasLeftOnce(chromas);
         // Consider only notes before the next harmony chord note
         if (!harmonyChordSortedChromas.includes(chromas[previousMelodyNoteIndex])) {
-          if (this.isBelowNbSemiTonesForNearNotes(harmonyChord.tonality, previousMelodyChroma, chromas[previousMelodyNoteIndex])) {
+          if (this.isBelowNbSemiTonesForInpassingNotes(harmonyChord.tonality, previousMelodyChroma, chromas[previousMelodyNoteIndex])) {
             // Check if the note is on the upper octave
             let octave: number = previousMelodyOctave;
             if (previousMelodyNoteIndex + chromaIndex + 1 >= tonalityChromas.length) {
@@ -343,7 +343,7 @@ export class GeneratorService {
         chromas = this.notationService.shiftChromasRightOnce(chromas);
         // Consider only notes before the next harmony chord note
         if (!harmonyChordSortedChromas.includes(chromas[previousMelodyNoteIndex])) {
-          if (this.isBelowNbSemiTonesForNearNotes(harmonyChord.tonality, previousMelodyChroma, chromas[previousMelodyNoteIndex])) {
+          if (this.isBelowNbSemiTonesForInpassingNotes(harmonyChord.tonality, previousMelodyChroma, chromas[previousMelodyNoteIndex])) {
             // Check if the note is on the lower octave
             let octave: number = previousMelodyOctave;
             if (previousMelodyNoteIndex - chromaIndex <= 0) {
@@ -412,8 +412,13 @@ export class GeneratorService {
   }
 
   public isBelowNbSemiTonesForNearNotes(tonality: Tonality, fromChroma: string, toChroma: string): boolean {
-    const nbSemiTonesAsNearNotes: number = this.settingsService.getSettings().generateNbSemiTonesNearNotes;
-    return this.notationService.getNbSemiTonesBetweenChromas(tonality, fromChroma, toChroma) <= nbSemiTonesAsNearNotes;
+    const nbSemiTones: number = this.settingsService.getSettings().generateNbSemiTonesAsNearNotes;
+    return this.notationService.getNbSemiTonesBetweenChromas(tonality, fromChroma, toChroma) <= nbSemiTones;
+  }
+
+  public isBelowNbSemiTonesForInpassingNotes(tonality: Tonality, fromChroma: string, toChroma: string): boolean {
+    const nbSemiTones: number = this.settingsService.getSettings().generateNbSemiTonesAsInpassingNotes;
+    return this.notationService.getNbSemiTonesBetweenChromas(tonality, fromChroma, toChroma) <= nbSemiTones;
   }
 
   private getFirstMeasureTonality(): Tonality {

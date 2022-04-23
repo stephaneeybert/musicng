@@ -113,8 +113,13 @@
             matTooltip="{{ 'settings.form.set.generate.inpassingNote.tip' | translate }}"></mat-slider>
         </p>
         <p>
+          <mat-label>{{ 'settings.form.set.generate.nbSemiTonesAsInpassingNotes.label' | translate }} </mat-label>
+          <mat-slider thumbLabel min="2" max="10" step="1" formControlName="generateNbSemiTonesAsInpassingNotes"
+            matTooltip="{{ 'settings.form.set.generate.nbSemiTonesAsInpassingNotes.tip' | translate }}"></mat-slider>
+        </p>
+        <p>
           <mat-label>{{ 'settings.form.set.generate.nbSemiTonesAsNearNotes.label' | translate }} </mat-label>
-          <mat-slider thumbLabel min="2" max="10" step="1" formControlName="generateNbSemiTonesNearNotes"
+          <mat-slider thumbLabel min="2" max="10" step="1" formControlName="generateNbSemiTonesAsNearNotes"
             matTooltip="{{ 'settings.form.set.generate.nbSemiTonesAsNearNotes.tip' | translate }}"></mat-slider>
         </p>
         <p>

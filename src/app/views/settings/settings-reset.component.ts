@@ -51,7 +51,6 @@ export class SettingsResetComponent {
       .subscribe((reset: boolean) => {
         if (reset) {
           this.settingsStore.delete();
-          this.soundtrackStore.deleteAll(); // TODO Have its own button
 
           const message: string = this.translateService.instant('settings.message.reset-ed');
           this.materialService.showSnackBar(message);

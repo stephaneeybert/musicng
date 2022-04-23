@@ -63,8 +63,11 @@ export class SettingsStorageService extends LocalStorageService<Settings> {
     if (this.commonService.isSet(settingJson.generateInpassingNote)) {
       settings.generateInpassingNote = Number(settingJson.generateInpassingNote);
     }
-    if (this.commonService.isSet(settingJson.generateNbSemiTonesNearNotes)) {
-      settings.generateNbSemiTonesNearNotes = Number(settingJson.generateNbSemiTonesNearNotes);
+    if (this.commonService.isSet(settingJson.generateNbSemiTonesAsInpassingNotes)) {
+      settings.generateNbSemiTonesAsInpassingNotes = Number(settingJson.generateNbSemiTonesAsInpassingNotes);
+    }
+    if (this.commonService.isSet(settingJson.generateNbSemiTonesAsNearNotes)) {
+      settings.generateNbSemiTonesAsNearNotes = Number(settingJson.generateNbSemiTonesAsNearNotes);
     }
     if (this.commonService.isSet(settingJson.generateTonality)) {
       settings.generateTonality = settingJson.generateTonality;

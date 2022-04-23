@@ -1,4 +1,4 @@
-import { NOTE_RANGE } from '@app/service/notation.constant ';
+import { NOTE_RANGE } from '@app/service/notation.constant';
 
 export class Tonality {
 

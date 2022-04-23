@@ -29,7 +29,7 @@ import { Duration } from '@app/model/note/duration/duration';
 import { SynthService } from './synth.service';
 import { CommonService, DownloadService } from '@stephaneeybert/lib-core';
 import { ProgressTask } from '@stephaneeybert/lib-core/lib/download/progress-task';
-import { DEFAULT_TEMPO_BPM, DEFAULT_TONALITY_C_MAJOR } from './notation.constant ';
+import { DEFAULT_TEMPO_BPM, DEFAULT_TONALITY_C_MAJOR } from './notation.constant';
 
 const NOTE_ON: number = 144; // A command value of 144 is a "note on"
 const NOTE_OFF: number = 128; // A command value of 128 is a "note off"

@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { DEFAULT_TIME_SIGNATURES, CHORD_DURATION_UNITS, CHROMAS_MAJOR } from '@app/service/notation.constant ';
+import { DEFAULT_TIME_SIGNATURES, CHORD_DURATION_UNITS, CHROMAS_MAJOR } from '@app/service/notation.constant';
 import { TempoUnitType } from '@app/model/tempo-unit';
 import { Settings } from '@app/model/settings';
 
@@ -49,7 +49,8 @@ export class SettingsDialogComponent implements OnInit {
       existingSettings.generateChordWidth,
       existingSettings.generateReverseDissimilarChord,
       existingSettings.generateInpassingNote,
-      existingSettings.generateNbSemiTonesNearNotes,
+      existingSettings.generateNbSemiTonesAsInpassingNotes,
+      existingSettings.generateNbSemiTonesAsNearNotes,
       existingSettings.generateTonality,
       existingSettings.generateOnlyMajorTonalities,
       existingSettings.generateModulation,
@@ -88,8 +89,12 @@ export class SettingsDialogComponent implements OnInit {
         value: this.settingsEdition.generateInpassingNote,
         disabled: false
       }),
-      generateNbSemiTonesNearNotes: new FormControl({
-        value: this.settingsEdition.generateNbSemiTonesNearNotes,
+      generateNbSemiTonesAsInpassingNotes: new FormControl({
+        value: this.settingsEdition.generateNbSemiTonesAsInpassingNotes,
+        disabled: false
+      }),
+      generateNbSemiTonesAsNearNotes: new FormControl({
+        value: this.settingsEdition.generateNbSemiTonesAsNearNotes,
         disabled: false
       }),
       generateTonality: new FormControl({

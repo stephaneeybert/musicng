@@ -10,7 +10,7 @@ import { Track } from '@app/model/track';
 import { SettingsService } from '@app/views/settings/settings.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Accidental, Annotation, AnnotationHorizontalJustify, AnnotationVerticalJustify, BoundingBox, Dot, Flow, Formatter, Renderer, Stave, StaveNote, Voice } from 'vexflow';
-import { CHORD_CHROMAS_SYLLABIC, OCTAVE_SEPARATOR } from './notation.constant ';
+import { CHORD_CHROMAS_SYLLABIC, OCTAVE_SEPARATOR } from './notation.constant';
 import { NotationService } from './notation.service';
 
 const NAME_PREFIX_SOUNDTRACK: string = 'sheet-soundtrack-';

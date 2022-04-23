@@ -15,6 +15,7 @@ export const DEFAULT_BONUS_RANDOM: number = 0;
 export const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 export const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
 export const DEFAULT_RANDOM_INPASSING: number = 50;
+export const DEFAULT_NB_SEMI_TONES_AS_INPASSING_NOTES: number = 2;
 export const DEFAULT_NB_SEMI_TONES_AS_NEAR_NOTES: number = 2;
 export const DEFAULT_RANDOM_MODULATION: number = 100;
 

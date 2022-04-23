@@ -78,7 +78,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
             existingSettings.generateChordWidth = settingsEdition.generateChordWidth;
             existingSettings.generateReverseDissimilarChord = settingsEdition.generateReverseDissimilarChord;
             existingSettings.generateInpassingNote = settingsEdition.generateInpassingNote;
-            existingSettings.generateNbSemiTonesNearNotes = settingsEdition.generateNbSemiTonesNearNotes;
+            existingSettings.generateNbSemiTonesAsInpassingNotes = settingsEdition.generateNbSemiTonesAsInpassingNotes;
+            existingSettings.generateNbSemiTonesAsNearNotes = settingsEdition.generateNbSemiTonesAsNearNotes;
             existingSettings.generateTonality = settingsEdition.generateTonality;
             existingSettings.generateOnlyMajorTonalities = settingsEdition.generateOnlyMajorTonalities;
             existingSettings.generateModulation = settingsEdition.generateModulation;

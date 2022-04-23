@@ -1,6 +1,6 @@
 import { Subdivision } from './subdivision';
 import { TempoUnitType } from '@app/model/tempo-unit';
-import { CHORD_DURATION_DOTTED } from '@app/service/notation.constant ';
+import { CHORD_DURATION_DOTTED } from '@app/service/notation.constant';
 
 export class Duration {
 

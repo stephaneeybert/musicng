@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { Tonality } from '@app/model/note/tonality';
-import { NOTE_RANGE, OCTAVE_SEPARATOR } from '@app/service/notation.constant ';
+import { NOTE_RANGE, OCTAVE_SEPARATOR } from '@app/service/notation.constant';
 import { NotationService } from '@app/service/notation.service';
 import { CustomOverlayRef } from '@app/service/overlay.service';
 import { DATA_TOKEN } from './sheet.component';
