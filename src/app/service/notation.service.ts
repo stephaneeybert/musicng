@@ -452,7 +452,6 @@ export class NotationService {
       }
       nbSemiTones = nbSemiTones + (intervals[position] * 2);
     }
-    console.log('nbSemiTones: ' + nbSemiTones);
     return nbSemiTones;
   }
 
