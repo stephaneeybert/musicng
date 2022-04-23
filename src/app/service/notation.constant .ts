@@ -15,6 +15,7 @@ export const DEFAULT_BONUS_RANDOM: number = 0;
 export const DEFAULT_TIME_SIGNATURE_DENOMINATOR: number = 4;
 export const DEFAULT_TIME_SIGNATURE_NUMERATOR: number = 4;
 export const DEFAULT_RANDOM_INPASSING: number = 50;
+export const DEFAULT_NB_SEMI_TONES_AS_NEAR_NOTES: number = 2;
 export const DEFAULT_RANDOM_MODULATION: number = 100;
 
 export const OCTAVE_SEPARATOR: string = '/';
@@ -117,7 +118,6 @@ export const NOTE_RANGE_INTERVALS: Map<NOTE_RANGE, Array<number>> = new Map([
 
 export const NB_HALF_TONES_MAJOR: number = 4;
 export const NB_HALF_TONES_MINOR: number = 3;
-export const NB_HALF_TONES_DISSONANCE: number = 2;
 
 export const NOTE_CHROMA_C: string = 'C';
 export const NOTE_ACCIDENTAL_MINOR: string = 'm';

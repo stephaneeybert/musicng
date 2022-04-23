@@ -322,7 +322,7 @@ export class GeneratorService {
         chromas = this.notationService.shiftChromasLeftOnce(chromas);
         // Consider only notes before the next harmony chord note
         if (!harmonyChordSortedChromas.includes(chromas[previousMelodyNoteIndex])) {
-          if (this.notationService.isBelowNbHalfTonesDissonance(harmonyChord.tonality, previousMelodyChroma, chromas[previousMelodyNoteIndex])) {
+          if (this.isBelowNbSemiTonesDissonance(harmonyChord.tonality, previousMelodyChroma, chromas[previousMelodyNoteIndex])) {
             // Check if the note is on the upper octave
             let octave: number = previousMelodyOctave;
             if (previousMelodyNoteIndex + chromaIndex + 1 >= tonalityChromas.length) {
@@ -343,7 +343,7 @@ export class GeneratorService {
         chromas = this.notationService.shiftChromasRightOnce(chromas);
         // Consider only notes before the next harmony chord note
         if (!harmonyChordSortedChromas.includes(chromas[previousMelodyNoteIndex])) {
-          if (this.notationService.isBelowNbHalfTonesDissonance(harmonyChord.tonality, previousMelodyChroma, chromas[previousMelodyNoteIndex])) {
+          if (this.isBelowNbSemiTonesDissonance(harmonyChord.tonality, previousMelodyChroma, chromas[previousMelodyNoteIndex])) {
             // Check if the note is on the lower octave
             let octave: number = previousMelodyOctave;
             if (previousMelodyNoteIndex - chromaIndex <= 0) {
@@ -394,9 +394,9 @@ export class GeneratorService {
         const harmonyChordChroma: string = harmonyChordNote.renderChroma();
         const harmonyChordOctave: number = harmonyChordNote.renderOctave();
         // Avoid the previous note
-        if (harmonyChordChroma != previousMelodyChroma && harmonyChordOctave != previousMelodyOctave) {
+        if (harmonyChordChroma != previousMelodyChroma || harmonyChordOctave != previousMelodyOctave) {
           // The maximum distance to consider for a note to be near enough
-          if (this.notationService.isBelowNbHalfTonesDissonance(harmonyChord.tonality, previousMelodyChroma, harmonyChordChroma)) {
+          if (this.isBelowNbSemiTonesDissonance(harmonyChord.tonality, previousMelodyChroma, harmonyChordChroma)) {
             nearNoteChromas.push([harmonyChordChroma, harmonyChordOctave]);
           }
         }
@@ -409,6 +409,11 @@ export class GeneratorService {
     }
 
     return nearNoteChromas;
+  }
+
+  public isBelowNbSemiTonesDissonance(tonality: Tonality, fromChroma: string, toChroma: string): boolean {
+    const nbSemiTonesAsNearNotes: number = this.settingsService.getSettings().generateNbSemiTonesNearNotes;
+    return this.notationService.getNbSemiTonesBetweenChromas(tonality, fromChroma, toChroma) <= nbSemiTonesAsNearNotes;
   }
 
   private getFirstMeasureTonality(): Tonality {

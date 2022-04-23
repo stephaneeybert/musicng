@@ -116,6 +116,10 @@
             "label": "Note de passage",
             "tip": "Lors du choix d'une note pour un accord, régler la probabilité de choisir une note de passage."
           },
+          "nbSemiTonesAsNearNotes": {
+            "label": "Notes proches",
+            "tip": "Le nombre de demi-tons entre deux notes pour qu'elles soient considérées comme proches."
+          },
           "bonusMin": {
             "label": "Bonus minimum",
             "tip": "Si un bonus minimum est spécifié alors ignorer les notes qui ont un bonus plus faible que le minimum."

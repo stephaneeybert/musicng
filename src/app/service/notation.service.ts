@@ -9,7 +9,7 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFT, NB_HALF_TONES_MINOR, NOTE_CHROMA_C, TRACK_INDEX_HARMONY, TRACK_INDEX_MELODY, OCTAVE_SEPARATOR, NB_HALF_TONES_DISSONANCE } from './notation.constant ';
+import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFT, NB_HALF_TONES_MINOR, NOTE_CHROMA_C, TRACK_INDEX_HARMONY, TRACK_INDEX_MELODY, OCTAVE_SEPARATOR, DEFAULT_NB_SEMI_TONES_AS_NEAR_NOTES } from './notation.constant ';
 import { Tonality } from '@app/model/note/tonality';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Track } from '@app/model/track';
@@ -388,13 +388,13 @@ export class NotationService {
     const secondNotePosition: number = this.getChromaPositionInTonality(placedChord.tonality, secondChordNote.renderChroma());
     const thirdChordNote: Note = this.getThirdChordNoteSortedByIndex(placedChord);
     const thirdNotePosition: number = this.getChromaPositionInTonality(placedChord.tonality, thirdChordNote.renderChroma());
-    const firstToSecondHalfTones: number = this.getNbHalfTonesBetweenChromaPositions(placedChord.tonality, firstNotePosition, secondNotePosition);
-    const secondToThirdHalfTones: number = this.getNbHalfTonesBetweenChromaPositions(placedChord.tonality, secondNotePosition, thirdNotePosition);
+    const firstToSecondSemiTones: number = this.getNbSemiTonesBetweenChromaPositions(placedChord.tonality, firstNotePosition, secondNotePosition);
+    const secondToThirdSemiTones: number = this.getNbSemiTonesBetweenChromaPositions(placedChord.tonality, secondNotePosition, thirdNotePosition);
     // Check if the second note of the chord is a major or minor
-    if (this.isMinorDegree(firstToSecondHalfTones, secondToThirdHalfTones)) {
+    if (this.isMinorDegree(firstToSecondSemiTones, secondToThirdSemiTones)) {
       // Minor chord
       return note.renderChroma() + NOTE_ACCIDENTAL_MINOR;
-    } else if (this.isDiminishedDegree(firstToSecondHalfTones, secondToThirdHalfTones)) {
+    } else if (this.isDiminishedDegree(firstToSecondSemiTones, secondToThirdSemiTones)) {
       // Diminished chord
       return note.renderChroma() + NOTE_ACCIDENTAL_DIMINISHED;
     } else {
@@ -433,18 +433,14 @@ export class NotationService {
     return Math.abs((((currentNoteOctave - 1) * tonalityChromas.length) + currentNoteIndex) - (((previousNoteOctave - 1) * tonalityChromas.length) + previousNoteIndex));
   }
 
-  public isBelowNbHalfTonesDissonance(tonality: Tonality, fromChroma: string, toChroma: string): boolean {
-    return this.getNbHalfTonesBetweenChromas(tonality, fromChroma, toChroma) <= NB_HALF_TONES_DISSONANCE;
-  }
-
-  public getNbHalfTonesBetweenChromas(tonality: Tonality, fromChroma: string, toChroma: string): number {
+  public getNbSemiTonesBetweenChromas(tonality: Tonality, fromChroma: string, toChroma: string): number {
     const fromPosition: number = this.getChromaPositionInTonality(tonality, fromChroma);
     const toPosition: number = this.getChromaPositionInTonality(tonality, toChroma);
-    return this.getNbHalfTonesBetweenChromaPositions(tonality, fromPosition, toPosition);
+    return this.getNbSemiTonesBetweenChromaPositions(tonality, fromPosition, toPosition);
   }
 
-  private getNbHalfTonesBetweenChromaPositions(tonality: Tonality, fromNotePosition: number, toNotePosition: number): number {
-    let nbHalfTones: number = 0;
+  private getNbSemiTonesBetweenChromaPositions(tonality: Tonality, fromNotePosition: number, toNotePosition: number): number {
+    let nbSemiTones: number = 0;
     const intervals: Array<number> = this.getNoteRangeIntervals(tonality.range);
     if (fromNotePosition > toNotePosition) {
       toNotePosition += intervals.length;
@@ -454,14 +450,15 @@ export class NotationService {
       if (position >= intervals.length) {
         position -= intervals.length;
       }
-      nbHalfTones = nbHalfTones + (intervals[position] * 2);
+      nbSemiTones = nbSemiTones + (intervals[position] * 2);
     }
-    return nbHalfTones;
+    console.log('nbSemiTones: ' + nbSemiTones);
+    return nbSemiTones;
   }
 
   // The chord is diminished if the number of intervals between the first and second notes is 4 and the number of intervals between the second and third notes is 3
-  private isMajorDegree(firstToSecondHalfTones: number, secondToThirdHalfTones: number): boolean {
-    if (firstToSecondHalfTones == NB_HALF_TONES_MAJOR && secondToThirdHalfTones == NB_HALF_TONES_MINOR) {
+  private isMajorDegree(firstToSecondSemiTones: number, secondToThirdSemiTones: number): boolean {
+    if (firstToSecondSemiTones == NB_HALF_TONES_MAJOR && secondToThirdSemiTones == NB_HALF_TONES_MINOR) {
       return true;
     } else {
       return false;
@@ -469,8 +466,8 @@ export class NotationService {
   }
 
   // The chord is diminished if the number of intervals between the first and second notes is 3 and the number of intervals between the second and third notes is 4
-  private isMinorDegree(firstToSecondHalfTones: number, secondToThirdHalfTones: number): boolean {
-    if (firstToSecondHalfTones == NB_HALF_TONES_MINOR && secondToThirdHalfTones == NB_HALF_TONES_MAJOR) {
+  private isMinorDegree(firstToSecondSemiTones: number, secondToThirdSemiTones: number): boolean {
+    if (firstToSecondSemiTones == NB_HALF_TONES_MINOR && secondToThirdSemiTones == NB_HALF_TONES_MAJOR) {
       return true;
     } else {
       return false;
@@ -478,16 +475,16 @@ export class NotationService {
   }
 
   // The chord is diminished if the number of intervals between the first and second notes is 3 and the number of intervals between the second and third notes is 3
-  private isDiminishedDegree(firstToSecondHalfTones: number, secondToThirdHalfTones: number): boolean {
+  private isDiminishedDegree(firstToSecondSemiTones: number, secondToThirdSemiTones: number): boolean {
     // Check the degree is diminished
-    if (firstToSecondHalfTones == NB_HALF_TONES_MINOR && secondToThirdHalfTones == NB_HALF_TONES_MINOR) {
+    if (firstToSecondSemiTones == NB_HALF_TONES_MINOR && secondToThirdSemiTones == NB_HALF_TONES_MINOR) {
       return true;
     } else {
       return false;
     }
   }
 
-  public getNoteRangeIntervals(noteRange: NOTE_RANGE): Array<number> {
+  private getNoteRangeIntervals(noteRange: NOTE_RANGE): Array<number> {
     const noteRangeIntervals: Array<number> | undefined = NOTE_RANGE_INTERVALS.get(noteRange);
     if (noteRangeIntervals) {
       return noteRangeIntervals;

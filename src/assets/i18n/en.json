@@ -116,6 +116,10 @@
             "label": "In passing note",
             "tip": "When choosing a note for a chord, tune the probability of choosing an in passing note."
           },
+          "nbSemiTonesAsNearNotes": {
+            "label": "Near notes",
+            "tip": "The number of semi-tones between two notes for them to be considered near."
+          },
           "bonusMin": {
             "label": "Bonus minimum",
             "tip": "If a minimum bonus is specified then ignore the notes that have a bonus lower than the minimum."

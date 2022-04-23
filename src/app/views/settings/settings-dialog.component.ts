@@ -49,6 +49,7 @@ export class SettingsDialogComponent implements OnInit {
       existingSettings.generateChordWidth,
       existingSettings.generateReverseDissimilarChord,
       existingSettings.generateInpassingNote,
+      existingSettings.generateNbSemiTonesNearNotes,
       existingSettings.generateTonality,
       existingSettings.generateOnlyMajorTonalities,
       existingSettings.generateModulation,
@@ -85,6 +86,10 @@ export class SettingsDialogComponent implements OnInit {
       generateReverseDissimilarChord: new FormControl(this.settingsEdition.generateReverseDissimilarChord),
       generateInpassingNote: new FormControl({
         value: this.settingsEdition.generateInpassingNote,
+        disabled: false
+      }),
+      generateNbSemiTonesNearNotes: new FormControl({
+        value: this.settingsEdition.generateNbSemiTonesNearNotes,
         disabled: false
       }),
       generateTonality: new FormControl({

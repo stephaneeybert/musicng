@@ -1,5 +1,5 @@
 import { TempoUnit, TempoUnitType } from './tempo-unit';
-import { DEFAULT_TEMPO_BPM, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_CHORD_DURATION, DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_WIDTH, DEFAULT_RANDOM_INPASSING, DEFAULT_NB_CHORDS, DEFAULT_VELOCITY_MEDIUM, DEFAULT_VELOCITY_LOUD, DEFAULT_RANDOM_MODULATION, DEFAULT_VELOCITY_SOFT, NOTE_CHROMA_C, DEFAULT_BONUS_MIN, DEFAULT_BONUS_RANDOM } from '@app/service/notation.constant ';
+import { DEFAULT_TEMPO_BPM, DEFAULT_TIME_SIGNATURE_NUMERATOR, DEFAULT_TIME_SIGNATURE_DENOMINATOR, DEFAULT_CHORD_DURATION, DEFAULT_NOTE_OCTAVE, DEFAULT_CHORD_WIDTH, DEFAULT_RANDOM_INPASSING, DEFAULT_NB_CHORDS, DEFAULT_VELOCITY_MEDIUM, DEFAULT_VELOCITY_LOUD, DEFAULT_RANDOM_MODULATION, DEFAULT_VELOCITY_SOFT, NOTE_CHROMA_C, DEFAULT_BONUS_MIN, DEFAULT_BONUS_RANDOM, DEFAULT_NB_SEMI_TONES_AS_NEAR_NOTES } from '@app/service/notation.constant ';
 
 export class Settings {
 
@@ -12,6 +12,7 @@ export class Settings {
   generateChordWidth: number;
   generateReverseDissimilarChord: boolean;
   generateInpassingNote: number;
+  generateNbSemiTonesNearNotes: number;
   generateTonality: string;
   generateOnlyMajorTonalities: boolean;
   generateModulation: number;
@@ -42,6 +43,7 @@ export class Settings {
     this.generateChordWidth = DEFAULT_CHORD_WIDTH;
     this.generateReverseDissimilarChord = false;
     this.generateInpassingNote = DEFAULT_RANDOM_INPASSING;
+    this.generateNbSemiTonesNearNotes = DEFAULT_NB_SEMI_TONES_AS_NEAR_NOTES;
     this.generateTonality = NOTE_CHROMA_C;
     this.generateOnlyMajorTonalities = false;
     this.generateModulation = DEFAULT_RANDOM_MODULATION;
@@ -73,6 +75,7 @@ export class Settings {
     generateChordWidth: number,
     generateReverseDissimilarChord: boolean,
     generateInpassingNote: number,
+    generateNearNote: number,
     generateTonality: string,
     generateOnlyMajorTonalities: boolean,
     generateModulation: number,
@@ -102,6 +105,7 @@ export class Settings {
     this.generateChordWidth = generateChordWidth;
     this.generateReverseDissimilarChord = generateReverseDissimilarChord;
     this.generateInpassingNote = generateInpassingNote;
+    this.generateNbSemiTonesNearNotes = generateNearNote;
     this.generateTonality = generateTonality;
     this.generateOnlyMajorTonalities = generateOnlyMajorTonalities;
     this.generateModulation = generateModulation;
