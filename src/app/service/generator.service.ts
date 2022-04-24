@@ -125,7 +125,7 @@ export class GeneratorService {
       // Regenerate the melody chords when regenerating the harmony chords
       const melodyTrack: Track = this.getMelodyTrack(soundtrack);
       const fromMeasure: Measure = melodyTrack.getSortedMeasures()[measureIndex];
-      const fromChord: PlacedChord = this.notationService.getFirstMelodyChordFromHarmonyChord(soundtrack, fromMeasure.index, placedChordIndex);
+      const fromChord: PlacedChord = this.notationService.getFirstMelodyChordFromHarmonyChord(soundtrack, measureIndex, placedChordIndex);
       this.regenerateMelodyChords(soundtrack, melodyTrack, fromMeasure, fromChord, undefined, undefined, harmonyChord, recreate);
     } else if (trackIndex == TRACK_INDEX_MELODY) {
       const melodyTrack: Track = this.getMelodyTrack(soundtrack);
@@ -308,10 +308,7 @@ export class GeneratorService {
     const inpassingNotes: Array<string> = new Array<string>();
 
     const tonalityChromas: Array<string> = this.notationService.getTonalityChromas(harmonyChord.tonality.range, harmonyChord.tonality.firstChroma);
-    const previousMelodyNoteIndex: number = tonalityChromas.indexOf(previousMelodyChroma);
-    if (previousMelodyNoteIndex < 0) {
-      throw new Error('The previous melody chroma ' + previousMelodyChroma + ' could not be found in the tonality ' + tonalityChromas);
-    }
+    const previousMelodyNoteIndex: number = this.notationService.getChromaIndexInTonality(tonalityChromas, previousMelodyChroma);
     let chromas: Array<string> = tonalityChromas;
 
     const harmonyChordSortedChromas: Array<string> = harmonyChord.getSortedNotesChromas();
@@ -380,10 +377,10 @@ export class GeneratorService {
     const nearNoteChromas: Array<[string, number]> = new Array<[string, number]>();
     const harmonyChordNotes: Array<Note> = harmonyChord.getNotesSortedByIndex();
     let tonalityChromas: Array<string> = this.notationService.getTonalityChromas(harmonyChord.tonality.range, harmonyChord.tonality.firstChroma);
-    const previousMelodyNoteIndex: number = tonalityChromas.indexOf(previousMelodyChroma);
 
     // If the previous note was from a different tonality and is thus not found in the new tonality
     // then pick any note from the harmony chord
+    const previousMelodyNoteIndex: number = tonalityChromas.indexOf(previousMelodyChroma);
     if (previousMelodyNoteIndex < 0) {
       const chordNoteIndex: number = this.commonService.getRandomIntegerBetween(0, harmonyChordNotes.length - 1);
       const pickedChordNote: Note = harmonyChordNotes[chordNoteIndex];
@@ -604,7 +601,7 @@ export class GeneratorService {
       const note: Note = sortedNotes[reverse];
       collection.push([note.renderChroma(), note.renderOctave()]);
     }
-    if (withInpassing && previousMelodyChord && melodyChord && this.notationService.allowInpassingNote(previousMelodyChord, melodyChord)) {
+    if (withInpassing && previousMelodyChord && melodyChord && this.notationService.allowInpassingNotes(previousMelodyChord, melodyChord)) {
       const previousMelodyChroma: string | undefined = this.notationService.getFirstChordNoteSortedByIndex(previousMelodyChord).renderChroma();
       const octave: number = previousMelodyChord ? this.notationService.getFirstChordNoteSortedByIndex(previousMelodyChord).renderOctave() : this.settingsService.getSettings().generateNoteOctave;
       for (const chroma of this.getInpassingNotes(harmonyChord, previousMelodyChroma, octave)) {
@@ -648,9 +645,9 @@ export class GeneratorService {
       // Get the first note as one of the harmony chord notes
       const [firstMelodyChroma, firstMelodyOctave]: [string, number] = this.pickMelodyNoteFromHarmonyChord(harmonyChord, previousMelodyChroma, previousMelodyOctave);
       const noteDuration: number = this.notationService.harmonyChordDuratioToMelodyNoteDuration(chordDuration);
-      const notes: Array<Note> = this.notationService.createChordNotesFromChromaOctaves([[firstMelodyChroma, firstMelodyOctave]]);
-      let placedChord: PlacedChord = this.notationService.createPlacedChordFromNotes(noteDuration, velocity, harmonyChord.tonality, placedChordIndex, notes);
-      melodyChords.push(placedChord);
+      const notes: Array<Note> = this.notationService.createMelodyChordNotes(firstMelodyChroma, firstMelodyOctave, false);
+      let melodyChord: PlacedChord = this.notationService.createPlacedChordFromNotes(noteDuration, velocity, harmonyChord.tonality, placedChordIndex, notes);
+      melodyChords.push(melodyChord);
 
       // Get the second note as an in passing note or as one one of the harmony chord notes
       let inpassingTextNote: string | undefined;
@@ -659,9 +656,9 @@ export class GeneratorService {
       }
       if (inpassingTextNote) {
         const [inpassingNoteChroma, inpassingNoteOctave]: [string, number] = this.notationService.noteToChromaOctave(inpassingTextNote);
-        const notes: Array<Note> = this.notationService.createChordNotesFromChromaOctaves([[inpassingNoteChroma, inpassingNoteOctave]]);
-        placedChord = this.notationService.createPlacedChordFromNotes(noteDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, notes);
-        melodyChords.push(placedChord);
+        const notes: Array<Note> = this.notationService.createMelodyChordNotes(inpassingNoteChroma, inpassingNoteOctave, true);
+        melodyChord = this.notationService.createPlacedChordFromNotes(noteDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, notes);
+        melodyChords.push(melodyChord);
       } else {
         // Get one of the harmony chord notes even the already picked one
         const [secondMelodyChroma, secondMelodyOctave]: [string, number] = this.pickMelodyNoteFromHarmonyChord(harmonyChord, firstMelodyChroma, firstMelodyOctave);
@@ -670,9 +667,9 @@ export class GeneratorService {
         if (secondMelodyChroma == firstMelodyChroma && secondMelodyOctave == firstMelodyOctave) {
           melodyChords[melodyChords.length - 1].duration = this.notationService.createDuration(chordDuration, TempoUnit.NOTE);
         } else {
-          const notes: Array<Note> = this.notationService.createChordNotesFromChromaOctaves([[secondMelodyChroma, secondMelodyOctave]]);
-          placedChord = this.notationService.createPlacedChordFromNotes(noteDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, notes);
-          melodyChords.push(placedChord);
+          const notes: Array<Note> = this.notationService.createMelodyChordNotes(secondMelodyChroma, secondMelodyOctave, false);
+          melodyChord = this.notationService.createPlacedChordFromNotes(noteDuration, velocity, harmonyChord.tonality, placedChordIndex + 1, notes);
+          melodyChords.push(melodyChord);
         }
       }
     }
@@ -871,11 +868,7 @@ export class GeneratorService {
   private buildSpecificChordChromaOctaves(tonality: Tonality, chroma : string, octave: number): Array<[string, number]> {
     const tonalityChromas: Array<string> = this.notationService.getTonalityChordNames(tonality.range, tonality.firstChroma);
 
-    const chromaIndex: number = tonalityChromas.indexOf(chroma);
-    if (chromaIndex < 0) {
-      throw new Error('The tonality does not contain the specific chroma ' + chroma);
-    }
-
+    const chromaIndex: number = this.notationService.getChromaIndexInTonality(tonalityChromas, chroma);
     const chromas: Array<string> = new Array();
     const shiftedChromas: Array<Array<string>> = this.getTonalityShiftedChromas(tonality);
     const chordWidth: number = this.settingsService.getSettings().generateChordWidth;
@@ -930,20 +923,17 @@ export class GeneratorService {
   private randomlyPickChromaFromTonalityBonuses(tonalityChromas: Array<string>, previousChroma: string): number {
     // The higher the random value, the less weight has the bonus and thus the more random the choice of a note
     // The lower the random value, the more weight has the bonus and thus the less random the choice of a note
-    const BONUS_RANDOMLINESS: number = this.settingsService.getSettings().generateBonusRandom;
+    const bonusRandom: number = this.settingsService.getSettings().generateBonusRandom;
     // If a minimum bonus is specified then do not consider the chromas that have a lower bonus
-    const BONUS_MIN: number = this.settingsService.getSettings().generateBonusMin;
+    const bonusMin: number = this.settingsService.getSettings().generateBonusMin;
 
-    const previousChromaIndex: number = tonalityChromas.indexOf(previousChroma);
-    if (previousChromaIndex < 0) {
-      throw new Error('The tonality does not contain the chroma ' + previousChroma);
-    }
+    const previousChromaIndex: number = this.notationService.getChromaIndexInTonality(tonalityChromas, previousChroma);
     const chromaBonuses: Array<number> = this.getChromaBonuses(previousChromaIndex);
     const electedChromas: Array<number> = new Array();
     for (let index = 0; index < chromaBonuses.length; index++) {
       let chromaBonus: number = chromaBonuses[index];
-      if ((BONUS_MIN > 0 && chromaBonus >= BONUS_MIN) || 0 === BONUS_MIN) {
-        chromaBonus += BONUS_RANDOMLINESS;
+      if ((bonusMin > 0 && chromaBonus >= bonusMin) || 0 === bonusMin) {
+        chromaBonus += bonusRandom;
         for (let nb = 0; nb < chromaBonus; nb++) {
           // Thanks to the matrix being mirror like, the chroma is retrieved from the bonus index in the keys array
           electedChromas.push(index);

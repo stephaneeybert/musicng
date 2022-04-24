@@ -175,9 +175,8 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
       if (this.clickedOnPlacedChord(trackIndex, measureIndex, placedChordIndex)) {
         const placedChord: PlacedChord = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
         let melodyNotes: Array<string> | undefined = undefined;
-          if (this.notationService.isMelodyTrack(trackIndex)) {
-          const measure: Measure = this.notationService.getMeasure(this.soundtrack, trackIndex, measureIndex);
-          const harmonyChord: PlacedChord = this.notationService.getHarmonyChordFromMelodyChord(this.soundtrack, measure.index, placedChord.index);
+        if (this.notationService.isMelodyTrack(trackIndex)) {
+          const harmonyChord: PlacedChord = this.notationService.getHarmonyChordFromMelodyChord(this.soundtrack, measureIndex, placedChordIndex);
           const melodyChord: PlacedChord | undefined = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
           const previousMelodyChord: PlacedChord | undefined = this.notationService.getPreviousPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
           melodyNotes = this.generatorService.collectPossibleMelodyNotesFromHarmonyChord(harmonyChord, previousMelodyChord, melodyChord, true);

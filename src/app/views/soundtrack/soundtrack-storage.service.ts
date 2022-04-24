@@ -9,7 +9,6 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { CommonService, LocalStorageService } from '@stephaneeybert/lib-core';
 import { Tonality } from '@app/model/note/tonality';
 import { DEFAULT_CHORD_DURATION, DEFAULT_TONALITY_C_MAJOR, DEFAULT_VELOCITY_MEDIUM } from '@app/service/notation.constant';
-import { Subdivisions } from '@app/model/note/duration/subdivisions';
 
 const PREFIX: string = 'musicng-soundtrack-';
 
@@ -99,6 +98,9 @@ export class SoundtrackStorageService extends LocalStorageService<Soundtrack> {
                           const noteJson: any = placedChordJson.notes[noteIndex];
                           if (this.commonService.isSet(noteJson.pitch) && this.commonService.isSet(noteJson.pitch.chroma) && this.commonService.isSet(noteJson.pitch.chroma.value) && this.commonService.isSet(noteJson.pitch.octave) && this.commonService.isSet(noteJson.pitch.octave.value)) {
                             const note: Note = this.notationService.createNote(noteIndex, noteJson.pitch.chroma.value, Number(noteJson.pitch.octave.value));
+                            if (this.commonService.isSet(note.inpassing)) {
+                              note.inpassing = noteJson.inpassing;
+                            }
                             if (this.commonService.isSet(noteJson.pitch.accidental)) {
                               note.pitch.accidental = noteJson.pitch.accidental;
                             }

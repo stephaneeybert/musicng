@@ -123,10 +123,6 @@ export class NotationService {
     });
   }
 
-  public allowInpassingNote(previousMelodyChord: PlacedChord | undefined, melodyChord: PlacedChord): boolean {
-    return (previousMelodyChord != undefined && (melodyChord.index % 2) == 1);
-  }
-
   public getFirstChordNoteSortedByIndex(placedChord: PlacedChord): Note {
     const sortedNotes: Array<Note> = this.sortNotesByIndex(placedChord.notes);
     if (!sortedNotes || sortedNotes.length == 0) {
@@ -233,7 +229,7 @@ export class NotationService {
 
   public createNote(index: number, chroma: string, octave: number): Note {
     const pitch: Pitch = this.createPitch(this.createChroma(chroma), this.createOctave(octave));
-    const note: Note = new Note(index, pitch);
+    const note: Note = new Note(index, pitch, false);
     return note;
   }
 
@@ -431,9 +427,17 @@ export class NotationService {
     throw new Error('The position for the placed chord note ' + chroma + ' could not be found in the tonality ' + tonalityChromas);
   }
 
+  public getChromaIndexInTonality(tonalityChromas: Array<string>, chroma: string): number {
+    const index: number = tonalityChromas.indexOf(chroma);
+    if (index < 0) {
+      throw new Error('The chroma ' + chroma + ' could not be found in the tonality ' + tonalityChromas);
+    }
+    return index;
+  }
+
   private getChromasDistance(previousNoteChroma: string, previousNoteOctave: number, currentNoteChroma: string, currentNoteOctave: number, tonalityChromas: Array<string>): number {
-    const previousNoteIndex: number = tonalityChromas.indexOf(previousNoteChroma);
-    const currentNoteIndex: number = tonalityChromas.indexOf(currentNoteChroma);
+    const previousNoteIndex: number = this.getChromaIndexInTonality(tonalityChromas, previousNoteChroma);
+    const currentNoteIndex: number = this.getChromaIndexInTonality(tonalityChromas, currentNoteChroma);
     return Math.abs((((currentNoteOctave - 1) * tonalityChromas.length) + currentNoteIndex) - (((previousNoteOctave - 1) * tonalityChromas.length) + previousNoteIndex));
   }
 
@@ -552,6 +556,12 @@ export class NotationService {
     return notes;
   }
 
+  public createMelodyChordNotes(chroma: string, octave: number, inpassing: boolean): Array<Note> {
+    const note: Note = this.createNote(0, chroma, octave);
+    note.inpassing = inpassing;
+    return [note];
+  }
+
   public createChordNotesFromChromaOctaves(chromaOctaves: Array<[string, number]>): Array<Note> {
     const notes: Array<Note> = new Array();
     let noteIndex: number = 0;
@@ -574,7 +584,7 @@ export class NotationService {
   // then the current chroma belong to the next upper octave
   private chordChromaBelongsToNextUpperOctave(previousChroma: string, currentChroma: string, tonality: Tonality): boolean {
     const tonalityChromas: Array<string> = this.getTonalityChromas(tonality.range, tonality.firstChroma);
-    if (tonalityChromas.indexOf(currentChroma) < tonalityChromas.indexOf(previousChroma)) {
+    if (this.getChromaIndexInTonality(tonalityChromas, currentChroma) < this.getChromaIndexInTonality(tonalityChromas, previousChroma)) {
       const previousAlphaChroma: string = previousChroma.substring(0,1);
       const currentAlphaChroma: string = currentChroma.substring(0,1);
       const cMajorTonalityChromas: Array<string> = this.getTonalityChromas(DEFAULT_TONALITY_C_MAJOR.range, DEFAULT_TONALITY_C_MAJOR.firstChroma);
@@ -807,8 +817,49 @@ export class NotationService {
     }
   }
 
-  public getHarmonyChordFromMelodyChord(soundtrack: Soundtrack, measureIndex: number, melodyChordIndex: number): PlacedChord  {
-    const harmonyChord: PlacedChord = this.getPlacedChord(soundtrack, TRACK_INDEX_HARMONY, measureIndex, Math.floor(melodyChordIndex / 2));
+  public allowInpassingNotes(previousMelodyChord: PlacedChord | undefined, melodyChord: PlacedChord): boolean {
+    return false; // TODO
+//    return (previousMelodyChord != undefined && );
+//    const firstMelodyChord: PlacedChord = this.getFirstMelodyChordFromHarmonyChord(soundtrack, measureIndex, harmonyChordIndex);
+  }
+
+  private getPlacedChordStartTime(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, chordIndex: number): number {
+    let startTime: number = 0;
+    const measures: Array<Measure> = soundtrack.getSortedTracks()[trackIndex].getSortedMeasures();
+    for (let i: number = 0; i < measures.length; i++) {
+      const placedChords: Array<PlacedChord> = measures[i].getSortedChords();
+      for (let j: number = 0; j < placedChords.length; j++) {
+        const placedChord: PlacedChord = placedChords[j];
+        // The duration is the base of a quotient on 1 as in: 1 / duration
+        startTime += (1 / placedChord.getDuration());
+        if (i == measureIndex && j == chordIndex) {
+          i = measures.length;
+          j = placedChords.length;
+        }
+      }
+    }
+    return startTime;
+  }
+
+  private getPlacedChordAtStartTime(soundtrack: Soundtrack, trackIndex: number, startTimeRef: number): PlacedChord | undefined {
+    let startTime: number = 0;
+    const measures: Array<Measure> = soundtrack.getSortedTracks()[trackIndex].getSortedMeasures();
+    for (let i: number = 0; i < measures.length; i++) {
+      const placedChords: Array<PlacedChord> = measures[i].getSortedChords();
+      for (let j: number = 0; j < placedChords.length; j++) {
+        const placedChord: PlacedChord = placedChords[j];
+        // The duration is the base of a quotient on 1 as in: 1 / duration
+        startTime += (1 / placedChord.getDuration());
+        if (startTime >= startTimeRef) {
+          return placedChord;
+        }
+      }
+    }
+  }
+
+  public getHarmonyChordFromMelodyChord(soundtrack: Soundtrack, measureIndex: number, melodyChordIndex: number): PlacedChord {
+    const startTime: number = this.getPlacedChordStartTime(soundtrack, TRACK_INDEX_MELODY, measureIndex, melodyChordIndex);
+    let harmonyChord: PlacedChord | undefined = this.getPlacedChordAtStartTime(soundtrack, TRACK_INDEX_HARMONY, startTime);
     if (harmonyChord == undefined) {
       throw new Error('No harmony chord was found matching the melody chord.');
     }
@@ -816,7 +867,8 @@ export class NotationService {
   }
 
   public getFirstMelodyChordFromHarmonyChord(soundtrack: Soundtrack, measureIndex: number, harmonyChordIndex: number): PlacedChord  {
-    const melodyChord: PlacedChord = this.getPlacedChord(soundtrack, TRACK_INDEX_MELODY, measureIndex, harmonyChordIndex * 2);
+    const startTime: number = this.getPlacedChordStartTime(soundtrack, TRACK_INDEX_HARMONY, measureIndex, harmonyChordIndex);
+    const melodyChord: PlacedChord | undefined = this.getPlacedChordAtStartTime(soundtrack, TRACK_INDEX_MELODY, startTime);
     if (melodyChord == undefined) {
       throw new Error('No melody chord was found matching the harmony chord.');
     }
