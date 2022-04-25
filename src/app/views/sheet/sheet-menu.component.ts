@@ -82,8 +82,7 @@ export class SheetMenuComponent implements OnInit {
 
   recreateOnTonality(event: MatSelectChange): void {
     if (event.value) {
-      const recreate: boolean = false;
-      const sheetMenuResponse: SheetMenuResponse = new SheetMenuResponse(undefined, undefined, undefined, event.value, recreate);
+      const sheetMenuResponse: SheetMenuResponse = new SheetMenuResponse(undefined, undefined, undefined, event.value, true);
       this.customOverlayRef.closeWithData(sheetMenuResponse);
     } else {
       this.customOverlayRef.closeWithoutData();
