@@ -83,7 +83,7 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
           this.soundtrack = soundtracks[this.soundtrackStore.getSoundtrackIndex(this.soundtrackId)];
           if (this.soundtrack) {
             this.createSoundtrackSheet(this.soundtrack, settings.animatedStave);
-            this.boundings = this.sheetService.collectBoundingBoxes(this.soundtrack);
+            this.boundings = this.sheetService.collectBoundingBoxes(this.soundtrack, this.scrollY);
           }
         }
       });
@@ -123,7 +123,6 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
   public onResize(): void {
     this.initScreenWidth();
-    // TODO How to recalculate the scroll for the bounding box on screen resize ?
   }
 
   private detectChanges(id: string): void {

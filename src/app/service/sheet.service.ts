@@ -192,7 +192,7 @@ export class SheetService {
     }
   }
 
-  public collectBoundingBoxes(soundtrack: Soundtrack): Array<Bounding> {
+  public collectBoundingBoxes(soundtrack: Soundtrack, scrollY: number): Array<Bounding> {
     const boundings: Array<Bounding> = new Array();
     for (const track of soundtrack.getSortedTracks()) {
       for (const measure of track.getSortedMeasures()) {
@@ -200,9 +200,9 @@ export class SheetService {
           for (const placedChord of measure.getSortedChords()) {
             if (placedChord.staveNote) {
               const box: BoundingBox = placedChord.staveNote.getBoundingBox();
-              const top = this.svgYToBrowser(soundtrack, box.getY() - VEXFLOW_BOUNDING_BOX_PADDING);
+              const top = this.svgYToBrowser(soundtrack, scrollY, box.getY() - VEXFLOW_BOUNDING_BOX_PADDING);
               const left = this.svgXToBrowser(soundtrack, box.getX() - VEXFLOW_BOUNDING_BOX_PADDING);
-              const bottom = this.svgYToBrowser(soundtrack, box.getY() + box.getH() + VEXFLOW_BOUNDING_BOX_PADDING);
+              const bottom = this.svgYToBrowser(soundtrack, scrollY, box.getY() + box.getH() + VEXFLOW_BOUNDING_BOX_PADDING);
               const right = this.svgXToBrowser(soundtrack, box.getX() + box.getW() + VEXFLOW_BOUNDING_BOX_PADDING);
               if (top && left && right && bottom) {
                 boundings.push(new Bounding(top, left, bottom, right, track.index, measure.index, placedChord.index));
@@ -240,10 +240,10 @@ export class SheetService {
     }
   }
 
-  private svgYToBrowser(soundtrack: Soundtrack, svgY: number): number | undefined {
+  private svgYToBrowser(soundtrack: Soundtrack, scrollY: number, svgY: number): number | undefined {
     if (soundtrack.sheetContext != null) {
       const svgMarginTop: number = soundtrack.sheetContext.svg.getBoundingClientRect().top;
-      return svgMarginTop + svgY;
+      return svgMarginTop + scrollY + svgY;
     }
   }
 
