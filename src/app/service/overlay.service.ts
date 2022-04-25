@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+const KEYBOARD_EVENT_KEY_ESC: string = "Escape";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -53,6 +55,13 @@ export class CustomOverlayRef<R = any, T = any> {
     .pipe(takeUntil(this.closeEvents))
     .subscribe(() => {
       this.closeWithoutData();
+    });
+    this.overlayRef
+    .keydownEvents()
+    .subscribe((event: KeyboardEvent) => {
+      if (event.key === KEYBOARD_EVENT_KEY_ESC) {
+        this.closeWithoutData();
+      }
     });
   }
 
