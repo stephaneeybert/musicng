@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { Tonality } from '@app/model/note/tonality';
-import { NOTE_RANGE, OCTAVE_SEPARATOR } from '@app/service/notation.constant';
+import { OCTAVE_SEPARATOR } from '@app/service/notation.constant';
 import { NotationService } from '@app/service/notation.service';
 import { CustomOverlayRef } from '@app/service/overlay.service';
 import { DATA_TOKEN } from './sheet.component';
@@ -13,8 +13,8 @@ import { DATA_TOKEN } from './sheet.component';
 export class SheetMenuComponent implements OnInit {
 
   inputData!: SheetMenuInput;
-  tonalitiesChromas: Array<string> | undefined;
-  tonalityChords: Array<string> | undefined;
+  tonalities: Array<Tonality> | undefined;
+  harmonyChords: Array<string> | undefined;
   melodyNotes: Array<string> | undefined;
   recreateChord: boolean = false;
   recreateNote: boolean = false;
@@ -30,11 +30,10 @@ export class SheetMenuComponent implements OnInit {
   ngOnInit() {
     this.inputData = this.customOverlayRef.getInputData();
 
-    this.tonalitiesChromas = this.notationService.getMajorTonalityChromas();
-    // TODO Remove if no complain of above major range this.tonalityChromas = this.generatorService.getOtherTonalityChromas(this.inputData.trackIndex, this.inputData.measureIndex, this.inputData.placedChordIndex);
+    this.tonalities = this.notationService.getAllTonalities();
 
-    const tonality: Tonality = new Tonality(NOTE_RANGE.MAJOR, this.inputData.tonalityFirstChroma);
-    this.tonalityChords = this.notationService.getTonalityChordNames(tonality.range, tonality.firstChroma);
+    const tonality: Tonality = new Tonality(this.inputData.tonality.range, this.inputData.tonality.firstChroma);
+    this.harmonyChords = this.notationService.getTonalityChordNames(tonality.range, tonality.firstChroma);
 
     this.melodyNotes = this.inputData.melodyNotes;
   }
@@ -47,6 +46,14 @@ export class SheetMenuComponent implements OnInit {
     const [chroma, octave] = this.notationService.noteToChromaOctave(chromaOctave);
     return this.notationService.noteChromaLetterToChromaSyllabic(chroma)
       + ' ' + chroma + OCTAVE_SEPARATOR + octave;
+  }
+
+  getTonalityName(tonality: Tonality): string {
+    return this.notationService.getTonalityName(tonality.range, tonality.firstChroma);
+  }
+
+  renderTonalityName(tonality: Tonality): string {
+    return this.notationService.renderTonalityName(tonality);
   }
 
   handleHarmonyChords(): boolean {
@@ -80,9 +87,9 @@ export class SheetMenuComponent implements OnInit {
     }
   }
 
-  recreateOnTonality(event: MatSelectChange): void {
-    if (event.value) {
-      const sheetMenuResponse: SheetMenuResponse = new SheetMenuResponse(undefined, undefined, undefined, event.value, true);
+  recreateOnTonality(event: MatSelectChange, tonality: Tonality | undefined): void {
+    if (tonality) {
+      const sheetMenuResponse: SheetMenuResponse = new SheetMenuResponse(undefined, undefined, undefined, tonality, true);
       this.customOverlayRef.closeWithData(sheetMenuResponse);
     } else {
       this.customOverlayRef.closeWithoutData();
@@ -94,14 +101,14 @@ export class SheetMenuInput {
   trackIndex: number;
   measureIndex: number;
   placedChordIndex: number;
+  tonality: Tonality;
   melodyNotes: Array<string> | undefined;
-  tonalityFirstChroma: string;
 
-  constructor(trackIndex: number, measureIndex: number, placedChordIndex: number, tonalityFirstChroma: string, melodyNotes: Array<string> | undefined) {
+  constructor(trackIndex: number, measureIndex: number, placedChordIndex: number, tonality: Tonality, melodyNotes: Array<string> | undefined) {
     this.trackIndex = trackIndex;
     this.measureIndex = measureIndex;
     this.placedChordIndex = placedChordIndex;
-    this.tonalityFirstChroma = tonalityFirstChroma;
+    this.tonality = tonality;
     this.melodyNotes = melodyNotes;
   }
 }
@@ -110,10 +117,10 @@ export class SheetMenuResponse {
   harmonyChordChroma: string | undefined;
   melodyNoteChroma: string | undefined;
   melodyNoteOctave: number | undefined;
-  tonality: string | undefined;
+  tonality: Tonality | undefined;
   recreate: boolean;
 
-  constructor(harmonyChordChroma: string | undefined, melodyNoteChroma: string | undefined, melodyNoteOctave: number | undefined, tonality: string | undefined, recreate: boolean) {
+  constructor(harmonyChordChroma: string | undefined, melodyNoteChroma: string | undefined, melodyNoteOctave: number | undefined, tonality: Tonality | undefined, recreate: boolean) {
     this.harmonyChordChroma = harmonyChordChroma;
     this.melodyNoteChroma = melodyNoteChroma;
     this.melodyNoteOctave = melodyNoteOctave;

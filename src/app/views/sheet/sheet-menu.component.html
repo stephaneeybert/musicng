@@ -4,8 +4,8 @@
     <mat-select disableRipple name="chord"
       matTooltip="{{ 'sheet.menu.form.set.chord.tip' | translate }}"
       (selectionChange)="recreateWithHarmonyChord($event)">
-      <mat-option *ngFor="let tonalityChord of tonalityChords" value="{{ tonalityChord }}">
-        {{ renderChordNameInSyllabic(tonalityChord) }}
+      <mat-option *ngFor="let harmonyChord of harmonyChords" value="{{ harmonyChord }}">
+        {{ renderChordNameInSyllabic(harmonyChord) }}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -38,10 +38,10 @@
   <mat-form-field appearance="fill">
     <mat-label>{{ 'sheet.menu.form.set.tonality.label' | translate }}</mat-label>
     <mat-select disableRipple name="tonality"
-      matTooltip="{{ 'sheet.menu.form.set.tonality.tip' | translate }}"
-      (selectionChange)="recreateOnTonality($event)">
-      <mat-option *ngFor="let tonalityChroma of tonalitiesChromas" value="{{ tonalityChroma }}">
-        {{ renderChordNameInSyllabic(tonalityChroma) }}
+      matTooltip="{{ 'sheet.menu.form.set.tonality.tip' | translate }}">
+      <mat-option *ngFor="let tonality of tonalities" value="{{ tonality }}"
+        (onSelectionChange)="recreateOnTonality($event, tonality)">
+        {{ renderTonalityName(tonality) }}
       </mat-option>
     </mat-select>
   </mat-form-field>

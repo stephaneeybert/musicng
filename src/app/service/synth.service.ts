@@ -170,7 +170,7 @@ export class SynthService {
     if (animatedStave) {
       const subscription: Subscription = timer(WHITEWASH_DELAY).subscribe((time: number) => {
         this.sheetService.whitewashSheetContext(soundtrack.sheetContext);
-        this.sheetService.drawFirstSoundtrackMeasure(soundtrack, animatedStave);
+        this.sheetService.drawAllFirstMeasures(soundtrack, animatedStave);
         subscription.unsubscribe();
       });
     }

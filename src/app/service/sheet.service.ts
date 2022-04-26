@@ -215,24 +215,6 @@ export class SheetService {
     return boundings;
   }
 
-/*
-  private screenToSVG(soundtrack: Soundtrack, screenX: number, screenY: number) : SVGPoint | undefined {
-    if (soundtrack.sheetContext != null) {
-      const svgPoint: SVGPoint = soundtrack.sheetContext.svg.createSVGPoint(screenX, screenY);
-      svgPoint.x = screenX;
-      svgPoint.y = screenY;
-      return svgPoint.matrixTransform(soundtrack.sheetContext.svg.getScreenCTM().inverse());
-    }
-  }
-
-  private SVGToScreen(svgX, svgY) {
-   var p = svg.createSVGPoint()
-    p.x = svgX
-    p.y = svgY
-    return p.matrixTransform(svg.getScreenCTM());
-  }
-*/
-
   private svgXToBrowser(soundtrack: Soundtrack, svgX: number): number | undefined {
     if (soundtrack.sheetContext != null) {
       const svgMarginLeft: number = soundtrack.sheetContext.svg.getBoundingClientRect().left;
@@ -314,8 +296,8 @@ export class SheetService {
     // Do not render the tonality name on the melody track
     // as the tonality name is determined from the harmony chords
     if (this.notationService.isHarmonyChord(measure.placedChords[0])) {
-      const tonalityChordNames: Array<string> = this.notationService.getTonalityChordNames(measure.placedChords[0].tonality.range, measure.placedChords[0].tonality.firstChroma);
-      const tonalityName: string = this.notationService.renderChordNameInSyllabic(tonalityChordNames[0]);
+      const tonalityChordName: string = this.notationService.getTonalityName(measure.placedChords[0].tonality.range, measure.placedChords[0].tonality.firstChroma);
+      const tonalityName: string = this.notationService.renderChordNameInSyllabic(tonalityChordName);
       const staveX: number = this.getStaveX(animatedStave, track.index, 0);
       const staveY: number = measure.sheetStave.getYForBottomText();
       this.drawText(soundtrack.sheetContext, tonalityName, staveX, staveY);
@@ -367,7 +349,7 @@ export class SheetService {
     }
   }
 
-  public drawFirstSoundtrackMeasure(soundtrack: Soundtrack, animatedStave: boolean): void {
+  public drawAllFirstMeasures(soundtrack: Soundtrack, animatedStave: boolean): void {
     if (soundtrack.tracks) {
       soundtrack.getSortedTracks().forEach((track: Track) => {
         if (track.hasMeasures()) {

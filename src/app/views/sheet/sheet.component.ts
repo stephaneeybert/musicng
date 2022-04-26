@@ -1,8 +1,7 @@
 import { ComponentPortal } from '@angular/cdk/portal';
 import { CdkScrollable, ScrollDispatcher } from '@angular/cdk/scrolling';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, InjectionToken, Injector, Input, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, InjectionToken, Input, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
 import { Device } from '@app/model/device';
-import { Measure } from '@app/model/measure/measure';
 import { PlacedChord } from '@app/model/note/placed-chord';
 import { Settings } from '@app/model/settings';
 import { Soundtrack } from '@app/model/soundtrack';
@@ -64,7 +63,6 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
     private settingsStore: SettingsStore,
     private overlayService: OverlayService,
     private viewContainerRef: ViewContainerRef,
-    private injector: Injector,
     private scrollDispatcher: ScrollDispatcher
   ) { }
 
@@ -164,14 +162,10 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
     this.createPopupMenu(event.clientX, event.clientY);
   }
 
-  private clickedOnPlacedChord(trackIndex: number, measureIndex: number, placedChordIndex: number): boolean {
-    return (trackIndex >=0 && measureIndex >= 0 && placedChordIndex >= 0);
-  }
-
   private createPopupMenu(posX: number, posY: number): void {
     if (this.soundtrack && this.boundings) {
       const [trackIndex, measureIndex, placedChordIndex]: [number, number, number] = this.sheetService.locateMeasureAndChord(this.boundings, posX, posY + this.scrollY);
-      if (this.clickedOnPlacedChord(trackIndex, measureIndex, placedChordIndex)) {
+      if (this.notationService.clickedOnPlacedChord(trackIndex, measureIndex, placedChordIndex)) {
         const placedChord: PlacedChord = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
         let melodyNotes: Array<string> | undefined = undefined;
         if (this.notationService.isMelodyTrack(trackIndex)) {
@@ -180,10 +174,10 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
           const previousMelodyChord: PlacedChord | undefined = this.notationService.getPreviousPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
           melodyNotes = this.generatorService.collectPossibleMelodyNotesFromHarmonyChord(harmonyChord, previousMelodyChord, melodyChord, true);
         }
-        const inputData: SheetMenuInput | undefined = new SheetMenuInput(trackIndex, measureIndex, placedChordIndex, placedChord.tonality.firstChroma, melodyNotes);
+        const inputData: SheetMenuInput | undefined = new SheetMenuInput(trackIndex, measureIndex, placedChordIndex, placedChord.tonality, melodyNotes);
         this.customOverlayRef = this.overlayService.create<SheetMenuResponse, SheetMenuInput>(posX, posY, inputData);
-        const injectedData: string = '';
-        const dataInjector = this.createInjector<string>(this.customOverlayRef, injectedData);
+        const injectedData: SheetMenuInput = new SheetMenuInput(trackIndex, measureIndex, placedChordIndex, placedChord.tonality, melodyNotes);
+        const dataInjector = this.overlayService.createInjector<SheetMenuInput>(this.customOverlayRef, DATA_TOKEN, injectedData);
         const componentPortal: ComponentPortal<SheetMenuComponent> = new ComponentPortal(SheetMenuComponent, this.viewContainerRef, dataInjector);
         this.customOverlayRef.closeEvents.subscribe((event: OverlayCloseEvent<SheetMenuResponse>) => {
           if (this.soundtrack && this.boundings) {
@@ -201,15 +195,5 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
         this.overlayService.attach<SheetMenuComponent>(this.customOverlayRef, componentPortal);
       }
     }
-  }
-
-  private createInjector<T>(customOverlayRef: CustomOverlayRef, data: T): Injector {
-    return Injector.create({
-      parent: this.injector,
-      providers: [
-        { provide: CustomOverlayRef, useValue: customOverlayRef },
-        { provide: DATA_TOKEN, useValue: data },
-      ]
-    })
   }
 }

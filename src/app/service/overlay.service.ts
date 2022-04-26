@@ -1,6 +1,6 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Injectable } from '@angular/core';
+import { Injectable, InjectionToken, Injector } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -12,6 +12,7 @@ const KEYBOARD_EVENT_KEY_ESC: string = "Escape";
 export class OverlayService {
 
   constructor(
+    private injector: Injector,
     private overlay: Overlay
   ) { }
 
@@ -39,6 +40,16 @@ export class OverlayService {
         customOverlayRef.attach<T>(componentPortal);
       }
     }
+  }
+
+  public createInjector<T>(customOverlayRef: CustomOverlayRef, dataToken: InjectionToken<T>, data: T): Injector {
+    return Injector.create({
+      parent: this.injector,
+      providers: [
+        { provide: CustomOverlayRef, useValue: customOverlayRef },
+        { provide: dataToken, useValue: data },
+      ]
+    })
   }
 }
 

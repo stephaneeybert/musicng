@@ -164,9 +164,13 @@ export class NotationService {
     return abc;
   }
 
+  public getTonalityName(noteRange: NOTE_RANGE, rangeFirstChroma: string): string {
+    return this.getTonalityChordNames(noteRange, rangeFirstChroma)[0];
+  }
+
   public renderTonalityName(tonality: Tonality): string {
-    const tonalityChordNames: Array<string> = this.getTonalityChordNames(tonality.range, tonality.firstChroma);
-    return this.renderChordNameInSyllabic(tonalityChordNames[0]);
+    const tonalityName: string = this.getTonalityName(tonality.range, tonality.firstChroma);
+    return this.renderChordNameInSyllabic(tonalityName);
   }
 
   public renderTonalityChords(tonality: Tonality): Array<string> {
@@ -805,6 +809,10 @@ export class NotationService {
     return placedChord;
   }
 
+  public clickedOnPlacedChord(trackIndex: number, measureIndex: number, placedChordIndex: number): boolean {
+    return (trackIndex >=0 && measureIndex >= 0 && placedChordIndex >= 0);
+  }
+
   public getPreviousPlacedChord(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, placedChordIndex: number): PlacedChord | undefined {
     // Ignore the previous chord if it sits in the previous measure
     if (placedChordIndex > 0) {
@@ -908,7 +916,7 @@ export class NotationService {
     return chromas;
   }
 
-  private getAllTonalities(): Array<Tonality> {
+  public getAllTonalities(): Array<Tonality> {
     const tonalities: Array<Tonality> = new Array();
     CHROMAS_MAJOR.forEach((chroma: string) => {
       tonalities.push(new Tonality(NOTE_RANGE.MAJOR, chroma));
