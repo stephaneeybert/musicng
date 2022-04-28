@@ -831,21 +831,29 @@ export class NotationService {
 //    const firstMelodyChord: PlacedChord = this.getFirstMelodyChordFromHarmonyChord(soundtrack, measureIndex, harmonyChordIndex);
   }
 
-  private getPlacedChordStartTime(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, chordIndex: number): number {
+  public getPlacedChordStartTime(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, chordIndex: number): number {
     let startTime: number = 0;
     const measures: Array<Measure> = soundtrack.getSortedTracks()[trackIndex].getSortedMeasures();
     for (let i: number = 0; i < measures.length; i++) {
       const placedChords: Array<PlacedChord> = measures[i].getSortedChords();
       for (let j: number = 0; j < placedChords.length; j++) {
         const placedChord: PlacedChord = placedChords[j];
-        // The duration is the base of a quotient on 1 as in: 1 / duration
-        startTime += (1 / placedChord.getDuration());
-        if (i == measureIndex && j == chordIndex) {
-          i = measures.length;
-          j = placedChords.length;
+        if (i < measureIndex || (i == measureIndex && j < chordIndex)) {
+          // The duration is the base of a quotient on 1 as in: 1 / duration
+          startTime = startTime + (1 / placedChord.getDuration());
         }
       }
     }
+    return startTime;
+  }
+
+  public addChordStartTime(chords: Array<PlacedChord>, lastChord: PlacedChord): number {
+    let startTime: number = 0;
+    for (const chord of chords) {
+      // The duration is the base of a quotient on 1 as in: 1 / duration
+      startTime = startTime + (1 / chord.getDuration());
+    }
+    startTime = startTime + (1 / lastChord.getDuration());
     return startTime;
   }
 
@@ -857,8 +865,8 @@ export class NotationService {
       for (let j: number = 0; j < placedChords.length; j++) {
         const placedChord: PlacedChord = placedChords[j];
         // The duration is the base of a quotient on 1 as in: 1 / duration
-        startTime += (1 / placedChord.getDuration());
-        if (startTime >= startTimeRef) {
+        startTime = startTime + (1 / placedChord.getDuration());
+        if (startTime > startTimeRef) {
           return placedChord;
         }
       }
