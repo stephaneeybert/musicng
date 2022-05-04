@@ -1,3 +1,4 @@
+import { NOTE_END_OF_TRACK, NOTE_END_OF_TRACK_OCTAVE } from '@app/service/notation.constant';
 import { Pitch } from './pitch/pitch';
 
 export const NOTE_SHARP: string = '#';
@@ -29,6 +30,10 @@ export class Note {
 
   public isFirst(): boolean {
     return this.index === 0;
+  }
+
+  public isEndOfTrackNote(): boolean {
+    return this.render().includes(NOTE_END_OF_TRACK) && this.render().includes(String(NOTE_END_OF_TRACK_OCTAVE));
   }
 
   public renderChroma(): string {

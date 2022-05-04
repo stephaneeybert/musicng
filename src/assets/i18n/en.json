@@ -271,6 +271,9 @@
     "message": {
       "added": "The soundtrack {{ name }} has been added.",
       "regenerated": "The soundtrack {{ name }} has been regenerated.",
+      "melody-regenerated": "The melody track of the soundtrack {{ name }} has been regenerated.",
+      "melody-updated": "The melody track of the soundtrack {{ name }} has been updated.",
+      "measure-added": "The measure has been added to the soundtrack {{ name }}",
       "maxNbReached": "The maximum number of soundtracks is reached. Delete a soundtrack before adding one.",
       "updated": "The soundtrack {{ name }} has been updated.",
       "deleted": "The soundtrack {{ name }} has been deleted.",
@@ -314,6 +317,10 @@
       "form": {
         "title": "Tonality",
         "set": {
+          "add-measure": {
+            "label": "Add measure",
+            "tip": "Add a new measure after this one"
+          },
           "tonality": {
             "label": "Tonality",
             "tip": "Folow up with the tonality:"

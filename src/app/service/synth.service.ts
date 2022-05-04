@@ -235,7 +235,7 @@ export class SynthService {
             let triggerTime = measureStartTime + relativeTime;
             const releaseTime = triggerTime + durationInSeconds;
 
-            if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
+            if (!placedChord.isEndOfTrackPlacedChord()) {
               const textNotes: Array<string> = this.noteToSynthNote(placedChord.renderIntlChromaOctave());
               track.synth!.triggerAttack(textNotes, triggerTime, placedChord.velocity);
               track.synth!.triggerRelease(textNotes, releaseTime);

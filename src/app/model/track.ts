@@ -44,4 +44,20 @@ export class Track {
     }
   }
 
+  public getNbPlacedChords(): number {
+    let count: number = 0;
+    if (this.hasMeasures()) {
+      for (const measure of this.measures) {
+        if (measure.hasChords()) {
+          for (const placedChord of measure.placedChords!) {
+            if (!placedChord.isEndOfTrackPlacedChord()) {
+              count++;
+            }
+          }
+        }
+      }
+    }
+    return count;
+  }
+
 }

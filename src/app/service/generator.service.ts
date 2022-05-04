@@ -97,41 +97,33 @@ export class GeneratorService {
     return soundtrack;
   }
 
-  public recreateSoundtrackDemo(soundtrack: Soundtrack): void {
-    const trackIndex: number = 1;
-    const measureIndex: number = 1;
-    const placedChordIndex: number = 1;
-    const pickedChordChroma: string | undefined = undefined;
-    const pickedNoteChroma: string | undefined = undefined;
-    const pickedNoteOctave: number | undefined = undefined;
-    const pickedTonality: Tonality | undefined = undefined;
-    const recreate: boolean = true;
-    this.recreateSoundtrack(soundtrack, trackIndex, measureIndex, placedChordIndex, pickedChordChroma, pickedNoteChroma, pickedNoteOctave, pickedTonality, recreate);
+  private recreateHarmonyTrack(soundtrack: Soundtrack, measureIndex: number, placedChordIndex: number, pickedChordChroma: string | undefined, pickedTonality: Tonality | undefined, recreate: boolean): void {
+    let harmonyTrack: Track = this.notationService.getHarmonyTrack(soundtrack);
+    let harmonyMeasure: Measure = harmonyTrack.getSortedMeasures()[measureIndex];
+    let harmonyChord: PlacedChord = harmonyMeasure.getSortedChords()[placedChordIndex];
+    this.regenerateHarmonyChords(soundtrack, harmonyMeasure, harmonyChord, pickedChordChroma, pickedTonality, recreate);
+    // Update the recreated harmony chord
+    // as it is used to recreate the melody notes
+    harmonyTrack = this.notationService.getHarmonyTrack(soundtrack);
+    harmonyMeasure = harmonyTrack.getSortedMeasures()[measureIndex];
+    harmonyChord = harmonyMeasure.getSortedChords()[placedChordIndex];
+
+    // Regenerate the melody chords when regenerating the harmony chords
+    const melodyTrack: Track = this.notationService.getMelodyTrack(soundtrack);
+    const fromMeasure: Measure = melodyTrack.getSortedMeasures()[measureIndex];
+    const fromChord: PlacedChord = this.notationService.getFirstMelodyChordFromHarmonyChord(soundtrack, measureIndex, placedChordIndex);
+    this.regenerateMelodyChords(soundtrack, fromMeasure, fromChord, undefined, undefined, harmonyChord, recreate);
   }
 
-  public recreateSoundtrack(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, placedChordIndex: number, pickedChordChroma: string | undefined, pickedNoteChroma: string | undefined, pickedNoteOctave: number | undefined, pickedTonality: Tonality | undefined, recreate: boolean): void {
-    if (trackIndex == TRACK_INDEX_HARMONY) {
-      let harmonyTrack: Track = this.getHarmonyTrack(soundtrack);
-      let harmonyMeasure: Measure = harmonyTrack.getSortedMeasures()[measureIndex];
-      let harmonyChord: PlacedChord = harmonyMeasure.getSortedChords()[placedChordIndex];
-      this.regenerateHarmonyChords(soundtrack, harmonyMeasure, harmonyChord, pickedChordChroma, pickedTonality, recreate);
-      // Update the recreated harmony chord
-      // as it is used to recreate the melody notes
-      harmonyTrack = this.getHarmonyTrack(soundtrack);
-      harmonyMeasure = harmonyTrack.getSortedMeasures()[measureIndex];
-      harmonyChord = harmonyMeasure.getSortedChords()[placedChordIndex];
+  private recreateMelodyTrack(soundtrack: Soundtrack, measureIndex: number, placedChordIndex: number, pickedNoteChroma: string, pickedNoteOctave: number, pickedTonality: Tonality | undefined, recreate: boolean): void {
+    const melodyTrack: Track = this.notationService.getMelodyTrack(soundtrack);
+    const fromMeasure: Measure = melodyTrack.getSortedMeasures()[measureIndex];
+    const fromChord: PlacedChord = fromMeasure.getSortedChords()[placedChordIndex];
+    this.regenerateMelodyChords(soundtrack, fromMeasure, fromChord, pickedNoteChroma, pickedNoteOctave, undefined, recreate);
+  }
 
-      // Regenerate the melody chords when regenerating the harmony chords
-      const melodyTrack: Track = this.getMelodyTrack(soundtrack);
-      const fromMeasure: Measure = melodyTrack.getSortedMeasures()[measureIndex];
-      const fromChord: PlacedChord = this.notationService.getFirstMelodyChordFromHarmonyChord(soundtrack, measureIndex, placedChordIndex);
-      this.regenerateMelodyChords(soundtrack, melodyTrack, fromMeasure, fromChord, undefined, undefined, harmonyChord, recreate);
-    } else if (trackIndex == TRACK_INDEX_MELODY) {
-      const melodyTrack: Track = this.getMelodyTrack(soundtrack);
-      const fromMeasure: Measure = melodyTrack.getSortedMeasures()[measureIndex];
-      const fromChord: PlacedChord = fromMeasure.getSortedChords()[placedChordIndex];
-      this.regenerateMelodyChords(soundtrack, melodyTrack, fromMeasure, fromChord, pickedNoteChroma, pickedNoteOctave, undefined, recreate);
-    }
+  public regenerateHarmonyTrack(soundtrack: Soundtrack, measureIndex: number, placedChordIndex: number, pickedChordChroma: string | undefined, pickedTonality: Tonality | undefined, recreate: boolean): void {
+    this.recreateHarmonyTrack(soundtrack, measureIndex, placedChordIndex, pickedChordChroma, pickedTonality, recreate);
 
     let message: string;
     if (recreate) {
@@ -142,20 +134,67 @@ export class GeneratorService {
     this.materialService.showSnackBar(message);
   }
 
+  public regenerateMelodyTrack(soundtrack: Soundtrack, measureIndex: number, placedChordIndex: number, pickedNoteChroma: string | undefined, pickedNoteOctave: number | undefined, pickedTonality: Tonality | undefined, recreate: boolean): void {
+    if (pickedNoteChroma && pickedNoteOctave) {
+      this.recreateMelodyTrack(soundtrack, measureIndex, placedChordIndex, pickedNoteChroma, pickedNoteOctave, pickedTonality, recreate);
+    }
+
+    let message: string;
+    if (recreate) {
+      message = this.translateService.instant('soundtracks.message.melody-regenerated', { name: soundtrack.name });
+    } else {
+      message = this.translateService.instant('soundtracks.message.melody-updated', { name: soundtrack.name });
+    }
+    this.materialService.showSnackBar(message);
+  }
+
+  public regenerateOnTonality(soundtrack: Soundtrack, measureIndex: number, placedChordIndex: number, pickedChordChroma: string | undefined, pickedTonality: Tonality | undefined): void {
+    this.recreateHarmonyTrack(soundtrack, measureIndex, placedChordIndex, pickedChordChroma, pickedTonality, true);
+
+    const message: string = this.translateService.instant('soundtracks.message.regenerated', { name: soundtrack.name });
+    this.materialService.showSnackBar(message);
+  }
+
+  public addMeasureAfter(soundtrack: Soundtrack, onMeasureIndex: number): void {
+    let harmonyTrack: Track = this.notationService.getHarmonyTrack(soundtrack);
+    let measures: Array<Measure> = harmonyTrack.getSortedMeasures();
+    for (let i: number = measures.length - 1; i > onMeasureIndex; i--) {
+      measures[i].index++;
+    }
+
+    const addedMeasure = this.createMeasure(onMeasureIndex + 1);
+    addedMeasure.placedChords = new Array<PlacedChord>();
+    for (const placedChord of measures[onMeasureIndex].getSortedChords()) {
+      const newHarmonyChord = this.notationService.createPlacedChordFromNotes(placedChord.getDuration(), placedChord.velocity, placedChord.tonality, placedChord.index, []);
+      addedMeasure.addChord(newHarmonyChord);
+    }
+    measures.push(addedMeasure);
+    soundtrack.getSortedTracks()[TRACK_INDEX_HARMONY].measures = measures;
+
+    this.soundtrackService.storeSoundtrack(soundtrack);
+    this.soundtrackService.updateSoundtrack(soundtrack);
+
+    this.recreateHarmonyTrack(soundtrack, onMeasureIndex + 1, 0, undefined, undefined, true);
+
+    const message: string = this.translateService.instant('soundtracks.message.measure-added', { name: soundtrack.name });
+    this.materialService.showSnackBar(message);
+  }
+
   public generateSoundtrack(): Soundtrack {
     const soundtrack: Soundtrack = this.soundtrackService.createSoundtrack(this.createNewSoundtrackId(), this.createNewSoundtrackName());
 
     const defaultOctave: number = this.settingsService.getSettings().generateNoteOctave;
     const chordDuration: number = this.settingsService.getSettings().generateChordDuration;
     const harmonyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityHarmony);
-    const harmonyMeasures: Array<Measure> = this.generateHarmonyChordsInMeasures(defaultOctave, chordDuration, harmonyVelocity, undefined, undefined, undefined, undefined, undefined, undefined);
+    const generateNbChords: number = this.settingsService.getSettings().generateNbChords;
+    const harmonyMeasures: Array<Measure> = this.generateHarmonyChordsInMeasures(generateNbChords, defaultOctave, chordDuration, harmonyVelocity, undefined, undefined, undefined, undefined, undefined, undefined);
 
     if (this.settingsService.getSettings().generateMelody) {
-     this.generateMelodyTrack(soundtrack, harmonyMeasures, defaultOctave, chordDuration);
+      this.generateMelodyTrack(soundtrack, harmonyMeasures, defaultOctave, chordDuration);
     }
 
     if (this.settingsService.getSettings().generateHarmony) {
-     this.generateHarmonyTrack(soundtrack, harmonyMeasures);
+      this.generateHarmonyTrack(soundtrack, harmonyMeasures);
     }
 
     if (this.settingsService.getSettings().generateDrums) {
@@ -171,14 +210,6 @@ export class GeneratorService {
     return soundtrack;
   }
 
-  public getMelodyTrack(soundtrack: Soundtrack): Track {
-    return soundtrack.getSortedTracks()[TRACK_INDEX_MELODY];
-  }
-
-  public getHarmonyTrack(soundtrack: Soundtrack): Track {
-    return soundtrack.getSortedTracks()[TRACK_INDEX_HARMONY];
-  }
-
   public generateMelodyTrack(soundtrack: Soundtrack, harmonyMeasures: Array<Measure>, defaultOctave: number, chordDuration: number): void {
     const melodyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityMelody);
     const melodyChords: Array<PlacedChord> = this.generateMelodyChords(soundtrack, harmonyMeasures, defaultOctave, chordDuration, melodyVelocity, undefined, undefined, undefined, undefined, undefined);
@@ -188,28 +219,28 @@ export class GeneratorService {
     melodyTrack.name = this.getTrackName(TRACK_TYPES.MELODY);
   }
 
-  private regenerateMelodyChords(soundtrack: Soundtrack, fromTrack: Track, fromMeasure: Measure, fromChord: PlacedChord, pickedNoteChroma: string | undefined, pickedNoteOctave: number | undefined, harmonyChord: PlacedChord | undefined, recreate: boolean): void {
+  private regenerateMelodyChords(soundtrack: Soundtrack, fromMeasure: Measure, fromChord: PlacedChord, pickedNoteChroma: string | undefined, pickedNoteOctave: number | undefined, harmonyChord: PlacedChord | undefined, recreate: boolean): void {
     const defaultOctave: number = this.settingsService.getSettings().generateNoteOctave;
     const chordDuration: number = this.settingsService.getSettings().generateChordDuration;
 
     const melodyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityMelody);
-    const melodyTrack: Track = soundtrack.getSortedTracks()[TRACK_INDEX_MELODY];
+    const melodyTrack: Track = this.notationService.getMelodyTrack(soundtrack);
     if (recreate) {
       this.deleteStartingFromChord(melodyTrack, fromMeasure, fromChord);
-      const harmonyMeasures: Array<Measure> = this.getHarmonyTrack(soundtrack).getSortedMeasures();
+      const harmonyMeasures: Array<Measure> = this.notationService.getHarmonyTrack(soundtrack).getSortedMeasures();
       const melodyChords: Array<PlacedChord> = this.generateMelodyChords(soundtrack, harmonyMeasures, defaultOctave, chordDuration, melodyVelocity, melodyTrack, fromMeasure, fromChord, pickedNoteChroma, pickedNoteOctave);
       soundtrack.getSortedTracks()[melodyTrack.index].measures = this.createMeasures(melodyChords);
     } else {
       if (pickedNoteChroma && pickedNoteOctave) {
-        this.notationService.replaceMelodyNote(soundtrack, fromTrack.index, fromMeasure.index, fromChord.index, pickedNoteChroma, pickedNoteOctave);
+        this.notationService.replaceMelodyNote(soundtrack, melodyTrack.index, fromMeasure.index, fromChord.index, pickedNoteChroma, pickedNoteOctave);
       } else if (harmonyChord) {
-        const previousMelodyChord: PlacedChord | undefined = this.notationService.getPreviousPlacedChord(soundtrack, fromTrack.index, fromMeasure.index, fromChord.index);
+        const previousMelodyChord: PlacedChord | undefined = this.notationService.getPreviousPlacedChord(soundtrack, melodyTrack.index, fromMeasure.index, fromChord.index);
         if (previousMelodyChord) {
           const firstNote: Note = this.notationService.getFirstChordNoteSortedByIndex(previousMelodyChord);
           const previousMelodyChroma: string = firstNote.renderChroma();
           const previousMelodyOctave: number = firstNote.renderOctave();
           const [noteChroma, noteOctave]: [string, number] = this.pickMelodyNoteFromHarmonyChord(harmonyChord, previousMelodyChroma, previousMelodyOctave);
-          this.notationService.replaceMelodyNote(soundtrack, fromTrack.index, fromMeasure.index, fromChord.index, noteChroma, noteOctave);
+          this.notationService.replaceMelodyNote(soundtrack, melodyTrack.index, fromMeasure.index, fromChord.index, noteChroma, noteOctave);
         }
       }
     }
@@ -227,12 +258,13 @@ export class GeneratorService {
     const octave: number = this.settingsService.getSettings().generateNoteOctave;
     const chordDuration: number = this.settingsService.getSettings().generateChordDuration;
     const harmonyVelocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityHarmony);
-    const harmonyTrack: Track = this.getHarmonyTrack(soundtrack);
-    // Keep the octave of the base note of the replaced chord
-    const pickedChordOctave: number = fromChord.getNotesSortedByIndex()[0].renderOctave();
+    const harmonyTrack: Track = this.notationService.getHarmonyTrack(soundtrack);
+    // Keep the octave of the base note of the replaced chord if any
+    const pickedChordOctave: number = fromChord.hasNotes() ? fromChord.getNotesSortedByIndex()[0].renderOctave() : octave;
     if (recreate) {
+      const generateNbChords: number = harmonyTrack.getNbPlacedChords();
       this.deleteStartingFromChord(harmonyTrack, fromMeasure, fromChord);
-      soundtrack.getSortedTracks()[harmonyTrack.index].measures = this.generateHarmonyChordsInMeasures(octave, chordDuration, harmonyVelocity, harmonyTrack, fromMeasure, fromChord, pickedChordChroma, pickedChordOctave, pickedTonality);
+      soundtrack.getSortedTracks()[harmonyTrack.index].measures = this.generateHarmonyChordsInMeasures(generateNbChords, octave, chordDuration, harmonyVelocity, harmonyTrack, fromMeasure, fromChord, pickedChordChroma, pickedChordOctave, pickedTonality);
     } else {
       if (pickedChordChroma) {
         const velocity: number = this.settingsService.percentageToVelocity(this.settingsService.getSettings().generateVelocityHarmony);
@@ -556,45 +588,54 @@ export class GeneratorService {
         }
       }
 
+      const fromHarmonyChord: PlacedChord = this.notationService.getHarmonyChordFromMelodyChord(soundtrack, fromMeasure.index, fromChord.index);
+
       if (pickedNoteChroma && pickedNoteOctave) {
-        // Create the picked note
+        // The melody is recreated from a note with having picked a note to be used
         const notes: Array<Note> = this.notationService.createChordNotesFromChromaOctaves([[pickedNoteChroma, pickedNoteOctave]]);
         const noteDuration: number = this.notationService.harmonyChordDuratioToMelodyNoteDuration(chordDuration);
-        const fromHarmonyChord: PlacedChord = this.notationService.getHarmonyChordFromMelodyChord(soundtrack, fromMeasure.index, fromChord.index);
         const placedChord: PlacedChord = this.notationService.createPlacedChordFromNotes(noteDuration, velocity, fromHarmonyChord.tonality, fromChord.index, notes);
         melodyChords.push(placedChord);
-
-        // Create the notes following the picked note in the measure
-        const harmonyChords: Array<PlacedChord> = harmonyMeasures[fromMeasure.index].getSortedChords();
         melodyChordIndex = fromChord.index + 1;
-        const fromChordStartTime: number = this.notationService.getPlacedChordStartTime(soundtrack, TRACK_INDEX_MELODY, fromMeasure.index, fromChord.index);
-        for (let j: number = fromHarmonyChord.index; j < harmonyChords.length; j++) {
-          const harmonyChord: PlacedChord = harmonyChords[j];
-          const harmonyChordStartTime: number = this.notationService.getPlacedChordStartTime(soundtrack, TRACK_INDEX_HARMONY, fromMeasure.index, harmonyChord.index);
-          let previousMelodyChord: PlacedChord | undefined = melodyChords.length > 0 ? melodyChords[melodyChords.length - 1] : undefined;
-          // For the picked harmony chord, allow creating only one following note if picked the first note of the chord
-          // and do not create any note if picked the following note of the chord
-          let nbNotes: number = 0;
-          if (harmonyChord.index == fromHarmonyChord.index && harmonyChordStartTime == fromChordStartTime) {
+      } else {
+        // The melody is recreated from a note without having picked any note to be used
+        melodyChordIndex = fromChord.index;
+      }
+
+      // Create the notes in the measure
+      const harmonyChords: Array<PlacedChord> = harmonyMeasures[fromMeasure.index].getSortedChords();
+      const fromChordStartTime: number = this.notationService.getPlacedChordStartTime(soundtrack, TRACK_INDEX_MELODY, fromMeasure.index, melodyChordIndex);
+      for (let j: number = fromHarmonyChord.index; j < harmonyChords.length; j++) {
+        const harmonyChord: PlacedChord = harmonyChords[j];
+        const harmonyChordStartTime: number = this.notationService.getPlacedChordStartTime(soundtrack, TRACK_INDEX_HARMONY, fromMeasure.index, harmonyChord.index);
+        let previousMelodyChord: PlacedChord | undefined = melodyChords.length > 0 ? melodyChords[melodyChords.length - 1] : undefined;
+
+        let nbNotes: number = 0;
+        // For the matching harmony chord, create only one following note if a picked note was already created
+        if (harmonyChord.index == fromHarmonyChord.index && harmonyChordStartTime == fromChordStartTime) {
+          if (pickedNoteChroma && pickedNoteOctave) {
             nbNotes = 1;
-          } else if (harmonyChord.index > fromHarmonyChord.index) {
-            // For the harmony chords following the picked one, allow creating multiple notes
+          } else {
             nbNotes = 2;
           }
-          if (nbNotes > 0) {
-            const multiple: boolean = nbNotes > 1;
-            const melodyChordsForOneHarmonyChord: Array<PlacedChord> = this.generateMelodyChordsForAnHarmonyChord(melodyChordIndex, previousMelodyChord, harmonyChord, defaultOctave, chordDuration, velocity, multiple);
-            for (let k: number = 0; k < melodyChordsForOneHarmonyChord.length; k++) {
-              const melodyChord: PlacedChord = melodyChordsForOneHarmonyChord[k];
-              const melodyChordStartTime: number = this.notationService.addChordStartTime(melodyChords, melodyChord);
-              if (melodyChordStartTime > fromChordStartTime) {
-                melodyChords.push(melodyChord);
-                melodyChordIndex++;
-              }
+        } else if (harmonyChord.index > fromHarmonyChord.index) {
+          // For the harmony chords following the picked one, allow creating multiple notes
+          nbNotes = 2;
+        }
+        if (nbNotes > 0) {
+          const multiple: boolean = nbNotes > 1;
+          const melodyChordsForOneHarmonyChord: Array<PlacedChord> = this.generateMelodyChordsForAnHarmonyChord(melodyChordIndex, previousMelodyChord, harmonyChord, defaultOctave, chordDuration, velocity, multiple);
+          for (let k: number = 0; k < melodyChordsForOneHarmonyChord.length; k++) {
+            const melodyChord: PlacedChord = melodyChordsForOneHarmonyChord[k];
+            const melodyChordStartTime: number = this.notationService.addChordStartTime(melodyChords, melodyChord);
+            if (melodyChordStartTime > fromChordStartTime) {
+              melodyChords.push(melodyChord);
+              melodyChordIndex++;
             }
           }
         }
       }
+
       measureIndex = fromMeasure.index + 1;
     }
 
@@ -662,7 +703,7 @@ export class GeneratorService {
     const previousMelodyChroma: string | undefined = previousMelodyChord ? this.notationService.getFirstChordNoteSortedByIndex(previousMelodyChord).renderChroma() : undefined;
     const previousMelodyOctave: number = previousMelodyChord ? this.notationService.getFirstChordNoteSortedByIndex(previousMelodyChord).renderOctave() : defaultOctave;
 
-    if (!this.notationService.isEndOfTrackPlacedChord(harmonyChord)) {
+    if (!harmonyChord.isEndOfTrackPlacedChord()) {
       // For each harmony chord of the harmony track, there are two single note chords of half duration in the melody track
       // The first melody note is one of the harmony chord, and the second melody note is also a note from the same harmony chord or an inpassing note
       // An inpassing note is one that is not in the harmony chord but that is between the previous melody note and another note of the harmony chord even if of another octave
@@ -755,7 +796,7 @@ export class GeneratorService {
     return measures;
   }
 
-  private generateHarmonyChordsInMeasures(octave: number, chordDuration: number, velocity: number, fromTrack: Track | undefined, fromMeasure: Measure | undefined, fromChord: PlacedChord | undefined, pickedChordChroma: string | undefined, pickedChordOctave: number | undefined, pickedTonality: Tonality | undefined): Array<Measure> {
+  private generateHarmonyChordsInMeasures(generateNbChords: number, octave: number, chordDuration: number, velocity: number, fromTrack: Track | undefined, fromMeasure: Measure | undefined, fromChord: PlacedChord | undefined, pickedChordChroma: string | undefined, pickedChordOctave: number | undefined, pickedTonality: Tonality | undefined): Array<Measure> {
     const measures: Array<Measure> = new Array<Measure>();
     let measureIndex: number = 0;
     let chordNumber: number = 0;
@@ -807,7 +848,6 @@ export class GeneratorService {
       tonality = this.getFirstMeasureTonality();
     }
 
-    const generateNbChords: number = this.settingsService.getSettings().generateNbChords > 0 ? this.settingsService.getSettings().generateNbChords : 1;
     while (chordNumber < generateNbChords) {
       previousPreviousChord = previousChord;
       previousChord = harmonyChord;

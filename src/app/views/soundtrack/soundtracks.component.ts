@@ -88,10 +88,6 @@ export class SoundtracksComponent implements OnInit, OnDestroy {
     }
   }
 
-  regenerateSoundtrack(soundtrack: Soundtrack): void {
-    this.generatorService.recreateSoundtrackDemo(soundtrack);
-  }
-
   startTransport(): void {
     this.synthService.startTransport();
   }

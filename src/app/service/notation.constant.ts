@@ -23,6 +23,9 @@ export const OCTAVE_SEPARATOR: string = '/';
 
 export const NOTE_REST: string = 'rest';
 export const NOTE_END_OF_TRACK: string = 'end';
+export const NOTE_END_OF_TRACK_OCTAVE: number = 0;
+export const NOTE_END_OF_TRACK_DURATION: number = 8;
+export const NOTE_END_OF_TRACK_VELOCITY: number = 0;
 export const META_CHROMAS: Array<string> = [NOTE_REST, NOTE_END_OF_TRACK];
 
 export const CHORD_DURATION_UNITS: Map<TempoUnit, string> = new Map([

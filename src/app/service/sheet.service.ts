@@ -55,7 +55,24 @@ export enum VexfloWAccidental {
   doubleSharp = '##'
 }
 
-export class Bounding {
+export class BoundingStave {
+  top: number;
+  left: number;
+  bottom: number;
+  right: number;
+  trackId: number;
+  measureId: number;
+  constructor(top: number, left: number, bottom: number, right: number, trackId: number, measureId: number) {
+    this.top = top;
+    this.left = left;
+    this.bottom = bottom;
+    this.right = right;
+    this.trackId = trackId;
+    this.measureId = measureId;
+  }
+}
+
+export class BoundingChord {
   top: number;
   left: number;
   bottom: number;
@@ -134,7 +151,7 @@ export class SheetService {
 
                 const staveNotes: Array<StaveNote> = new Array<StaveNote>();
                 for (const placedChord of measure.placedChords) {
-                  if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
+                  if (!placedChord.isEndOfTrackPlacedChord()) {
                     const staveNote: StaveNote = this.createStaveNoteKeys(placedChord);
                     staveNotes.push(staveNote);
                     // Store the stave note for later access
@@ -192,8 +209,38 @@ export class SheetService {
     }
   }
 
-  public collectBoundingBoxes(soundtrack: Soundtrack, scrollY: number): Array<Bounding> {
-    const boundings: Array<Bounding> = new Array();
+  public collectHarmonyStaveBoundingBoxes(soundtrack: Soundtrack, scrollY: number): Array<BoundingStave> {
+    const boundings: Array<BoundingStave> = new Array();
+    const harmonyTrack: Track = this.notationService.getHarmonyTrack(soundtrack);
+    for (const measure of harmonyTrack.getSortedMeasures()) {
+      if (measure.sheetStave) {
+        const box: BoundingBox = measure.sheetStave.getBoundingBox();
+        const top = this.svgYToBrowser(soundtrack, scrollY, box.getY());
+        const left = this.svgXToBrowser(soundtrack, box.getX());
+        const bottom = this.svgYToBrowser(soundtrack, scrollY, box.getY() + box.getH());
+        const right = this.svgXToBrowser(soundtrack, box.getX() + box.getW());
+        if (top && left && right && bottom) {
+          boundings.push(new BoundingStave(top, left, bottom, right, harmonyTrack.index, measure.index));
+          if (soundtrack.sheetContext) {
+//            soundtrack.sheetContext.rect(box.getX() , box.getY(), box.getW(), box.getH());
+          }
+        }
+      }
+    }
+    return boundings;
+  }
+
+  public locateStave(boundings: Array<BoundingStave>, x: number, y: number): [number, number] {
+    for (const bounding of boundings) {
+      if (bounding.top <= y && y <= bounding.bottom && bounding.left <= x && x <= bounding.right) {
+        return [ bounding.trackId, bounding.measureId];
+      }
+    }
+    return [-1, -1];
+  }
+
+  public collectChordBoundingBoxes(soundtrack: Soundtrack, scrollY: number): Array<BoundingChord> {
+    const boundings: Array<BoundingChord> = new Array();
     for (const track of soundtrack.getSortedTracks()) {
       for (const measure of track.getSortedMeasures()) {
         if (measure.placedChords) {
@@ -205,7 +252,10 @@ export class SheetService {
               const bottom = this.svgYToBrowser(soundtrack, scrollY, box.getY() + box.getH() + VEXFLOW_BOUNDING_BOX_PADDING);
               const right = this.svgXToBrowser(soundtrack, box.getX() + box.getW() + VEXFLOW_BOUNDING_BOX_PADDING);
               if (top && left && right && bottom) {
-                boundings.push(new Bounding(top, left, bottom, right, track.index, measure.index, placedChord.index));
+                boundings.push(new BoundingChord(top, left, bottom, right, track.index, measure.index, placedChord.index));
+                if (soundtrack.sheetContext) {
+// soundtrack.sheetContext.rect(box.getX() - VEXFLOW_BOUNDING_BOX_PADDING, box.getY() - VEXFLOW_BOUNDING_BOX_PADDING, box.getW() + VEXFLOW_BOUNDING_BOX_PADDING, box.getH() + VEXFLOW_BOUNDING_BOX_PADDING);
+                }
               }
             }
           }
@@ -213,6 +263,15 @@ export class SheetService {
       }
     }
     return boundings;
+  }
+
+  public locateChord(boundings: Array<BoundingChord>, x: number, y: number): [number, number, number] {
+    for (const bounding of boundings) {
+      if (bounding.top <= y && y <= bounding.bottom && bounding.left <= x && x <= bounding.right) {
+        return [ bounding.trackId, bounding.measureId, bounding.placedChordId ];
+      }
+    }
+    return [-1, -1, -1];
   }
 
   private svgXToBrowser(soundtrack: Soundtrack, svgX: number): number | undefined {
@@ -227,15 +286,6 @@ export class SheetService {
       const svgMarginTop: number = soundtrack.sheetContext.svg.getBoundingClientRect().top;
       return svgMarginTop + scrollY + svgY;
     }
-  }
-
-  public locateMeasureAndChord(boundings: Array<Bounding>, x: number, y: number): [number, number, number] {
-    for (const bounding of boundings) {
-      if (bounding.top <= y && y <= bounding.bottom && bounding.left <= x && x <= bounding.right) {
-        return [ bounding.trackId, bounding.measureId, bounding.placedChordId ];
-      }
-    }
-    return [-1, -1, -1];
   }
 
   private createStaveNoteKeys(placedChord: PlacedChord): StaveNote {

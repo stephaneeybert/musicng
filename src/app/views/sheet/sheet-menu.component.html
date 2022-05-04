@@ -46,3 +46,7 @@
     </mat-select>
   </mat-form-field>
 </div>
+
+<div class="sheet-menu" [hidden]="!handleAddMeasure()">
+  <button mat-flat-button (click)="addMeasure($event)" matTooltip="{{ 'sheet.menu.form.set.add-measure.tip' | translate }}">{{ 'sheet.menu.form.set.add-measure.label' | translate }}</button>
+</div>

@@ -42,7 +42,7 @@ export class OverlayService {
     }
   }
 
-  public createInjector<T>(customOverlayRef: CustomOverlayRef, dataToken: InjectionToken<T>, data: T): Injector {
+  public createInjector<T>(customOverlayRef: CustomOverlayRef, dataToken: InjectionToken<T>, data: T | undefined): Injector {
     return Injector.create({
       parent: this.injector,
       providers: [

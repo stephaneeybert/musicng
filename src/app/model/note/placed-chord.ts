@@ -42,6 +42,14 @@ export class PlacedChord {
     return this.index === 0;
   }
 
+  public isEndOfTrackPlacedChord(): boolean {
+    if (this.hasNotes()) {
+      return this.notes[0].isEndOfTrackNote();
+    } else {
+      return false;
+    }
+  }
+
   public hasNotes(): boolean {
     if (this.notes != null && this.notes.length > 0) {
       return true;

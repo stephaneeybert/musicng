@@ -691,14 +691,14 @@ export class MidiService {
             if (measure.placedChords) {
               if (!this.notationService.isOnlyEndOfTrackChords(measure.placedChords)) {
                 for (const placedChord of measure.placedChords) {
-                  if (!this.notationService.isEndOfTrackPlacedChord(placedChord)) {
+                  if (!placedChord.isEndOfTrackPlacedChord()) {
                     const duration: string = placedChord.renderDuration();
                     const durationInSeconds: number = Tone.Time(duration).toSeconds();
                     const velocity: number = placedChord.velocity;
                     // const tempoInMicroSecondsPerBeat: number = this.beatsToMicroSeconds(1, measure.getTempo());
                     // const ticks: number = this.beatsToTicks(durationInBeats, DEFAULT_MIDI_PPQ, tempoInMicroSecondsPerBeat);
                     for (const note of placedChord.notes) {
-                      if (!this.notationService.isEndOfTrackNote(note)) {
+                      if (!note.isEndOfTrackNote()) {
                         if (progressTask$) {
                           this.commonService.sleep(50); // TODO Remove this sleep when the download progress is okay
                           progressTask$.next(this.downloadService.createProgressTask<Uint8Array>(soundtrack.getNbNotes(), noteIndex));

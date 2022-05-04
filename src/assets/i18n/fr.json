@@ -271,6 +271,9 @@
     "message": {
       "added": "Le morceau {{ name }} a été ajouté.",
       "regenerated": "Le morceau {{ name }} a été regénéré.",
+      "melody-regenerated": "La piste mélodie du morceau {{ name }} a été regénérée.",
+      "melody-updated": "La piste mélodie du morceau {{ name }} a été modifiée.",
+      "measure-added": "La mesure a été ajoutée au morceau {{ name }}",
       "maxNbReached": "Le nombre maximum de morceaux est atteint. Veuillez supprimer un morceau avant d'en ajouter un.",
       "updated": "Le morceau {{ name }} a été modifié.",
       "deleted": "Le morceau {{ name }} a été supprimé.",
@@ -314,6 +317,10 @@
       "form": {
         "title": "Tonalité",
         "set": {
+          "add-measure": {
+            "label": "Ajouter une mesure",
+            "tip": "Ajouter une nouvelle mesure après celle-ci"
+          },
           "tonality": {
             "label": "Tonalité",
             "tip": "Poursuivre avec la tonalité:"

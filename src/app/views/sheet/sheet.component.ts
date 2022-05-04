@@ -8,7 +8,7 @@ import { Soundtrack } from '@app/model/soundtrack';
 import { GeneratorService } from '@app/service/generator.service';
 import { NotationService } from '@app/service/notation.service';
 import { CustomOverlayRef, OverlayCloseEvent, OverlayService } from '@app/service/overlay.service';
-import { Bounding, SheetService } from '@app/service/sheet.service';
+import { BoundingChord, BoundingStave, SheetService } from '@app/service/sheet.service';
 import { SettingsStore } from '@app/store/settings-store';
 import { SoundtrackStore } from '@app/store/soundtrack-store';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
@@ -49,7 +49,8 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
 
   private customOverlayRef: CustomOverlayRef | undefined;
 
-  private boundings?: Array<Bounding>;
+  private harmonyStaveBoundings?: Array<BoundingStave>;
+  private chordBoundings?: Array<BoundingChord>;
   private scrollSubscription?: Subscription;
   private scrollY: number = 0;
 
@@ -81,7 +82,8 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
           this.soundtrack = soundtracks[this.soundtrackStore.getSoundtrackIndex(this.soundtrackId)];
           if (this.soundtrack) {
             this.createSoundtrackSheet(this.soundtrack, settings.animatedStave);
-            this.boundings = this.sheetService.collectBoundingBoxes(this.soundtrack, this.scrollY);
+            this.harmonyStaveBoundings = this.sheetService.collectHarmonyStaveBoundingBoxes(this.soundtrack, this.scrollY);
+            this.chordBoundings = this.sheetService.collectChordBoundingBoxes(this.soundtrack, this.scrollY);
           }
         }
       });
@@ -163,8 +165,8 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
   }
 
   private createPopupMenu(posX: number, posY: number): void {
-    if (this.soundtrack && this.boundings) {
-      const [trackIndex, measureIndex, placedChordIndex]: [number, number, number] = this.sheetService.locateMeasureAndChord(this.boundings, posX, posY + this.scrollY);
+    if (this.soundtrack && this.harmonyStaveBoundings && this.chordBoundings) {
+      const [trackIndex, measureIndex, placedChordIndex]: [number, number, number] = this.sheetService.locateChord(this.chordBoundings, posX, posY + this.scrollY);
       if (this.notationService.clickedOnPlacedChord(trackIndex, measureIndex, placedChordIndex)) {
         const placedChord: PlacedChord = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
         let melodyNotes: Array<string> | undefined = undefined;
@@ -174,25 +176,42 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
           const previousMelodyChord: PlacedChord | undefined = this.notationService.getPreviousPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
           melodyNotes = this.generatorService.collectPossibleMelodyNotesFromHarmonyChord(harmonyChord, previousMelodyChord, melodyChord, true);
         }
-        const inputData: SheetMenuInput | undefined = new SheetMenuInput(trackIndex, measureIndex, placedChordIndex, placedChord.tonality, melodyNotes);
+        const inputData: SheetMenuInput = new SheetMenuInput(trackIndex, measureIndex, placedChordIndex, placedChord.tonality, melodyNotes);
         this.customOverlayRef = this.overlayService.create<SheetMenuResponse, SheetMenuInput>(posX, posY, inputData);
-        const injectedData: SheetMenuInput = new SheetMenuInput(trackIndex, measureIndex, placedChordIndex, placedChord.tonality, melodyNotes);
-        const dataInjector = this.overlayService.createInjector<SheetMenuInput>(this.customOverlayRef, DATA_TOKEN, injectedData);
+        const dataInjector = this.overlayService.createInjector<SheetMenuInput>(this.customOverlayRef, DATA_TOKEN, undefined);
         const componentPortal: ComponentPortal<SheetMenuComponent> = new ComponentPortal(SheetMenuComponent, this.viewContainerRef, dataInjector);
         this.customOverlayRef.closeEvents.subscribe((event: OverlayCloseEvent<SheetMenuResponse>) => {
-          if (this.soundtrack && this.boundings) {
+          if (this.soundtrack) {
             if (event.data) {
               if (event.data.harmonyChordChroma) {
-                this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, event.data.harmonyChordChroma, undefined, undefined, undefined, event.data.recreate);
+                this.generatorService.regenerateHarmonyTrack(this.soundtrack, measureIndex, placedChordIndex, event.data.harmonyChordChroma, undefined, event.data.recreate);
               } else if (event.data.melodyNoteChroma) {
-                this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, undefined, event.data.melodyNoteChroma, event.data.melodyNoteOctave, undefined, event.data.recreate);
+                this.generatorService.regenerateMelodyTrack(this.soundtrack, measureIndex, placedChordIndex, event.data.melodyNoteChroma, event.data.melodyNoteOctave, undefined, event.data.recreate);
               } else if (event.data.tonality) {
-                this.generatorService.recreateSoundtrack(this.soundtrack, trackIndex, measureIndex, placedChordIndex, undefined, undefined, undefined, event.data.tonality, event.data.recreate);
+                this.generatorService.regenerateOnTonality(this.soundtrack, measureIndex, placedChordIndex, undefined, event.data.tonality);
               }
             }
           }
         });
         this.overlayService.attach<SheetMenuComponent>(this.customOverlayRef, componentPortal);
+      } else {
+        const [trackIndex, measureIndex]: [number, number] = this.sheetService.locateStave(this.harmonyStaveBoundings, posX, posY + this.scrollY);
+        if (this.notationService.clickedOnStave(trackIndex, measureIndex)) {
+          const inputData: SheetMenuInput = new SheetMenuInput(trackIndex, measureIndex, undefined, undefined, undefined);
+          this.customOverlayRef = this.overlayService.create<SheetMenuResponse, SheetMenuInput>(posX, posY, inputData);
+          const dataInjector = this.overlayService.createInjector<SheetMenuInput>(this.customOverlayRef, DATA_TOKEN, undefined);
+          const componentPortal: ComponentPortal<SheetMenuComponent> = new ComponentPortal(SheetMenuComponent, this.viewContainerRef, dataInjector);
+          this.customOverlayRef.closeEvents.subscribe((event: OverlayCloseEvent<SheetMenuResponse>) => {
+            if (this.soundtrack) {
+              if (event.data) {
+                if (event.data.addMeasure) {
+                  this.generatorService.addMeasureAfter(this.soundtrack, measureIndex);
+                }
+              }
+            }
+          });
+          this.overlayService.attach<SheetMenuComponent>(this.customOverlayRef, componentPortal);
+        }
       }
     }
   }

@@ -9,7 +9,7 @@ import { PlacedChord } from '@app/model/note/placed-chord';
 import { Measure } from '@app/model/measure/measure';
 import { TimeSignature } from '@app/model/measure/time-signature';
 import { TempoUnit, TempoUnitType } from '@app/model/tempo-unit';
-import { DEFAULT_TONALITY_C_MAJOR, NOTE_END_OF_TRACK, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFT, NB_HALF_TONES_MINOR, NOTE_CHROMA_C, TRACK_INDEX_HARMONY, TRACK_INDEX_MELODY, OCTAVE_SEPARATOR, DEFAULT_NB_SEMI_TONES_AS_NEAR_NOTES } from './notation.constant';
+import { DEFAULT_TONALITY_C_MAJOR, NOTE_REST, NOTE_CHROMAS_SYLLABIC, CHORD_CHROMAS_SYLLABIC, CHROMA_ENHARMONICS, META_CHROMAS, NOTE_RANGE, NOTE_ACCIDENTAL_MINOR, NOTE_RANGE_INTERVALS, CHROMAS_ALPHABETICAL, CHROMAS_MAJOR, CHROMAS_MINOR, NB_HALF_TONES_MAJOR, NOTE_ACCIDENTAL_DIMINISHED, DEFAULT_CHORD_WIDTH, DEFAULT_NOTE_OCTAVE, DEFAULT_VELOCITY_SOFT, NB_HALF_TONES_MINOR, NOTE_CHROMA_C, TRACK_INDEX_HARMONY, TRACK_INDEX_MELODY, OCTAVE_SEPARATOR, DEFAULT_NB_SEMI_TONES_AS_NEAR_NOTES, NOTE_END_OF_TRACK, NOTE_END_OF_TRACK_OCTAVE, NOTE_END_OF_TRACK_DURATION, NOTE_END_OF_TRACK_VELOCITY } from './notation.constant';
 import { Tonality } from '@app/model/note/tonality';
 import { Soundtrack } from '@app/model/soundtrack';
 import { Track } from '@app/model/track';
@@ -17,9 +17,6 @@ import { Track } from '@app/model/track';
 const CHORD_SEPARATOR: string = ' ';
 const CHORD_DURATION_SEPARATOR: string = '/';
 const NOTE_SEPARATOR: string = '|';
-const NOTE_END_OF_TRACK_OCTAVE: number = 0;
-const NOTE_END_OF_TRACK_DURATION: number = 8;
-const NOTE_END_OF_TRACK_VELOCITY: number = 0;
 const CHROMA_OCTAVE_PATTERN: RegExp = /[a-z#]+|[^a-z#]+/gi;
 const CHROMA_SHIFT_TIMES: number = 2;
 
@@ -268,27 +265,11 @@ export class NotationService {
     return !abcNote.includes(NOTE_REST);
   }
 
-  public isEndOfTrackPlacedChord(placedChord: PlacedChord): boolean {
-    if (placedChord.hasNotes()) {
-      return this.isEndOfTrackNote(placedChord.notes[0]);
-    } else {
-      return false;
-    }
-  }
-
-  public isEndOfTrackNote(note: Note): boolean {
-    return this.isEndOfTrackAbcNote(note.render());
-  }
-
-  private isEndOfTrackAbcNote(abcNote: string): boolean {
-    return abcNote.includes(NOTE_END_OF_TRACK) && abcNote.includes(String(NOTE_END_OF_TRACK_OCTAVE));
-  }
-
   public isOnlyEndOfTrackChords(placedChords: Array<PlacedChord>): boolean {
     let onlyEndOfTrackNotes: boolean = true;
     for (const placedChord of placedChords) {
       for (const note of placedChord.notes) {
-        if (!this.isEndOfTrackNote(note)) {
+        if (!note.isEndOfTrackNote()) {
           onlyEndOfTrackNotes = false;
           break;
         }
@@ -813,6 +794,10 @@ export class NotationService {
     return (trackIndex >=0 && measureIndex >= 0 && placedChordIndex >= 0);
   }
 
+  public clickedOnStave(trackIndex: number, measureIndex: number): boolean {
+    return (trackIndex >=0 && measureIndex >= 0);
+  }
+
   public getPreviousPlacedChord(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, placedChordIndex: number): PlacedChord | undefined {
     // Ignore the previous chord if it sits in the previous measure
     if (placedChordIndex > 0) {
@@ -906,6 +891,14 @@ export class NotationService {
     // The duration is a quotient base and is thus multiplied by 2 to cut it in half
     const noteDuration: number = chordDuration * 2;
     return noteDuration;
+  }
+
+  public getMelodyTrack(soundtrack: Soundtrack): Track {
+    return soundtrack.getSortedTracks()[TRACK_INDEX_MELODY];
+  }
+
+  public getHarmonyTrack(soundtrack: Soundtrack): Track {
+    return soundtrack.getSortedTracks()[TRACK_INDEX_HARMONY];
   }
 
   public getMajorTonalities(): Array<Tonality> {
