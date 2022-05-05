@@ -30,7 +30,9 @@ export class SheetMenuComponent implements OnInit {
   ngOnInit() {
     this.inputData = this.customOverlayRef.getInputData();
 
-    this.tonalities = this.notationService.getAllTonalities();
+    if (this.inputData.sibblingTonalities) {
+      this.tonalities = this.inputData.sibblingTonalities;
+    }
 
     if (this.inputData.tonality) {
       const tonality: Tonality = new Tonality(this.inputData.tonality.range, this.inputData.tonality.firstChroma);
@@ -121,13 +123,15 @@ export class SheetMenuInput {
   measureIndex: number;
   placedChordIndex: number | undefined;
   tonality: Tonality | undefined;
+  sibblingTonalities: Array<Tonality> | undefined;
   melodyNotes: Array<string> | undefined;
 
-  constructor(trackIndex: number, measureIndex: number, placedChordIndex: number | undefined, tonality: Tonality | undefined, melodyNotes: Array<string> | undefined) {
+  constructor(trackIndex: number, measureIndex: number, placedChordIndex: number | undefined, tonality: Tonality | undefined, sibblingTonalities: Array<Tonality> | undefined, melodyNotes: Array<string> | undefined) {
     this.trackIndex = trackIndex;
     this.measureIndex = measureIndex;
     this.placedChordIndex = placedChordIndex;
     this.tonality = tonality;
+    this.sibblingTonalities = sibblingTonalities;
     this.melodyNotes = melodyNotes;
   }
 }

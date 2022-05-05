@@ -2,7 +2,9 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { CdkScrollable, ScrollDispatcher } from '@angular/cdk/scrolling';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, InjectionToken, Input, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
 import { Device } from '@app/model/device';
+import { Measure } from '@app/model/measure/measure';
 import { PlacedChord } from '@app/model/note/placed-chord';
+import { Tonality } from '@app/model/note/tonality';
 import { Settings } from '@app/model/settings';
 import { Soundtrack } from '@app/model/soundtrack';
 import { GeneratorService } from '@app/service/generator.service';
@@ -170,13 +172,24 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
       if (this.notationService.clickedOnPlacedChord(trackIndex, measureIndex, placedChordIndex)) {
         const placedChord: PlacedChord = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
         let melodyNotes: Array<string> | undefined = undefined;
+        let sibblingTonalities: Array<Tonality> | undefined = undefined;
         if (this.notationService.isMelodyTrack(trackIndex)) {
           const harmonyChord: PlacedChord = this.notationService.getHarmonyChordFromMelodyChord(this.soundtrack, measureIndex, placedChordIndex);
           const melodyChord: PlacedChord | undefined = this.notationService.getPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
-          const previousMelodyChord: PlacedChord | undefined = this.notationService.getPreviousPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
-          melodyNotes = this.generatorService.collectPossibleMelodyNotesFromHarmonyChord(harmonyChord, previousMelodyChord, melodyChord, true);
+          const [previousMeasure, previousChord]: [Measure | undefined, PlacedChord | undefined] = this.notationService.getPreviousPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
+          melodyNotes = this.generatorService.collectPossibleMelodyNotesFromHarmonyChord(harmonyChord, previousChord, melodyChord, true);
+        } else if (this.notationService.isHarmonyTrack(trackIndex)) {
+          const [previousMeasure, previousChord]: [Measure | undefined, PlacedChord | undefined] = this.notationService.getPreviousPlacedChord(this.soundtrack, trackIndex, measureIndex, placedChordIndex);
+          let [previousPreviousMeasure, previousPreviousChord]: [Measure | undefined, PlacedChord | undefined] = [undefined, undefined];
+          if (previousMeasure && previousChord) {
+            [previousPreviousMeasure, previousPreviousChord] = this.notationService.getPreviousPlacedChord(this.soundtrack, trackIndex, previousMeasure.index, previousChord.index);
+          }
+          sibblingTonalities = this.generatorService.getSibblingTonalities(previousPreviousChord, previousChord);
+          if (sibblingTonalities.length == 0) {
+            sibblingTonalities = this.notationService.getMajorTonalities();
+          }
         }
-        const inputData: SheetMenuInput = new SheetMenuInput(trackIndex, measureIndex, placedChordIndex, placedChord.tonality, melodyNotes);
+        const inputData: SheetMenuInput = new SheetMenuInput(trackIndex, measureIndex, placedChordIndex, placedChord.tonality, sibblingTonalities, melodyNotes);
         this.customOverlayRef = this.overlayService.create<SheetMenuResponse, SheetMenuInput>(posX, posY, inputData);
         const dataInjector = this.overlayService.createInjector<SheetMenuInput>(this.customOverlayRef, DATA_TOKEN, undefined);
         const componentPortal: ComponentPortal<SheetMenuComponent> = new ComponentPortal(SheetMenuComponent, this.viewContainerRef, dataInjector);
@@ -197,7 +210,7 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
       } else {
         const [trackIndex, measureIndex]: [number, number] = this.sheetService.locateStave(this.harmonyStaveBoundings, posX, posY + this.scrollY);
         if (this.notationService.clickedOnStave(trackIndex, measureIndex)) {
-          const inputData: SheetMenuInput = new SheetMenuInput(trackIndex, measureIndex, undefined, undefined, undefined);
+          const inputData: SheetMenuInput = new SheetMenuInput(trackIndex, measureIndex, undefined, undefined, undefined, undefined);
           this.customOverlayRef = this.overlayService.create<SheetMenuResponse, SheetMenuInput>(posX, posY, inputData);
           const dataInjector = this.overlayService.createInjector<SheetMenuInput>(this.customOverlayRef, DATA_TOKEN, undefined);
           const componentPortal: ComponentPortal<SheetMenuComponent> = new ComponentPortal(SheetMenuComponent, this.viewContainerRef, dataInjector);

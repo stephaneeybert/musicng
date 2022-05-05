@@ -798,15 +798,17 @@ export class NotationService {
     return (trackIndex >=0 && measureIndex >= 0);
   }
 
-  public getPreviousPlacedChord(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, placedChordIndex: number): PlacedChord | undefined {
-    // Ignore the previous chord if it sits in the previous measure
+  public getPreviousPlacedChord(soundtrack: Soundtrack, trackIndex: number, measureIndex: number, placedChordIndex: number): [Measure | undefined, PlacedChord | undefined] {
     if (placedChordIndex > 0) {
       const previousChordIndex: number = placedChordIndex - 1;
       const measure: Measure = this.getMeasure(soundtrack, trackIndex, measureIndex);
-      const placedChord: PlacedChord = measure.getSortedChords()[previousChordIndex];
-      return placedChord;
+      return [ measure, measure.getSortedChords()[previousChordIndex]];
+    } else if (placedChordIndex == 0 && measureIndex > 0) {
+      const previousMeasureIndex: number = measureIndex--;
+      const previousMeasure: Measure = this.getMeasure(soundtrack, trackIndex, previousMeasureIndex);
+      return [previousMeasure, previousMeasure.getLastChord()];
     } else {
-      return undefined;
+      return [undefined, undefined];
     }
   }
 

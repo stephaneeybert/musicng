@@ -234,7 +234,7 @@ export class GeneratorService {
       if (pickedNoteChroma && pickedNoteOctave) {
         this.notationService.replaceMelodyNote(soundtrack, melodyTrack.index, fromMeasure.index, fromChord.index, pickedNoteChroma, pickedNoteOctave);
       } else if (harmonyChord) {
-        const previousMelodyChord: PlacedChord | undefined = this.notationService.getPreviousPlacedChord(soundtrack, melodyTrack.index, fromMeasure.index, fromChord.index);
+        const [previousMeasure, previousMelodyChord]: [Measure | undefined, PlacedChord | undefined] = this.notationService.getPreviousPlacedChord(soundtrack, melodyTrack.index, fromMeasure.index, fromChord.index);
         if (previousMelodyChord) {
           const firstNote: Note = this.notationService.getFirstChordNoteSortedByIndex(previousMelodyChord);
           const previousMelodyChroma: string = firstNote.renderChroma();
@@ -472,11 +472,11 @@ export class GeneratorService {
   }
 
   // Get a tonality selected randomly among ones that include two previous chords
-  private getSibblingTonality(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Tonality {
+  public getSibblingTonalities(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Array<Tonality> {
     const onlyMajor: boolean = this.settingsService.getSettings().generateOnlyMajorTonalities;
-    const dontRepeat: boolean = true;
+    const dontRepeat: boolean = true; // TODO See below
+    let tonalities: Array<Tonality> = new Array();
     if (previousPreviousChord && previousChord) {
-      let tonalities: Array<Tonality> = new Array();
       const previousChordName: string = this.notationService.getChordIntlName(previousChord);
       const previousPreviousChordName: string = this.notationService.getChordIntlName(previousPreviousChord);
       tonalities = tonalities.concat(this.getTonalitiesContainingChordNames(NOTE_RANGE.MAJOR, previousPreviousChordName, previousChordName));
@@ -490,9 +490,18 @@ export class GeneratorService {
       if (tonalities.length == 0) {
         throw new Error('No tonality could be found as sibbling to the two previous chords ' + previousPreviousChordName + ' and ' + previousChordName);
       }
+    }
+    return tonalities;
+  }
+
+  private getSibblingTonality(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Tonality {
+    const tonalities: Array<Tonality> = this.getSibblingTonalities(previousPreviousChord, previousChord);
+    if (tonalities.length > 0) {
       return tonalities[this.commonService.getRandomIntegerBetween(0, tonalities.length - 1)];
     } else {
       // If no previous chord is specified then randomly pick a tonality
+      const onlyMajor: boolean = this.settingsService.getSettings().generateOnlyMajorTonalities;
+      const dontRepeat: boolean = true; // TODO Have a preference
       return this.getRandomTonality(undefined, onlyMajor, dontRepeat);
     }
   }
@@ -520,23 +529,6 @@ export class GeneratorService {
     }
 
     return deepCopy;
-  }
-
-  private getOtherTonalities(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Array<Tonality> { if (previousPreviousChord && previousChord) {
-      const previousChordName: string = this.notationService.getChordIntlName(previousChord);
-      const previousPreviousChordName: string = this.notationService.getChordIntlName(previousPreviousChord);
-      let tonalities: Array<Tonality> = this.getTonalitiesContainingChordNames(NOTE_RANGE.MAJOR, previousPreviousChordName, previousChordName)
-      .concat(
-        this.getTonalitiesContainingChordNames(NOTE_RANGE.MINOR_NATURAL, previousPreviousChordName, previousChordName)
-      )
-      // There must always be at least one tonality that includes the two previous chords
-      if (tonalities.length == 0) {
-        throw new Error('No tonality could be found as sibbling to the two previous chords ' + previousPreviousChordName + ' and ' + previousChordName);
-      }
-      return tonalities;
-    } else {
-      return this.notationService.getMajorTonalities();
-    }
   }
 
   private getRandomTonality(previousTonality: Tonality | undefined, onlyMajor: boolean, dontRepeat: boolean): Tonality {

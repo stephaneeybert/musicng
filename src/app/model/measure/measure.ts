@@ -40,6 +40,14 @@ export class Measure {
     }
   }
 
+  public getLastChord(): PlacedChord | undefined {
+    const placedChords: Array<PlacedChord> = this.getSortedChords();
+    if (placedChords.length > 0) {
+      return placedChords[placedChords.length - 1];
+    }
+    return undefined;
+  }
+
   public addChord(placedChord: PlacedChord): void {
     if (placedChord) {
       this.getSortedChords().push(placedChord);
