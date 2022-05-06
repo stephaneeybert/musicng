@@ -472,9 +472,8 @@ export class GeneratorService {
   }
 
   // Get a tonality selected randomly among ones that include two previous chords
-  public getSibblingTonalities(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Array<Tonality> {
+  public getSibblingTonalities(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined, dontRepeat: boolean): Array<Tonality> {
     const onlyMajor: boolean = this.settingsService.getSettings().generateOnlyMajorTonalities;
-    const dontRepeat: boolean = true; // TODO See below
     let tonalities: Array<Tonality> = new Array();
     if (previousPreviousChord && previousChord) {
       const previousChordName: string = this.notationService.getChordIntlName(previousChord);
@@ -494,8 +493,8 @@ export class GeneratorService {
     return tonalities;
   }
 
-  private getSibblingTonality(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined): Tonality {
-    const tonalities: Array<Tonality> = this.getSibblingTonalities(previousPreviousChord, previousChord);
+  private getSibblingTonality(previousPreviousChord: PlacedChord | undefined, previousChord: PlacedChord | undefined, dontRepeat: boolean): Tonality {
+    const tonalities: Array<Tonality> = this.getSibblingTonalities(previousPreviousChord, previousChord, dontRepeat);
     if (tonalities.length > 0) {
       return tonalities[this.commonService.getRandomIntegerBetween(0, tonalities.length - 1)];
     } else {
@@ -861,7 +860,7 @@ export class GeneratorService {
           // Do not overwrite the first tonality
           // as it's configured in the settings
           if (chordNumber > 0) {
-            const randomTonality: Tonality = this.getSibblingTonality(previousPreviousChord, previousChord);
+            const randomTonality: Tonality = this.getSibblingTonality(previousPreviousChord, previousChord, true);
             tonality = new Tonality(randomTonality.range, randomTonality.firstChroma);
           }
           // Avoid using the bonus table when changing of tonality as no chroma can then be found

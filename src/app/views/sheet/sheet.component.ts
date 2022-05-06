@@ -184,7 +184,7 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
           if (previousMeasure && previousChord) {
             [previousPreviousMeasure, previousPreviousChord] = this.notationService.getPreviousPlacedChord(this.soundtrack, trackIndex, previousMeasure.index, previousChord.index);
           }
-          sibblingTonalities = this.generatorService.getSibblingTonalities(previousPreviousChord, previousChord);
+          sibblingTonalities = this.generatorService.getSibblingTonalities(previousPreviousChord, previousChord, false);
           if (sibblingTonalities.length == 0) {
             sibblingTonalities = this.notationService.getMajorTonalities();
           }
