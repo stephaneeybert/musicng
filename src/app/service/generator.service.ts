@@ -115,7 +115,7 @@ export class GeneratorService {
     this.regenerateMelodyChords(soundtrack, fromMeasure, fromChord, undefined, undefined, harmonyChord, recreate);
   }
 
-  private recreateMelodyTrack(soundtrack: Soundtrack, measureIndex: number, placedChordIndex: number, pickedNoteChroma: string, pickedNoteOctave: number, pickedTonality: Tonality | undefined, recreate: boolean): void {
+  private recreateMelodyTrack(soundtrack: Soundtrack, measureIndex: number, placedChordIndex: number, pickedNoteChroma: string, pickedNoteOctave: number, recreate: boolean): void {
     const melodyTrack: Track = this.notationService.getMelodyTrack(soundtrack);
     const fromMeasure: Measure = melodyTrack.getSortedMeasures()[measureIndex];
     const fromChord: PlacedChord = fromMeasure.getSortedChords()[placedChordIndex];
@@ -134,9 +134,9 @@ export class GeneratorService {
     this.materialService.showSnackBar(message);
   }
 
-  public regenerateMelodyTrack(soundtrack: Soundtrack, measureIndex: number, placedChordIndex: number, pickedNoteChroma: string | undefined, pickedNoteOctave: number | undefined, pickedTonality: Tonality | undefined, recreate: boolean): void {
+  public regenerateMelodyTrack(soundtrack: Soundtrack, measureIndex: number, placedChordIndex: number, pickedNoteChroma: string | undefined, pickedNoteOctave: number | undefined, recreate: boolean): void {
     if (pickedNoteChroma && pickedNoteOctave) {
-      this.recreateMelodyTrack(soundtrack, measureIndex, placedChordIndex, pickedNoteChroma, pickedNoteOctave, pickedTonality, recreate);
+      this.recreateMelodyTrack(soundtrack, measureIndex, placedChordIndex, pickedNoteChroma, pickedNoteOctave, recreate);
     }
 
     let message: string;

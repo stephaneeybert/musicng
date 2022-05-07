@@ -199,7 +199,7 @@ export class SheetComponent implements AfterViewInit, OnDestroy {
               if (event.data.harmonyChordChroma) {
                 this.generatorService.regenerateHarmonyTrack(this.soundtrack, measureIndex, placedChordIndex, event.data.harmonyChordChroma, undefined, event.data.recreate);
               } else if (event.data.melodyNoteChroma) {
-                this.generatorService.regenerateMelodyTrack(this.soundtrack, measureIndex, placedChordIndex, event.data.melodyNoteChroma, event.data.melodyNoteOctave, undefined, event.data.recreate);
+                this.generatorService.regenerateMelodyTrack(this.soundtrack, measureIndex, placedChordIndex, event.data.melodyNoteChroma, event.data.melodyNoteOctave, event.data.recreate);
               } else if (event.data.tonality) {
                 this.generatorService.regenerateOnTonality(this.soundtrack, measureIndex, placedChordIndex, undefined, event.data.tonality);
               }
