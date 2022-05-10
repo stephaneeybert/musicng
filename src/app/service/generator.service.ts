@@ -9,10 +9,11 @@ import { TempoUnit } from '@app/model/tempo-unit';
 import { Track } from '@app/model/track';
 import { CommonService } from '@stephaneeybert/lib-core';
 import { SettingsService } from '@app/views/settings/settings.service';
-import { NOTE_RANGE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, DEFAULT_TEMPO_BPM } from './notation.constant';
+import { NOTE_RANGE, TRACK_TYPES, CHROMAS_MAJOR, CHROMAS_MINOR, DEFAULT_TEMPO_BPM, OCTAVE_MAX, OCTAVE_MIN } from './notation.constant';
 import { Tonality } from '@app/model/note/tonality';
 import { Note } from '@app/model/note/note';
 import { MaterialService } from '@app/core/service/material.service';
+import { Octave } from '@app/model/note/pitch/octave';
 
 const TRACK_INDEX_MELODY: number = 0;
 const TRACK_INDEX_HARMONY: number = 1;
@@ -667,11 +668,29 @@ export class GeneratorService {
         collection.push([chroma, octave]);
       }
     }
-    const sorted = collection
+
+    const octaveAbove: Array<[string, number]> = new Array();
+    for (const [chroma, octave] of collection) {
+      if (octave < OCTAVE_MAX) {
+        octaveAbove.push([chroma, octave + 1]);
+      }
+    }
+
+    const octaveBelow: Array<[string, number]> = new Array();
+    for (const [chroma, octave] of collection) {
+      if (octave > OCTAVE_MIN) {
+        octaveBelow.push([chroma, octave - 1]);
+      }
+    }
+
+    collection = octaveAbove.concat(collection);
+    collection = collection.concat(octaveBelow);
+
+    const textNotes: Array<string> = collection
       .map(([chroma, octave]: [string, number]) => {
         return this.notationService.renderIntlChromaOctave(chroma, octave)
       });
-    return sorted;
+    return textNotes;
   }
 
   // Pick a melody note from the harmony chord that is near the previous melody note
