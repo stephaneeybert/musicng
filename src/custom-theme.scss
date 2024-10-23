@@ -1,245 +1,245 @@
-@import "~@angular/material/theming";
+@use "@angular/material" as mat;
 
-@include mat-core();
+@include mat.core();
 
 // Creating a custom theme
-$palette-primary: mat-palette($mat-light-green, 300);
-$palette-accent: mat-palette($mat-deep-orange, 300);
-$palette-warn: mat-palette($mat-red);
-$standard-light-theme: mat-light-theme($palette-primary, $palette-accent, $palette-warn);
-@include angular-material-theme($standard-light-theme);
+$palette-primary: mat.m2-define-palette(mat.$m2-light-green-palette, 300);
+$palette-accent: mat.m2-define-palette(mat.$m2-deep-orange-palette, 300);
+$palette-warn: mat.m2-define-palette(mat.$m2-red-palette);
+$standard-light-theme: mat.m2-define-light-theme($palette-primary, $palette-accent, $palette-warn);
+@include mat.all-component-themes($standard-light-theme);
 
 .standard-dark-theme {
-  $standard-dark-theme: mat-dark-theme($palette-primary, $palette-accent, $palette-warn);
-  @include angular-material-theme($standard-dark-theme);
+  $standard-dark-theme: mat.m2-define-dark-theme($palette-primary, $palette-accent, $palette-warn);
+  @include mat.all-component-themes($standard-dark-theme);
 }
 
-$mat-purple-primary: mat-palette($mat-purple);
-$mat-purple-accent: mat-palette($mat-purple);
-$mat-purple-warn: mat-palette($mat-purple);
-$mat-purple-light-theme: mat-light-theme($mat-purple-primary, $mat-purple-accent, $mat-purple-warn);
-$mat-purple-dark-theme: mat-dark-theme($mat-purple-primary, $mat-purple-accent, $mat-purple-warn);
+$mat-purple-primary: mat.m2-define-palette(mat.$m2-purple-palette);
+$mat-purple-accent: mat.m2-define-palette(mat.$m2-purple-palette);
+$mat-purple-warn: mat.m2-define-palette(mat.$m2-purple-palette);
+$mat-purple-light-theme: mat.m2-define-light-theme($mat-purple-primary, $mat-purple-accent, $mat-purple-warn);
+$mat-purple-dark-theme: mat.m2-define-dark-theme($mat-purple-primary, $mat-purple-accent, $mat-purple-warn);
 .purple-light-theme {
-  @include angular-material-theme($mat-purple-light-theme);
+  @include mat.all-component-themes($mat-purple-light-theme);
 }
 .purple-dark-theme {
-  @include angular-material-theme($mat-purple-dark-theme);
+  @include mat.all-component-themes($mat-purple-dark-theme);
 }
 
-$mat-deep-purple-primary: mat-palette($mat-deep-purple);
-$mat-deep-purple-accent: mat-palette($mat-deep-purple);
-$mat-deep-purple-warn: mat-palette($mat-deep-purple);
-$mat-deep-purple-light-theme: mat-light-theme($mat-deep-purple-primary, $mat-deep-purple-accent, $mat-deep-purple-warn);
-$mat-deep-purple-dark-theme: mat-dark-theme($mat-deep-purple-primary, $mat-deep-purple-accent, $mat-deep-purple-warn);
+$mat-deep-purple-primary: mat.m2-define-palette(mat.$m2-deep-purple-palette);
+$mat-deep-purple-accent: mat.m2-define-palette(mat.$m2-deep-purple-palette);
+$mat-deep-purple-warn: mat.m2-define-palette(mat.$m2-deep-purple-palette);
+$mat-deep-purple-light-theme: mat.m2-define-light-theme($mat-deep-purple-primary, $mat-deep-purple-accent, $mat-deep-purple-warn);
+$mat-deep-purple-dark-theme: mat.m2-define-dark-theme($mat-deep-purple-primary, $mat-deep-purple-accent, $mat-deep-purple-warn);
 .deep-purple-light-theme {
-  @include angular-material-theme($mat-deep-purple-light-theme);
+  @include mat.all-component-themes($mat-deep-purple-light-theme);
 }
 .deep-purple-dark-theme {
-  @include angular-material-theme($mat-deep-purple-dark-theme);
+  @include mat.all-component-themes($mat-deep-purple-dark-theme);
 }
 
-$mat-indigo-primary: mat-palette($mat-indigo);
-$mat-indigo-accent: mat-palette($mat-indigo);
-$mat-indigo-warn: mat-palette($mat-indigo);
-$mat-indigo-light-theme: mat-light-theme($mat-indigo-primary, $mat-indigo-accent, $mat-indigo-warn);
-$mat-indigo-dark-theme: mat-dark-theme($mat-indigo-primary, $mat-indigo-accent, $mat-indigo-warn);
+$mat-indigo-primary: mat.m2-define-palette(mat.$m2-indigo-palette);
+$mat-indigo-accent: mat.m2-define-palette(mat.$m2-indigo-palette);
+$mat-indigo-warn: mat.m2-define-palette(mat.$m2-indigo-palette);
+$mat-indigo-light-theme: mat.m2-define-light-theme($mat-indigo-primary, $mat-indigo-accent, $mat-indigo-warn);
+$mat-indigo-dark-theme: mat.m2-define-dark-theme($mat-indigo-primary, $mat-indigo-accent, $mat-indigo-warn);
 .indigo-light-theme {
-  @include angular-material-theme($mat-indigo-light-theme);
+  @include mat.all-component-themes($mat-indigo-light-theme);
 }
 .indigo-dark-theme {
-  @include angular-material-theme($mat-indigo-dark-theme);
+  @include mat.all-component-themes($mat-indigo-dark-theme);
 }
 
-$mat-pink-primary: mat-palette($mat-pink);
-$mat-pink-accent: mat-palette($mat-pink);
-$mat-pink-warn: mat-palette($mat-pink);
-$mat-pink-light-theme: mat-light-theme($mat-pink-primary, $mat-pink-accent, $mat-pink-warn);
-$mat-pink-dark-theme: mat-dark-theme($mat-pink-primary, $mat-pink-accent, $mat-pink-warn);
+$mat-pink-primary: mat.m2-define-palette(mat.$m2-pink-palette);
+$mat-pink-accent: mat.m2-define-palette(mat.$m2-pink-palette);
+$mat-pink-warn: mat.m2-define-palette(mat.$m2-pink-palette);
+$mat-pink-light-theme: mat.m2-define-light-theme($mat-pink-primary, $mat-pink-accent, $mat-pink-warn);
+$mat-pink-dark-theme: mat.m2-define-dark-theme($mat-pink-primary, $mat-pink-accent, $mat-pink-warn);
 .pink-light-theme {
-  @include angular-material-theme($mat-pink-light-theme);
+  @include mat.all-component-themes($mat-pink-light-theme);
 }
 .pink-dark-theme {
-  @include angular-material-theme($mat-pink-dark-theme);
+  @include mat.all-component-themes($mat-pink-dark-theme);
 }
 
-$mat-red-primary: mat-palette($mat-red);
-$mat-red-accent: mat-palette($mat-red);
-$mat-red-warn: mat-palette($mat-red);
-$mat-red-light-theme: mat-light-theme($mat-red-primary, $mat-red-accent, $mat-red-warn);
-$mat-red-dark-theme: mat-dark-theme($mat-red-primary, $mat-red-accent, $mat-red-warn);
+$mat-red-primary: mat.m2-define-palette(mat.$m2-red-palette);
+$mat-red-accent: mat.m2-define-palette(mat.$m2-red-palette);
+$mat-red-warn: mat.m2-define-palette(mat.$m2-red-palette);
+$mat-red-light-theme: mat.m2-define-light-theme($mat-red-primary, $mat-red-accent, $mat-red-warn);
+$mat-red-dark-theme: mat.m2-define-dark-theme($mat-red-primary, $mat-red-accent, $mat-red-warn);
 .red-light-theme {
-  @include angular-material-theme($mat-red-light-theme);
+  @include mat.all-component-themes($mat-red-light-theme);
 }
 .red-dark-theme {
-  @include angular-material-theme($mat-red-dark-theme);
+  @include mat.all-component-themes($mat-red-dark-theme);
 }
 
-$mat-blue-primary: mat-palette($mat-blue);
-$mat-blue-accent: mat-palette($mat-blue);
-$mat-blue-warn: mat-palette($mat-blue);
-$mat-blue-light-theme: mat-light-theme($mat-blue-primary, $mat-blue-accent, $mat-blue-warn);
-$mat-blue-dark-theme: mat-dark-theme($mat-blue-primary, $mat-blue-accent, $mat-blue-warn);
+$mat-blue-primary: mat.m2-define-palette(mat.$m2-blue-palette);
+$mat-blue-accent: mat.m2-define-palette(mat.$m2-blue-palette);
+$mat-blue-warn: mat.m2-define-palette(mat.$m2-blue-palette);
+$mat-blue-light-theme: mat.m2-define-light-theme($mat-blue-primary, $mat-blue-accent, $mat-blue-warn);
+$mat-blue-dark-theme: mat.m2-define-dark-theme($mat-blue-primary, $mat-blue-accent, $mat-blue-warn);
 .blue-light-theme {
-  @include angular-material-theme($mat-blue-light-theme);
+  @include mat.all-component-themes($mat-blue-light-theme);
 }
 .blue-dark-theme {
-  @include angular-material-theme($mat-blue-dark-theme);
+  @include mat.all-component-themes($mat-blue-dark-theme);
 }
 
-$mat-light-blue-primary: mat-palette($mat-light-blue);
-$mat-light-blue-accent: mat-palette($mat-light-blue);
-$mat-light-blue-warn: mat-palette($mat-light-blue);
-$mat-light-blue-light-theme: mat-light-theme($mat-light-blue-primary, $mat-light-blue-accent, $mat-light-blue-warn);
-$mat-light-blue-dark-theme: mat-dark-theme($mat-light-blue-primary, $mat-light-blue-accent, $mat-light-blue-warn);
+$mat-light-blue-primary: mat.m2-define-palette(mat.$m2-light-blue-palette);
+$mat-light-blue-accent: mat.m2-define-palette(mat.$m2-light-blue-palette);
+$mat-light-blue-warn: mat.m2-define-palette(mat.$m2-light-blue-palette);
+$mat-light-blue-light-theme: mat.m2-define-light-theme($mat-light-blue-primary, $mat-light-blue-accent, $mat-light-blue-warn);
+$mat-light-blue-dark-theme: mat.m2-define-dark-theme($mat-light-blue-primary, $mat-light-blue-accent, $mat-light-blue-warn);
 .light-blue-light-theme {
-  @include angular-material-theme($mat-light-blue-light-theme);
+  @include mat.all-component-themes($mat-light-blue-light-theme);
 }
 .light-blue-dark-theme {
-  @include angular-material-theme($mat-light-blue-dark-theme);
+  @include mat.all-component-themes($mat-light-blue-dark-theme);
 }
 
-$mat-cyan-primary: mat-palette($mat-cyan);
-$mat-cyan-accent: mat-palette($mat-cyan);
-$mat-cyan-warn: mat-palette($mat-cyan);
-$mat-cyan-light-theme: mat-light-theme($mat-cyan-primary, $mat-cyan-accent, $mat-cyan-warn);
-$mat-cyan-dark-theme: mat-dark-theme($mat-cyan-primary, $mat-cyan-accent, $mat-cyan-warn);
+$mat-cyan-primary: mat.m2-define-palette(mat.$m2-cyan-palette);
+$mat-cyan-accent: mat.m2-define-palette(mat.$m2-cyan-palette);
+$mat-cyan-warn: mat.m2-define-palette(mat.$m2-cyan-palette);
+$mat-cyan-light-theme: mat.m2-define-light-theme($mat-cyan-primary, $mat-cyan-accent, $mat-cyan-warn);
+$mat-cyan-dark-theme: mat.m2-define-dark-theme($mat-cyan-primary, $mat-cyan-accent, $mat-cyan-warn);
 .cyan-light-theme {
-  @include angular-material-theme($mat-cyan-light-theme);
+  @include mat.all-component-themes($mat-cyan-light-theme);
 }
 .cyan-dark-theme {
-  @include angular-material-theme($mat-cyan-dark-theme);
+  @include mat.all-component-themes($mat-cyan-dark-theme);
 }
 
-$mat-teal-primary: mat-palette($mat-teal);
-$mat-teal-accent: mat-palette($mat-teal);
-$mat-teal-warn: mat-palette($mat-teal);
-$mat-teal-light-theme: mat-light-theme($mat-teal-primary, $mat-teal-accent, $mat-teal-warn);
-$mat-teal-dark-theme: mat-dark-theme($mat-teal-primary, $mat-teal-accent, $mat-teal-warn);
+$mat-teal-primary: mat.m2-define-palette(mat.$m2-teal-palette);
+$mat-teal-accent: mat.m2-define-palette(mat.$m2-teal-palette);
+$mat-teal-warn: mat.m2-define-palette(mat.$m2-teal-palette);
+$mat-teal-light-theme: mat.m2-define-light-theme($mat-teal-primary, $mat-teal-accent, $mat-teal-warn);
+$mat-teal-dark-theme: mat.m2-define-dark-theme($mat-teal-primary, $mat-teal-accent, $mat-teal-warn);
 .teal-light-theme {
-  @include angular-material-theme($mat-teal-light-theme);
+  @include mat.all-component-themes($mat-teal-light-theme);
 }
 .teal-dark-theme {
-  @include angular-material-theme($mat-teal-dark-theme);
+  @include mat.all-component-themes($mat-teal-dark-theme);
 }
 
-$mat-green-primary: mat-palette($mat-green);
-$mat-green-accent: mat-palette($mat-green);
-$mat-green-warn: mat-palette($mat-green);
-$mat-green-light-theme: mat-light-theme($mat-green-primary, $mat-green-accent, $mat-green-warn);
-$mat-green-dark-theme: mat-dark-theme($mat-green-primary, $mat-green-accent, $mat-green-warn);
+$mat-green-primary: mat.m2-define-palette(mat.$m2-green-palette);
+$mat-green-accent: mat.m2-define-palette(mat.$m2-green-palette);
+$mat-green-warn: mat.m2-define-palette(mat.$m2-green-palette);
+$mat-green-light-theme: mat.m2-define-light-theme($mat-green-primary, $mat-green-accent, $mat-green-warn);
+$mat-green-dark-theme: mat.m2-define-dark-theme($mat-green-primary, $mat-green-accent, $mat-green-warn);
 .green-light-theme {
-  @include angular-material-theme($mat-green-light-theme);
+  @include mat.all-component-themes($mat-green-light-theme);
 }
 .green-dark-theme {
-  @include angular-material-theme($mat-green-dark-theme);
+  @include mat.all-component-themes($mat-green-dark-theme);
 }
 
-$mat-light-green-primary: mat-palette($mat-light-green);
-$mat-light-green-accent: mat-palette($mat-light-green);
-$mat-light-green-warn: mat-palette($mat-light-green);
-$mat-light-green-light-theme: mat-light-theme($mat-light-green-primary, $mat-light-green-accent, $mat-light-green-warn);
-$mat-light-green-dark-theme: mat-dark-theme($mat-light-green-primary, $mat-light-green-accent, $mat-light-green-warn);
+$mat-light-green-primary: mat.m2-define-palette(mat.$m2-light-green-palette);
+$mat-light-green-accent: mat.m2-define-palette(mat.$m2-light-green-palette);
+$mat-light-green-warn: mat.m2-define-palette(mat.$m2-light-green-palette);
+$mat-light-green-light-theme: mat.m2-define-light-theme($mat-light-green-primary, $mat-light-green-accent, $mat-light-green-warn);
+$mat-light-green-dark-theme: mat.m2-define-dark-theme($mat-light-green-primary, $mat-light-green-accent, $mat-light-green-warn);
 .light-green-light-theme {
-  @include angular-material-theme($mat-light-green-light-theme);
+  @include mat.all-component-themes($mat-light-green-light-theme);
 }
 .light-green-dark-theme {
-  @include angular-material-theme($mat-light-green-dark-theme);
+  @include mat.all-component-themes($mat-light-green-dark-theme);
 }
 
-$mat-lime-primary: mat-palette($mat-lime);
-$mat-lime-accent: mat-palette($mat-lime);
-$mat-lime-warn: mat-palette($mat-lime);
-$mat-lime-light-theme: mat-light-theme($mat-lime-primary, $mat-lime-accent, $mat-lime-warn);
-$mat-lime-dark-theme: mat-dark-theme($mat-lime-primary, $mat-lime-accent, $mat-lime-warn);
+$mat-lime-primary: mat.m2-define-palette(mat.$m2-lime-palette);
+$mat-lime-accent: mat.m2-define-palette(mat.$m2-lime-palette);
+$mat-lime-warn: mat.m2-define-palette(mat.$m2-lime-palette);
+$mat-lime-light-theme: mat.m2-define-light-theme($mat-lime-primary, $mat-lime-accent, $mat-lime-warn);
+$mat-lime-dark-theme: mat.m2-define-dark-theme($mat-lime-primary, $mat-lime-accent, $mat-lime-warn);
 .lime-light-theme {
-  @include angular-material-theme($mat-lime-light-theme);
+  @include mat.all-component-themes($mat-lime-light-theme);
 }
 .lime-dark-theme {
-  @include angular-material-theme($mat-lime-dark-theme);
+  @include mat.all-component-themes($mat-lime-dark-theme);
 }
 
-$mat-yellow-primary: mat-palette($mat-yellow);
-$mat-yellow-accent: mat-palette($mat-yellow);
-$mat-yellow-warn: mat-palette($mat-yellow);
-$mat-yellow-light-theme: mat-light-theme($mat-yellow-primary, $mat-yellow-accent, $mat-yellow-warn);
-$mat-yellow-dark-theme: mat-dark-theme($mat-yellow-primary, $mat-yellow-accent, $mat-yellow-warn);
+$mat-yellow-primary: mat.m2-define-palette(mat.$m2-yellow-palette);
+$mat-yellow-accent: mat.m2-define-palette(mat.$m2-yellow-palette);
+$mat-yellow-warn: mat.m2-define-palette(mat.$m2-yellow-palette);
+$mat-yellow-light-theme: mat.m2-define-light-theme($mat-yellow-primary, $mat-yellow-accent, $mat-yellow-warn);
+$mat-yellow-dark-theme: mat.m2-define-dark-theme($mat-yellow-primary, $mat-yellow-accent, $mat-yellow-warn);
 .yellow-light-theme {
-  @include angular-material-theme($mat-yellow-light-theme);
+  @include mat.all-component-themes($mat-yellow-light-theme);
 }
 .yellow-dark-theme {
-  @include angular-material-theme($mat-yellow-dark-theme);
+  @include mat.all-component-themes($mat-yellow-dark-theme);
 }
 
-$mat-amber-primary: mat-palette($mat-amber);
-$mat-amber-accent: mat-palette($mat-amber);
-$mat-amber-warn: mat-palette($mat-amber);
-$mat-amber-light-theme: mat-light-theme($mat-amber-primary, $mat-amber-accent, $mat-amber-warn);
-$mat-amber-dark-theme: mat-dark-theme($mat-amber-primary, $mat-amber-accent, $mat-amber-warn);
+$mat-amber-primary: mat.m2-define-palette(mat.$m2-amber-palette);
+$mat-amber-accent: mat.m2-define-palette(mat.$m2-amber-palette);
+$mat-amber-warn: mat.m2-define-palette(mat.$m2-amber-palette);
+$mat-amber-light-theme: mat.m2-define-light-theme($mat-amber-primary, $mat-amber-accent, $mat-amber-warn);
+$mat-amber-dark-theme: mat.m2-define-dark-theme($mat-amber-primary, $mat-amber-accent, $mat-amber-warn);
 .amber-light-theme {
-  @include angular-material-theme($mat-amber-light-theme);
+  @include mat.all-component-themes($mat-amber-light-theme);
 }
 .amber-dark-theme {
-  @include angular-material-theme($mat-amber-dark-theme);
+  @include mat.all-component-themes($mat-amber-dark-theme);
 }
 
-$mat-orange-primary: mat-palette($mat-orange);
-$mat-orange-accent: mat-palette($mat-orange);
-$mat-orange-warn: mat-palette($mat-orange);
-$mat-orange-light-theme: mat-light-theme($mat-orange-primary, $mat-orange-accent, $mat-orange-warn);
-$mat-orange-dark-theme: mat-dark-theme($mat-orange-primary, $mat-orange-accent, $mat-orange-warn);
+$mat-orange-primary: mat.m2-define-palette(mat.$m2-orange-palette);
+$mat-orange-accent: mat.m2-define-palette(mat.$m2-orange-palette);
+$mat-orange-warn: mat.m2-define-palette(mat.$m2-orange-palette);
+$mat-orange-light-theme: mat.m2-define-light-theme($mat-orange-primary, $mat-orange-accent, $mat-orange-warn);
+$mat-orange-dark-theme: mat.m2-define-dark-theme($mat-orange-primary, $mat-orange-accent, $mat-orange-warn);
 .orange-light-theme {
-  @include angular-material-theme($mat-orange-light-theme);
+  @include mat.all-component-themes($mat-orange-light-theme);
 }
 .orange-dark-theme {
-  @include angular-material-theme($mat-orange-dark-theme);
+  @include mat.all-component-themes($mat-orange-dark-theme);
 }
 
-$mat-deep-orange-primary: mat-palette($mat-deep-orange);
-$mat-deep-orange-accent: mat-palette($mat-deep-orange);
-$mat-deep-orange-warn: mat-palette($mat-deep-orange);
-$mat-deep-orange-light-theme: mat-light-theme($mat-deep-orange-primary, $mat-deep-orange-accent, $mat-deep-orange-warn);
-$mat-deep-orange-dark-theme: mat-dark-theme($mat-deep-orange-primary, $mat-deep-orange-accent, $mat-deep-orange-warn);
+$mat-deep-orange-primary: mat.m2-define-palette(mat.$m2-deep-orange-palette);
+$mat-deep-orange-accent: mat.m2-define-palette(mat.$m2-deep-orange-palette);
+$mat-deep-orange-warn: mat.m2-define-palette(mat.$m2-deep-orange-palette);
+$mat-deep-orange-light-theme: mat.m2-define-light-theme($mat-deep-orange-primary, $mat-deep-orange-accent, $mat-deep-orange-warn);
+$mat-deep-orange-dark-theme: mat.m2-define-dark-theme($mat-deep-orange-primary, $mat-deep-orange-accent, $mat-deep-orange-warn);
 .deep-orange-light-theme {
-  @include angular-material-theme($mat-deep-orange-light-theme);
+  @include mat.all-component-themes($mat-deep-orange-light-theme);
 }
 .deep-orange-dark-theme {
-  @include angular-material-theme($mat-deep-orange-dark-theme);
+  @include mat.all-component-themes($mat-deep-orange-dark-theme);
 }
 
-$mat-brown-primary: mat-palette($mat-brown);
-$mat-brown-accent: mat-palette($mat-brown);
-$mat-brown-warn: mat-palette($mat-brown);
-$mat-brown-light-theme: mat-light-theme($mat-brown-primary, $mat-brown-accent, $mat-brown-warn);
-$mat-brown-dark-theme: mat-dark-theme($mat-brown-primary, $mat-brown-accent, $mat-brown-warn);
+$mat-brown-primary: mat.m2-define-palette(mat.$m2-brown-palette);
+$mat-brown-accent: mat.m2-define-palette(mat.$m2-brown-palette);
+$mat-brown-warn: mat.m2-define-palette(mat.$m2-brown-palette);
+$mat-brown-light-theme: mat.m2-define-light-theme($mat-brown-primary, $mat-brown-accent, $mat-brown-warn);
+$mat-brown-dark-theme: mat.m2-define-dark-theme($mat-brown-primary, $mat-brown-accent, $mat-brown-warn);
 .brown-light-theme {
-  @include angular-material-theme($mat-brown-light-theme);
+  @include mat.all-component-themes($mat-brown-light-theme);
 }
 .brown-dark-theme {
-  @include angular-material-theme($mat-brown-dark-theme);
+  @include mat.all-component-themes($mat-brown-dark-theme);
 }
 
-$mat-grey-primary: mat-palette($mat-grey);
-$mat-grey-accent: mat-palette($mat-grey);
-$mat-grey-warn: mat-palette($mat-grey);
-$mat-grey-light-theme: mat-light-theme($mat-grey-primary, $mat-grey-accent, $mat-grey-warn);
-$mat-grey-dark-theme: mat-dark-theme($mat-grey-primary, $mat-grey-accent, $mat-grey-warn);
+$mat-grey-primary: mat.m2-define-palette(mat.$m2-grey-palette);
+$mat-grey-accent: mat.m2-define-palette(mat.$m2-grey-palette);
+$mat-grey-warn: mat.m2-define-palette(mat.$m2-grey-palette);
+$mat-grey-light-theme: mat.m2-define-light-theme($mat-grey-primary, $mat-grey-accent, $mat-grey-warn);
+$mat-grey-dark-theme: mat.m2-define-dark-theme($mat-grey-primary, $mat-grey-accent, $mat-grey-warn);
 .grey-light-theme {
-  @include angular-material-theme($mat-grey-light-theme);
+  @include mat.all-component-themes($mat-grey-light-theme);
 }
 .grey-dark-theme {
-  @include angular-material-theme($mat-grey-dark-theme);
+  @include mat.all-component-themes($mat-grey-dark-theme);
 }
 
-$mat-blue-grey-primary: mat-palette($mat-blue-grey);
-$mat-blue-grey-accent: mat-palette($mat-blue-grey);
-$mat-blue-grey-warn: mat-palette($mat-blue-grey);
-$mat-blue-grey-light-theme: mat-light-theme($mat-blue-grey-primary, $mat-blue-grey-accent, $mat-blue-grey-warn);
-$mat-blue-grey-dark-theme: mat-dark-theme($mat-blue-grey-primary, $mat-blue-grey-accent, $mat-blue-grey-warn);
+$mat-blue-grey-primary: mat.m2-define-palette(mat.$m2-blue-grey-palette);
+$mat-blue-grey-accent: mat.m2-define-palette(mat.$m2-blue-grey-palette);
+$mat-blue-grey-warn: mat.m2-define-palette(mat.$m2-blue-grey-palette);
+$mat-blue-grey-light-theme: mat.m2-define-light-theme($mat-blue-grey-primary, $mat-blue-grey-accent, $mat-blue-grey-warn);
+$mat-blue-grey-dark-theme: mat.m2-define-dark-theme($mat-blue-grey-primary, $mat-blue-grey-accent, $mat-blue-grey-warn);
 .blue-grey-light-theme {
-  @include angular-material-theme($mat-blue-grey-light-theme);
+  @include mat.all-component-themes($mat-blue-grey-light-theme);
 }
 .blue-grey-dark-theme {
-  @include angular-material-theme($mat-blue-grey-dark-theme);
+  @include mat.all-component-themes($mat-blue-grey-dark-theme);
 }
 
 // $prebuiltThemeVariables: (
@@ -264,27 +264,27 @@ $mat-blue-grey-dark-theme: mat-dark-theme($mat-blue-grey-primary, $mat-blue-grey
 //   $mat-blue-grey-light-theme
 // );
 
-// @function get-theme-element-color($mat-theme, $element, $is-background: true) {
+// @function get-theme-element-color(mat.$m2-theme, $element, $is-background: true) {
 //   @if $is-background {
-//     $palette: map-get($mat-theme, background);
+//     $palette: map-get(mat.$m2-theme, background);
 //     @return map-get($palette, $element);
 //   } @else {
-//     $palette: map-get($mat-theme, foreground);
+//     $palette: map-get(mat.$m2-theme, foreground);
 //     @return map-get($palette, $element);
 //   }
 // }
 
-// @function get-theme-background-color($mat-theme) {
-//   $primary: map-get($mat-theme, primary);
+// @function get-theme-background-color(mat.$m2-theme) {
+//   $primary: map-get(mat.$m2-theme, primary);
 //   @return mat-color($primary);
 // }
 
-// @function get-theme-button-color($mat-theme) {
-//   @return get-theme-element-color($mat-theme, "status-bar");
+// @function get-theme-button-color(mat.$m2-theme) {
+//   @return get-theme-element-color(mat.$m2-theme, "status-bar");
 // }
 
-// @function get-theme-heading-color($mat-theme) {
-//   @return get-theme-element-color($mat-theme, "app-bar");
+// @function get-theme-heading-color(mat.$m2-theme) {
+//   @return get-theme-element-color(mat.$m2-theme, "app-bar");
 // }
 
 // // Output some colors for the themes
@@ -296,17 +296,17 @@ $mat-blue-grey-dark-theme: mat-dark-theme($mat-blue-grey-primary, $mat-blue-grey
 // }
 
 // Show the available colors and how to get them
-// @mixin get-theme-colors($mat-theme) {
+// @mixin get-theme-colors(mat.$m2-theme) {
 //   // Theme colors
-//   $primary: map-get($mat-theme, primary);
-//   $accent: map-get($mat-theme, accent);
-//   $warn: map-get($mat-theme, warn);
+//   $primary: map-get(mat.$m2-theme, primary);
+//   $accent: map-get(mat.$m2-theme, accent);
+//   $warn: map-get(mat.$m2-theme, warn);
 //   $primary-bg-color: mat-color($primary);
 //   $accent-bg-color: mat-color($accent);
 //   $warn-bg-color: mat-color($warn);
 
 //   // Background element colors:
-//   $background: map-get($mat-theme, background);
+//   $background: map-get(mat.$m2-theme, background);
 //   $status-bar-color: map-get($background, "status-bar");
 //   $app-bar-color: map-get($background, "app-bar");
 //   $background-color: map-get($background, "background");
@@ -323,7 +323,7 @@ $mat-blue-grey-dark-theme: mat-dark-theme($mat-blue-grey-primary, $mat-blue-grey
 //   $disabled-list-option-color: map-get($background, "disabled-list-option");
 
 //   // Foreground element colors:
-//   $foreground: map-get($mat-theme, foreground);
+//   $foreground: map-get(mat.$m2-theme, foreground);
 //   $base-color: map-get($foreground, "base");
 //   $divider-color: map-get($foreground, "divider");
 //   $dividers-color: map-get($foreground, "dividers");
@@ -340,5 +340,5 @@ $mat-blue-grey-dark-theme: mat-dark-theme($mat-blue-grey-primary, $mat-blue-grey
 //   $slider-off-color: map-get($foreground, "slider-off");
 //   $slider-off-active-color: map-get($foreground, "slider-off-active");
 
-//   $is-dark: map-get($mat-theme, is-dark);
+//   $is-dark: map-get(mat.$m2-theme, is-dark);
 // }

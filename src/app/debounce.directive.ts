@@ -1,9 +1,7 @@
 import { Directive, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/takeUntil';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 @Directive({
   selector: '[ngModel][appOnDebounce]'
@@ -26,8 +24,8 @@ export class DebounceDirective implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.model.valueChanges) {
       this.subscription = this.model.valueChanges
-      .debounceTime(this.debounceTime)
-      .distinctUntilChanged()
+      .pipe(debounceTime(this.debounceTime))
+      .pipe(distinctUntilChanged())
       .subscribe((modelValue: string) => {
         if (this.isFirstChange) {
           this.isFirstChange = false;

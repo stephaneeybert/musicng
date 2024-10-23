@@ -34,11 +34,11 @@ export class UserComponent implements OnInit {
     const id: string | null = this.route.snapshot.paramMap.get('id');
     if (id) {
       const subscription: Subscription = this.userService.get(id)
-      .subscribe(user => {
+      .subscribe((user: User) => {
         this.user = user;
         this.form = this.formBuilder.group({
-          firstname: [this.user.firstname, Validators.required],
-          lastname: [this.user.lastname, Validators.required]
+          firstname: [user.firstname, Validators.required],
+          lastname: [user.lastname, Validators.required]
         });
         subscription.unsubscribe();
       });

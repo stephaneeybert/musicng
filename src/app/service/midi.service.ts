@@ -326,7 +326,7 @@ export class MidiService {
                 currentTicksPerMeasure = this.measureInTicks(this.quarterNotesPerMeasure(currentTimeSignature), PPQ);
               } else if (midiEvent.hasOwnProperty(MIDI_EVENT_SET_TEMPO)) {
                 const tempoEvent: IMidiSetTempoEvent = midiEvent;
-                currentTempoInMicroSecondsPerBeat = tempoEvent.setTempo.microsecondsPerBeat;
+                currentTempoInMicroSecondsPerBeat = tempoEvent.setTempo.microsecondsPerQuarter;
               } else if (midiEvent.hasOwnProperty(MIDI_EVENT_NOTE_ON)) {
                 const noteOnEvent: IMidiNoteOnEvent = midiEvent;
                 // Ignore additional note-on events if any

@@ -1,9 +1,9 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { ThemeMenuOption } from './theme-menu-option';
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ThemeStorageService } from './theme-storage.service';
 import { Theme } from './theme';
 import { OverlayContainer } from '@angular/cdk/overlay';

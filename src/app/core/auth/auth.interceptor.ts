@@ -7,11 +7,8 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable, BehaviorSubject, throwError, Subject, Subscription, Subscriber } from 'rxjs';
 import { tap, catchError, switchMap } from 'rxjs/operators';
-import { throwError, Subject, Subscription, Subscriber } from 'rxjs';
-
 import { TokenService } from './token.service';
 import { AuthService } from '@app/core/auth/auth.service';
 
@@ -21,7 +18,7 @@ const PATH_LOGIN: string = 'login';
 export class AuthInterceptor implements HttpInterceptor {
 
   private refreshTokenInProgress = false;
-  tokenRefreshedSubject = new Subject();
+  tokenRefreshedSubject = new Subject<void>();
   tokenRefreshed$ = this.tokenRefreshedSubject.asObservable();
 
   // Contains the current refresh token or is null if

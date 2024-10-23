@@ -18,7 +18,6 @@ export class AppComponent implements OnInit, OnDestroy {
   private customAndDarkSubscription?: Subscription;
 
   constructor(
-    private environment: environment,
     private changeDetector: ChangeDetectorRef,
     private translateService: TranslateService,
     private screenDeviceService: ScreenDeviceService,

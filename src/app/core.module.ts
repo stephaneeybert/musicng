@@ -4,14 +4,12 @@ import { LibI18nModule } from '@stephaneeybert/lib-i18n';
 import { LibCoreModule } from '@stephaneeybert/lib-core';
 import { LibPwaModule } from '@stephaneeybert/lib-pwa';
 import { LibToastModule } from '@stephaneeybert/lib-toast';
-import { EnvironmentModule } from './environment.module';
 import { ThemeModule } from './core/theme/theme.module';
 import { SensorModule } from './core/sensor/sensor.module';
 
 @NgModule({
   imports: [
     HttpClientModule,
-    EnvironmentModule,
     LibI18nModule,
     LibCoreModule,
     LibPwaModule,
@@ -19,7 +17,6 @@ import { SensorModule } from './core/sensor/sensor.module';
     ThemeModule
   ],
   exports: [
-    EnvironmentModule,
     LibI18nModule,
     LibCoreModule,
     LibPwaModule,

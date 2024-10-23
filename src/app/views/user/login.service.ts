@@ -26,7 +26,7 @@ export class LoginService {
         }
         subscription.unsubscribe();
       },
-      error => {
+      (error: Error) => {
         console.log(error);
         subscription.unsubscribe();
       }
@@ -38,7 +38,7 @@ export class LoginService {
       (response: HttpResponse<User>) => {
         this.router.navigate(['login']);
       },
-      error => {
+      (error: Error) => {
         console.log(error);
       }
     );

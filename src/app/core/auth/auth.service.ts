@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-
 import { environment } from '@env/environment';
 import { TokenService } from '@app/core/auth/token.service';
 import { User } from '@app/views/user/user';

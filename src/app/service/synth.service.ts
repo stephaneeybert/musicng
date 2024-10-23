@@ -38,7 +38,6 @@ const WAKELOCK_TOKEN: string = 'ApKIpnNa3Vl705e8dSRtBi2z7Fu9s3fXFVSejGuj+E9+iUCw
 export class SynthService {
 
   constructor(
-    private environment: environment,
     private notationService: NotationService,
     private keyboardService: KeyboardService,
     private sheetService: SheetService,

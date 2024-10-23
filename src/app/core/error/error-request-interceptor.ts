@@ -5,8 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor,
 } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { of, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { retryWhen, switchMap, delay, take, concat } from 'rxjs/operators';
 
 // Because the best error is the one that never happens, improve the error handling

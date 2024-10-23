@@ -2,9 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { Router, Event, NavigationError } from '@angular/router';
-
-import { Observable } from 'rxjs/Observable';
-import { of, Subscription } from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
 import { environment } from '@env/environment';
 
 export const DEFAULT_JSON_URL: string = 'https://jsonplaceholder.typicode.com/1';
@@ -23,7 +21,7 @@ export class ErrorService {
       .subscribe((event: Event) => {
         if (event instanceof NavigationError) {
           const subscription: Subscription = this.log(event.error)
-            .subscribe((errorWithContext) => {
+            .subscribe((errorWithContext: any) => {
               this.router.navigate(['error'], { queryParams: errorWithContext });
               subscription.unsubscribe();
             });

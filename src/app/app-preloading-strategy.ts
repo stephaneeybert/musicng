@@ -1,6 +1,5 @@
 import { Route, PreloadingStrategy } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { of, timer } from 'rxjs';
+import { Observable, of, timer } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 export class AppPreloadingStrategy implements PreloadingStrategy {
