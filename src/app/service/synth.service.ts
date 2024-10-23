@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
 import * as Tone from 'tone';
 import { Track } from '@app/model/track';
 import { Measure } from '@app/model/measure/measure';
@@ -37,6 +38,7 @@ const WAKELOCK_TOKEN: string = 'ApKIpnNa3Vl705e8dSRtBi2z7Fu9s3fXFVSejGuj+E9+iUCw
 export class SynthService {
 
   constructor(
+    private environment: environment,
     private notationService: NotationService,
     private keyboardService: KeyboardService,
     private sheetService: SheetService,
@@ -46,6 +48,7 @@ export class SynthService {
   ) {
     this.startTransport();
     this.wakelockService.setMetaToken(WAKELOCK_TOKEN);
+    this.wakelockService.setEnvironment(environment);
   }
 
   public createSynth(): Tone.PolySynth {

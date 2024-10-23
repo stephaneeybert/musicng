@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { environment } from 'environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, Observable } from 'rxjs';
 import { ScreenDeviceService } from '@stephaneeybert/lib-core';
@@ -17,12 +18,15 @@ export class AppComponent implements OnInit, OnDestroy {
   private customAndDarkSubscription?: Subscription;
 
   constructor(
+    private environment: environment,
     private changeDetector: ChangeDetectorRef,
     private translateService: TranslateService,
     private screenDeviceService: ScreenDeviceService,
     private pwaService: PwaService,
     private themeService: ThemeService
-  ) {}
+  ) {
+    this.pwaService.setEnvironment(environment);
+  }
 
   ngOnInit() {
     const subscription: Subscription = this.translateService.get('app.title').subscribe((text: string) => {
